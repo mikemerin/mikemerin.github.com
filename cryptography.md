@@ -7,7 +7,9 @@ categories: cryptography
 ## Cryptography
 ---
 Want a custom password only you knew how to make? Want to write your own code to customize it even more? How about sending a coded message to another person and encrypting/decrypting it yourselves?
+
 ![AES Encryption](http://www.youdeparted.com/images/aesencrypt.gif)
+
 Well here's something you may not already realize: you use encryption every single day. Ever send a text or an email? Once those messages are sent they get encrypted automatically to make them look like a jumble of random characters. That is until the person you sent them to receives them, has them decrypted, and can read what you sent them. This way no one other than you two knows what you said!
 
 I was gifted [The Code Book](simonsingh.net/books/the-code-book/) by Simon Singh over the holidays, and while the "code" in it meant ciphers and cryptography, like Morse Code or using code words, my mind right to the other type of "code" being programming. There were plenty of websites devoted to encrypting and decrypting various ciphers, but the fun is in doing it yourself. Ready to do that?
@@ -20,9 +22,12 @@ Before we get into the ciphers themselves I'll cover the basic coding part first
 
 Caesar Cipher (shifting the alphabet down **x** letters)
 ![Caesar Cipher](https://cdn-images-1.medium.com/max/800/1*HcsFf4NRDUGKfT9SsTDCYg.png)
+
 Rail-Fence Cipher (alternating lines, can either condense them or fill in the blanks)
 ![Rail Fence](http://crypto.interactive-maths.com/uploads/1/1/3/4/11345755/3703653.jpg)
+
 Public-Key Cryptography (used in text messaging and emails)
+
 ![Public-Key Cryptography](https://docs.oracle.com/cd/E19528-01/819-0997/images/pcrypt.gif)
 
 Let's start simple with a Monoalphabetic Cipher, which simply means we'll substitute one letter with another, e.g. A => B, B => C, etc. which looks like the Caeser Cipher above, but instead you can substitute **any** letter you want! If you've seen the puzzle section of the newspaper you may have noticed a cryptoquote puzzle which is in fact a Monoalphabetic Cipher.
