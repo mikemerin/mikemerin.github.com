@@ -339,9 +339,13 @@ def from_morse_code(sentence)
 end
 ```
 Basically we break apart the spaces into words:
+
 `[".... . .-. .”, “.. ...”, “.-“, “... . -. - . -. -.-. ."]`
+
 Then again into individual letters:
+
 `[["....", ".", ".-.", "."], ["..", "..."], [".-"], ["...", ".", "-.", "-", ".", "-.", "-.-.", "."]]`
+
 We basically convert each letter to Morse Code, join up the letters directly, and then join up the words with a space. Like I said before, there’s always a different way to make all of these codes work with programming. We can also use **gsub** to make it look neater (replace one character with another). Another example with the Atbash Cipher we can convert each letter to its ASCII number, change it, and convert it back to a letter:
 ```ruby
 “hello”.chars.map { |x| ((27-(x.ord - 96))+96).chr }.join #=> "znzav"
