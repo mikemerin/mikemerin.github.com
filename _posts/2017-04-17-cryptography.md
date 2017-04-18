@@ -78,7 +78,14 @@ We’re basically calling the letter *(key)* on the object Morse_code to output 
 
 # Iteration
 ___
-Now the final problem: what if you have a sentence to convert? We don’t want to do this for *every single letter* right? That’d be tedious and unnecessary, so the next step is doing this is our final word we kept in mind from before: **iteration**. We’ll use a simple “while” statement first to do this before making the entire thing into a short one-line solution. Yes that's right, *one line*. First let’s make our sentence into an object:
+Now the final problem: what if you have a sentence to convert? We don’t want to do this for *every single letter* right? That’d be tedious and unnecessary, so the next step is doing this is our final word we kept in mind from before: **iteration**. We’ll use a simple “while” statement first to do this before making the entire thing into a short one-line solution. Yes that's right, *one line*. Here's a sneak peak of how that will look (don't worry if you don't understand this right now, you will by the end of this post)
+```ruby
+def to_Caesar(sentence)
+    sentence.chars.map { |letter| Ceaser_cipher[letter] }.join
+end
+```
+
+ But back to the basics, first let’s make our sentence into an object:
 ```ruby
 sentence = "here is a sentence."
 ```
