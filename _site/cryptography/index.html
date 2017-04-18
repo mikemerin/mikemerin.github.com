@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Making New Code: Ruby and Cryptography – Mike Merin's Code Corner – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="Cryptography
+
+Want a custom password only you knew how to make? Want to write your own code to customize it even more? How about sending a coded message to another person and encrypting/decrypting it yourselves?
+
+Well here’s something you may not already realize: you use encryption every single day. Ever send a text or an email? Once those messages are sent they get encrypted automatically to make them look like a jumble of random characters. That is until the person you sent them to receives them, has them decrypted, and can read what you sent them. This way no one other than you two knows what you said!
+
+" />
+    <meta property="og:description" content="Cryptography
+
+Want a custom password only you knew how to make? Want to write your own code to customize it even more? How about sending a coded message to another person and encrypting/decrypting it yourselves?
+
+Well here’s something you may not already realize: you use encryption every single day. Ever send a text or an email? Once those messages are sent they get encrypted automatically to make them look like a jumble of random characters. That is until the person you sent them to receives them, has them decrypted, and can read what you sent them. This way no one other than you two knows what you said!
+
+" />
+    
+    <meta name="author" content="Mike Merin's Code Corner" />
+
+    
+    <meta property="og:title" content="Making New Code: Ruby and Cryptography" />
+    <meta property="twitter:title" content="Making New Code: Ruby and Cryptography" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Mike Merin's Code Corner - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">Mike Merin's Code Corner</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav>
+            <a href="">Blog</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Making New Code: Ruby and Cryptography</h1>
+
+  <div class="entry">
+    <h2 id="cryptography">Cryptography</h2>
+<hr />
+<p>Want a custom password only you knew how to make? Want to write your own code to customize it even more? How about sending a coded message to another person and encrypting/decrypting it yourselves?
+<img src="http://www.youdeparted.com/images/aesencrypt.gif" alt="AES Encryption" />
+Well here’s something you may not already realize: you use encryption every single day. Ever send a text or an email? Once those messages are sent they get encrypted automatically to make them look like a jumble of random characters. That is until the person you sent them to receives them, has them decrypted, and can read what you sent them. This way no one other than you two knows what you said!</p>
+
+<p>I was gifted <a href="simonsingh.net/books/the-code-book/">The Code Book</a> by Simon Singh over the holidays, and while the “code” in it meant ciphers and cryptography, like Morse Code or using code words, my mind right to the other type of “code” being programming. There were plenty of websites devoted to encrypting and decrypting various ciphers, but the fun is in doing it yourself. Ready to do that?</p>
+
+<p><em>Fair warning this will be a VERY long blog post because I’ll be explaining things down to the tiniest detail for those just starting to code. My subsequent posts will be more direct, and if you have any questions you can just comment or message me for clarification. That being said I hope even those who are experts in Ruby will enjoy the process!</em></p>
+
+<h2 id="cipher-types">Cipher Types</h2>
+<hr />
+<p>Before we get into the ciphers themselves I’ll cover the basic coding part first and then we’ll kick it into high gear quickly. If you don’t know anything about code then this will help you learn, and even if you’re an expert pay attention so you can write your own complex encryptions. You may have heard of the following types of ciphers:</p>
+
+<p>Caesar Cipher (shifting the alphabet down <strong>x</strong> letters)
+<img src="https://cdn-images-1.medium.com/max/800/1*HcsFf4NRDUGKfT9SsTDCYg.png" alt="Caesar Cipher" />
+Rail-Fence Cipher (alternating lines, can either condense them or fill in the blanks)
+<img src="http://crypto.interactive-maths.com/uploads/1/1/3/4/11345755/3703653.jpg" alt="Rail Fence" />
+Public-Key Cryptography (used in text messaging and emails)
+<img src="https://docs.oracle.com/cd/E19528-01/819-0997/images/pcrypt.gif" alt="Public-Key Cryptography" /></p>
+
+<p>Let’s start simple with a Monoalphabetic Cipher, which simply means we’ll substitute one letter with another, e.g. A =&gt; B, B =&gt; C, etc. which looks like the Caeser Cipher above, but instead you can substitute <strong>any</strong> letter you want! If you’ve seen the puzzle section of the newspaper you may have noticed a cryptoquote puzzle which is in fact a Monoalphabetic Cipher.</p>
+
+<p><img src="http://www.macon.com/living/53a09u/picture42207519/alternates/FREE_320/cryptoquote.JPG" alt="Cryptoquote" />
+You may not have realized it but Morse Code is also one of these ciphers! In this case we’re substituting a symbol or pattern with a letter: | A =&gt; .- | B =&gt; -… | C =&gt; -.-. | etc.</p>
+
+<h2 id="writing-your-encryption-program">Writing Your Encryption Program</h2>
+<hr />
+<p>So how would we write a program to convert, or “encrypt” letters into Morse Code? Well there are three words you’ll want to keep in mind before we start: <strong>hash</strong>, <strong>object</strong>, and <strong>iteration</strong>. Don’t worry these things are simple and I’ll explain each of these as I go along.</p>
+
+<p>In human terms we have to tell our program: “make A equal .- then make B equal -…“ and so on. A simple way to do this is to use what’s known as a <strong>hash</strong> which stores data like a dictionary. An example of what this looks like is:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">{</span> <span class="s2">"Ruby"</span> <span class="o">=&gt;</span> <span class="s2">"An object oriented language."</span> <span class="p">}</span>
+</code></pre>
+</div>
+
+<p>So the word “ruby” is defined as “An object oriented language”. The association here is <strong><em>Word =&gt; Definition</em></strong>, or more commonly known to programmers as <strong><em>Key =&gt; Value(s)</em></strong>. Let’s take this even further and name this hash:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">my_dictionary</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"Ruby"</span> <span class="o">=&gt;</span> <span class="s2">"An object oriented language."</span> <span class="p">}</span>
+</code></pre>
+</div>
+
+<p>And just like that, <code class="highlighter-rouge">my_dictionary</code> is an <strong>object</strong> that stores this information! Great again, but how do we use it? Well it’s simple! We can pull information from the <code class="highlighter-rouge">my_dictionary</code> object like this:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">my_dictionary</span><span class="p">[</span><span class="s2">"Ruby"</span><span class="p">]</span> <span class="c1">#=&gt; "An object oriented language."</span>
+</code></pre>
+</div>
+
+<p>We call the word <em>(key)</em> “Ruby” on the object <code class="highlighter-rouge">my_dictionary</code> and it outputs the desired definition <em>(value)</em>. Let’s do the same thing with Morse Code! Here’s our hash stored in an object:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Morse_code</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"a"</span> <span class="o">=&gt;</span> <span class="s2">".-"</span><span class="p">,</span> <span class="s2">"b"</span> <span class="o">=&gt;</span> <span class="s2">"-..."</span><span class="p">,</span> <span class="s2">"c"</span> <span class="o">=&gt;</span> <span class="s2">"-.-."</span><span class="p">,</span> <span class="s2">"d"</span> <span class="o">=&gt;</span> <span class="s2">"-.."</span><span class="p">,</span> <span class="s2">"e"</span> <span class="o">=&gt;</span> <span class="s2">"."</span><span class="p">,</span> <span class="s2">"f"</span> <span class="o">=&gt;</span> <span class="s2">"..-."</span><span class="p">,</span> <span class="s2">"g"</span> <span class="o">=&gt;</span> <span class="s2">"--."</span><span class="p">,</span> <span class="s2">"h"</span> <span class="o">=&gt;</span> <span class="s2">"...."</span><span class="p">,</span> <span class="s2">"i"</span> <span class="o">=&gt;</span> <span class="s2">".."</span><span class="p">,</span> <span class="s2">"j"</span> <span class="o">=&gt;</span> <span class="s2">".---"</span><span class="p">,</span> <span class="s2">"k"</span> <span class="o">=&gt;</span> <span class="s2">"-.-"</span><span class="p">,</span> <span class="s2">"l"</span> <span class="o">=&gt;</span> <span class="s2">".-.."</span><span class="p">,</span> <span class="s2">"m"</span> <span class="o">=&gt;</span> <span class="s2">"--"</span><span class="p">,</span> <span class="s2">"n"</span> <span class="o">=&gt;</span> <span class="s2">"-."</span><span class="p">,</span> <span class="s2">"o"</span> <span class="o">=&gt;</span> <span class="s2">"---"</span><span class="p">,</span> <span class="s2">"p"</span> <span class="o">=&gt;</span> <span class="s2">".--."</span><span class="p">,</span> <span class="s2">"q"</span> <span class="o">=&gt;</span> <span class="s2">"--.-"</span><span class="p">,</span> <span class="s2">"r"</span> <span class="o">=&gt;</span> <span class="s2">".-."</span><span class="p">,</span> <span class="s2">"s"</span> <span class="o">=&gt;</span> <span class="s2">"..."</span><span class="p">,</span> <span class="s2">"t"</span> <span class="o">=&gt;</span> <span class="s2">"-"</span><span class="p">,</span> <span class="s2">"u"</span> <span class="o">=&gt;</span> <span class="s2">"..-"</span><span class="p">,</span>  <span class="s2">"v"</span> <span class="o">=&gt;</span> <span class="s2">"...-"</span><span class="p">,</span> <span class="s2">"w"</span> <span class="o">=&gt;</span> <span class="s2">".--"</span><span class="p">,</span> <span class="s2">"x"</span> <span class="o">=&gt;</span> <span class="s2">"-..-"</span><span class="p">,</span> <span class="s2">"y"</span> <span class="o">=&gt;</span> <span class="s2">"-.--"</span><span class="p">,</span> <span class="s2">"z"</span> <span class="o">=&gt;</span> <span class="s2">"--.."</span><span class="p">,</span> <span class="s2">" "</span> <span class="o">=&gt;</span> <span class="s2">" "</span><span class="p">,</span> <span class="s2">"1"</span> <span class="o">=&gt;</span> <span class="s2">".----"</span><span class="p">,</span> <span class="s2">"2"</span> <span class="o">=&gt;</span> <span class="s2">"..---"</span><span class="p">,</span> <span class="s2">"3"</span> <span class="o">=&gt;</span> <span class="s2">"...--"</span><span class="p">,</span> <span class="s2">"4"</span> <span class="o">=&gt;</span> <span class="s2">"....-"</span><span class="p">,</span> <span class="s2">"5"</span> <span class="o">=&gt;</span> <span class="s2">"....."</span><span class="p">,</span> <span class="s2">"6"</span> <span class="o">=&gt;</span> <span class="s2">"-...."</span><span class="p">,</span> <span class="s2">"7"</span> <span class="o">=&gt;</span> <span class="s2">"--..."</span><span class="p">,</span> <span class="s2">"8"</span> <span class="o">=&gt;</span> <span class="s2">"---.."</span><span class="p">,</span> <span class="s2">"9"</span> <span class="o">=&gt;</span> <span class="s2">"----."</span><span class="p">,</span> <span class="s2">"0"</span> <span class="o">=&gt;</span> <span class="s2">"-----"</span><span class="p">,</span> <span class="s2">"?"</span> <span class="o">=&gt;</span> <span class="s2">"..--.."</span> <span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Now we can convert our letters by doing the following and calling:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Morse_code</span><span class="p">[</span><span class="s2">"h"</span><span class="p">]</span> <span class="c1">#=&gt; ....</span>
+<span class="no">Morse_code</span><span class="p">[</span><span class="s2">"e"</span><span class="p">]</span> <span class="c1">#=&gt; .</span>
+<span class="no">Morse_code</span><span class="p">[</span><span class="s2">"l"</span><span class="p">]</span> <span class="c1">#=&gt; .-..</span>
+<span class="no">Morse_code</span><span class="p">[</span><span class="s2">"l"</span><span class="p">]</span> <span class="c1">#=&gt; .-..</span>
+<span class="no">Morse_code</span><span class="p">[</span><span class="s2">"o"</span><span class="p">]</span> <span class="c1">#=&gt; ---</span>
+</code></pre>
+</div>
+
+<p>We’re basically calling the letter <em>(key)</em> on the object Morse_code to output the Morse Code symbols <em>(value)</em> for each letter!</p>
+
+<h2 id="iteration">Iteration</h2>
+<hr />
+<p>Now the final problem: what if you have a sentence to convert? We don’t want to do this for <em>every single letter</em> right? That’d be tedious and unnecessary, so the next step is doing this is our final word we kept in mind from before: <strong>iteration</strong>. We’ll use a simple “while” statement first to do this before making the entire thing into a short one-line solution. Yes that’s right, <em>one line</em>. First let’s make our sentence into an object:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">sentence</span> <span class="o">=</span> <span class="s2">"here is a sentence."</span>
+</code></pre>
+</div>
+<p>So let’s once again think about this in human terms:
+1) Start at the first letter in the sentence
+2) Convert that letter to Morse Code
+3) Go to the next letter
+4) Convert that letter to Morse Code
+5) Keep doing this until we reach the end of the sentence.</p>
+
+<p>Now the beautiful thing about code is that there are multiple ways to solve a problem! We’ll end with that short one-line solution, but in order to understand how to do it we’ll start with simple-yet-long way in the above steps:
+1) Start at the first letter in the sentence</p>
+
+<p>In programming we start counting at 0, not 1. Let’s set an object <code class="highlighter-rouge">index</code> equal to 0.</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre>
+</div>
+<p>So now if we call the <code class="highlighter-rouge">index</code> on our sentence, we’ll get the first letter of “h”</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="c1">#=&gt; “h”</span>
+</code></pre>
+</div>
+<p>2) Convert that letter to Morse Code</p>
+
+<p>Now that we know how to call the sentence’s index let’s call the letter “h” into our Morse_code object/hash:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="c1">#=&gt; “....“</span>
+</code></pre>
+</div>
+<p>3) Go to the next letter
+4) Convert that letter to Morse Code</p>
+
+<p>It’s time for <strong>iteration</strong>! How do we go to the next letter? Well we have our <code class="highlighter-rouge">index</code> of 0 which is the first letter, let’s make that equal 1 which is the second letter. We can do this by:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="c1"># or the simpler and cleaner way:</span>
+<span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre>
+</div>
+<p>So now with <code class="highlighter-rouge">index</code> equal to 1 we can call the index on our sentence:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="c1">#=&gt; “e”</span>
+<span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="c1">#=&gt; “.“</span>
+</code></pre>
+</div>
+<p>5) Keep doing this until we reach the end of the sentence.</p>
+
+<p>How do we know we’ve reached the end of the sentence? There’s a neat thing we can do to figure out the length of our sentence:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">sentence</span><span class="p">.</span><span class="nf">length</span> <span class="c1">#=&gt; 18</span>
+<span class="c1"># or</span>
+<span class="n">sentence</span><span class="p">.</span><span class="nf">size</span> <span class="c1">#=&gt; 18</span>
+</code></pre>
+</div>
+<p>So we know the length, or size of the sentence is 18 characters long. (side-note: “length” and “size” are the same thing. I prefer to use size which is shorter). So we basically have to say “until the index reaches 18, keep converting the letters to Morse Code,” or we can also say “while the index is less than the size of the sentence, keep converting the letters to Morse Code. We’d write both of these as:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">until</span> <span class="n">index</span> <span class="o">==</span> <span class="n">sentence</span><span class="p">.</span><span class="nf">size</span>
+<span class="c1"># or</span>
+<span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">sentence</span><span class="p">.</span><span class="nf">size</span>
+</code></pre>
+</div>
+<p>And bringing it all together we’d write the entire while loop as:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">sentence</span><span class="p">.</span><span class="nf">size</span>
+	<span class="nb">puts</span> <span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span>
+	<span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>This will put each letter on a new line. Let’s take this further though and store the Morse Code as a new sentence. We can make an object <code class="highlighter-rouge">morsed_sentence</code> and add each Morse Code letter to it:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">converted_sentence</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">sentence</span><span class="p">.</span><span class="nf">size</span>
+    <span class="n">converted_sentence</span> <span class="o">+=</span> <span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">end</span>
+<span class="n">converted_sentence</span> <span class="c1">#=&gt; "......-.. ..... .- ....-.-.-.-.-.."</span>
+</code></pre>
+</div>
+<p>Oops! While English letters can be read next to one another, Morse Code needs a space between each letter otherwise we can’t discern what they are. Let’s add that space to our code to fix this by using <code class="highlighter-rouge">+ " "</code> at the end of each letter:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">converted_sentence</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">sentence</span><span class="p">.</span><span class="nf">size</span>
+    <span class="n">converted_sentence</span> <span class="o">+=</span> <span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="o">+</span> <span class="err">“</span> <span class="err">“</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">end</span>
+<span class="n">converted_sentence</span> <span class="c1">#=&gt; ".... . .-. .   .. ...   .-   ... . -. - . -. -.-. ."</span>
+</code></pre>
+</div>
+<p>We can also do this using an <strong>array</strong>. Side-lesson: arrays stores information like this:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"here"</span><span class="p">,</span> <span class="s2">"is"</span><span class="p">,</span> <span class="s2">"an"</span><span class="p">,</span> <span class="s2">"array"</span><span class="p">]</span>
+</code></pre>
+</div>
+<p>And we can push new things into the array by using push or a shovel <code class="highlighter-rouge">&lt;&lt;</code> operator:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="s2">"hooray!"</span><span class="p">)</span>
+<span class="n">array</span> <span class="c1">#=&gt; ["here", "is", "an", "array", "hooray"]</span>
+<span class="n">array</span> <span class="o">&lt;&lt;</span> <span class="s2">"for us!"</span>
+<span class="n">array</span> <span class="c1">#=&gt; ["here", "is", "an", "array", "hooray", "for us!"]</span>
+</code></pre>
+</div>
+<p>Each element in the array is split up with a comma. We can use <strong>join</strong> to join them together:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span><span class="p">.</span><span class="nf">join</span> <span class="c1">#=&gt; hereisanarrayhoorayforus!</span>
+</code></pre>
+</div>
+<p>And to take care of that pesky space we can use <code class="highlighter-rouge">join(" ")</code></p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span> <span class="c1">#=&gt; here is an array hooray for us!</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">"+"</span><span class="p">)</span> <span class="c1">#=&gt; here+is+an+array+hooray+for us!</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" :) "</span><span class="p">)</span> <span class="c1">#=&gt; here :) is :) an :) array :) hooray :) for us!</span>
+</code></pre>
+</div>
+<p>So let’s convert into Morse Code using arrays!</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">converted_sentence</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">sentence</span><span class="p">.</span><span class="nf">size</span>
+    <span class="n">converted_sentence</span> <span class="o">&lt;&lt;</span> <span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span>
+    <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">end</span>
+<span class="n">converted_sentence</span>
+<span class="c1">#=&gt; ["....", ".", ".-.", ".", " ", "..", "...", " ", ".-", " ", "...", ".", "-.", "-", ".", "-.", "-.-.", "."]</span>
+<span class="n">converted_sentence</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="err">“</span> <span class="err">“</span><span class="p">)</span>
+<span class="c1">#=&gt; ".... . .-. .   .. ...   .-   ... . -. - . -. -.-. ."</span>
+</code></pre>
+</div>
+<p>OK so I said there were three words to keep in mind but I’ll add another one into the mix: <strong>method</strong>. All this means is we’ll be putting all the above into something neat and tidy so we can run it all once. Let’s define our method as <code class="highlighter-rouge">convert_to_morse_code</code> and have it take in a sentence:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">convert_to_morse_code</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">converted_sentence</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">sentence</span><span class="p">.</span><span class="nf">size</span>
+        <span class="n">converted_sentence</span> <span class="o">&lt;&lt;</span> <span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span>
+        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">converted_sentence</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>The <strong>method</strong> <code class="highlighter-rouge">convert_to_morse_code</code> will return the converted sentence to us and we don’t have to copy down all those long steps every single time we want to convert something to Morse Code! We can simply do:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">convert_to_morse_code</span><span class="p">(</span><span class="s2">"here is a sentence"</span><span class="p">)</span>
+<span class="c1">#=&gt; ".... . .-. .   .. ...   .-   ... . -. - . -. -.-. ."</span>
+<span class="n">convert_to_morse_code</span><span class="p">(</span><span class="s2">"simple right?"</span><span class="p">)</span>
+<span class="c1">#=&gt; "... .. -- .--. .-.. .   .-. .. --. .... - ..--.. "</span>
+</code></pre>
+</div>
+<p>Another side-lesson: in a method you don’t actually have to put the word “return” down for the last line, a method will return the last value no matter what.</p>
+
+<h2 id="one-line-iteration">One-line iteration</h2>
+<hr />
+<p>Now for some special iteration to make this a single line long. To know how to do this we need to know more words. Yes I originally said you’d have to know three at the start, and we got to four with <strong>method</strong>. Well that’s true for the simple stuff above, but we’re in the thick of it now and learning more complicated iterations.</p>
+
+<p>First up is a <strong>range</strong> which is easy enough. If you want to go from 0 to 60, we’d use <code class="highlighter-rouge">(0..60)</code> where the <code class="highlighter-rouge">..</code> means range. In the case of our sentence which is 18 characters long we’d use:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="n">sentence</span><span class="p">.</span><span class="nf">size</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>Here we’re going from 0 to 18, or <code class="highlighter-rouge">(0..18)</code>. Something’s wrong though: our sentence is 18 characters long, aka it has 18 characters in it, but If we call <code class="highlighter-rouge">sentence[18]</code> we’ll get nil. Why? Remember that in programming we start counting at 0 not 1, so even though in English we’d count the letters from 1 to 18, we’d have to count in code from 0 to 17. This means the final letter is at <code class="highlighter-rouge">sentence[17]</code> so we’d have to subtract one from the end of our range:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="n">sentence</span><span class="p">.</span><span class="nf">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>Or a fancy little trick is to use <code class="highlighter-rouge">...</code> instead of <code class="highlighter-rouge">..</code> for our range, which instead says “go up <strong><em>until</em></strong> the number”. So <code class="highlighter-rouge">(0...18)</code> says “go from 0 up until 18”, aka “0 to 17”. We’d then be able to simply say:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">sentence</span><span class="p">.</span><span class="nf">size</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>And not get <code class="highlighter-rouge">nil</code> or cause errors. As for iterating we’ll use <code class="highlighter-rouge">each</code>. Each basically says “go through each of these, then do whatever I want for each one”. In this case: <code class="highlighter-rouge">(0...sentence.size).each</code> would go over each number from 0 to 17 in our sentence. We can then use blocks to tell the <strong>each</strong> to do something for us! We can do something fancy like this:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="o">.</span><span class="mi">6</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span>
+    <span class="nb">print</span> <span class="n">number</span>
+<span class="k">end</span>
+<span class="c1">#=&gt; 012345</span>
+
+<span class="c1"># or the simpler and cleaner:</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="o">.</span><span class="mi">6</span><span class="p">).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">number</span><span class="o">|</span> <span class="nb">print</span> <span class="n">number</span> <span class="p">}</span> <span class="c1">#=&gt; 012345</span>
+</code></pre>
+</div>
+<p>The <code class="highlighter-rouge">|number|</code> is the each individual thing we want to go through, in this case the numbers 0 then 1 then 2 etc. We the <code class="highlighter-rouge">do</code> and <code class="highlighter-rouge">end</code>, or the curly brackets <code class="highlighter-rouge"><span class="p">{}</span></code> surround what we want to run each of those individual things, and is called a <strong>block</strong>. All together in the example above we go through each number in the range of <code class="highlighter-rouge">(0..6)</code> to prints out each number.</p>
+
+<p>So with this all in mind let’s write our one-liner using our previous code!</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">convert_to_morse_code</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">morsed_sentence</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">sentence</span><span class="p">.</span><span class="nf">size</span><span class="p">).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="n">morsed_sentence</span> <span class="o">&lt;&lt;</span> <span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="p">}</span>
+    <span class="n">morsed_sentence</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">convert_to_morse_code</span><span class="p">(</span><span class="s2">"here is a sentence"</span><span class="p">)</span>
+<span class="c1">#=&gt; ".... . .-. .   .. ...   .-   ... . -. - . -. -.-. ."</span>
+</code></pre>
+</div>
+<p>But wait that’s three lines, not one! Well we can use <code class="highlighter-rouge">map</code> or <code class="highlighter-rouge">collect</code> (same thing) instead of <code class="highlighter-rouge">each</code>, which maps/collects the values and changes them all at once we can finally do our one-liner:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">convert_to_morse_code</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">sentence</span><span class="p">.</span><span class="nf">size</span><span class="p">).</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span> <span class="no">Morse_code</span><span class="p">[</span><span class="n">sentence</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="p">}.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>Horray! Oh right we can make this even simpler: instead of iterating from 0 to 17, let’s just call <code class="highlighter-rouge">each</code> on the sentence itself! We can split up the sentence’s characters into an array by using <code class="highlighter-rouge">split("")</code> or <code class="highlighter-rouge">chars</code>:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="s2">"hi there"</span><span class="p">.</span><span class="nf">split</span> <span class="c1">#=&gt; ["hi", "there"]</span>
+
+<span class="s2">"hi there"</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span> <span class="c1">#=&gt; ["h", "i", " ", "t", "h", "e", "r", "e"]</span>
+<span class="s2">"hi there"</span><span class="p">.</span><span class="nf">chars</span> <span class="c1">#=&gt; ["h", "i", " ", "t", "h", "e", "r", "e"]</span>
+</code></pre>
+</div>
+<p>And then we can iterate over <code class="highlighter-rouge">sentence.chars</code>  like this:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">convert_to_morse_code</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Morse_code</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>This is less code we’ll have to write! And now that we’ve written this, here’s the fun thing: because Morse Code is a Monoalphabetic Cipher we can now use this code for ANY of those ciphers! A Caeser Cipher shifts all the letters down, so if we did that by one letter:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Caesar_cipher</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"a"</span> <span class="o">=&gt;</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"b"</span> <span class="o">=&gt;</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"c"</span> <span class="o">=&gt;</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"d"</span> <span class="o">=&gt;</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"e"</span> <span class="o">=&gt;</span> <span class="s2">"f"</span><span class="p">,</span> <span class="s2">"f"</span> <span class="o">=&gt;</span> <span class="s2">"g"</span><span class="p">,</span> <span class="s2">"g"</span> <span class="o">=&gt;</span> <span class="s2">"h"</span><span class="p">,</span> <span class="s2">"h"</span> <span class="o">=&gt;</span> <span class="s2">"i"</span><span class="p">,</span> <span class="s2">"i"</span> <span class="o">=&gt;</span> <span class="s2">"j"</span><span class="p">,</span> <span class="s2">"j"</span> <span class="o">=&gt;</span> <span class="s2">"k"</span><span class="p">,</span> <span class="s2">"k"</span> <span class="o">=&gt;</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"l"</span> <span class="o">=&gt;</span> <span class="s2">"m"</span><span class="p">,</span> <span class="s2">"m"</span> <span class="o">=&gt;</span> <span class="s2">"n"</span><span class="p">,</span> <span class="s2">"n"</span> <span class="o">=&gt;</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"o"</span> <span class="o">=&gt;</span> <span class="s2">"p"</span><span class="p">,</span> <span class="s2">"p"</span> <span class="o">=&gt;</span> <span class="s2">"q"</span><span class="p">,</span> <span class="s2">"q"</span> <span class="o">=&gt;</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"r"</span> <span class="o">=&gt;</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"s"</span> <span class="o">=&gt;</span> <span class="s2">"t"</span><span class="p">,</span> <span class="s2">"t"</span> <span class="o">=&gt;</span> <span class="s2">"u"</span><span class="p">,</span> <span class="s2">"u"</span> <span class="o">=&gt;</span> <span class="s2">"v"</span><span class="p">,</span>  <span class="s2">"v"</span> <span class="o">=&gt;</span> <span class="s2">"w"</span><span class="p">,</span> <span class="s2">"w"</span> <span class="o">=&gt;</span> <span class="s2">"x"</span><span class="p">,</span> <span class="s2">"x"</span> <span class="o">=&gt;</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"y"</span> <span class="o">=&gt;</span> <span class="s2">"z"</span><span class="p">,</span> <span class="s2">"z"</span> <span class="o">=&gt;</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">" "</span> <span class="o">=&gt;</span> <span class="s2">" "</span> <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">convert_to_caesar_cipher</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Ceaser_cipher</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">convert_to_caesar_cipher</span><span class="p">(</span><span class="s2">"here is a sentence"</span><span class="p">)</span> <span class="c1">#=&gt; "ifsf jt b tfoufodf"</span>
+</code></pre>
+</div>
+<p>Or how about an Atbash Cipher which reverses A and Z, B and Y, C and X, and so on?</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Atbash_cipher</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"a"</span> <span class="o">=&gt;</span> <span class="s2">"z"</span><span class="p">,</span> <span class="s2">"b"</span> <span class="o">=&gt;</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"c"</span> <span class="o">=&gt;</span> <span class="s2">"x"</span><span class="p">,</span> <span class="s2">"d"</span> <span class="o">=&gt;</span> <span class="s2">"w"</span><span class="p">,</span> <span class="s2">"e"</span> <span class="o">=&gt;</span> <span class="s2">"v"</span><span class="p">,</span> <span class="s2">"f"</span> <span class="o">=&gt;</span> <span class="s2">"u"</span><span class="p">,</span> <span class="s2">"g"</span> <span class="o">=&gt;</span> <span class="s2">"t"</span><span class="p">,</span> <span class="s2">"h"</span> <span class="o">=&gt;</span> <span class="s2">"s"</span><span class="p">,</span> <span class="s2">"i"</span> <span class="o">=&gt;</span> <span class="s2">"r"</span><span class="p">,</span> <span class="s2">"j"</span> <span class="o">=&gt;</span> <span class="s2">"q"</span><span class="p">,</span> <span class="s2">"k"</span> <span class="o">=&gt;</span> <span class="s2">"p"</span><span class="p">,</span> <span class="s2">"l"</span> <span class="o">=&gt;</span> <span class="s2">"o"</span><span class="p">,</span> <span class="s2">"m"</span> <span class="o">=&gt;</span> <span class="s2">"n"</span><span class="p">,</span> <span class="s2">"n"</span> <span class="o">=&gt;</span> <span class="s2">"m"</span><span class="p">,</span> <span class="s2">"o"</span> <span class="o">=&gt;</span> <span class="s2">"l"</span><span class="p">,</span> <span class="s2">"p"</span> <span class="o">=&gt;</span> <span class="s2">"k"</span><span class="p">,</span> <span class="s2">"q"</span> <span class="o">=&gt;</span> <span class="s2">"j"</span><span class="p">,</span> <span class="s2">"r"</span> <span class="o">=&gt;</span> <span class="s2">"i"</span><span class="p">,</span> <span class="s2">"s"</span> <span class="o">=&gt;</span> <span class="s2">"h"</span><span class="p">,</span> <span class="s2">"t"</span> <span class="o">=&gt;</span> <span class="s2">"g"</span><span class="p">,</span> <span class="s2">"u"</span> <span class="o">=&gt;</span> <span class="s2">"f"</span><span class="p">,</span>  <span class="s2">"v"</span> <span class="o">=&gt;</span> <span class="s2">"e"</span><span class="p">,</span> <span class="s2">"w"</span> <span class="o">=&gt;</span> <span class="s2">"d"</span><span class="p">,</span> <span class="s2">"x"</span> <span class="o">=&gt;</span> <span class="s2">"c"</span><span class="p">,</span> <span class="s2">"y"</span> <span class="o">=&gt;</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"z"</span> <span class="o">=&gt;</span> <span class="s2">"a"</span><span class="p">,</span> <span class="s2">" "</span> <span class="o">=&gt;</span> <span class="s2">" "</span> <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">atbash</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="n">atbash_cipher</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">atbash</span><span class="p">(</span><span class="err">“</span><span class="n">here</span> <span class="n">is</span> <span class="n">a</span> <span class="n">sentence</span><span class="err">”</span><span class="p">)</span> <span class="c1">#=&gt; "sviv rh z hvmgvmxv"</span>
+</code></pre>
+</div>
+<p>Fun fact: running an Atbash Cipher twice returns the same thing! A =&gt; Z =&gt; A</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">atbash</span><span class="p">(</span><span class="n">atbash</span><span class="p">((</span><span class="err">“</span><span class="n">here</span> <span class="n">is</span> <span class="n">a</span> <span class="n">sentence</span><span class="err">”</span><span class="p">))</span> <span class="c1">#=&gt; "here is a sentence"</span>
+</code></pre>
+</div>
+<p>And so on and so on with any type of Monoalphabetic Cipher you can think of.</p>
+
+<h2 id="decrypting">Decrypting</h2>
+<hr />
+<p>So we can encrypt each message, great! But we now can’t read them so how to you <em>decrypt</em> what was encrypted? Well since we’re using a Monoalphabetic Cipher which simply replaces a letter with another it’s easy! We did A =&gt; B before for our Caesar Cipher, so let’s just <code class="highlighter-rouge">invert</code> that into saying We’ll just reverse the replacement process by inverting our hash so that instead of say, A =&gt; B we’ll switch them to B =&gt; A. How do you do this? You probably guessed it already: use <code class="highlighter-rouge">invert</code>!</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Caesar_cipher</span><span class="p">.</span><span class="nf">invert</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"b"</span><span class="o">=&gt;</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"c"</span><span class="o">=&gt;</span><span class="s2">"b"</span><span class="p">,</span> <span class="s2">"d"</span><span class="o">=&gt;</span><span class="s2">"c"</span><span class="p">,</span> <span class="s2">"e"</span><span class="o">=&gt;</span><span class="s2">"d"</span><span class="p">,</span> <span class="s2">"f"</span><span class="o">=&gt;</span><span class="s2">"e"</span><span class="p">,</span> <span class="s2">"g"</span><span class="o">=&gt;</span><span class="s2">"f"</span><span class="p">,</span> <span class="s2">"h"</span><span class="o">=&gt;</span><span class="s2">"g"</span><span class="p">,</span> <span class="s2">"i"</span><span class="o">=&gt;</span><span class="s2">"h"</span><span class="p">,</span> <span class="s2">"j"</span><span class="o">=&gt;</span><span class="s2">"i"</span><span class="p">,</span> <span class="s2">"k"</span><span class="o">=&gt;</span><span class="s2">"j"</span><span class="p">,</span> <span class="s2">"l"</span><span class="o">=&gt;</span><span class="s2">"k"</span><span class="p">,</span> <span class="s2">"m"</span><span class="o">=&gt;</span><span class="s2">"l"</span><span class="p">,</span> <span class="s2">"n"</span><span class="o">=&gt;</span><span class="s2">"m"</span><span class="p">,</span> <span class="s2">"o"</span><span class="o">=&gt;</span><span class="s2">"n"</span><span class="p">,</span> <span class="s2">"p"</span><span class="o">=&gt;</span><span class="s2">"o"</span><span class="p">,</span> <span class="s2">"q"</span><span class="o">=&gt;</span><span class="s2">"p"</span><span class="p">,</span> <span class="s2">"r"</span><span class="o">=&gt;</span><span class="s2">"q"</span><span class="p">,</span> <span class="s2">"s"</span><span class="o">=&gt;</span><span class="s2">"r"</span><span class="p">,</span> <span class="s2">"t"</span><span class="o">=&gt;</span><span class="s2">"s"</span><span class="p">,</span> <span class="s2">"u"</span><span class="o">=&gt;</span><span class="s2">"t"</span><span class="p">,</span> <span class="s2">"v"</span><span class="o">=&gt;</span><span class="s2">"u"</span><span class="p">,</span> <span class="s2">"w"</span><span class="o">=&gt;</span><span class="s2">"v"</span><span class="p">,</span> <span class="s2">"x"</span><span class="o">=&gt;</span><span class="s2">"w"</span><span class="p">,</span> <span class="s2">"y"</span><span class="o">=&gt;</span><span class="s2">"x"</span><span class="p">,</span> <span class="s2">"z"</span><span class="o">=&gt;</span><span class="s2">"y"</span><span class="p">,</span> <span class="s2">"a"</span><span class="o">=&gt;</span><span class="s2">"z"</span><span class="p">,</span> <span class="s2">" "</span> <span class="o">=&gt;</span> <span class="s2">" "</span> <span class="p">}</span>
+
+<span class="c1"># our encrypting/decrypting methods:</span>
+
+<span class="k">def</span> <span class="nf">to_Caesar</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Caesar_cipher</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">from_Caesar</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Caesar_cipher</span><span class="p">.</span><span class="nf">invert</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span>
+<span class="k">end</span>
+
+<span class="n">encrypted_message</span> <span class="o">=</span> <span class="n">to_Caesar</span><span class="p">(</span><span class="s2">"et tu brute"</span><span class="p">)</span> <span class="c1">#=&gt; "fu uv csvuf"</span>
+<span class="n">from_caesar</span><span class="p">(</span><span class="n">encrypted_message</span><span class="p">)</span> <span class="c1">#=&gt; "et tu brute"</span>
+<span class="n">from_Caesar</span><span class="p">(</span><span class="n">to_Caesar</span><span class="p">(</span><span class="s2">"et tu brute"</span><span class="p">))</span> <span class="c1">#=&gt; "et tu brute"</span>
+</code></pre>
+</div>
+<p>With some slight modifications we can even convert Morse Code back to English! Use <code class="highlighter-rouge">invert</code> to invert our <code class="highlighter-rouge">Morse_code</code> object/hash:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Morse_code</span><span class="p">.</span><span class="nf">invert</span> <span class="c1">#=&gt; {".-"=&gt;"a", "-..."=&gt;"b", "-.-."=&gt;"c", "-.."=&gt;"d", "."=&gt;"e", "..-."=&gt;"f", "--."=&gt;"g", "...."=&gt;"h", ".."=&gt;"i", ".---"=&gt;"j", "-.-"=&gt;"k", ".-.."=&gt;"l", "--"=&gt;"m", "-."=&gt;"n", "---"=&gt;"o", ".--."=&gt;"p", "--.-"=&gt;"q", ".-."=&gt;"r", "..."=&gt;"s", "-"=&gt;"t", "..-"=&gt;"u", "...-"=&gt;"v", ".--"=&gt;"w", "-..-"=&gt;"x", "-.--"=&gt;"y", "--.."=&gt;"z", " "=&gt;" ", ".----"=&gt;"1", "..---"=&gt;"2", "...--"=&gt;"3", "....-"=&gt;"4", "....."=&gt;"5", "-...."=&gt;"6", "--..."=&gt;"7", "---.."=&gt;"8", "----."=&gt;"9", "-----"=&gt;"0", "..--.."=&gt;"?"}</span>
+
+<span class="k">def</span> <span class="nf">convert_from_morse_code</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">split</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Morse_code</span><span class="p">.</span><span class="nf">invert</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">convert_from_morse_code</span><span class="p">(</span><span class="s2">".... . .-. .   .. ...   .-   ... . -. - . -. -.-. ."</span><span class="p">)</span> <span class="c1">#=&gt; "h e r e i s a s e n t e n c e"</span>
+</code></pre>
+</div>
+<p>We understand this but we get weird spacing issues since our Morse Code converting adds spaces, but Ruby splits up based on any number of spaces, so with a quick modification:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">convert_from_morse_code</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">sentence</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"   "</span><span class="p">)</span> <span class="c1">#=&gt; [".... . .-. .”, “.. ...”, “.-“, “... . -. - . -. -.-. ."]</span>
+    <span class="n">words</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">word</span><span class="o">|</span> <span class="n">word</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">).</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Morse_code</span><span class="p">.</span><span class="nf">invert</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span> <span class="p">}.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>Basically we break apart the spaces into words:
+<code class="highlighter-rouge">[".... . .-. .”, “.. ...”, “.-“, “... . -. - . -. -.-. ."]</code>
+Then again into individual letters:
+<code class="highlighter-rouge">[["....", ".", ".-.", "."], ["..", "..."], [".-"], ["...", ".", "-.", "-", ".", "-.", "-.-.", "."]]</code>
+We basically convert each letter to Morse Code, join up the letters directly, and then join up the words with a space. Like I said before, there’s always a different way to make all of these codes work with programming. We can also use <strong>gsub</strong> to make it look neater (replace one character with another). Another example with the Atbash Cipher we can convert each letter to its ASCII number, change it, and convert it back to a letter:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="err">“</span><span class="n">hello</span><span class="err">”</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="p">((</span><span class="mi">27</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">ord</span> <span class="o">-</span> <span class="mi">96</span><span class="p">))</span><span class="o">+</span><span class="mi">96</span><span class="p">).</span><span class="nf">chr</span> <span class="p">}.</span><span class="nf">join</span> <span class="c1">#=&gt; "znzav"</span>
+</code></pre>
+</div>
+<p>We can use <strong>regex</strong> to scan for which letters we want to change and return:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="err">“</span><span class="n">hello</span><span class="err">”</span><span class="p">.</span><span class="nf">scan</span><span class="p">(</span><span class="sr">/[a-z]/</span><span class="p">).</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="p">((</span><span class="mi">27</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">ord</span> <span class="o">-</span> <span class="mi">96</span><span class="p">))</span><span class="o">+</span><span class="mi">96</span><span class="p">).</span><span class="nf">chr</span> <span class="p">}.</span><span class="nf">join</span> <span class="c1">#=&gt; "znzav"</span>
+</code></pre>
+</div>
+<p>And we can modify it to only run Atbash on letters (ignoring things like punctuation or spaces)</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="p">(</span><span class="s2">"a"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"z"</span><span class="p">).</span><span class="nf">include?</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">?</span> <span class="p">((</span><span class="mi">27</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="nf">ord</span> <span class="o">-</span> <span class="mi">96</span><span class="p">))</span><span class="o">+</span><span class="mi">96</span><span class="p">).</span><span class="nf">chr</span> <span class="p">:</span> <span class="n">x</span> <span class="p">}.</span><span class="nf">join</span>
+</code></pre>
+</div>
+<h2 id="easy-creation-of-hashes">Easy creation of hashes</h2>
+<hr />
+<p>Since a Caesar Cipher is simply shifting the alphabet, we can create our hash using rotate and zip without having to painstakingly do it ourselves! We use <code class="highlighter-rouge">zip</code> to literally zip together two arrays into a hash. Think of a zipper with the left side going ABC and the right side going 123. When you pull up the zipper, they interlock going from left to right sort of like this:</p>
+
+<p>ABC zipped with 123 #=&gt; A1 B2 C3</p>
+
+<p>In Ruby it looks like this:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">,</span> <span class="s2">"C"</span><span class="p">].</span><span class="nf">zip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="c1">#=&gt; [ ["A", 1], ["B", 2], ["C", 3] ]</span>
+</code></pre>
+</div>
+<p>And then we can make that into a hash by using <code class="highlighter-rouge">to_h</code> or calling <code class="highlighter-rouge">Hash</code> on it:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">,</span> <span class="s2">"C"</span><span class="p">].</span><span class="nf">zip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span><span class="nf">to_h</span> <span class="c1">#=&gt; { "A" =&gt; 1, "B" =&gt; 2, "C" =&gt; 3 }</span>
+<span class="c1"># or</span>
+<span class="no">Hash</span><span class="p">[</span> <span class="p">[</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">,</span> <span class="s2">"C"</span><span class="p">].</span><span class="nf">zip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="p">]</span> <span class="c1">#=&gt; { "A" =&gt; 1, "B" =&gt; 2, "C" =&gt; 3 }</span>
+</code></pre>
+</div>
+<p>Now let’s do this for the entire alphabet all at once, using <code class="highlighter-rouge">rotate</code> to our advantage, which literally rotates the entire array from right to left (shifts the first element(s) and pushes it onto the end):</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nf">rotate</span>    <span class="c1">#=&gt; [2, 3, 4, 5, 1]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nf">rotate</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; [3, 4, 5, 1, 2]</span>
+
+<span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"a"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"z"</span><span class="p">).</span><span class="nf">to_a</span>
+<span class="no">Hash</span><span class="p">[</span><span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="mi">1</span><span class="p">))]</span> <span class="c1">#=&gt; {"a"=&gt;"b", "b"=&gt;"c", "c"=&gt;"d", etc. }</span>
+<span class="no">Hash</span><span class="p">[</span><span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="mi">2</span><span class="p">))]</span> <span class="c1">#=&gt; {"a"=&gt;"c", "b"=&gt;"d", "c"=&gt;"e", etc. }</span>
+</code></pre>
+</div>
+<p>And yes that’s right, we can use other things like reverse to recreate Atbash:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Hash</span><span class="p">[</span><span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">alphabet</span><span class="p">.</span><span class="nf">reverse</span><span class="p">)]</span> <span class="c1">#=&gt; {"a"=&gt;"z", "b"=&gt;"y", "c"=&gt;"x", etc. }</span>
+</code></pre>
+</div>
+<p>The possibilities are endless:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">lowercase</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"a"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"z"</span><span class="p">).</span><span class="nf">to_a</span>
+<span class="n">uppercase</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+<span class="no">Hash</span><span class="p">[(</span><span class="n">lowercase</span> <span class="o">+</span> <span class="n">uppercase</span><span class="p">).</span><span class="nf">zip</span><span class="p">((</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">52</span><span class="p">).</span><span class="nf">to_a</span><span class="p">)]</span> <span class="c1">#=&gt; {"a"=&gt;1, "b"=&gt;2, … "Z"=&gt;52}</span>
+</code></pre>
+</div>
+<p>Letters to their numbers?</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">numbers</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">26</span><span class="p">).</span><span class="nf">to_a</span>
+<span class="no">Hash</span><span class="p">[</span><span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">numbers</span><span class="p">)]</span> <span class="c1">#=&gt; {"a"=&gt;1, "b"=&gt;2, "c"=&gt;3, etc. }</span>
+
+<span class="n">binary</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">26</span><span class="p">).</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">.</span><span class="nf">to_s</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nf">to_i</span> <span class="p">}</span>
+<span class="no">Hash</span><span class="p">[</span><span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">binary</span><span class="p">)]</span> <span class="c1">#=&gt; {"a"=&gt;1, "b"=&gt;10, "c"=&gt;11, "d"=&gt;100, etc. }</span>
+</code></pre>
+</div>
+<p>And just like before with any of these, we’d simply call upon any of these hashes to encrypt our alphabet with our custom Monoalphabetic Ciphers, or decrypt them back!</p>
+
+<p>Lastly if you’re wondering how to add items to your hashes, while an <strong>array</strong> works by using the shovel <code class="highlighter-rouge">&lt;&lt;</code> or pushing, for a hash simply do this:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">my_hash</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"a"</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"b"</span> <span class="o">=&gt;</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="n">my_hash</span><span class="p">[</span><span class="s2">"c"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">my_hash</span> <span class="c1">#=&gt; { "a" =&gt; 1, "b" =&gt; 2, "c" =&gt; 3 }</span>
+</code></pre>
+</div>
+<p>Again sorry for this long post; next time I’ll get right to the chase without this in-depth tutorial to cover how to code some more complex ciphers like the Rail Fence and the revolutionary Vigenère Cipher, also known as le chiffre indéchiffrable (the indecipherable cipher) which was unbroken for over 300 years!</p>
+
+<p>Let me know if you have any questions. Happy encrypting!</p>
+
+<p>Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on April 17, 2017
+  </div>
+
+  
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
