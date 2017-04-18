@@ -33,7 +33,8 @@ Let's start simple with a Monoalphabetic Cipher, which simply means we'll substi
 
 ![Cryptoquote](http://www.macon.com/living/53a09u/picture42207519/alternates/FREE_320/cryptoquote.JPG)
 
-You may not have realized it but Morse Code is also one of these ciphers! In this case we're substituting a symbol or pattern with a letter: | A => .- | B => -... | C => -.-. | etc.
+You may not have realized it but Morse Code is also one of these ciphers! In this case we're substituting a symbol or pattern with a letter:
+ A => .- | B => -... | C => -.-. | etc.
 
 # Writing Your Encryption Program
 ---
