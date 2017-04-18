@@ -247,18 +247,18 @@ The `|number|` is the each individual thing we want to go through, in this case 
 
 So with this all in mind let’s write our one-liner using our previous code!
 ```ruby
-def convert_to_morse_code(sentence)
+def to_morse_code(sentence)
     morsed_sentence = []
     (0...sentence.size).each { |index| morsed_sentence << Morse_code[sentence[index]] }
     morsed_sentence.join(" ")
 end
 
-convert_to_morse_code("here is a sentence")
+to_morse_code("here is a sentence")
 #=> ".... . .-. .   .. ...   .-   ... . -. - . -. -.-. ."
 ```
 But wait that’s three lines, not one! Well we can use `map` or `collect` (same thing) instead of `each`, which maps/collects the values and changes them all at once we can finally do our one-liner:
 ```ruby
-def convert_to_morse_code(sentence)
+def to_morse_code(sentence)
     (0...sentence.size).map { |index| Morse_code[sentence[index]] }.join(" ")
 end
 ```
@@ -271,7 +271,7 @@ Horray! Oh right we can make this even simpler: instead of iterating from 0 to 1
 ```
 And then we can iterate over `sentence.chars`  like this:
 ```ruby
-def convert_to_morse_code(sentence)
+def to_morse_code(sentence)
     sentence.chars.map { |letter| Morse_code[letter] }.join(" ")
 end
 ```
@@ -279,25 +279,25 @@ This is less code we’ll have to write! And now that we’ve written this, here
 ```ruby
 Caesar_cipher = { "a" => "b", "b" => "c", "c" => "d", "d" => "e", "e" => "f", "f" => "g", "g" => "h", "h" => "i", "i" => "j", "j" => "k", "k" => "l", "l" => "m", "m" => "n", "n" => "o", "o" => "p", "p" => "q", "q" => "r", "r" => "s", "s" => "t", "t" => "u", "u" => "v",  "v" => "w", "w" => "x", "x" => "y", "y" => "z", "z" => "a", " " => " " }
 
-def convert_to_caesar_cipher(sentence)
-    sentence.chars.map { |letter| Ceaser_cipher[letter] }.join(" ")
+def to_Caesar(sentence)
+    sentence.chars.map { |letter| Ceaser_cipher[letter] }.join
 end
 
-convert_to_caesar_cipher("here is a sentence") #=> "ifsf jt b tfoufodf"
+to_Caesar("here is a sentence") #=> "ifsf jt b tfoufodf"
 ```
 Or how about an Atbash Cipher which reverses A and Z, B and Y, C and X, and so on?
 ```ruby
 Atbash_cipher = { "a" => "z", "b" => "y", "c" => "x", "d" => "w", "e" => "v", "f" => "u", "g" => "t", "h" => "s", "i" => "r", "j" => "q", "k" => "p", "l" => "o", "m" => "n", "n" => "m", "o" => "l", "p" => "k", "q" => "j", "r" => "i", "s" => "h", "t" => "g", "u" => "f",  "v" => "e", "w" => "d", "x" => "c", "y" => "b", "z" => "a", " " => " " }
 
-def atbash(sentence)
+def to_atbash(sentence)
     sentence.chars.map { |letter| atbash_cipher[letter] }.join(" ")
 end
 
-atbash(“here is a sentence”) #=> "sviv rh z hvmgvmxv"
+to_atbash(“here is a sentence”) #=> "sviv rh z hvmgvmxv"
 ```
 Fun fact: running an Atbash Cipher twice returns the same thing! A => Z => A
 ```ruby
-atbash(atbash((“here is a sentence”)) #=> "here is a sentence"
+to_atbash(to_atbash((“here is a sentence”)) #=> "here is a sentence"
 ```
 And so on and so on with any type of Monoalphabetic Cipher you can think of.
 
@@ -325,15 +325,15 @@ With some slight modifications we can even convert Morse Code back to English! U
 ```ruby
 Morse_code.invert #=> {".-"=>"a", "-..."=>"b", "-.-."=>"c", "-.."=>"d", "."=>"e", "..-."=>"f", "--."=>"g", "...."=>"h", ".."=>"i", ".---"=>"j", "-.-"=>"k", ".-.."=>"l", "--"=>"m", "-."=>"n", "---"=>"o", ".--."=>"p", "--.-"=>"q", ".-."=>"r", "..."=>"s", "-"=>"t", "..-"=>"u", "...-"=>"v", ".--"=>"w", "-..-"=>"x", "-.--"=>"y", "--.."=>"z", " "=>" ", ".----"=>"1", "..---"=>"2", "...--"=>"3", "....-"=>"4", "....."=>"5", "-...."=>"6", "--..."=>"7", "---.."=>"8", "----."=>"9", "-----"=>"0", "..--.."=>"?"}
 
-def convert_from_morse_code(sentence)
+def from_morse_code(sentence)
     sentence.split.map { |letter| Morse_code.invert[letter] }.join(" ")
 end
 
-convert_from_morse_code(".... . .-. .   .. ...   .-   ... . -. - . -. -.-. .") #=> "h e r e i s a s e n t e n c e"
+from_morse_code(".... . .-. .   .. ...   .-   ... . -. - . -. -.-. .") #=> "h e r e i s a s e n t e n c e"
 ```
 We understand this but we get weird spacing issues since our Morse Code converting adds spaces, but Ruby splits up based on any number of spaces, so with a quick modification:
 ```ruby
-def convert_from_morse_code(sentence)
+def from_morse_code(sentence)
     words = sentence.split("   ") #=> [".... . .-. .”, “.. ...”, “.-“, “... . -. - . -. -.-. ."]
     words.map { |word| word.split(" ").map { |letter| Morse_code.invert[letter] }.join }.join(" ")
 end
