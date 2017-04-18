@@ -7,7 +7,7 @@ categories: cryptography
 
 Want a custom password only you knew how to make? Want to write your own code to customize it even more? How about sending a coded message to another person and encrypting/decrypting it yourselves?
 
-``
+.
 ![AES Encryption](http://www.youdeparted.com/images/aesencrypt.gif)
 
 Well here's something you may not already realize: you use encryption every single day. Ever send a text or an email? Once those messages are sent they get encrypted automatically to make them look like a jumble of random characters. That is until the person you sent them to receives them, has them decrypted, and can read what you sent them. This way no one other than you two knows what you said!
