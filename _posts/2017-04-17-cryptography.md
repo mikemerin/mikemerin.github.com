@@ -4,25 +4,29 @@ title:  "Making New Code: Ruby and Cryptography"
 date:   2017-04-17 13:58:14 -0400
 categories: cryptography
 ---
-## Cryptography
----
+
 Want a custom password only you knew how to make? Want to write your own code to customize it even more? How about sending a coded message to another person and encrypting/decrypting it yourselves?
+
 ![AES Encryption](http://www.youdeparted.com/images/aesencrypt.gif)
+
 Well here's something you may not already realize: you use encryption every single day. Ever send a text or an email? Once those messages are sent they get encrypted automatically to make them look like a jumble of random characters. That is until the person you sent them to receives them, has them decrypted, and can read what you sent them. This way no one other than you two knows what you said!
 
 I was gifted [The Code Book](simonsingh.net/books/the-code-book/) by Simon Singh over the holidays, and while the "code" in it meant ciphers and cryptography, like Morse Code or using code words, my mind right to the other type of "code" being programming. There were plenty of websites devoted to encrypting and decrypting various ciphers, but the fun is in doing it yourself. Ready to do that?
 
 _Fair warning this will be a VERY long blog post because I'll be explaining things down to the tiniest detail for those just starting to code. My subsequent posts will be more direct, and if you have any questions you can just comment or message me for clarification. That being said I hope even those who are experts in Ruby will enjoy the process!_
 
-## Cipher Types
+# Cipher Types
 ---
 Before we get into the ciphers themselves I'll cover the basic coding part first and then we'll kick it into high gear quickly. If you don't know anything about code then this will help you learn, and even if you're an expert pay attention so you can write your own complex encryptions. You may have heard of the following types of ciphers:
 
 Caesar Cipher (shifting the alphabet down **x** letters)
 ![Caesar Cipher](https://cdn-images-1.medium.com/max/800/1*HcsFf4NRDUGKfT9SsTDCYg.png)
+
 Rail-Fence Cipher (alternating lines, can either condense them or fill in the blanks)
 ![Rail Fence](http://crypto.interactive-maths.com/uploads/1/1/3/4/11345755/3703653.jpg)
+
 Public-Key Cryptography (used in text messaging and emails)
+
 ![Public-Key Cryptography](https://docs.oracle.com/cd/E19528-01/819-0997/images/pcrypt.gif)
 
 Let's start simple with a Monoalphabetic Cipher, which simply means we'll substitute one letter with another, e.g. A => B, B => C, etc. which looks like the Caeser Cipher above, but instead you can substitute **any** letter you want! If you've seen the puzzle section of the newspaper you may have noticed a cryptoquote puzzle which is in fact a Monoalphabetic Cipher.
@@ -30,7 +34,7 @@ Let's start simple with a Monoalphabetic Cipher, which simply means we'll substi
 ![Cryptoquote](http://www.macon.com/living/53a09u/picture42207519/alternates/FREE_320/cryptoquote.JPG)
 You may not have realized it but Morse Code is also one of these ciphers! In this case we're substituting a symbol or pattern with a letter: | A => .- | B => -... | C => -.-. | etc.
 
-## Writing Your Encryption Program
+# Writing Your Encryption Program
 ---
 So how would we write a program to convert, or "encrypt" letters into Morse Code? Well there are three words you'll want to keep in mind before we start: **hash**, **object**, and **iteration**. Don't worry these things are simple and I'll explain each of these as I go along.
 
@@ -70,7 +74,7 @@ Morse_code["o"] #=> ---
 
 We’re basically calling the letter *(key)* on the object Morse_code to output the Morse Code symbols *(value)* for each letter!
 
-## Iteration
+# Iteration
 ___
 Now the final problem: what if you have a sentence to convert? We don’t want to do this for *every single letter* right? That’d be tedious and unnecessary, so the next step is doing this is our final word we kept in mind from before: **iteration**. We’ll use a simple “while” statement first to do this before making the entire thing into a short one-line solution. Yes that's right, *one line*. First let’s make our sentence into an object:
 ```ruby
@@ -211,7 +215,7 @@ convert_to_morse_code("simple right?")
 ```
 Another side-lesson: in a method you don’t actually have to put the word "return" down for the last line, a method will return the last value no matter what.
 
-## One-line iteration
+# One-line iteration
 ---
 Now for some special iteration to make this a single line long. To know how to do this we need to know more words. Yes I originally said you’d have to know three at the start, and we got to four with **method**. Well that’s true for the simple stuff above, but we’re in the thick of it now and learning more complicated iterations.
 
@@ -295,7 +299,7 @@ atbash(atbash((“here is a sentence”)) #=> "here is a sentence"
 ```
 And so on and so on with any type of Monoalphabetic Cipher you can think of.
 
-## Decrypting
+# Decrypting
 ---
 So we can encrypt each message, great! But we now can't read them so how to you *decrypt* what was encrypted? Well since we're using a Monoalphabetic Cipher which simply replaces a letter with another it's easy! We did A => B before for our Caesar Cipher, so let's just `invert` that into saying We'll just reverse the replacement process by inverting our hash so that instead of say, A => B we'll switch them to B => A. How do you do this? You probably guessed it already: use `invert`!
 ```ruby
@@ -348,7 +352,7 @@ And we can modify it to only run Atbash on letters (ignoring things like punctua
 ```ruby
 sentence.chars.map { |x| ("a".."z").include?(x) ? ((27-(x.ord - 96))+96).chr : x }.join
 ```
-## Easy creation of hashes
+# Easy creation of hashes
 ---
 Since a Caesar Cipher is simply shifting the alphabet, we can create our hash using rotate and zip without having to painstakingly do it ourselves! We use `zip` to literally zip together two arrays into a hash. Think of a zipper with the left side going ABC and the right side going 123. When you pull up the zipper, they interlock going from left to right sort of like this:
 
