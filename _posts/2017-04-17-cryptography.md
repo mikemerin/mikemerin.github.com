@@ -32,6 +32,7 @@ Public-Key Cryptography (used in text messaging and emails)
 Let's start simple with a Monoalphabetic Cipher, which simply means we'll substitute one letter with another, e.g. A => B, B => C, etc. which looks like the Caeser Cipher above, but instead you can substitute **any** letter you want! If you've seen the puzzle section of the newspaper you may have noticed a cryptoquote puzzle which is in fact a Monoalphabetic Cipher.
 
 ![Cryptoquote](http://www.macon.com/living/53a09u/picture42207519/alternates/FREE_320/cryptoquote.JPG)
+
 You may not have realized it but Morse Code is also one of these ciphers! In this case we're substituting a symbol or pattern with a letter: | A => .- | B => -... | C => -.-. | etc.
 
 # Writing Your Encryption Program
