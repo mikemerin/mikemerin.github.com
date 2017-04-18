@@ -331,7 +331,7 @@ end
 
 from_morse_code(".... . .-. .   .. ...   .-   ... . -. - . -. -.-. .") #=> "h e r e i s a s e n t e n c e"
 ```
-We understand this but we get weird spacing issues since our Morse Code converting adds spaces, but Ruby splits up based on any number of spaces, so with a quick modification:
+We understand this even with the spacing issues that we get since our Morse Code converting adds spaces, but Ruby splits up based on any number of spaces, so with a quick modification:
 ```ruby
 def from_morse_code(sentence)
     words = sentence.split("   ") #=> [".... . .-. .”, “.. ...”, “.-“, “... . -. - . -. -.-. ."]
@@ -340,11 +340,15 @@ end
 ```
 Basically we break apart the spaces into words:
 
-`[".... . .-. .”, “.. ...”, “.-“, “... . -. - . -. -.-. ."]`
+```ruby
+[".... . .-. .”, “.. ...”, “.-“, “... . -. - . -. -.-. ."]
+```
 
 Then again into individual letters:
 
-`[["....", ".", ".-.", "."], ["..", "..."], [".-"], ["...", ".", "-.", "-", ".", "-.", "-.-.", "."]]`
+```ruby
+[["....", ".", ".-.", "."], ["..", "..."], [".-"], ["...", ".", "-.", "-", ".", "-.", "-.-.", "."]]
+```
 
 We basically convert each letter to Morse Code, join up the letters directly, and then join up the words with a space. Like I said before, there’s always a different way to make all of these codes work with programming. We can also use **gsub** to make it look neater (replace one character with another). Another example with the Atbash Cipher we can convert each letter to its ASCII number, change it, and convert it back to a letter:
 ```ruby
