@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Making New Code: Ruby and Cryptography"
+title:  "Making New Code: Ruby, Encryption and Cryptography Part 1"
 date:   2017-04-17 13:58:14 -0400
 categories: cryptography
 ---
