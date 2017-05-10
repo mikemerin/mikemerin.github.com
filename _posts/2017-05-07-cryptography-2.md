@@ -4,8 +4,6 @@ title:  "Making New Code: Ruby, Encryption, and Cryptography Part 2"
 date:   2017-05-07 15:32:42 -0400
 categories: cryptography
 ---
-## Ruby, Encryption and Cryptography Part 2
----
 In my last post we talked about making your own Monoalphabetic Cipher using Ruby (view that if you don't understand what's happening below). To summarize, we created a Caesar Cipher by shifting all letters forward by one letter:
 
 ```ruby
