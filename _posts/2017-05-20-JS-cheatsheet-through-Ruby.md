@@ -12,7 +12,7 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 We'll be going over these 5 types of loops/iterations:
 
 Type | Description | Languages
-:---|:-------------------------------------------------------:|---:
+---|------------------------------------------------------------------------------|---
 while | loops while condition is true | Ruby/JS
 .each | goes over each element | Ruby
 for | goes over each element, more used in JS | Ruby/JS
@@ -20,19 +20,19 @@ forEach | JS only, more shorthand version of for | JS
 .reduce | combines all elements via an operation | Ruby/JS
 
 As well as how to perform these special methods:
+
 Ruby | JS Equivalent | Description
-:---|:-------------------------------------------------------:|---:
+---|------------------------------------------------------------------------------|---
 .keys | Object.keys | get all keys in a hash
 .values | Object.values | get all values in a hash
 .include? | .includes | test if an element is included in an array
 case | switch | shorthand multiple `if` statements
 
 
-
 Finally at the end I'll cover how to mimick these are Ruby-only iterations since they're not explicitly used in JS:
 
 Type | Description | Languages
-:---|:-------------------------------------------------------:|---:
+---|------------------------------------------------------------------------------|---
 until | loops until condition is true (opposite of while) | Ruby
 .map | same as each, but also modifies the output | Ruby
 .map! | goes over each element, changes the output, modifies the original array | Ruby
@@ -67,7 +67,7 @@ array //=> [1,2,3,4,5]
 Let's do a side-by-side:
 
 Ruby | Javascript | Difference
----|---|---
+-------------------|-------------------|-------------------
 array = [] | var array = [] | var for JS (can also do let)
 x = 1 | var x = 1 | same, doing var (or let)
 while x < 6 | while (x < 6) | JS needs its test to be in parenthesis `()`
