@@ -12,7 +12,7 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 We'll be going over these 5 types of loops/iterations:
 
 Type | Description | Languages
----|---|---
+:---:|:---:|:---:
 while | loops while condition is true | Ruby/JS
 .each | goes over each element | Ruby
 for | goes over each element, more used in JS | Ruby/JS
@@ -54,7 +54,7 @@ while x < 6
 end
 array #=> [1,2,3,4,5]
 ```
-```JS
+```javascript
 // Javascript
 var array = []
 var x = 1
@@ -83,7 +83,7 @@ x = 1
 while x < 6; array.push(x); x += 1 end
 array #=> [1,2,3,4,5]
 ```
-```JS
+```javascript
 // Javascript
 array = []
 x = 1
@@ -103,7 +103,7 @@ end
 array #=> [1,2,3,4,5]
 ```
 Unfortunately there's no quick way to do a range iterator in Javascript (the `(1..5)` above), ***however*** `for` is still very useful if we use it another way. Remember that while loop from before? Here's how we'd cleanly do it in JS:
-```JS
+```javascript
 // Javascript
 array = []
 for (let x = 1;
@@ -113,7 +113,7 @@ for (let x = 1;
 array #=> [1,2,3,4,5]
 ```
 Or the MUCH cleaner one-liner:
-```JS
+```javascript
 // Javascript
 array = []
 for (let x = 1; x < 6; x++) { array.push(x) }
@@ -139,7 +139,7 @@ array2 = []
 array2 #=> [5,4,3,2,1]
 ```
 Now let's finally do that fancy JS iteration using `for` but this time over an array. To spoof the range we'll set our index to 0, limit it to the array.length, and add up by 1:
-```JS
+```javascript
 // Javascript
 array = [1,2,3,4,5]
 array2 = []
@@ -176,7 +176,7 @@ array.each { |x| array2.unshift(x) }
 array2 #=> [5,4,3,2,1]
 ```
 This way we're calling on the element itself in the block rather than the index. In JS we'd clean up our ugly `x = 0, l = etc` line with:
-```JS
+```javascript
 // Javascript
 array = [1,2,3,4,5]
 array2 = []
@@ -190,7 +190,7 @@ for (let i in array) { array2.unshift( array[i] ) }
 //=> [5,4,3,2,1]
 ```
 But wait, we're still calling on the index instead of grabbing the element itself, so we **still** have to do `array[i]` instead of how we were just using `x` in Ruby above! Let's use `forEach` and fix that:
-```JS
+```javascript
 // Javascript
 array = [1,2,3,4,5]
 array2 = []
@@ -199,7 +199,7 @@ array.forEach( function(x) { array2.push(x) } )
 array2 //=> [1,2,3,4,5]
 ```
 And now to finally tap into that fancy ES6 notation I mentioned way back in the intro. We'll turn our function into a cleaner looking arrow function which does the same exact thing:
-```JS
+```javascript
 // Javascript
 array.forEach( (x) => { array2.push(x) } )
 
@@ -251,7 +251,7 @@ array.reduce(0) { |sum, x| sum + x }
 # the operation inside the Ruby block looks almost identical to the JS version.
 ```
  Here's how these same reduce functions can look in JS, including with the cleaner ES6 notation:
-```js
+```javascript
 // Javascript
 array.reduce( function(sum, x) { return sum + x } )
 array.reduce( function(sum, x) { return sum + x }, 0 )
@@ -280,7 +280,7 @@ pets.keys #=> [:dogs, :cats, :birds]
 pets.values #=> [3, 2, 1]
 ```
 Under the hood, these methods are basically going through each element in the hash and pulling out the chosen value and putting them in an array. These shortcuts work a bit different in JS. First off, a **hash in Ruby** is known as an **object in JS**. So we'll have to call `.keys` or `.values` on a blank `Object` class and have it take in the Object pets:
-```js
+```javascript
 // JavaScript
 Object.keys(pets) //=> ["dogs", "cats", "birds"]
 Object.values(pets) //=> [3, 2, 1]
