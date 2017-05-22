@@ -1,45 +1,43 @@
 ---
 layout: post
-title:  "Javascript Iteration Cheat Sheet: Understanding JS Through Ruby"
+title:  "Seeing Javascript Through Rose-Colored Glasses - A JS Cheat Sheet"
 date:   2017-05-20 22:43:38 -0400
 categories: javascript
 ---
+Note: this is a Work In Progress (I note the break point below)
+---
 
-If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. These shortcuts are very noticable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and Javascript handle these shortcuts and iterations.
+Javascript Iteration Cheat Sheet: Understanding JS Through Ruby
+
+If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. JS sort of has these but require more labor to actually get working. These shortcuts are very noticable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and Javascript handle these shortcuts, iterations, and methods.
 
 I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation. I'll also be shortening my JS scripts with ES6 JS notation or *arrow functions*, but don't worry I'll explain them as I go along.
 
-We'll be going over these 5 types of loops/iterations:
-
-Type | Description | Languages
----|------------------------------------------------------------------------------|---
-while | loops while condition is true | Ruby/JS
-.each | goes over each element | Ruby
-for | goes over each element, more used in JS | Ruby/JS
-forEach | JS only, more shorthand version of for | JS
-.reduce | combines all elements via an operation | Ruby/JS
-
-As well as how to perform these special methods:
+We'll be going over these loops, iterations, and global methods:
 
 Ruby | JS Equivalent | Description
----|------------------------------------------------------------------------------|---
-.keys | Object.keys | get all keys in a hash
-.values | Object.values | get all values in a hash
+---|---|---
+while / until | while | loops while condition is true
+||
+for | for | iterate over each element, more used in JS
+.each | .forEach | iterate over each element
+||
+.reduce / .inject | .reduce | combines all elements via an operation of your choice
+.keys | Object.keys() | get all keys in a hash
+.values | Object.values() | get all values in a hash
 .include? | .includes | test if an element is included in an array
-case | switch | shorthand multiple `if` statements
+case; each | switch; case | shorthand multiple `if` statements
 
-
-Finally at the end I'll cover how to mimick these are Ruby-only iterations since they're not explicitly used in JS:
+And at the end I'll quickly cover how to mimick these are Ruby-only iterations since they're not explicitly used in JS:
 
 Type | Description | Languages
----|------------------------------------------------------------------------------|---
+---|---|---
 until | loops until condition is true (opposite of while) | Ruby
 .map | same as each, but also modifies the output | Ruby
 .map! | goes over each element, changes the output, modifies the original array | Ruby
 .each_with_index | goes over each element, also provides an index | Ruby
 .each.with_index | same as above | Ruby
 .map.with_index | same as above, but changes the output | Ruby
-.inject | same as .reduce | Ruby
 
 # looping with `while`
 ---
@@ -65,9 +63,8 @@ while (x < 6) {
 array //=> [1,2,3,4,5]
 ```
 Let's do a side-by-side:
-
 Ruby | Javascript | Difference
--------------------|-------------------|-------------------
+---|---|---
 array = [] | var array = [] | var for JS (can also do let)
 x = 1 | var x = 1 | same, doing var (or let)
 while x < 6 | while (x < 6) | JS needs its test to be in parenthesis `()`
@@ -121,9 +118,9 @@ for (let x = 1; x < 6; x++) { array.push(x) }
 array //=> [1,2,3,4,5]
 ```
 We basically include what we want our number `x` to do all in one neat place (our parenthesis), and then operate on it within our block. As you'd expect, we can do this with other things too, like iterating over an array!
-# iterating with `.each`, then `for` and `forEach` with JS!
+# iterating with `.each`/`for` then `each`/`forEach`
 ---
-Onto iterations. Flashing back to Ruby let's cover how we can iterate over an array using `.each` beginning with a more lengthy iteration and ending with a shortcut. These first three are the former:
+Onto iterations. As I said before, `.each` in Ruby is incredibly useful, and does what both `for` and `.forEach` does in JS. Before we get to the latter, let's flash back to Ruby and cover how we can iterate over an array using `.each` beginning with a more lengthy iteration (similar to JS's `for`) and ending with a shortcut (similar to JS's `.forEach`). These first three examples are the former:
 ```ruby
 # ruby
 array = [1,2,3,4,5]
@@ -160,54 +157,44 @@ for (let i = 0, l = array.length; i < l; i++) { array2.push( array[i] ) }
 for (let i = 0, l = array.length; i < l; i++) { array2.unshift( array[i] ) }
 //=> [5,4,3,2,1]
 ```
-Hold on though, doesn't Ruby have a better way to iterate over an array that inherently **knows** to go from the start to the end of an array without us telling? It does, and JS does too! In Ruby we'd do:
+This is how `.each` directly correlates with `for`, but there's a better way to iterate over an array that inherently **knows** to go from the start to the end of an array without us needing to tell it. Doing this in Ruby:
 ```ruby
 # Ruby
-array = [1,2,3,4,5]
-array2 = []
-
-array.each { |x| print x }
-#=> 12345
-
-array.each { |x| array2.push(x) }
-array2 #=> [1,2,3,4,5]
-
-array2 = []
-array.each { |x| array2.unshift(x) }
-array2 #=> [5,4,3,2,1]
+for x in array; puts x end
+for x in array; array2.push(x) end
 ```
-This way we're calling on the element itself in the block rather than the index. In JS we'd clean up our ugly `x = 0, l = etc` line with:
 ```javascript
 // Javascript
-array = [1,2,3,4,5]
-array2 = []
-
-// old way:
-for (let i = 0, l = array.length; i < l; i++) { array2.push( array[i] ) }
-// new way:
+for (let i in array) { console.log( array[i] ) }
 for (let i in array) { array2.push( array[i] ) }
-//=> [1,2,3,4,5]
-for (let i in array) { array2.unshift( array[i] ) }
-//=> [5,4,3,2,1]
 ```
-But wait, we're still calling on the index instead of grabbing the element itself, so we **still** have to do `array[i]` instead of how we were just using `x` in Ruby above! Let's use `forEach` and fix that:
+This is as far we can go using `for` in JS. You'll notice that there's a very important difference in how Ruby handles `for` compared to JS: while Ruby calls on the element, JS calls on the index, and we can't grab the element directly, therefore we **still** have to do `array[i]` instead of how we were just using `x` in Ruby above. Time to break out `forEach` and fix that:
+```ruby
+# Ruby
+array.each { |x| puts x }
+array.each { |x| array2.push2.push( array[i] ) }
+```
 ```javascript
 // Javascript
-array = [1,2,3,4,5]
-array2 = []
-
+array.forEach( function(x) { console.log(x) } )
 array.forEach( function(x) { array2.push(x) } )
-array2 //=> [1,2,3,4,5]
 ```
 And now to finally tap into that fancy ES6 notation I mentioned way back in the intro. We'll turn our function into a cleaner looking arrow function which does the same exact thing:
 ```javascript
 // Javascript
 array.forEach( (x) => { array2.push(x) } )
-
-// and since there's only one thing (x) we're using:
+// and since there's only one element "x" we're using:
 array.forEach( x => { array2.push(x) } )
 ```
-There we go, less characters cluttering up the space, and we finally call on the element in the array rather than the index!
+There we go, less characters cluttering up the space, and we finally call on the element in the array rather than the index! A sneak peak into the end for how to do `.each_with_index` in JS:
+```ruby
+# Ruby
+array.each_with_index { |x,i| "index: #{i}, element: #{x}" }
+```
+```javascript
+// Javascript
+array.forEach( (x, i) => { `index: ${i}, element: ${x}` } )
+```
 # .reduce
 ---
 Now let's go over what `.reduce` does (also known as `.inject` in ruby) and add up all values in the array, starting with the shortcut then expanding out to see what's under the hood. Note that all of these will produce the correct answer of 15:
@@ -316,6 +303,3 @@ array #=> [2,4,6,8,10]
 
 array.map { |x| x = "hi" } #=> ["hi","hi","hi","hi","hi"]
 ```
-
-# Full JS Cheat Sheet
----
