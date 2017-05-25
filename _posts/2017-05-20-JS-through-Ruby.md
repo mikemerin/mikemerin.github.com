@@ -17,14 +17,14 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 
 We'll be going over these loops, iterations, and global methods:
 
-| Ruby | JS Equivalent | Description
+ | Ruby | JS Equivalent | Description
 ---|---|---|---
 `loops`|||
-| while / until | while | loops while condition is true
+ | while / until | while | loops while condition is true
 `iteration`|||
-| for | for | iterate over each element, more used in JS
-| .each | .forEach | iterate over each element
-| .each.with_index | .forEach | same, but also get the index
+ | for | for | iterate over each element, more used in JS
+ | .each | .forEach | iterate over each element
+ | .each.with_index | .forEach | same, but also get the index
 | .map | .map | iterate over each element, changes the output
 | .map.with_index | .map | same, but also get the index
 `manipulating methods`|||
