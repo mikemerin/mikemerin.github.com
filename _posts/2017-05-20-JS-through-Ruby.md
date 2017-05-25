@@ -17,28 +17,28 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 
 We'll be going over these loops, iterations, and global methods:
 
- | Ruby | JS Equivalent | Description
+Ruby | JS Equivalent | Description | Type
 ---|---|---|---
-`loops`|||
- | while / until | while | loops while condition is true
-`iteration`|||
- | for | for | iterate over each element, more used in JS
- | .each | .forEach | iterate over each element
- | .each.with_index | .forEach | same, but also get the index
-| .map | .map | iterate over each element, changes the output
-| .map.with_index | .map | same, but also get the index
-`manipulating methods`|||
-| .reduce / .inject | .reduce | combines all elements via an operation of your choice
-| .flatten | .concat | merge multi-dimensional / nested arrays
-| .compact | .filter | remove `nil` or `null` values from an array
+|||`loops`
+while / until | while | loops while condition is true
+|||`iteration`
+for | for | iterate over each element, more used in JS
+.each | .forEach | iterate over each element
+.each.with_index | .forEach | same, but also get the index
+.map | .map | iterate over each element, changes the output
+.map.with_index | .map | same, but also get the index
+|||`manipulating methods`
+.reduce / .inject | .reduce | combines all elements via an operation of your choice
+.flatten | .concat | merge multi-dimensional / nested arrays
+.compact | .filter | remove `nil` or `null` values from an array
 case; each | switch; case | shorthand multiple `if` statements
-| .insert | .splice | add element(s) from array/string
-| .delete_at / .slice! | .splice | remove element(s) from array/string
-`selecting methods`|||
-| .include? | .includes | test if an element is included in an array/string
-| .keys | Object.keys() | get all keys in a hash
-| .values | Object.values() | get all values in a hash
-| .slice | .slice | select element from array (different in Ruby vs. JS)
+.insert | .splice | add element(s) from array/string
+.delete_at / .slice! | .splice | remove element(s) from array/string
+|||`selecting methods`
+.include? | .includes | test if an element is included in an array/string
+.keys | Object.keys() | get all keys in a hash
+.values | Object.values() | get all values in a hash
+.slice | .slice | select element from array (different in Ruby vs. JS)
 
 # looping with `while`
 ---
@@ -64,7 +64,6 @@ while (x < 6) {
 array //=> [1,2,3,4,5]
 ```
 Let's do a side-by-side:
-
 Ruby | Javascript | Difference
 ---|---|---
 array = [] | var array = [] | var for JS (can also do let)
