@@ -64,6 +64,7 @@ while (x < 6) {
 array //=> [1,2,3,4,5]
 ```
 Let's do a side-by-side:
+
 Ruby | Javascript | Difference
 ---|---|---
 array = [] | var array = [] | var for JS (can also do let)
