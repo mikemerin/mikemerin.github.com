@@ -11,7 +11,7 @@ Javascript Iteration Cheat Sheet: Understanding JS Through Ruby
 
 If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. JS sort of has these but require more labor to actually get working. These shortcuts are very noticable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and Javascript handle these shortcuts, iterations, and methods.
 
-I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/Javascript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.
+**I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/Javascript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
 
 I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation. I'll also be shortening my JS scripts with ES6 JS notation or *arrow functions*, but don't worry I'll explain them as I go along.
 
@@ -316,7 +316,7 @@ array.reduce(sum, 10) //=> 25
 array.reduce(multi) //=> 120
 array.reduce(multi, 2) //=> 240
 ```
-# Ruby: `.flatten` | JS: `.concat`
+# Making arrays neater with - Ruby: `.flatten` | JS: `.concat`
 ---
 What happens when you have an array nested within an array (a multi-dimensional array) and want to make it look neater (into a single-dimensional array)? For example we want this ugly nested array:
 
@@ -356,7 +356,7 @@ The second way is by using `.apply`, which, well, applies what you want into an 
 [].concat.apply([-1,0],array) //=> [-1, 0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9]
 ```
 Again though, the first method is shorter and is much more useful especially for multiple arrays. It's good to know though what `.apply` can do.
-# Ruby: `.compact` | JS: `.filter`
+# Removing unwanted values with - Ruby: `.compact` | JS: `.filter`
 ---
 Hold on though, in the above example, even though we ran `flatten`/`concat` on our array, we still have a `nil`/`null` value in there. To get rid of them we simply run the following in Ruby:
 ```ruby
@@ -374,7 +374,7 @@ Which basically iterates over the array and removes `nil` whenever it finds it (
 The first basically says: "filter this array by calling the element, and if it's true then it passes through the filter" which gets rid of all `null` values. The second says "filter this array, and if it's a number then it passes through the filter." Note that the second only works if all elements are numbers, but the first works even if you have a mixture of numbers, strings, or otherwise!
 
 The third/fourth filters show the usefulness of filtering out our array as we can test if certain things are true, in this case testing which elements are even or odd respectively. Notice that `null` still passes as `null % 2` is 0, weird right?
-### Ruby: `Case; each` | JS: `Switch; case`
+# Easier if/else/etc with - Ruby: `Case; each` | JS: `Switch; case`
 ---
 The thing about `if/else/elsif/else if` statements is that they can get very repetitive, especially when going through multiple conditions. Say we're watching West Wing and want to get a main character's White House title. We *could* do a series of if statements:
 
@@ -478,7 +478,7 @@ Let's do one more example with an array of grades someone got on their tests:
 
 `grades = [95, 83, 68, 99, 75, 60]`
 
-And we want to map those into basic letter grades, aka an A is 90-100, B is in the 80's, etc. Unfortunately JS doesn't have ranges like Ruby does, so it may only be *slightly* better than a series of if statements, but we can still make it work with a little change:
+And we want to map those into basic letter grades, aka an A is 90-100, B is in the 80's, etc. Unfortunately JS doesn't have ranges like Ruby does, so it may only be *slightly* better than a series of if statements, but we can still make it work by simply testing to see which case is `true`:
 ```ruby
 # Ruby
 grades.map do |grade|
@@ -505,7 +505,15 @@ grades.map(grade => {
   }
 })
 ```
-Both of these output `["A", "B", "D", "A", "C", "F"]`
+Both of these output `["A", "B", "D", "A", "C", "F"]`, great!
+
+# Adding to arrays with - Ruby: `.insert` | JS: `.splice`
+---
+
+# Removing from arrays with - Ruby: `.delete_at` | JS: `.splice`
+---
+
+
 
 # Keys and Values
 ---
@@ -522,36 +530,15 @@ Under the hood, these methods are basically going through each element in the ha
 Object.keys(pets) //=> ["dogs", "cats", "birds"]
 Object.values(pets) //=> [3, 2, 1]
 ```
-# WIP:
----
----
-***
----
----
+
+
+
+
+
+
+
 # Ruby: `.include?` | JS: `.includes`
 ---
-# Ruby: `case / when` | JS: `switch / case`
----
-# extra iterations:
----
-```ruby
-# Ruby
-(0...array.length).map { |i| array[i] * 10 } #=> [10,20,30,40,50]
-array #=> [1,2,3,4,5]
-# the output is changed, but the array itself is unchanged after iteration
-
-# shortening the process:
-
-array.map { |x| x*10 } #=> [10,20,30,40,50]
-array #=> [1,2,3,4,5]
-# array is unchanged after iteration
-
-array.map! { |x| x*2 } #=> [2,4,6,8,10]
-array #=> [2,4,6,8,10]
-# array is changed
-
-array.map { |x| x = "hi" } #=> ["hi","hi","hi","hi","hi"]
-```
 # slice
 ---
 Slice is a nice method that goes into an array (or string) and selects the element(s) of your choice. While in Ruby you can directly call on the array/string to get these values using `array[0]` for the first value, or in Ruby only doing more fancy `array[1..4]` to get

@@ -179,6 +179,8 @@ grades.map(grade => {
 
 .delete_at / .slice! | .splice | remove element(s) from array/string
 
+
+
 .include? | .includes | test if an element is included in an array/string
 
 .keys | Object.keys() | get all keys in a hash
