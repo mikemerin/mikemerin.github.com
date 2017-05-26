@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Seeing Javascript Through Rose-Colored Glasses"
+title:  "Seeing Javascript Through Ruby-Colored Glasses"
 subtitle: "A JS Cheat Sheet"
 date:   2017-05-20 22:43:38 -0400
 categories: javascript
