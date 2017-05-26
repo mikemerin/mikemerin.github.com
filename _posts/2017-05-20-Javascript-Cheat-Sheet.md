@@ -8,7 +8,7 @@ This is an abbreviated cheat sheet for Javascript. If you want an detailed expla
 
 
 ES6 Notation | Arrow Functions | while | for
-.forEach | .map | .reduce | .concat
+for..in | .forEach | .map | .reduce | .concat
 .filter | switch; case | .splice | .includes
 Object.keys() | Object.values() | .slice
 
@@ -36,7 +36,7 @@ array = []
 while ( x < 6 ) { array.push(x); x++ }
 array //=> [1,2,3,4,5]
 ```
-### for
+### for / for..in
 Iterate over an array (or string) and perform code on each element
 ```javascript
 for ( initialization; condition (optional); expression ) { code block }

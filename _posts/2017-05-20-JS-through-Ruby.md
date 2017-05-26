@@ -18,7 +18,7 @@ Ruby | JS Equivalent | Description
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
-for | for | iterate over each element, more used in JS
+for | for / for..in | iterate over each element, more used in JS
 .each | .forEach | iterate over each element
 .each.with_index | .forEach | same, but also get the index
 .map | .map | iterate over each element, changes the output
@@ -116,7 +116,7 @@ for (let x = 1; x < 6; x++) { array.push(x) }
 array //=> [1,2,3,4,5]
 ```
 We basically include what we want our number `x` to do all in one neat place (our parenthesis), and then operate on it within our block. As you'd expect, we can do this with other things too, like iterating over an array!
-# iterating with `.each`/`for` then `each`/`forEach`
+# iterating with `.each`/`for`/`for..in` then `each`/`forEach`
 ---
 Onto iterations. As I said before, `.each` in Ruby is incredibly useful, and does what both `for` and `.forEach` does in JS. Before we get to the latter, let's flash back to Ruby and cover how we can iterate over an array using `.each` beginning with a more lengthy iteration (similar to JS's `for`) and ending with a shortcut (similar to JS's `.forEach`). These first three examples are the former:
 ```ruby
