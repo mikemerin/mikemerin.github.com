@@ -7,6 +7,7 @@ categories: javascript
 This is an abbreviated cheat sheet for Javascript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/JS-through-Ruby/), which I highly recommend.
 
 
+ES6 Notation | Arrow Functions | while | for | .forEach | .map | .reduce | .concat | .filter | switch; case | .splice | .includes | Object.keys() | Object.values() | .slice
 
 ### ES6 Notation and Arrow Functions
 These mean the same thing:
