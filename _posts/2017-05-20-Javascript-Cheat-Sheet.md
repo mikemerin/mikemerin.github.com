@@ -8,9 +8,9 @@ This is an abbreviated cheat sheet for Javascript. If you want an detailed expla
 
 
 ES6 Notation | Arrow Functions | while | for
-for..in | .forEach | .map | .reduce | .concat
-.filter | switch; case | .splice | .includes
-Object.keys() | Object.values() | .slice
+for..in | .forEach | .map | .reduce
+.concat | .filter | switch; case | .splice
+.includes | Object.keys() | Object.values() | .slice
 
 ### ES6 Notation and Arrow Functions
 These mean the same thing:
