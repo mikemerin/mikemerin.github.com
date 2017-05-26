@@ -198,7 +198,7 @@ There we go, less characters cluttering up the space, and we finally call on the
 These are the same thing in Ruby, however JS has neither of these functions available. Thankfuly though JS has a way to easily iterate over both the element **and** the index at the **same time**:
 ```ruby
 # Ruby
-array = ["Hello","World"]
+array = ["Hello", "World"]
 array.each_with_index { |x,i| puts "the index is #{i}, the element is #{x}" }
 ```
 ```javascript
@@ -439,7 +439,7 @@ function title(name) {
 ```
 **SO** much better! We can even link this to our `.map` method if we'd like to call on an array
 
-`names = ["Josh","Jed","Toby","CJ","Sam"]`
+`names = ["Josh", "Jed", "Toby", "CJ", "Sam"]`
 ```ruby
 # Ruby
 names.map do |name|
@@ -509,14 +509,101 @@ grades.map(grade => {
 ```
 Both of these output `["A", "B", "D", "A", "C", "F"]`, great!
 
-# Adding to arrays with - Ruby: `.insert` | JS: `.splice`
+# Adding to / removing from arrays with:
+# Ruby: `.insert` / `.delete_at` / `.slice!` /  | JS: `.splice`
 ---
+It's easy to use `.unshift`/`.shift`/`.push`/`.pop` to add/remove items from the beginning/end of arrays respectively, but what about when we have to add/remove items at certain points *within* the array? Ruby uses `.insert` and `.delete_at`/`.slice!` to do these separately.
 
-# Removing from arrays with - Ruby: `.delete_at` | JS: `.splice`
+`.insert` takes in an index along with a value (or values) you'd like to add, while `.delete_at` takes in just an index:
+
+```ruby
+# Ruby
+array = ["Hello", "World", "How", "Are", "You?"]
+
+array.insert(2, "!") #=> ["Hello", "World", "!", "How", "Are", "You?"]
+
+array.insert(1,"Everyone", "In", "The")
+#=> ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
+
+array.delete_at(5) #=> ["Hello", "Everyone", "In", "The", "World", "How", "Are", "You?"]
+array.slice!(0) # array #=> ["Everyone", "In", "The", "World", "How", "Are", "You?"]
+```
+JS can do both of these with one method, `.splice`! Splice like `.insert` or `.delete_at` takes in an index, and while the rest are optional they change splice's behavior entirely. Splice's default behavior is to delete, and we need those extra values in there to instead insert. Here's how it looks:
+
+`array.splice(index, how_many_positions_out_to_delete, add_element(s) )`
+
+Since `.splice` is destructive (changes the array permanently), in these examples I'll be remaking the array quite a bit. Let's test it out bit by bit:
+
+```javascript
+// Javascript
+array = ["Hello", "World", "How", "Are", "You?"]
+
+array.splice(2)
+array //=> ["Hello", "World"]
+```
+If we just put in one value (the index), it will delete all elements starting at that index until the end of the array. It works the same as if we put in a second value:
+```javascript
+// Javascript
+array = ["Hello", "World", "How", "Are", "You?"]
+
+array.splice(2, 100)
+array //=> ["Hello", "World"]
+```
+In this case we're deleting all elements starting at index 2 and going 100 elements out, which covers the end of the array. Let's try deleting just a few at a time instead:
+```javascript
+// Javascript
+array = ["Hello", "World", "How", "Are", "You?"]
+
+array.splice(2, 0)
+array //=> ["Hello", "World", "How", "Are", "You?"]
+// start at index 2, then delete 0 elements out (which is none!)
+
+array.splice(2, 1) //=> ["How"] removed
+array //=> ["Hello", "World", "Are", "You?"]
+// start at index 2, then delete 1 element out (just 2)
+
+array = ["Hello", "World", "How", "Are", "You?"]
+array.splice(1, 3) //=> ["World", "How", "Are"] removed
+array //=> ["Hello", "You?"]
+// start at index 1, then delete 3 elements out (1-3)
+```
+Anything after these two numbers is **added** to the array, so let's mimic what we did in Ruby:
+```javascript
+// Javascript
+array = ["Hello", "World", "How", "Are", "You?"]
+
+array.splice(2, 0, "!") //=> ["Hello", "World", "!", "How", "Are", "You?"]
+// start at index 2, delete nothing, then add "!" at index 2
+
+array.splice(1, 0, "Everyone", "In", "The")
+//=> ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
+// start at index 1, delete nothing, then add "Everyone", "In", and "The" at index 1
+
+array.splice(4, 1, "Universe")
+//=> ["Hello", "Everyone", "In", "The", "Universe", "!", "How", "Are", "You?"]
+// start at index 4, delete 1 element out, then add "Universe" at index 4
+```
+# Test if something's included - Ruby: `.include?` | JS: `.includes`
 ---
+There's a great way to test for inclusion which can be utilized in many ways, and surprisingly JS is the one here that can do more! While Ruby's `.include?` can only test to see if something is included:
 
-
-
+```ruby
+# Ruby
+array = [1, 2, 3, "hello", "world"]
+array.include?(3) #=> true
+array.include?("hello") #=> true
+array.include?(7) #=> false
+```
+JS can do this, but in addition it can even test for inclusion at a specific index!
+```javascript
+// Javascript
+array = [1, 2, 3, "hello", "world"]
+array.includes(3) //=> true
+array.includes("hello") //=> true
+array.includes(7) //=> false
+array.includes("world", 4) //=> true
+array.includes(1, 3) //=> false
+```
 # Keys and Values
 ---
 If you have a Hash in ruby you can simply call `.keys` or `.values` on it to easily get their information:
@@ -532,39 +619,30 @@ Under the hood, these methods are basically going through each element in the ha
 Object.keys(pets) //=> ["dogs", "cats", "birds"]
 Object.values(pets) //=> [3, 2, 1]
 ```
-
-
-
-
-
-
-
-# Ruby: `.include?` | JS: `.includes`
----
 # slice
 ---
 Slice is a nice method that goes into an array (or string) and selects the element(s) of your choice. While in Ruby you can directly call on the array/string to get these values using `array[0]` for the first value, or in Ruby only doing more fancy `array[1..4]` to get
 ```ruby
 # Ruby
-array = ["Hello","World","How","Are","You?"]
+array = ["Hello", "World", "How", "Are", "You?"]
 array[0] #=> "Hello"
 array[2..4] #=> ["How", "Are", "You?"]
-array[2,3] #=> ["How", "Are", "You?"]
+array[2, 3] #=> ["How", "Are", "You?"]
 ```
 only the first script `array[0]` can be used in JS. This is where `.slice` comes in, however just like `.reduce` it's used differently. If you're familiar with Ruby, `.slice` is used exactly like the above scripts and has the same exact outputs:
 ```ruby
 # Ruby
-array = ["Hello","World","How","Are","You?"]
+array = ["Hello", "World", "How", "Are", "You?"]
 array.slice(0) # select at index 0
 array.slice(2..4) # select from index 2 to index 4
-array.slice(2,3) # select from index 2 and go 3 positions further
+array.slice(2, 3) # select from index 2 and go 3 positions further
 ```
 JS operates differently however. Obviously we don't have ranges so the middle script is of no use to us, but what happens if we try the other two scripts?
 ```javascript
 // Javascript
-array = ["Hello","World","How","Are","You?"]
-array.slice(0) //=> ["Hello","World","How","Are","You?"
-array.slice(2,3) //=> ["How"]
+array = ["Hello", "World", "How", "Are", "You?"]
+array.slice(0) //=> ["Hello", "World", "How", "Are", "You?"]
+array.slice(2, 3) //=> ["How"]
 ```
 "How" is right... what is happening here? Well in both languages the slice takes in two instances:
 `array.slice( start_index, optional_second_number ) `
@@ -576,14 +654,14 @@ JS says: `start_index (default is 0)`, `end_index (default is array.length)`
 Wait a second, `(start_index, end_index)`? that's a range! Specifically it's the three-dotted `(n1...n2)` range where we go **up until** the end index. So with that knowledge:
 ```javascript
 // Javascript
-array = ["Hello","World","How","Are","You?"]
+array = ["Hello", "World", "How", "Are", "You?"]
 
 array.slice(0) // start at index 0, go to the default end of array.length
 array.slice(0, array.length) // same
 array.slice(0, 5) // same (array.length is 5, the last index in it is 4)
 array.slice(2, 3) // start at index 2, go up until 3 (therefore only index 2)
 
-array.slice() //=> ["Hello","World","How","Are","You?"]
+array.slice() //=> ["Hello", "World", "How", "Are", "You?"]
 array.slice(2) || array.slice(2,array.length) || array.slice(2, 5)
 // all of them //=> ["How", "Are", "You?"]
 array.slice(2, 4) //=> ["How", "Are"]

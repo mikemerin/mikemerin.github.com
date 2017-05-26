@@ -128,20 +128,25 @@ array.filter(callback)
 ### Switch; case
 Simplifying multiple `if/else if/else` statements
 ```javascript
-function title(name) {
-  switch(name) {
-    case "CJ": return "Press Secretary"
-    case "Donna": return "Assistant to the DCoS"
-    case "Abbey": return "First Lady"
-    case "Jed": return "President"
-    case "Josh": return "Deputy Chief of Staff"
-    case "Sam": return "Deputy Communications Director"
-    case "Toby": return "Communications Director"
-    default: return "Name Not Found"
-  }
+switch(value_or_expression) {
+  case x: code_block
+  case y: code_block
+  default: code_block
 }
 
-title("Josh") //=> "Deputy Chief of Staff"
+name = "Josh"
+
+switch(name) {
+  case "CJ": return "Press Secretary"
+  case "Donna": return "Assistant to the DCoS"
+  case "Jed": return "President"
+  case "Josh": return "Deputy Chief of Staff"
+  case "Sam": return "Deputy Communications Director"
+  case "Toby": return "Communications Director"
+  default: return "Name Not Found"
+}
+
+//=> "Deputy Chief of Staff"
 
 // iterating over a switch statement
 
@@ -151,7 +156,6 @@ names.map(name => {
   switch(name) {
     case "CJ": return "Press Secretary"
     case "Donna": return "Assistant to the DCoS"
-    case "Abbey": return "First Lady"
     case "Jed": return "President"
     case "Josh": return "Deputy Chief of Staff"
     case "Sam": return "Deputy Communications Director"
@@ -173,18 +177,62 @@ grades.map(grade => {
   }
 }) //=> ["A", "B", "D", "A", "C", "F"]
 ```
+### .splice
+Add or remove elements from an array/string
+```javascript
+array.splice(index, how_many_positions_out_to_delete, add_element(s) )
 
+array = ["Hello", "World", "How", "Are", "You?"]
+array.splice(2) //=> removes from index 2 to the end
+array //=> ["Hello", "World"]
 
-.insert | .splice | add element(s) from array/string
+array = ["Hello", "World", "How", "Are", "You?"]
+array.splice(0, 2) //=> starts at index 0, then delete 2 elements out
+array //=> ["How", "Are", "You?"]
 
-.delete_at / .slice! | .splice | remove element(s) from array/string
+array = ["Hello", "World", "How", "Are", "You?"]
+array.splice(2, 0, "!") //=> start at index 2, delete nothing, then add "!" at index 2
+array //=> ["Hello", "World", "!", "How", "Are", "You?"]
 
+array.splice(1, 0, "Everyone", "In", "The")
+//=> ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
+// start at index 1, delete nothing, then add "Everyone", "In", and "The" at index 1
+```
+### .includes
+Test if a something is included in an array
+```javascript
+array.includes(element, index)
 
+array = [1, 2, 3, "hello", "world"]
 
-.include? | .includes | test if an element is included in an array/string
+array.includes(3) //=> true
+array.includes("hello") //=> true
+array.includes(7) //=> false
+array.includes("world", 4) //=> true
+array.includes(1, 3) //=> false
+```
+### Object.keys() / Object.values()
+Get all keys or values in a hash
+```javascript
+Object.keys(pets) //=> ["dogs", "cats", "birds"]
+Object.values(pets) //=> [3, 2, 1]
+```
+### .slice
+Select element(s) from an array, from a start_index up until an end_index
+The start_index's default is 0, the end_index's default is the end of the array
+```javascript
+array.slice(start_index, end_index)
 
-.keys | Object.keys() | get all keys in a hash
+array = ["Hello", "World", "How", "Are", "You?"]
 
-.values | Object.values() | get all values in a hash
+array.slice() || array.slice(0) || array.slice(0, array.length)
+// all of them //=> ["Hello", "World", "How", "Are", "You?"]
 
-.slice | .slice | select element from array (different in Ruby vs. JS)
+array.slice(2, 3) //=> ["How"]
+// start at index 2, go up until 3 (therefore only index 2)
+
+array.slice(2, 4) //=> ["How", "Are"]
+
+array.slice(2) || array.slice(2,array.length) || array.slice(2, 5)
+// all of them //=> ["How", "Are", "You?"]
+```
