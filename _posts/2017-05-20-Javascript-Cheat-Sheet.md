@@ -22,6 +22,15 @@ x => { console.log(x) }
 function(x,i) { console.log(`Element ${x} Index ${i}`) }
 (x,i) => { console.log(`Element ${x} Index ${i}`) }
 ```
+These all mean the same thing as well (implicit returns)
+```javascript
+function(x) { return x * 2 }
+(x) => { return x * 2 }
+x => { return x * 2 }
+(x) => x * 2 // without the {} this implicitly returns
+x => x * 2 // same here
+(x) => (x * 2) // same here
+```
 ### while
 Perform a piece of code while a loop is active.
 

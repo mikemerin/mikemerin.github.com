@@ -188,7 +188,17 @@ array.forEach( (x) => { array2.push(x) } )
 // and we can also remove the {} since arrow functions can implicitly interpret them:
 array.forEach( x => array2.push(x) )
 ```
-There we go, less characters cluttering up the space, and we finally call on the element in the array rather than the index!
+There we go, less characters cluttering up the space, and we finally call on the element in the array rather than the index! Also good to know is something called "implicit returns" which means the arrow function will call `return` automatically without you having to type it in! You can do this by not using `{}` after the arrrows (you can surround them in `()` if you want to do multi-line).
+
+These all mean the same thing:
+```javascript
+function(x) { return x * 2 }
+(x) => { return x * 2 }
+x => { return x * 2 }
+(x) => x * 2 // without the {} this implicitly returns
+x => x * 2 // same here
+(x) => (x * 2) // same here
+```
 # Using Ruby's `.each_with_index` or `.each.with_index` in JS
 These are the same thing in Ruby, however JS has neither of these functions available. Thankfuly though JS has a way to easily iterate over both the element **and** the index at the **same time**:
 ```ruby
