@@ -13,7 +13,7 @@ for..in | .forEach | .map | .reduce
 .includes | Object.keys() | Object.values() | .slice
 
 ### ES6 Notation, Arrow Functions, and Implicit Returns
-These mean the same thing:
+Shorten/clean up your functions. These all do the same thing:
 ```javascript
 function(x) { console.log(x) }
 (x) => { console.log(x) }
@@ -22,7 +22,7 @@ x => { console.log(x) }
 function(x,i) { console.log(`Element ${x} Index ${i}`) }
 (x,i) => { console.log(`Element ${x} Index ${i}`) }
 ```
-These all mean the same thing as well (implicit returns)
+These all do the same thing as well (implicit returns)
 ```javascript
 function(x) { return x * 2 }
 (x) => { return x * 2 }
