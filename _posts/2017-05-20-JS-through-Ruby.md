@@ -203,8 +203,8 @@ array.each { |x| array2.push2.push( array[i] ) }
 ```
 ```javascript
 // Javascript
-array.forEach( function(x) { console.log(x) } )
-array.forEach( function(x) { array2.push(x) } )
+array.forEach( x => { console.log(x) } )
+array.forEach( x => { array2.push(x) } )
 ```
 # Using Ruby's `.each_with_index` or `.each.with_index` in JS
 These are the same thing in Ruby, however JS has neither of these functions available. Thankfuly though JS has a way to easily iterate over both the element **and** the index at the **same time**:
