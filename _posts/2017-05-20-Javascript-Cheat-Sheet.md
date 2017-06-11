@@ -27,8 +27,8 @@ These all do the same thing as well (implicit returns)
 function(x) { return x * 2 }
 (x) => { return x * 2 }
 x => { return x * 2 }
-(x) => x * 2 // without the {} this implicitly returns
-x => x * 2 // same here
+(x) => x * 2   // without the {} this implicitly returns
+x => x * 2     // same here
 (x) => (x * 2) // same here
 ```
 ### while

@@ -36,15 +36,15 @@ case; each | switch; case | shorthand multiple `if` statements
 .values | Object.values() | get all values in a hash
 .slice | .slice | select element from array (different in Ruby vs. JS)
 
-# ES6 Notation, Arrow Functions, and Implicit Returns
+# ES6 Notation, Arrow Functions, Implicit Returns
 ---
 I'll be shortening my JS scripts with ES6 JS notation and/or *arrow functions*. This lets us turn our functions into cleaner looking arrow functions which do the same exact thing:
 ```javascript
 // Javascript
 array.forEach( function(x) { array2.push(x) } )
-array.forEach( function(x, y) { array2.push(x * y) } )
-// becomes
 array.forEach( (x) => { array2.push(x) } )
+
+array.forEach( function(x, y) { array2.push(x * y) } )
 array.forEach( (x, y) => { array2.push(x * y) } )
 ```
 Also, when there's only one element (in this case "x"), we can remove the parentheses:
@@ -53,13 +53,13 @@ array.forEach( x => { array2.push(x) } )
 ```
 Now there's less characters cluttering up the space and it's easier to see what the function points to (literally). It's also a good thing to know about something called "implicit returns", which means the arrow function will call `return` automatically without you having to type it in! You can do this by not using `{}` after the arrrows (you can surround them in `()` if you want to do multi-line).
 
-These all mean the same thing:
+These all do the same thing:
 ```javascript
 function(x) { return x * 2 }
 (x) => { return x * 2 }
 x => { return x * 2 }
-(x) => x * 2 // without the {} this implicitly returns
-x => x * 2 // same here
+(x) => x * 2   // without the {} this implicitly returns
+x => x * 2     // same here
 (x) => (x * 2) // same here
 ```
 # looping with `while`
