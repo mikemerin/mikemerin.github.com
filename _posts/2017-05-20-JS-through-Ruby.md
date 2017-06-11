@@ -9,7 +9,7 @@ If you learned how to program in Ruby, you probably noticed there's a large amou
 
 **I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/Javascript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
 
-I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation. I'll also be shortening my JS scripts with ES6 JS notation or *arrow functions*, but don't worry I'll explain them as I go along.
+I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation.
 
 We'll be going over these loops, iterations, and global methods:
 
@@ -36,6 +36,32 @@ case; each | switch; case | shorthand multiple `if` statements
 .values | Object.values() | get all values in a hash
 .slice | .slice | select element from array (different in Ruby vs. JS)
 
+# ES6 Notation, Arrow Functions, and Implicit Returns
+---
+I'll be shortening my JS scripts with ES6 JS notation and/or *arrow functions*. This lets us turn our functions into cleaner looking arrow functions which do the same exact thing:
+```javascript
+// Javascript
+array.forEach( function(x) { array2.push(x) } )
+array.forEach( function(x, y) { array2.push(x * y) } )
+// becomes
+array.forEach( (x) => { array2.push(x) } )
+array.forEach( (x, y) => { array2.push(x * y) } )
+```
+Also, when there's only one element (in this case "x"), we can remove the parentheses:
+```javascript
+array.forEach( x => { array2.push(x) } )
+```
+Now there's less characters cluttering up the space and it's easier to see what the function points to (literally). It's also a good thing to know about something called "implicit returns", which means the arrow function will call `return` automatically without you having to type it in! You can do this by not using `{}` after the arrrows (you can surround them in `()` if you want to do multi-line).
+
+These all mean the same thing:
+```javascript
+function(x) { return x * 2 }
+(x) => { return x * 2 }
+x => { return x * 2 }
+(x) => x * 2 // without the {} this implicitly returns
+x => x * 2 // same here
+(x) => (x * 2) // same here
+```
 # looping with `while`
 ---
 Let's start off with the easiest example. These methods are almost identical in both Ruby and Javascript, in fact the only thing that's different is the syntax (using `var` and `{}` ). Here's a quick example:
@@ -179,25 +205,6 @@ array.each { |x| array2.push2.push( array[i] ) }
 // Javascript
 array.forEach( function(x) { console.log(x) } )
 array.forEach( function(x) { array2.push(x) } )
-```
-And now to finally tap into that fancy ES6 notation I mentioned way back in the intro. We'll turn our function into a cleaner looking arrow function which does the same exact thing:
-```javascript
-// Javascript
-array.forEach( (x) => { array2.push(x) } )
-// we can remove the () around the "x" since there's only one element we're using,
-// and we can also remove the {} since arrow functions can implicitly interpret them:
-array.forEach( x => array2.push(x) )
-```
-There we go, less characters cluttering up the space, and we finally call on the element in the array rather than the index! Also good to know is something called "implicit returns" which means the arrow function will call `return` automatically without you having to type it in! You can do this by not using `{}` after the arrrows (you can surround them in `()` if you want to do multi-line).
-
-These all mean the same thing:
-```javascript
-function(x) { return x * 2 }
-(x) => { return x * 2 }
-x => { return x * 2 }
-(x) => x * 2 // without the {} this implicitly returns
-x => x * 2 // same here
-(x) => (x * 2) // same here
 ```
 # Using Ruby's `.each_with_index` or `.each.with_index` in JS
 These are the same thing in Ruby, however JS has neither of these functions available. Thankfuly though JS has a way to easily iterate over both the element **and** the index at the **same time**:

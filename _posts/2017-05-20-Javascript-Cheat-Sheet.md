@@ -12,7 +12,7 @@ for..in | .forEach | .map | .reduce
 .concat | .filter | switch; case | .splice
 .includes | Object.keys() | Object.values() | .slice
 
-### ES6 Notation and Arrow Functions
+### ES6 Notation, Arrow Functions, and Implicit Returns
 These mean the same thing:
 ```javascript
 function(x) { console.log(x) }
