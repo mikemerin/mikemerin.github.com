@@ -2,7 +2,7 @@
 layout: post
 title:  "A Javascript Cheat Sheet"
 date:   2017-05-20 22:46:38 -0400
-categories: javascript
+categories: javascript, tutorial
 ---
 This is an abbreviated cheat sheet for Javascript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/JS-through-Ruby/), which I highly recommend.
 

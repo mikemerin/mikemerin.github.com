@@ -1,15 +1,13 @@
 ---
 layout: post
-title:  "Seeing Javascript Through Ruby-Colored Glasses"
-subtitle: "A JS Cheat Sheet"
-date:   2017-05-20 22:43:38 -0400
-categories: javascript, ruby, tutorial
+title:  "Object Oriented Javascript Through The Ruby Lens"
+subtitle: "An OO JS Cheat Sheet"
+date:   2017-06-13 11:54:14 -0400
+categories: javascript, ruby
 ---
-If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. JS sort of has these but require more labor to actually get working. These shortcuts are very noticeable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and Javascript handle these shortcuts, iterations, and methods.
+If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. JS sort of has these but require more labor to actually get working. I've written an [in depth post](https://mikemerin.github.io/JS-through-Ruby/) on the cores of JS through Ruby, which I would recommend going through first if you want a better understanding of JS as a whole, especilaly if there are small things you don't understand in this post.
 
-**I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/Javascript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
-
-I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation.
+We'll cover what happens under the hood to get OO JS working, so let's dive right in and compare how Ruby and Javascript handle this amazing process. Unlike the basic methods, iterators, etc., that can be very different in Ruby vs. JS, OO JS has a very similar structure to Ruby so this should be easier to understand.
 
 We'll be going over these loops, iterations, and global methods:
 
