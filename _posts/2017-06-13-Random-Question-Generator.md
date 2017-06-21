@@ -5,6 +5,10 @@ subtitle: "Creating a dynamic quiz"
 date:   2017-06-17 11:54:14 -0400
 categories: ruby, javascript, generators
 ---
+Please note that this post is a work in progress. I have noted the point in where I will continue below.
+---
+***
+
 There are plenty of quizzes online, however if you take it again you'll already know the answers and will get 100%. Sometimes the quiz will randomize the order of the questions, but you'll still know them. Sometimes the quiz have a larger question bank to choose from, but after taking the quiz enough times you'll know all their answers as well.
 
 When it comes to learning new skills through quizzes, this obviously is a problem as you'll end up learning the answers and not actually mastering the subject. The more questions the better, but there's only so many questions someone will manually add before it gets tiring.
@@ -352,6 +356,9 @@ See the issue? Look at the `@mc_answers`. Here's the issue we tried to avoid bef
 [2, 3, 4, 5, 6, 7].find { |x| x >= 4 } #=> 4
 [2, 3, 4, 5, 6, 7].find { |x| x <= 4 } #=> 2
 ```
+Work in Progress is below, I will update this over the next few days.
+***
+
 No matter what array or selection we'll always get duplicate answers. The fix is a simple one, and it goes back to what we wanted to avoid: validation via `include?`. I'll handle that shortly, but now we'll cover the latter methods `.keep_if`/`.delete_if`. These are the exact same things as `.select`/`.reject` respectively, however they're **destructive methods**, meaning that after we call them, they'll permanently alter the array, not just the output. So what happens if we populate the choices?
 ```ruby
 question_keep = QUestion.new("keep_if")
