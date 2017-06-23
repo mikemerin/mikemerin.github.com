@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Anatomy of a Random Question Generator"
-subtitle: "Creating a dynamic quiz"
+title:  "Anatomy of a Dynamically Generated Quiz"
+subtitle: "Part 1 - creating the question itself"
 date:   2017-06-17 11:54:14 -0400
 categories: ruby, javascript, generators
 ---
@@ -14,6 +14,8 @@ There are plenty of quizzes online, however if you take it again you'll already 
 When it comes to learning new skills through quizzes, this obviously is a problem as you'll end up learning the answers and not actually mastering the subject. The more questions the better, but there's only so many questions someone will manually add before it gets tiring.
 
 With that being said, how was I able to add 200,000 possible questions to a test in only 2 days? No it wasn't from impossibly fast typing. In order to do this I wrote a program that would dynamically generate a question on the spot that could be one of 200,000 possible combinations. The quiz type? If my previous blog posts and projects were any indication of the types of programs I've written so far, of course it would be a programming education quiz.
+
+Feel free to code along!
 
 # Programming Languages
 ---
@@ -243,11 +245,9 @@ question.createQuestion
 
 question.createAnswer #=> @answer=[9, 8, 7, 6]
 ```
-Our object now has a question and answer, and notice I have still have them as `attr_reader` not `attr_accessor` as I don't want them to be able to manually be changed, only read.
+Our object now has a question and answer, and notice I have still have them as `attr_reader` not `attr_accessor` as I don't want them to be able to be manually changed, only read.
 
-We also need to prepare for needing a wrong answer for true/false or 3 wrong answers for multiple choice. It's been a while since we mentioned this, so let's just preemptively do this for the 3 question types being randomized:
-
-***possible questions = 3,456***
+We also need to prepare for needing a wrong answer for true/false or 3 wrong answers for multiple choice.
 
 Let's tackle how we can get four answers for multiple choice, and two answers for true/false (I'll explain why in a bit). Since we need 4 answers for multiple choice, I looked at what also had 4 things to choose from: our comparisons. Since we selected one with `@comparison_selection` why not use the others to generate wrong answers?
 
@@ -271,7 +271,7 @@ While we're working our the comparisons, let's redo our `chooseComparison` metho
 
 ```ruby
 def chooseComparison
-    @comparison_selection = @comparisons.shuffle[0]  # select correct comparison
+    @comparison_selection = @comparisons.shuffle![0]  # select correct comparison
     @comparison_rejection = @comparisons[1]          # select wrong comparison
 end
 ```
@@ -287,7 +287,7 @@ We'll organize it by adding id to our `createAnswer` instance method. I'm also g
 class Question
 
   attr_accessor :method
-  attr_reader :array, :array_selection, :comparison_selection, :comparison_rejection, :question, :answer, :mc_answers
+  attr_reader :array, :array_selection, :comparison_selection, :comparison_rejection, :question, :answer, :wrong_answer, :mc_answers
 
   def initialize(method)
     @method = method
@@ -302,7 +302,7 @@ class Question
   end
 
   def chooseComparison
-      @comparison_selection = @comparisons.shuffle[0]  # select correct comparison
+      @comparison_selection = @comparisons.shuffle![0]  # select correct comparison
       @comparison_rejection = @comparisons[1]          # select wrong comparison
   end
 
@@ -335,7 +335,10 @@ question.generateQuestion
 #   @answer=[4, 5, 6], @comparison_rejection=">", @wrong_answer=[4, 5, 6],
 #   @mc_answers=[[3, 4, 5, 6], [4, 5, 6], [1, 2, 3], [1, 2]]>
 ```
-Now we have a LOT of information stored in our question object, and this works great for select/reject, however there's a problem if we try to use `.find`/`.detect`, and another major problem if we try to use `.keep_if`/`.delete_if`. Here's a problem that will happen with the former:
+
+# `.find` and `.detect`
+---
+Now we have a LOT of information stored in our question object, and this works great for select/reject, however there's a problem if we try to use `.find` or `.detect` (which by the way are the same thing), and another major problem if we try to use `.keep_if` or `.delete_if`. Here's a problem that will happen with the former:
 
 ```ruby
 question = Question.new("find")
@@ -356,12 +359,240 @@ See the issue? Look at the `@mc_answers`. Here's the issue we tried to avoid bef
 [2, 3, 4, 5, 6, 7].find { |x| x >= 4 } #=> 4
 [2, 3, 4, 5, 6, 7].find { |x| x <= 4 } #=> 2
 ```
+
+No matter what array or selection we'll always get duplicate answers. The fix is a simple one, and it goes back to what we wanted to avoid: validation. There's a few ways to do this but I'll use `delete`. Basically, I want to run this if there's only 3 unique answers and I want that 4th one to also be unique. Since `find`/`detect` finds a single number and then `nil` in specific cases like:
+
+```ruby
+[2, 3, 4, 5, 6, 7].find { |x| x > 7 }
+# no numbers are greater than 7, so it will return nil
+```
+
+We will need to create a dummy array starting with `nil` and then the normal array. After that we'll choose one of them at random that isn't a number we have already:
+
+```ruby
+# check if there are only three unique answers
+if @mc_answers.uniq.size == 3
+  # create a dummy array that duplicates the array, start with nil, then shuffle it
+  @dummy_array = @array.dup.unshift(nil).shuffle
+  # go through each mc answer and delete them from the dummy array
+  @mc_answers.each { |x| @dummy_array.delete(x)}
+  # add the first answer to the array
+  @mc_answers << @dummy_array[0]
+  # shuffle them around so the wrong answer isn't always at the end
+  @mc_answers.shuffle!
+end
+```
+
+Great we have 4 answers again! If you're wondering, I can also use `.include?` here:
+
+```ruby
+if @mc_answers.uniq.size == 3
+  # create a dummy array that duplicates the array, start with nil, then shuffle it
+  @dummy_array = @array.dup.unshift(nil).shuffle
+  # go through each element in the dummy array
+  # add it unless it's already there
+  @dummy_array.each do |x|
+    unless @dummy_array.include?(x)
+      return @mc_answers << x
+      break
+    end
+  end
+  # shuffle them around so the wrong answer isn't always at the end
+  @mc_answers.shuffle!
+end
+```
+
+But not only is `.delete` cleaner, I'll also be able to modify it easier to work with other possible duplicate answers down the line rather than just single numbers. We still have one more problem though, and that's our `@comparison_rejection` which has a 1 in 3 chance to choose a rejected comparison with the same answer. So, let's remove that entirely and choose a wrong answer from our `@mc_answers`! I was originally going to say to take it from our dummy array since:
+
+1) all answers were shuffled
+2) all answers are wrong
+3) we can just choose the first one as the wrong answer by doing `@wrong_answer = @dummy_array[0]`.
+
+HOWEVER, if we want this to work for all methods let's think of it this way:
+
+1) we can't do the above because our `@dummy_array` has single numbers, doesn't work for `.select`/`.reject`
+2) we already did the hard work of making three wrong answers so:
+3) we can modify our previous `createAnswers` method and pick the first wrong one we populate
+
+Let's do that modifying. It looks like this with our `@dummy_array` script:
+
+```ruby
+def createAnswers
+  @answer = eval(@question)
+  @wrong_answer = eval "#{@array}.#{@method} { |x| x #{@comparison_rejection} #{@array_selection} }"
+  @mc_answers = []  
+  @comparisons.each do |comparison|
+      @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
+  end
+  @mc_answers = @mc_answers.uniq
+  if @mc_answers.uniq.size == 3
+    @dummy_array = @array.dup.unshift(nil).shuffle
+    @mc_answers.each { |x| @dummy_array.delete(x)}
+    @mc_answers << @dummy_array[0]
+  end
+  @mc_answers.shuffle!
+end
+```
+
+Since the first comparison is always correct and answers 2-4 added after it are always wrong, let's set our `@wrong_answer` to be the second one, THEN we'll shuffle them:
+
+```ruby
+def createAnswers
+  @answer = eval(@question)
+  # remove the old @wrong_answer
+  # @wrong_answer = eval "#{@array}.#{@method} { |x| x #{@comparison_rejection} #{@array_selection} }"
+  @mc_answers = []  
+  @comparisons.each do |comparison|
+      @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
+  end
+  @mc_answers = @mc_answers.uniq
+  if @mc_answers.uniq.size == 3
+    @dummy_array = @array.dup.unshift(nil).shuffle
+    @mc_answers.each { |x| @dummy_array.delete(x)}
+    @mc_answers << @dummy_array[0]
+  end
+  # add the new @wrong_answer, change our eval with @comparison_rejection to @mc_answers[1]
+  @wrong_answer = @mc_answers[1]
+  @mc_answers.shuffle!
+end
+```
+
+We can now entirely get rid of the `@comparison_rejection`! So with all that done let's see what we have:
+
+```ruby
+class Question
+
+  attr_accessor :method
+  attr_reader :array, :array_selection, :comparison_selection, :question, :answer, :wrong_answer, :mc_answers, :dummy_array
+
+  def initialize(method)
+    @method = method
+    @comparisons = ["<",">",">=","<="]
+  end
+
+  def createArray
+    random = rand(1..4)
+    @array = Array.new(6) { |x| x + random }
+    @array = [true,false].sample ? @array.reverse : @array
+    @array_selection = @array.sample
+  end
+
+  def chooseComparison
+      @comparison_selection = @comparisons.shuffle![0]
+  end
+
+  def createQuestion
+    @question = "#{@array}.#{@method} { |x| x #{@comparison_selection} #{@array_selection} }"
+  end
+
+  def createAnswers
+    @answer = eval(@question)
+    @mc_answers = []  
+    @comparisons.each do |comparison|
+        @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
+    end
+    @mc_answers = @mc_answers.uniq
+    if @mc_answers.uniq.size == 3
+      @dummy_array = @array.dup.unshift(nil).shuffle
+      @mc_answers.each { |x| @dummy_array.delete(x)}
+      @mc_answers << @dummy_array[0]
+    end
+    @wrong_answer = @mc_answers[1]
+    @mc_answers.shuffle!
+  end
+
+  def generateQuestion
+    createArray; chooseComparison; createQuestion; createAnswers
+  end
+
+end
+```
+
+Our `createAnswers` method is messy though, so let's split it up by removing that check for unique answers:
+
+```ruby
+class Question
+
+  attr_accessor :method
+  attr_reader :array, :array_selection, :comparison_selection, :question, :answer, :wrong_answer, :mc_answers, :dummy_array
+
+  def initialize(method)
+    @method = method
+    @comparisons = ["<",">",">=","<="]
+  end
+
+  def createArray
+    random = rand(1..4)
+    @array = Array.new(6) { |x| x + random }
+    @array = [true,false].sample ? @array.reverse : @array
+    @array_selection = @array.sample
+  end
+
+  def chooseComparison
+      @comparison_selection = @comparisons.shuffle![0]
+  end
+
+  def createQuestion
+    @question = "#{@array}.#{@method} { |x| x #{@comparison_selection} #{@array_selection} }"
+  end
+
+  def createAnswers
+    @answer = eval(@question)
+    @mc_answers = []  
+    @comparisons.each do |comparison|
+        @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
+    end
+    checkForUniqueness
+    @wrong_answer = @mc_answers[1]
+    @mc_answers.shuffle!
+  end
+
+  def checkForUniqueness
+    @mc_answers = @mc_answers.uniq
+    if @mc_answers.uniq.size == 3
+      @dummy_array = @array.dup.unshift(nil).shuffle
+      @mc_answers.each { |x| @dummy_array.delete(x)}
+      @mc_answers << @dummy_array[0]
+    end
+  end
+
+  def generateQuestion
+    createArray; chooseComparison; createQuestion; createAnswers
+  end
+
+end
+
+q = Question.new("select")
+q.generateQuestion
+#=> <Question:0x007f9ddd97f680 @method="select", @comparisons=[">", "<=", ">=", "<"],
+#   @array=[1, 2, 3, 4, 5, 6], @array_selection=1, @comparison_selection=">",
+#   @question="[1, 2, 3, 4, 5, 6].select { |x| x > 1 }", @answer=[2, 3, 4, 5, 6],
+#   @mc_answers=[[1], [2, 3, 4, 5, 6], [], [1, 2, 3, 4, 5, 6]], @wrong_answer=[1]>
+
+q = Question.new("detect")
+q.generateQuestion
+#=> <Question:0x007f9dde865cd0 @method="detect", @@comparisons=[">", "<=", "<", ">="],
+#   @array=[7, 6, 5, 4, 3, 2], @array_selection=2, @comparison_selection=">",
+#   @question="[7, 6, 5, 4, 3, 2].detect { |x| x > 2 }", @answer=7,
+#   @mc_answers=[nil, 7, 2, 3], @wrong_answer=2, @dummy_array=[3, 4, 6, 5]>
+```
+
+Great it works for both questions now! We have our initialize and generating methods, and 5 fairly short instance methods they work off of. You may be wondering why I went through the whole `@comparison_rejection` part before removing it, well that's what happens when you start writing a program; sometimes the ideas you start off with will change as you write your program, so I wanted to show some insight into the process and why things had to change.
+
+By the way, now that we can either do true or false (two possibilities), our multiple choice answers can be shuffled into 1 of 24 configurations, or we can ask them to enter the right answer, those 27 ways of asking a question brings up all the way up to:
+
+***possible questions = 31,104***
+
 Work in Progress is below, I will update this over the next few days.
 ***
 
-No matter what array or selection we'll always get duplicate answers. The fix is a simple one, and it goes back to what we wanted to avoid: validation via `include?`. I'll handle that shortly, but now we'll cover the latter methods `.keep_if`/`.delete_if`. These are the exact same things as `.select`/`.reject` respectively, however they're **destructive methods**, meaning that after we call them, they'll permanently alter the array, not just the output. So what happens if we populate the choices?
+
+# `.keep_if` and `.delete_if`
+---
+
+Lastly in this post we'll cover the latter problem methods mentioned before. These are the exact same things as `.select`/`.reject` respectively, however they're **destructive methods**, meaning that after we call them, they'll permanently alter the array, not just the output. So what happens if we populate the choices?
 ```ruby
-question_keep = QUestion.new("keep_if")
+question_keep = Question.new("keep_if")
 question_keep.generateQuestion
 #=> <Question:0x007f9dde01e400 @method="keep_if", @array=[],
 #   @comparisons=["<", ">", ">=", "<="],
