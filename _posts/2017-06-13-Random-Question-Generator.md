@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Anatomy of a Dynamically Generated Quiz"
-subtitle: "Part 1 - creating the question itself"
+subtitle: "Part 1 - creating the question object"
 date:   2017-06-17 11:54:14 -0400
 categories: ruby, javascript, generators
 ---
@@ -267,6 +267,21 @@ Or more simply:
 end
 @mc_answers.shuffle!
 ```
+
+And we can make this even shorter by doing:
+
+```ruby
+@mc_answers = []
+@comparisons.each { |comparison| @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }
+@mc_answers.shuffle!
+```
+And even shorter by using `.map`:
+
+```ruby
+@mc_answers = @comparisons.map { |comparison| (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }
+@mc_answers.shuffle!
+```
+
 While we're working our the comparisons, let's redo our `chooseComparison` method. Right now it just picks a random comparison using `@comparison.sample`, but we need to think about how we'll do true/false. It'd be useless if we only gave users a right answer every time as they'd just click true and move on, so we'll also need to give them a wrong answer as well half of the time. If we simply choose a second comparison we'd require a check to make sure it's not the same random sample as before (like using `.include?`) but that would add more lines of code and make it messier. Instead we can simply choose the first comparison as the correct one and the second one as the wrong one! We'll also shuffle our comparisons first to make sure it's not the same every time.
 
 ```ruby
@@ -302,8 +317,8 @@ class Question
   end
 
   def chooseComparison
-      @comparison_selection = @comparisons.shuffle![0]  # select correct comparison
-      @comparison_rejection = @comparisons[1]          # select wrong comparison
+    @comparison_selection = @comparisons.shuffle![0]  # select correct comparison
+    @comparison_rejection = @comparisons[1]          # select wrong comparison
   end
 
   def createQuestion
@@ -313,10 +328,7 @@ class Question
   def createAnswers
     @answer = eval(@question)
     @wrong_answer = eval "#{@array}.#{@method} { |x| x #{@comparison_rejection} #{@array_selection} }"
-    @mc_answers = []
-    @comparisons.each do |comparison|
-        @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
-    end
+    @mc_answers = @comparisons.map { |comparison| (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }
     @mc_answers.shuffle!
   end
 
@@ -402,7 +414,15 @@ if @mc_answers.uniq.size == 3
 end
 ```
 
-But not only is `.delete` cleaner, I'll also be able to modify it easier to work with other possible duplicate answers down the line rather than just single numbers. We still have one more problem though, and that's our `@comparison_rejection` which has a 1 in 3 chance to choose a rejected comparison with the same answer. So, let's remove that entirely and choose a wrong answer from our `@mc_answers`! I was originally going to say to take it from our dummy array since:
+But not only is `.delete` cleaner, I'll also be able to modify it easier to work with other possible duplicate answers down the line rather than just single numbers. I'm going to do one more thing here and that's using `.uniq` when we populate our `@mc_answers` so it's permanent and we don't need to call it twice afterward:
+
+```ruby
+@mc_answers = @comparisons.map { |comparison| (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }.uniq
+# this lets us simply say
+if @mc_answers.size == 3
+```
+
+We still have one more problem though, and that's our `@comparison_rejection` which has a 1 in 3 chance to choose a rejected comparison with the same answer. So, let's remove that entirely and choose a wrong answer from our `@mc_answers`! I was originally going to say to take it from our dummy array since:
 
 1) all answers were shuffled
 2) all answers are wrong
@@ -420,12 +440,8 @@ Let's do that modifying. It looks like this with our `@dummy_array` script:
 def createAnswers
   @answer = eval(@question)
   @wrong_answer = eval "#{@array}.#{@method} { |x| x #{@comparison_rejection} #{@array_selection} }"
-  @mc_answers = []  
-  @comparisons.each do |comparison|
-      @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
-  end
-  @mc_answers = @mc_answers.uniq
-  if @mc_answers.uniq.size == 3
+  @mc_answers = @comparisons.map { |comparison| (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }.uniq
+  if @mc_answers.size == 3
     @dummy_array = @array.dup.unshift(nil).shuffle
     @mc_answers.each { |x| @dummy_array.delete(x)}
     @mc_answers << @dummy_array[0]
@@ -441,12 +457,8 @@ def createAnswers
   @answer = eval(@question)
   # remove the old @wrong_answer
   # @wrong_answer = eval "#{@array}.#{@method} { |x| x #{@comparison_rejection} #{@array_selection} }"
-  @mc_answers = []  
-  @comparisons.each do |comparison|
-      @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
-  end
-  @mc_answers = @mc_answers.uniq
-  if @mc_answers.uniq.size == 3
+  @mc_answers = @comparisons.map { |comparison| (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }.uniq
+  if @mc_answers.size == 3
     @dummy_array = @array.dup.unshift(nil).shuffle
     @mc_answers.each { |x| @dummy_array.delete(x)}
     @mc_answers << @dummy_array[0]
@@ -478,7 +490,7 @@ class Question
   end
 
   def chooseComparison
-      @comparison_selection = @comparisons.shuffle![0]
+    @comparison_selection = @comparisons.shuffle![0]
   end
 
   def createQuestion
@@ -487,12 +499,8 @@ class Question
 
   def createAnswers
     @answer = eval(@question)
-    @mc_answers = []  
-    @comparisons.each do |comparison|
-        @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
-    end
-    @mc_answers = @mc_answers.uniq
-    if @mc_answers.uniq.size == 3
+    @mc_answers = @comparisons.map { |comparison| (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }.uniq
+    if @mc_answers.size == 3
       @dummy_array = @array.dup.unshift(nil).shuffle
       @mc_answers.each { |x| @dummy_array.delete(x)}
       @mc_answers << @dummy_array[0]
@@ -508,7 +516,7 @@ class Question
 end
 ```
 
-Our `createAnswers` method is messy though, so let's split it up by removing that check for unique answers:
+Our `createAnswers` method is messy though, so let's split it up by removing that check for four answers answers:
 
 ```ruby
 class Question
@@ -529,7 +537,7 @@ class Question
   end
 
   def chooseComparison
-      @comparison_selection = @comparisons.shuffle![0]
+    @comparison_selection = @comparisons.shuffle![0]
   end
 
   def createQuestion
@@ -538,18 +546,14 @@ class Question
 
   def createAnswers
     @answer = eval(@question)
-    @mc_answers = []  
-    @comparisons.each do |comparison|
-        @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }")
-    end
-    checkForUniqueness
+    @mc_answers = @comparisons.map { |comparison| (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }.uniq
+    hasFourAnswers?
     @wrong_answer = @mc_answers[1]
     @mc_answers.shuffle!
   end
 
-  def checkForUniqueness
-    @mc_answers = @mc_answers.uniq
-    if @mc_answers.uniq.size == 3
+  def hasFourAnswers?
+    if @mc_answers.size == 3
       @dummy_array = @array.dup.unshift(nil).shuffle
       @mc_answers.each { |x| @dummy_array.delete(x)}
       @mc_answers << @dummy_array[0]
@@ -562,8 +566,9 @@ class Question
 
 end
 
-q = Question.new("select")
+q = Question.new("keep_if")
 q.generateQuestion
+q
 #=> <Question:0x007f9ddd97f680 @method="select", @comparisons=[">", "<=", ">=", "<"],
 #   @array=[1, 2, 3, 4, 5, 6], @array_selection=1, @comparison_selection=">",
 #   @question="[1, 2, 3, 4, 5, 6].select { |x| x > 1 }", @answer=[2, 3, 4, 5, 6],
@@ -590,7 +595,7 @@ Work in Progress is below, I will update this over the next few days.
 # `.keep_if` and `.delete_if`
 ---
 
-Lastly in this post we'll cover the latter problem methods mentioned before. These are the exact same things as `.select`/`.reject` respectively, however they're **destructive methods**, meaning that after we call them, they'll permanently alter the array, not just the output. So what happens if we populate the choices?
+Lastly in this post we'll cover the latter two problem methods mentioned before. These are the exact same things as `.select`/`.reject` respectively, however they're **destructive methods**, meaning that after we call them, they'll permanently alter the array, not just the output. So before all the edits above to make `.find` and `.detect` work, if we ran our program we'd get:
 ```ruby
 question_keep = Question.new("keep_if")
 question_keep.generateQuestion
@@ -601,7 +606,51 @@ question_keep.generateQuestion
 #   @answer=[8, 7, 6, 5, 4], @comparison_rejection=">",
 #   @mc_answers=[[], [], [], []],  @wrong_answer=[]>
 ```
-Even though we got our correct answer, you'll notice that there's nothing in our `@mc_answers` or `@wrong_answer` because whenever we run the destructive method, the array we try to call it on has already been changed once before by that same method. We'll fix these both soon!
+Even though we got our correct answer, you'll notice that there's nothing in our `@mc_answers` or `@wrong_answer` because whenever we run the destructive method, the array we try to call it on has already been changed once before by that same method. If you look at the `@array`, there's nothing there! We started off with `@question="[9, 8, 7, 6, 5, 4].keep_if { |x| x <= 8 }"`, which shows an array of `[9, 8, 7, 6, 5, 4]`, however running `.keep_if` with say, `>` and then `<` would keep numbers greater than a selected_number, and then try to keep numbers less than a selected_number which don't exist any more, leaving us with an empty array.
+
+HOWEVER, in writing this blog post I changed things around for our `.find` and `.detect` methods, and now if we ran our program we'll get:
+
+```ruby
+question_keep = Question.new("keep_if")
+question_keep.generateQuestion
+#=> <Question:0x007f9dde15d348 @method="keep_if", @comparisons=["<=", ">", ">=", "<"],
+#   @array=[6, 5, 4, 3, 2, 1], @array_selection=1, @comparison_selection="<=",
+#   @question="[6, 5, 4, 3, 2, 1].keep_if { |x| x <= 1 }", @answer=[1],
+#   @mc_answers=[[6, 5, 4, 3, 2, 1], [6, 5, 4, 3, 2], [1], []],  @wrong_answer=[6, 5, 4, 3, 2]>
+```
+
+Which is the correct answers to everything. Why? Well I'm ashamed to say this took me a while to figure out, but it all has to do with this line:
+
+```ruby
+@comparisons.each { |comparison| @mc_answers << (eval "#{@array}.#{@method} { |x| x #{comparison} #{@array_selection} }") }
+```
+
+Before we were evaluating directly against the original `@array`, meaning that the attribute itself would be changed each time. However what we're doing instead now is turning `@array` into a string, then just running that string each time. What do I mean by that?
+
+```ruby
+# old way:
+array = [1, 2, 3, 4, 5, 6]
+answer = array.keep_if { |x| x > 3 }
+
+answer #=> [4, 5, 6]
+array #=> [4, 5, 6]
+```
+We got our answer, BUT the original array has changed as a result of the destructive `.keep_if` method.
+
+```ruby
+# new way
+array = [1, 2, 3, 4, 5, 6]
+answer = eval ("#{array}.keep_if { |x| x > 3 }")
+
+answer #=> [1, 2, 3, 4, 5, 6]
+array #=> [4, 5, 6]
+```
+
+We first turn the array (and the rest of the script) into a string of `"[1, 2, 3, 4, 5, 6].keep_if { |x| x > 3 }"` and then evaluate that string using `eval` as if it were real. We never actually call the method on the `array` directly, that way we can create as many strings as we need and never have to change our attributes.
+
+---
+
+There are plenty more methods, including the ones I didn't even get to (pop/shift, push/unshift, and insert), but those will require another change to our question object. I'll tackle that in the next post!
 
 Code on.
 
