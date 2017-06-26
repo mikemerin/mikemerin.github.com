@@ -7,11 +7,10 @@ categories: javascript, tutorial
 This is an abbreviated cheat sheet for Javascript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/JS-through-Ruby/), which I highly recommend.
 
 
-ES6 Notation | Arrow Functions | while | for
+ES6 / Arrow Functions | Callbacks | while | for
 for..in | .forEach | .map | .reduce
 .concat | .filter | switch; case | .splice
 .includes | Object.keys() | Object.values() | .slice
-call/proc (Ruby) callbacks (JS) |
 
 ### ES6 Notation, Arrow Functions, and Implicit Returns
 Shorten/clean up your functions. These all do the same thing:

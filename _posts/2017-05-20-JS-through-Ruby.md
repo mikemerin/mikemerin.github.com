@@ -15,6 +15,8 @@ We'll be going over these loops, iterations, and global methods:
 
 Ruby | JS Equivalent | Description
 ---|---|---
+||**functions**
+N/A | ES6 / Arrow | New ES2017 shorthands for cleaning your code
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
@@ -35,6 +37,8 @@ case; each | switch; case | shorthand multiple `if` statements
 .keys | Object.keys() | get all keys in a hash
 .values | Object.values() | get all values in a hash
 .slice | .slice | select element from array (different in Ruby vs. JS)
+||**more functions**
+call/procs | callbacks | function called within a function
 
 # ES6 Notation, Arrow Functions, Implicit Returns
 ---
@@ -62,6 +66,7 @@ x => { return x * 2 }
 x => x * 2     // same here
 (x) => (x * 2) // same here
 ```
+
 # looping with `while`
 ---
 Let's start off with the easiest example. These methods are almost identical in both Ruby and Javascript, in fact the only thing that's different is the syntax (using `var` and `{}` ). Here's a quick example:
@@ -678,6 +683,171 @@ array.slice(2) || array.slice(2,array.length) || array.slice(2, 5)
 // all of them //=> ["How", "Are", "You?"]
 array.slice(2, 4) //=> ["How", "Are"]
 ```
+
+# Calling on functions with - Ruby: `.call` / `.proc` | JS: `callbacks`
+---
+Finally, what if we had a function inside of another function? Let's come back to that question shortly.
+
+Say we were writing a function that did a few complicated things within it, but then wanted to easily change them or call on them again? For example, what if we wanted to multiply two numbers but have them squared first? We *could* do something like write it all out:
+
+```ruby
+# Ruby
+def multiply_squared(x, y)
+  x*x * y*y
+end
+
+multiply_squared(2, 3) #=> 2*2 * 3*3 = 4 * 9 = 36
+```
+```javascript
+// Javascript
+function multiply_squared(x, y) { x*x * y*y }
+
+multiply_squared(2, 3) //=> 2*2 * 3*3 = 4 * 9 = 36
+```
+Great, but what if instead of squaring these I wanted to cube them? What if I wanted to have `x` equal another equation? Sure for cubing I could simply change the equation to `2*2*2 * 3*3*3` but that'd get messy especially if I wanted to add another one to the exponent, or I could change the equation to `2**3 * 3**3` and just simply change the exponent that way, but that'd get tedious and I also wouldn't be able to call that as its own function. For `x` as another equation that'd also get ugly as for example `multiply_squared(2, (32/8) + 4)`. `.call` / `.proc` in Ruby and `callbacks` in Javascript fix this.
+
+In Ruby, we can first make a `Proc` which is a function that can be called on in the future. For example:
+
+```ruby
+# Ruby
+say_hello = Proc.new { puts "hello" }
+#=> <Proc:0x007fbf7019b270@(irb):41>
+
+# we then can call on this Proc object
+
+say_hello.call #=> "hello"
+
+say_hello()
+```
+A proc is an object that has its own set of variables. If you know about classes, then the `<Proc:0x007fbf7019b270@(irb):41>` looks very similar:
+```ruby
+# Ruby
+class Dog
+
+  def initialize(name, breed)
+    @name = name
+    @breed = breed
+  end
+
+end
+
+dog = Dog.new("Lily", "Pit Mix")
+#=> <Dog:0x007fbf701290d0 @name="Lily", @breed="Pit Mix">
+```
+So what can we do with Procs? Here's an example of what a basic function, and then a proc function does:
+```ruby
+# Ruby
+def multi_basic(x, y)
+  x * y
+end
+
+multi_basic(2, 3) #=> 6
+
+def multi_proc(x, y)
+  Proc.new { x * y }
+end
+
+multi_proc(2, 3) #=> <Proc:0x007fbf701808d0@(irb):47>
+multi_proc(2, 3).call #=> 6
+```
+Why is this so special? Our proc isn't simply the answer to `2*3`, it's an **object** that stores that answer, and we can call on it at any point or even do more with it. In the very simplest form we can create an object that simply can output the answer:
+
+```ruby
+# Ruby
+multiply_5_6 = multi_proc(5, 6) #=> <Proc:0x007fbf7016adf0@(irb):48>
+multiply_5_6.call #=> 30
+
+say_hello_to_someone = Proc.new { |name| puts "Hello #{name}!" }
+say_hello_to_someone #=> <Proc:0x007fb0d20b4ca0@(irb):49>
+say_hello_to_someone.call("Mike") #=> "Hello Mike!"
+```
+OR, we can get to the real reason why calls and procs are great: the ability to create an open-ended proc function that can be completed with a call:
+
+```ruby
+# Ruby
+def multiply(n)
+    Proc.new { |x| x * n }
+end
+
+multiply_by_six = multiply(6)
+multiply_by_six.call(5) #=> 30
+multiply_by_six.call(10) #=> 60
+
+multiply_by_thirty = multiply(30)
+multiply_by_thirty.call(5) #=> 150
+multiply_by_thirty.call(25) #=> 750
+```
+If we wrote these same scripts out as functions within a function it would get pretty messy. Going back to what we did before:
+```ruby
+# Ruby
+def multiply_squared(x, y)
+  x**2 * y**2
+end
+
+multiply_squared(multiply_by_six.call(2), 2) #=> 12*12 * 2*2 = 144 * 4 = 576
+
+# instead with callbacks
+
+multiply_six_squared = Proc.new { |x,y| multiply_by_six.call(x)**2 * y**2 }
+multiply_six_squared.call(2, 2) #=> 576
+```
+We have our object to call on, and can change it any way we want. Why did I take a long time to go through what these do? Because this is one of those times where Javascript makes things easier than Ruby and it's important to be able to visualize what goes on under the hood. Here's how a callback would work in Javascript; see if you can see the similarities:
+
+```javascript
+// Javascript
+var say_hello = function() { console.log("Hello") }
+say_hello() //=> "Hello"
+
+// The same in ES6 notation:
+
+var say_hello = () => { console.log("Hello") }
+say_hello() //=> "Hello"
+
+// as a callback:
+
+var say_hello_callback = function(callback) { callback }
+say_hello_callback(console.log("Hello")) //=> "Hello"
+
+// ES6
+var say_hello_callback = callback => { callback }
+say_hello_callback(console.log("Hello")) //=> "Hello"
+
+// extract "hello" as another callback
+
+function hello() { return "Hello" }
+say_hello_callback(console.log( hello() )) //=> "Hello"
+```
+As you can see, Javascript handles our "proc" by just naming a function. Let's callback even further with a twist:
+```javascript
+// Javascript
+var say_hello_to_someone = function(name) { console.log(`Hello ${name}!`) }
+say_hello_to_someone("Mike") //=> "Hello Mike!"
+
+//ES6:
+var say_hello_to_someone = name => { console.log(`Hello ${name}!`) }
+say_hello_to_someone("Mike") //=> "Hello Mike!"
+
+// extract "hello again"
+
+function hello() { return "Hello" }
+var say_hello_to_someone = name => { console.log(`${hello()} ${name}!`) }
+say_hello_to_someone("Mike") //=> "Hello Mike!"
+```
+
+
+
+
+We can even call our function and do things before we callback:
+```javascript
+// Javascript
+var lastly_say_hello_callback = callback => {
+  console.log("Loading script...")
+  callback
+}
+lastly_say_hello_callback(console.log("Hello"))
+//=> "Loading script. Hello"
+```
+---
 
 So that covers some of the most important JS loops/iterations/methods. If there are any others you'd like added let me know!
 
