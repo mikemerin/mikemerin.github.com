@@ -685,6 +685,7 @@ array.slice(2, 4) //=> ["How", "Are"]
 ```
 
 # Calling on functions with - Ruby: `.call` / `.proc` | JS: `callbacks`
+### Note, work in progress below
 ---
 Finally, what if we had a function inside of another function? Let's come back to that question shortly.
 
