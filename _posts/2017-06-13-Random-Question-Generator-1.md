@@ -2,12 +2,9 @@
 layout: post
 title:  "Anatomy of a Dynamically Generated Quiz"
 subtitle: "Part 1 - creating the question object"
-date:   2017-06-17 11:54:14 -0400
+date:   2017-06-13 11:54:14 -0400
 categories: ruby, javascript, generators
 ---
-Please note that this post is a work in progress. I have noted the point in where I will continue below.
----
-***
 
 There are plenty of quizzes online, however if you take it again you'll already know the answers and will get 100%. Sometimes the quiz will randomize the order of the questions, but you'll still know them. Sometimes the quiz have a larger question bank to choose from, but after taking the quiz enough times you'll know all their answers as well.
 
@@ -566,7 +563,7 @@ class Question
 
 end
 
-q = Question.new("keep_if")
+q = Question.new("select")
 q.generateQuestion
 q
 #=> <Question:0x007f9ddd97f680 @method="select", @comparisons=[">", "<=", ">=", "<"],
@@ -650,7 +647,7 @@ We first turn the array (and the rest of the script) into a string of `"[1, 2, 3
 
 ---
 
-There are plenty more methods, including the ones I didn't even get to (pop/shift, push/unshift, and insert), but those will require another change to our question object. I'll tackle that in the next post!
+There are plenty more methods, including the ones I didn't even get to (pop/shift, push/unshift, and insert), but those will require another change to our question object. Right now we have 31,104 possible questions, I'll tackle that in the next post and make that go even higher!
 
 Code on.
 

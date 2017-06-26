@@ -11,6 +11,7 @@ ES6 Notation | Arrow Functions | while | for
 for..in | .forEach | .map | .reduce
 .concat | .filter | switch; case | .splice
 .includes | Object.keys() | Object.values() | .slice
+call/proc (Ruby) callbacks (JS) |
 
 ### ES6 Notation, Arrow Functions, and Implicit Returns
 Shorten/clean up your functions. These all do the same thing:
