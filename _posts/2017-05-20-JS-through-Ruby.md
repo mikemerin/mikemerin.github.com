@@ -818,7 +818,7 @@ say_hello_callback(console.log("Hello")) //=> "Hello"
 function hello() { return "Hello" }
 say_hello_callback(console.log( hello() )) //=> "Hello"
 ```
-As you can see, Javascript handles our "proc" by just naming a function. Let's callback even further with a twist:
+As you can see, Javascript handles our "proc" by just naming a function. Let's callback even further:
 ```javascript
 // Javascript
 var say_hello_to_someone = function(name) { console.log(`Hello ${name}!`) }
@@ -828,26 +828,70 @@ say_hello_to_someone("Mike") //=> "Hello Mike!"
 var say_hello_to_someone = name => { console.log(`Hello ${name}!`) }
 say_hello_to_someone("Mike") //=> "Hello Mike!"
 
-// extract "hello again"
+// extract "hello" again
 
 function hello() { return "Hello" }
 var say_hello_to_someone = name => { console.log(`${hello()} ${name}!`) }
 say_hello_to_someone("Mike") //=> "Hello Mike!"
+
+// and name
+
+function hello() { return "Hello" }
+function name() { return "Mike" }
+var say_hello_to_someone = () => { console.log(`${hello()} ${name()}!`) }
+say_hello_to_someone() //=> "Hello Mike!"
+
+// with a callback
+
+var say_hello_to_someone_callback = (callback) => { callback }
+say_hello_to_someone_callback(console.log(`${hello()} ${name()}!`))
+
+// double callback!
+
+function greeting() { return "Hello" }
+function name() { return "Mike" }
+function log() { console.log(`${hello()} ${name()}!`) }
+var say_hello_to_someone_callback_callback(callback_2) = (callback) => { callback }
+say_hello_to_someone_callback_callback(log()) //=> "Hello Mike!"
+
+// another way with multiple inputs
+
+var say_hello_to_someone_input = (greeting, name) => { console.log(`${greeting} ${name}!`) }
+say_hello_to_someone_input("Hello", "Mike") //=> "Hello Mike!"
+say_hello_to_someone_input(greeting(), name()) //=> "Hello Mike!"
 ```
-
-
-
-
 We can even call our function and do things before we callback:
 ```javascript
 // Javascript
 var lastly_say_hello_callback = callback => {
-  console.log("Loading script...")
+  console.log("Loading greeting...")
   callback
 }
 lastly_say_hello_callback(console.log("Hello"))
-//=> "Loading script. Hello"
+//=> "Hello"
+//=> "Loading greeting..."
 ```
+Oops our greeting callback loaded before our loading message because this is asynchronous. Let's add a `timeout` to our callback:
+```javascript
+// Javascript
+var lastly_say_hello_callback = callback => {
+  console.log("Loading greeting...")
+  setTimeout(callback, 1000)
+}
+lastly_say_hello_callback(()=>console.log("Hello"))
+//=> "Loading greeting..."
+// sleep for 1 second
+//=> "Hello"
+```
+And to be really cheeky, let's have some callbacks that also take in inputs:
+```javascript
+// Javascript
+function log(greeting, name) { console.log(`${greeting} ${name}!`) }
+function say_hello_to_someone_callback_inputs(callback) { callback(arguments[1], arguments[2]) }
+say_hello_to_someone_callback_inputs(log, "Hello", "Mike")
+```
+There's so much more you can do with this, try it out yourselves!
+
 ---
 
 So that covers some of the most important JS loops/iterations/methods. If there are any others you'd like added let me know!
