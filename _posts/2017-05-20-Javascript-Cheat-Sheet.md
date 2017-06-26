@@ -31,6 +31,35 @@ x => { return x * 2 }
 x => x * 2     // same here
 (x) => (x * 2) // same here
 ```
+### Callbacks
+Lets you call functions inside of functions
+
+```javascript
+// Javascript
+var say_hello = function(callback) { callback }
+var say_hello = callback => { callback } // ES6 notation
+say_hello(console.log("Hello")) //=> "Hello"
+
+function log(greeting, name) { console.log(`${greeting} ${name}!`) }
+function say_hello_to_someone_callback_inputs(callback) { callback(arguments[1], arguments[2]) }
+say_hello_to_someone_callback_inputs(log, "Hello", "Mike") //=> "Hello Mike"
+
+function greeting() { return "Hello" }
+function name() { return "Mike" }
+function log() { console.log(`${hello()} ${name()}!`) }
+var say_hello_to_someone_double_callback(callback_2) = (callback) => { callback }
+say_hello_to_someone_double_callback(log()) //=> "Hello"
+
+var lastly_say_hello_callback = callback => {
+  console.log("Loading greeting...")
+  setTimeout(callback, 1000)
+}
+lastly_say_hello_callback(()=>console.log("Hello"))
+//=> "Loading greeting..."
+// sleep for 1 second
+//=> "Hello"
+```
+
 ### while
 Perform a piece of code while a loop is active.
 
