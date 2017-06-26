@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Anatomy of a Dynamically Generated Quiz"
-subtitle: "Part 2 - expanding the question object"
+title:  "Anatomy of a Dynamically Generated Quiz Part 2"
+subtitle: "expanding the question object"
 date:   2017-06-23 16:53:18 -0400
 categories: ruby, javascript, generators
 ---
