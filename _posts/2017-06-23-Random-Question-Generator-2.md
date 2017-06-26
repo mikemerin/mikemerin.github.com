@@ -5,7 +5,7 @@ subtitle: "expanding the question object"
 date:   2017-06-23 16:53:18 -0400
 categories: ruby, javascript, generators
 ---
-Please note this is a work in progress. I have noted where I will continue working below
+##### Please note this is a work in progress. I have noted where I will continue working below
 ***
 
 In my last post, I showed you how to create a question object that stores enough information to produce 31 thousand possible questions in under 40 lines of code. Let's expand on that even more to get that number into 6 figures. Last we left off we had:
