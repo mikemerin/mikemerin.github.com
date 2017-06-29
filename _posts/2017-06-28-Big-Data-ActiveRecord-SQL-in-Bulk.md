@@ -135,7 +135,7 @@ WBAN|WMO|CallSign|ClimateDivisionCode|ClimateDivisionStateCode|ClimateDivisionSt
 94728|72506|NYC|04|30|5801|NEW YORK|NY|CENTRAL PARK|40.7889|-73.9669|130|156|161|-5
 94789|74486|JFK|04|30|5803|NEW YORK|NY|JOHN F KENNEDY INTERNATIONAL AIRPORT|40.6386|-73.7622|11|22|32|-5
 94823|72520|PIT|09|36|6993|PITTSBURGH|PA|PITTSBURGH INTERNATIONAL AIRPORT|40.4846|-80.2144|1203|1203|1175|-5
-94846|72530|ORD|02|11|1549|CHICAGO|IL|CHICAGO O'HARE INTERNATIONAL AIRPORT|41.995|-87.9336|662|674|658|-6
+94846|72530|ORD|02|11|1549|CHICAGO|IL|CHICAGO O’HARE INTERNATIONAL AIRPORT|41.995|-87.9336|662|674|658|-6
 ```
 
 While from a human standpoint we'd call this ugly, this is what we call in the coding business: perfect. The data is cleanly separated by a pipe `\` which will make separating out the data a breeze. Sometimes they're unfortunately separated by commonly used punctuation like a comma or a dash, in that case you'd have to use regular expressions to prevent errors (like `(^|,)` if data is separated by commas and there are commas in the actual column data). We can split up a row's data by using `split("|")`. If we used our enumerator for iteration we'd get:
@@ -365,7 +365,7 @@ By the way the reason why you see 2,559 stations and then 2,280 stations added f
 
 As I said initially, this is one of the smallest of the files I worked with, and it's still taking 26 seconds to populate our database. Why? Well each time we do `Station.create` it fires off a SQL query of:
 
-```SQL
+```sql
 INSERT INTO stations (wban, callsign, ...) VALUES (?, ?, ...)
 ```
 
@@ -412,7 +412,7 @@ Fair warning, this is the point in where hours passed by trying to find a way to
 
 Using SQL in a program like Postgres or SQLite isn't too bad at its core. We can ideally insert a new entry into our database the way I said before:
 
-```SQL
+```sql
 INSERT INTO stations (wban, callsign, ...) VALUES (?, ?, ...)
 ```
 
