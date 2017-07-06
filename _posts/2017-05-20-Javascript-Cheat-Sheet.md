@@ -7,10 +7,11 @@ categories: javascript, tutorial
 This is an abbreviated cheat sheet for Javascript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/JS-through-Ruby/), which I highly recommend.
 
 
-ES6 / Arrow Functions | Callbacks | while | for
-for..in | .forEach | .map | .reduce
-.concat | .filter | switch; case | .splice
-.includes | Object.keys() | Object.values() | .slice
+ES6  | Arrow Functions | Callbacks | while
+ for | for..in | .forEach | .map
+ .reduce | concat | .filter | .sort
+ switch; case | .splice | .includes
+ Object.keys() | Object.values() | .slice
 
 ### ES6 Notation, Arrow Functions, and Implicit Returns
 Shorten/clean up your functions. These all do the same thing:
@@ -166,6 +167,45 @@ array.filter(callback)
 [1, 2, 3, null, 4, 5].filter(Number) //=> [1, 2, 3, 4, 5]
 [1, 2, 3, null, 4, 5].filter(x => x % 2 === 0) //=> [2, 4, null]
 [1, 2, 3, null, 4, 5].filter(x => x % 2 === 1) //=> [1, 3, 5]
+```
+### Sort
+Sort an array, Object, or combination of them
+```javascript
+var array_string = ["hey", "everyone", "how's", "it", "going?"]
+array_string.sort() //=> [ "everyone", "going?", "hey", "how's", "it" ]
+
+var array = [14, 25, 16, 22, 5]
+array.sort() //=> [ 14, 16, 22, 25, 5 ]
+array.sort( function(a,b) { return a - b } ) //=> [ 5, 14, 16, 22, 25 ]
+array.sort( function(a,b) { return a > b } ) //=> [ 5, 14, 16, 22, 25 ]
+
+var array_objects = [ {borough: 'Bronx', population: 1385107},
+                      {borough: 'Brooklyn', population: 2504706},
+                      {borough: 'Manhattan', population: 1585874},
+                      {borough: 'Queens', population: 2230545},
+                      {borough: 'Staten_Island', population: 486730} ]
+array_hash.sort( (a,b) => a.borough > b.borough )
+//=> [ { burough: 'Bronx', population: 1385107 },
+    // { burough: 'Brooklyn', population: 2504706 },
+    // { burough: 'Manhattan', population: 1585874 },
+    // { burough: 'Queens', population: 2230545 },
+    // { burough: 'Staten_Island', population: 486730 } ]
+array_hash.sort( (a,b) => a.population - b.population ) // or
+array_hash.sort( (a,b) => a.population > b.population )
+//=> [ { borough: 'Staten_Island',  population: 486730 },
+    // { borough: 'Bronx',         population: 1385107 },
+    // { borough: 'Queens',        population: 2230545 },
+    // { borough: 'Brooklyn',      population: 2504706 },
+    // { borough: 'Manhattan',     population: 1585874 } ]
+
+// note this one isn't needed, and doesn't directly work
+var object = {Manhattan: 1585874, Brooklyn: 2504706, Queens: 2230545, Bronx: 1385107, Staten_Island: 486730}
+Object.keys(object).sort( (a,b) => object[a] - object[b] ).map(x => `${x}: ${hash[x]}`)
+//=> [ 'Staten_Island: 486730',
+    // 'Bronx:        1385107',
+    // 'Manhattan:    1585874',
+    // 'Queens:       2230545',
+    // 'Brooklyn:     2504706' ]
 ```
 ### Switch; case
 Simplifying multiple `if/else if/else` statements
