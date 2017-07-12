@@ -450,17 +450,16 @@ INSERT INTO stations (wban, name, callsign, state, location, latitude, longitude
 VALUES ( "98486", "72530", "ORD", "02", "11", "1549", "CHICAGO", "IL", "CHICAGO O'HARE INTERNATIONAL AIRPORT", ... )
 ```
 
-Except that these are individual SQL that fire off, so with the same header we can combine them into an array:
+Except that these are individual SQL that fire off, so with the same header we can separate multiple values by a comma:
 
 ```sql
 INSERT INTO stations (wban, name, callsign, state, location, latitude, longitude, groundHeight, stationHeight, created_at, updated_at)
-VALUES [
-      ( "14732", "72503", "LGA", "04", "30", "5811", "NEW YORK", "NY", "LA GUARDIA AIRPORT", "40.7792", "-73.88", "11", "31", "39", "-5", "Time", "Time" ),
-      ( "98486", "72530", "ORD", "02", "11", "1549", "CHICAGO", "IL", "CHICAGO O'HARE INTERNATIONAL AIRPORT", "41.995", "-87.9336", "662", "674", "658", "-6", "Time", "Time" )
-]
+VALUES
+    ( "14732", "72503", "LGA", "04", "30", "5811", "NEW YORK", "NY", "LA GUARDIA AIRPORT", "40.7792", "-73.88", "11", "31", "39", "-5", "Time", "Time" ),
+    ( "98486", "72530", "ORD", "02", "11", "1549", "CHICAGO", "IL", "CHICAGO O'HARE INTERNATIONAL AIRPORT", "41.995", "-87.9336", "662", "674", "658", "-6", "Time", "Time" )
 ```
 
-Which fires off just once. Perfect! To get this added dynamically added we can make an array, and each row push in a string that looks the same as what's above:
+Which fires off just once. Perfect! To get this added dynamically added we can make an array, and each row push in a string that looks the same as what's above, then join them together by a comma:
 
 ```ruby
 array = []
