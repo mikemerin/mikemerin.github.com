@@ -11,7 +11,7 @@ While RESTful routes can show single points of data or all of it, when you have 
 
 When it first rolled out, my [WeatherCraft API](https://github.com/mikemerin/WeatherCraftAPI) had 4.6 million rows in its database (it originally had 500 million rows but my tiny little laptop couldn't handle the load). The three tables were station data, their monthly data, and their daily data. Sure I could pull out any single row to display that data but with this **much** data at my fingertips I could do **so** much more with it.
 
-In [part 1](https://mikemerin.github.io/WeatherCraft-blog-1/) of this post I talked about how to scrape all of this data. Let's go through how I set up my routes, starting off with the basics and ending with some more fancy stuff.
+In [part 1](https://mikemerin.github.io/WeatherCraft-blog-1/) of this series of posts I talked about how to scrape all of this data. Let's go through how I set up my routes, starting off with the basics and ending with some more fancy stuff.
 ---
 
 # Overview
@@ -89,7 +89,8 @@ class Api::V1::DailiesController < ApplicationController
       :tmax, :tmin, :tavg, :depart, :dew_point,
       :sunrise, :sunset, :code_sum,
       :depth, :snow_fall, :precip_total,
-      :avg_speed, :max5_speed, :max5_dir, :max2_speed, :max2_dir
+      :result_speed, :result_dir, :avg_speed,
+      :max5_speed, :max5_dir, :max2_speed, :max2_dir
       )
   end
 
@@ -175,7 +176,7 @@ We're passing the URL's `94728` as the `:wban` and finding the right entries in 
 'http://localhost:3000/api/v1/dailies/94728/20160123'
 
 # which uses the route
-get	'/dailies/:wban/:year_month_day', to: 'dailies#entry'
+get '/dailies/:wban/:year_month_day', to: 'dailies#entry'
 
 # to hit this function in our DailiesController
 def entry
@@ -202,20 +203,30 @@ Keep this ActiveRecord trick in mind for later, we'll need it. Anyways using thi
 
 Now that we have all of this information at our fingertips, we can fetch it from our front end and make it more eye-friendly. I'll get to how to do the actual fetching and converting in the next part of this blog, but here's a pre-final version of what it will look like:
 
-![KNYC 20160123 Front End](http://imgur.com/APiZxP0)
+![KNYC 20160123 Front End](http://imgur.com/APiZxP0.png)
 
 # Nesting Another Route
 ---
 
 Hold on, while the top part has data from January 23rd 2016, the bottom has weekly **information**. How did we get that? In this project we can get information 5 days before and after the chosen date. Although the solution looks fairly simple, this wasn't as trivial to do with our database as you may think so let's break it down.
 
+Starting off with the URL we want to use, let's just tack on "adjacent" to the end:
+
 ```ruby
 # URL
 'http://localhost:3000/api/v1/dailies/94728/20160123/adjacent'
+```
 
+And let's just call our new controller method "entry_adjacent", then define that as our new route:
+
+```ruby
 # which uses the route
-get	'/dailies/:wban/:year_month_day/adjacent', to: 'dailies#entry_adjacent'
+get '/dailies/:wban/:year_month_day/adjacent', to: 'dailies#entry_adjacent'
+```
 
+As for writing our new script to get the entries from our database, as I mentioned in [part 1](https://mikemerin.github.io/WeatherCraft-blog-1/) of this series of posts we want to limit the amount of times we communicate with our database, as the more queries we send to it the longer it will take especially when the size of our database grows. Let's do the worst case first
+
+```ruby
 # to hit this function in our DailiesController
 def station_adjacent
   day = Daily.find_by(wban: params[:wban], year_month_day: params[:year_month_day])[:id]
@@ -230,7 +241,7 @@ end
 
 You may have also noticed there's another tab there for "historical". That finds every piece of data from the this station from every year's January 23rd. Here's what it looks like when processed in the front end:
 
-![KNYC 20160123 Front End Historical](http://imgur.com/FwLXU9X)
+![KNYC 20160123 Front End Historical](http://imgur.com/FwLXU9X.png)
 
 Those are the basics.
 
