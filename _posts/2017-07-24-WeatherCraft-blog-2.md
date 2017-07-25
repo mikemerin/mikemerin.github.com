@@ -13,8 +13,10 @@ When it first rolled out, my [WeatherCraft API](https://github.com/mikemerin/Wea
 
 In [part 1](https://mikemerin.github.io/WeatherCraft-blog-1/) of this post I talked about how to scrape all of this data. Let's go through how I set up my routes, starting off with the basics and ending with some more fancy stuff.
 ---
+
 # Overview
 ---
+
 Just to quickly go over what I'm working with, here's what my schema/table looks like for my Rails API:
 
 ```ruby
@@ -47,6 +49,7 @@ end
 
 ```
 Here are my models. I link everything by a station's `wban` which is its unique ID. This is important and I'll come back to this in the next section. By setting up my table relationships and linking the primary/foreign keys by `wban` we get:
+
 ```ruby
 class Station < ApplicationRecord
   has_many :hourlies, primary_key: "wban", foreign_key: "wban"
@@ -62,6 +65,7 @@ class Daily < ApplicationRecord
   belongs_to :station, primary_key: "wban", foreign_key: "wban"
 end
 ```
+
 And finally my controllers. I'll just go over my `dailies` controller as the others are very similar in their basic forms. I'm only using the `index` and `show` routes here, though I have strong params in case I want to expand to use `create` or `update` in the future. For my routes I render out the json needed for it:
 
 ```ruby
@@ -91,11 +95,14 @@ class Api::V1::DailiesController < ApplicationController
 
 end
 ```
+
 And notice that I have my controller as `Api::V1::DailiesController` because this file is in `controllers/api/v1` just in case I change the way the API works in the future.
 
 # Basic Routes
 ---
+
 Normally you can do something simple with routes using `resources`. For example if I want to restrict only showing the `index` and `show` routes I'd do:
+
 ```ruby
 Rails.application.routes.draw do
 
@@ -111,9 +118,11 @@ Rails.application.routes.draw do
 
 end
 ```
+
 Side-note: the `namespace` is important here because my controller is in `controller/api/v1` as I mentioned before.
 
 As I said before though I'm not showing these by their normal `INTEGER PRIMARY KEY` but rather their `wban` ID. This is easy enough to do in our models by using a `get` script. In this case we'll designate the URL route as a `wban` and redirect it to our controller's `show` method.
+
 ```ruby
 Rails.application.routes.draw do
 
@@ -133,22 +142,95 @@ Rails.application.routes.draw do
 
 end
 ```
+
 Great now we can load up our API by typing in `rails s` and going to `http://localhost:3000/api/v1/monthlies` to see all station data, or `http://localhost:3000/api/v1/stations/94728` for example to see the station with the `wban` of 94728 which is Central Park. For the stations I also use a gem called "friendly_id" so I can use the callsign in my URL, in the case above `http://localhost:3000/api/v1/stations/NYC` for Central Park. This is how it looks when I type it into my URL:
 
 ![Central Park Station](http://imgur.com/RW9IPSb.png)
 
 I can also do `http://localhost:3000/api/v1/dailies/94728` however this would get us ALL daily data from Central Park which in my case is 3,714 different days. How can we get a specific date?
-# Route breakdowns
----
-WIP Below
 
+# Nested Route
 ---
 
+Right now we have the following URL route and function:
 
-get	'/hourlies/:wban/:year_month_day', to: 'hourlies#station'
-get	'/dailies/:wban/:year_month_day', to: 'dailies#station'
-get	'/monthlies/:wban/:year_month', to: 'monthlies#station'
+```ruby
+# URL
+'http://localhost:3000/api/v1/dailies/94728'
 
+# which uses the route
+get '/dailies/:wban', to: 'stations#show'
+
+# to hit this function in our DailiesController
+def show
+  @dailies = Daily.where(wban: params[:id])
+  render json: @dailies
+end
+```
+
+We're passing the URL's `94728` as the `:wban` and finding the right entries in our database that match it. We can go one step further and use the table's `year_month_day` column as another nested route, then write a script in our controller that will find that station's specific daily entry. In our `Dailies` table our `year_month_day` column is formatted `YYYYMMDD` so let's use that as our URL and then pass it in as our params:
+
+```ruby
+# URL
+'http://localhost:3000/api/v1/dailies/94728/20160123'
+
+# which uses the route
+get	'/dailies/:wban/:year_month_day', to: 'dailies#entry'
+
+# to hit this function in our DailiesController
+def entry
+  @daily = Daily.find_by(wban: params[:wban], year_month_day: params[:year_month_day])
+  render json: [@daily]
+end
+```
+
+This effectively fires off the SQL
+
+```sql
+SELECT * FROM dailies WHERE wban = '94728' and year_month_day = '20160123' LIMIT 1
+```
+
+Which in Rails and ActiveRecord can be written as:
+
+```ruby
+ActiveRecord::Base.connection.execute("SELECT * FROM dailies WHERE wban = '94728' and year_month_day = '20160123' LIMIT 1")
+```
+
+Keep this ActiveRecord trick in mind for later, we'll need it. Anyways using this URL/route/controller function we'll now see the following JSON:
+
+![Central Park on January 23, 2016](http://imgur.com/BK1dZCW.png)
+
+Now that we have all of this information at our fingertips, we can fetch it from our front end and make it more eye-friendly. I'll get to how to do the actual fetching and converting in the next part of this blog, but here's a pre-final version of what it will look like:
+
+![KNYC 20160123 Front End](http://imgur.com/APiZxP0)
+
+# Nesting Another Route
+---
+
+Hold on, while the top part has data from January 23rd 2016, the bottom has weekly **information**. How did we get that? In this project we can get information 5 days before and after the chosen date. Although the solution looks fairly simple, this wasn't as trivial to do with our database as you may think so let's break it down.
+
+```ruby
+# URL
+'http://localhost:3000/api/v1/dailies/94728/20160123/adjacent'
+
+# which uses the route
+get	'/dailies/:wban/:year_month_day/adjacent', to: 'dailies#entry_adjacent'
+
+# to hit this function in our DailiesController
+def station_adjacent
+  day = Daily.find_by(wban: params[:wban], year_month_day: params[:year_month_day])[:id]
+  dailies = []
+  ActiveRecord::Base.connection.execute("SELECT * FROM dailies where id < #{day} and wban = '#{params[:wban]}' order by id desc limit 5").reverse_each { |x| dailies << x }
+  ActiveRecord::Base.connection.execute("SELECT * FROM dailies where id >= #{day} and wban = '#{params[:wban]}' order by id limit 6").each { |x| dailies << x }
+  render json: dailies
+end
+```
+
+
+
+You may have also noticed there's another tab there for "historical". That finds every piece of data from the this station from every year's January 23rd. Here's what it looks like when processed in the front end:
+
+![KNYC 20160123 Front End Historical](http://imgur.com/FwLXU9X)
 
 Those are the basics.
 
