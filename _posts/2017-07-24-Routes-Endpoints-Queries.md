@@ -1,13 +1,23 @@
 ---
 layout: post
-title:  "Using ActiveRecord and SQL for Big Data"
-subtitle: "WeatherCraft blog part 1: how to scrape data quickly"
-date:   2017-06-27 13:59:03 -0400
+title:  "Custom Routes/Endpoints and Dynamic SQL Queries"
+subtitle: "WeatherCraft blog part 2: letting the back end do work for you"
+date:   2017-07-24 20:28:08 -0400
 categories: ruby, rails, SQL, activerecord, big data
 ---
+Your back end API is set up, your database is seeded, your RESTful routes and endpoints are available, what's next? Well a whole, whole lot.
+
+While RESTful routes can show single points of data or all of it, when you have an enormous amount of data at your fingertips that's just the tip of the iceberg. The beauty of big data lies in the almost endless ways you can use any part of it.
+---
+When it first rolled out, my [WeatherCraft API](https://github.com/mikemerin/WeatherCraftAPI) had 4.6 million rows in its database (it originally had 500 million rows but my tiny little laptop couldn't handle the load). The three tables were station data, their monthly data, and their daily data. Sure I could pull out any single row to display that data but with this **much** data at my fingertips I could do **so** much more with it.
+
+In the first part of this post 
+
+
+
 What should you do when building an application that requires you to scrape a large amount of data? The answer is as big as the data.
 
-In my [first project](https://github.com/mikemerin/WeatherCraftAPI) concerning big data I had a lot to learn especially from an efficiency standpoint. I've scraped data before and have created my own databases but nothing on this large of a scale. The files I downloaded totaled 60 gigabytes, yes 60, and that's pure text. How much text do you ask? One of the files was 600MB, had 50 columns of data, and 4.6 million rows. That was just one of 125 similar files between 400MB and 600MB big, and I needed to be able to scrape all that data within a short amount of time. My initial script would have taken around **5.6 months** to finish scraping that much data. By then end I got this down to **1.4 days**, around **120 times faster**. So how did I fix it? Here's my journey:
+In my first project concerning big data I had a lot to learn especially from an efficiency standpoint. I've scraped data before and have created my own databases but nothing on this large of a scale. The files I downloaded totaled 60 gigabytes, yes 60, and that's pure text. How much text do you ask? One of the files was 600MB, had 50 columns of data, and 4.6 million rows. That was just one of 125 similar files between 400MB and 600MB big, and I needed to be able to scrape all that data within a short amount of time. My initial script would have taken around **5.6 months** to finish scraping that much data. By then end I got this down to **1.4 days**, around **120 times faster**. So how did I fix it? Here's my journey:
 
 # Phase 0 - Generating ActiveRecord Resources
 ### (pre-scraping)
