@@ -8,20 +8,151 @@ categories: ruby, rails, SQL, activerecord, big data
 Your back end API is set up, your database is seeded, your RESTful routes and endpoints are available, what's next? Well a whole, whole lot.
 
 While RESTful routes can show single points of data or all of it, when you have an enormous amount of data at your fingertips that's just the tip of the iceberg. The beauty of big data lies in the almost endless ways you can use any part of it.
----
+
 When it first rolled out, my [WeatherCraft API](https://github.com/mikemerin/WeatherCraftAPI) had 4.6 million rows in its database (it originally had 500 million rows but my tiny little laptop couldn't handle the load). The three tables were station data, their monthly data, and their daily data. Sure I could pull out any single row to display that data but with this **much** data at my fingertips I could do **so** much more with it.
 
-In the first part of this post 
-
-
-
-What should you do when building an application that requires you to scrape a large amount of data? The answer is as big as the data.
-
-In my first project concerning big data I had a lot to learn especially from an efficiency standpoint. I've scraped data before and have created my own databases but nothing on this large of a scale. The files I downloaded totaled 60 gigabytes, yes 60, and that's pure text. How much text do you ask? One of the files was 600MB, had 50 columns of data, and 4.6 million rows. That was just one of 125 similar files between 400MB and 600MB big, and I needed to be able to scrape all that data within a short amount of time. My initial script would have taken around **5.6 months** to finish scraping that much data. By then end I got this down to **1.4 days**, around **120 times faster**. So how did I fix it? Here's my journey:
-
-# Phase 0 - Generating ActiveRecord Resources
-### (pre-scraping)
+In [part 1](https://mikemerin.github.io/WeatherCraft-blog-1/) of this post I talked about how to scrape all of this data. Let's go through how I set up my routes, starting off with the basics and ending with some more fancy stuff.
 ---
+# Overview
+---
+Just to quickly go over what I'm working with, here's what my schema/table looks like for my Rails API:
+
+```ruby
+class CreateDailies < ActiveRecord::Migration[5.1]
+  def change
+    create_table :dailies do |t|
+      t.string :wban
+      t.string :year_month_day
+      t.string :tmax
+      t.string :tmin
+      t.string :tavg
+      t.string :depart
+      t.string :dew_point
+      t.string :sunrise
+      t.string :sunset
+      t.string :code_sum
+      t.string :depth
+      t.string :snow_fall
+      t.string :precip_total
+      t.string :avg_speed
+      t.string :max5_speed
+      t.string :max5_dir
+      t.string :max2_speed
+      t.string :max2_dir
+
+      t.timestamps
+    end
+  end
+end
+
+```
+Here are my models. I link everything by a station's `wban` which is its unique ID. This is important and I'll come back to this in the next section. By setting up my table relationships and linking the primary/foreign keys by `wban` we get:
+```ruby
+class Station < ApplicationRecord
+  has_many :hourlies, primary_key: "wban", foreign_key: "wban"
+  has_many :dailies, primary_key: "wban", foreign_key: "wban"
+  has_many :monthlies, primary_key: "wban", foreign_key: "wban"
+end
+
+class Monthly < ApplicationRecord
+  belongs_to :station, primary_key: "wban", foreign_key: "wban"
+end
+
+class Daily < ApplicationRecord
+  belongs_to :station, primary_key: "wban", foreign_key: "wban"
+end
+```
+And finally my controllers. I'll just go over my `dailies` controller as the others are very similar in their basic forms. I'm only using the `index` and `show` routes here, though I have strong params in case I want to expand to use `create` or `update` in the future. For my routes I render out the json needed for it:
+
+```ruby
+class Api::V1::DailiesController < ApplicationController
+
+  def index
+    @dailies = Daily.all
+    render json: @dailies
+  end
+
+  def show
+    @dailies = Daily.where(wban: params[:id])
+    render json: @dailies
+  end
+
+  private
+
+  def daily_params
+    params.require(:daily).permit(
+      :wban, :year_month_day,
+      :tmax, :tmin, :tavg, :depart, :dew_point,
+      :sunrise, :sunset, :code_sum,
+      :depth, :snow_fall, :precip_total,
+      :avg_speed, :max5_speed, :max5_dir, :max2_speed, :max2_dir
+      )
+  end
+
+end
+```
+And notice that I have my controller as `Api::V1::DailiesController` because this file is in `controllers/api/v1` just in case I change the way the API works in the future.
+
+# Basic Routes
+---
+Normally you can do something simple with routes using `resources`. For example if I want to restrict only showing the `index` and `show` routes I'd do:
+```ruby
+Rails.application.routes.draw do
+
+  namespace :api do
+    namespace :v1 do
+
+      resources :monthlies, only: [:index, :show]
+      resources :dailies, only: [:index, :show]
+      resources :stations, only: [:index, :show]
+
+    end
+  end
+
+end
+```
+Side-note: the `namespace` is important here because my controller is in `controller/api/v1` as I mentioned before.
+
+As I said before though I'm not showing these by their normal `INTEGER PRIMARY KEY` but rather their `wban` ID. This is easy enough to do in our models by using a `get` script. In this case we'll designate the URL route as a `wban` and redirect it to our controller's `show` method.
+```ruby
+Rails.application.routes.draw do
+
+  namespace :api do
+    namespace :v1 do
+
+      resources :monthlies, only: [:index, :show]
+      resources :dailies, only: [:index, :show]
+      resources :stations, only: [:index, :show]
+
+      get '/monthlies/:wban', to: 'stations#show'
+      get '/dailies/:wban', to: 'stations#show'
+      get '/stations/:wban', to: 'stations#show'
+
+    end
+  end
+
+end
+```
+Great now we can load up our API by typing in `rails s` and going to `http://localhost:3000/api/v1/monthlies` to see all station data, or `http://localhost:3000/api/v1/stations/94728` for example to see the station with the `wban` of 94728 which is Central Park. For the stations I also use a gem called "friendly_id" so I can use the callsign in my URL, in the case above `http://localhost:3000/api/v1/stations/NYC` for Central Park. This is how it looks when I type it into my URL:
+
+![Central Park Station](http://imgur.com/RW9IPSb.png)
+
+I can also do `http://localhost:3000/api/v1/dailies/94728` however this would get us ALL daily data from Central Park which in my case is 3,714 different days. How can we get a specific date?
+# Route breakdowns
+---
+WIP Below
+
+---
+
+
+get	'/hourlies/:wban/:year_month_day', to: 'hourlies#station'
+get	'/dailies/:wban/:year_month_day', to: 'dailies#station'
+get	'/monthlies/:wban/:year_month', to: 'monthlies#station'
+
+
+Those are the basics.
+
+
 My project involved past weather data over a course of 10 years, including weather station data, monthly breakdowns, daily breakdowns, and hourly breakdowns. When you work with large amounts of data you want to start off small and then scale it up once it works. My station data was only 223KB so I started with that.
 
 Let's take a look at a small section of that station data:
