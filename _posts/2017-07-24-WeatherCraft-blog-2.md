@@ -12,6 +12,7 @@ While RESTful routes can show single points of data or all of it, when you have 
 When it first rolled out, my [WeatherCraft API](https://github.com/mikemerin/WeatherCraftAPI) had 4.6 million rows in its database (it originally had 500 million rows but my tiny little laptop couldn't handle the load). The three tables were station data, their monthly data, and their daily data. Sure I could pull out any single row to display that data but with this **much** data at my fingertips I could do **so** much more with it.
 
 In [part 1](https://mikemerin.github.io/WeatherCraft-blog-1/) of this series of posts I talked about how to scrape all of this data. Let's go through how I set up my routes, starting off with the basics and ending with some more fancy stuff.
+
 ---
 
 # Overview
