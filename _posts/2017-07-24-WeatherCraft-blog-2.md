@@ -278,6 +278,7 @@ This works great but we still have the problem of making a separate query for ea
 ```sql
 -- get the 5 before, use DESC to order them from oldest entry to newest (5 days before to 1 day before)
 SELECT * FROM dailies WHERE id < 3764704 AND wban = 94728 ORDER BY id DESC LIMIT 5
+
 -- get the day itself and the 5 after
 SELECT * FROM dailies WHERE id >= 3764704 AND wban = 94728 ORDER BY id LIMIT 6
 ```
@@ -371,7 +372,7 @@ But even though this is a single query instead of 10-11 separate ones, this actu
 
 ---
 
-So we covered our Rakefile/database in part 1, our API/routes in this part 2, part 3 will involve React and our front end.
+So we covered our Rakefile/database in part 1, our API/routes in this part 2, part 3 will involve JavaScript/React and our front end.
 
 
 Code on.
