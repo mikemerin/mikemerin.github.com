@@ -1,17 +1,20 @@
 ---
 layout: page
 title: WeatherCraft
+subtitle: The past decade's weather and climate from anywhere in the USA
 permalink: /weathercraft/
 ---
 
-Blogs covering this project:
+Blogs:
 
 [WeatherCraft Blog part 1](https://mikemerin.github.io/WeatherCraft-blog-1/)
+
 [WeatherCraft Blog part 2](https://mikemerin.github.io/WeatherCraft-blog-2/)
 
 Github links:
 
 [Front End Application](https://github.com/mikemerin/WeatherCraft)
+
 [Back End API](https://github.com/mikemerin/WeatherCraftAPI)
 
 
