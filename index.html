@@ -4,10 +4,7 @@ layout: default
 
 
 <div id="content">
-  <div style="width: 100%; float:left">
-    <h1>test</h1>
-  </div>
-  <div style="width: 100%; float:right">
+  <div style="width: 50%; float:left">
     <div class="posts">
       {% for post in site.posts %}
         <article class="post">
@@ -22,6 +19,9 @@ layout: default
         </article>
       {% endfor %}
     </div>
+  </div>
+  <div style="width: 50%; float:right">
+    <h1>test</h1>
   </div>
   <br style="clear:both;"/>
 </div>
