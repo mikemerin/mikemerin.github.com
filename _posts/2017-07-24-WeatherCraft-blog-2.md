@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Custom Routes/Endpoints and Dynamic SQL Queries"
+title:  "Custom Routes, Endpoints and SQL Queries"
 subtitle: "WeatherCraft blog part 2: letting the back end do work for you"
 date:   2017-07-24 20:28:08 -0400
 categories: ruby, rails, SQL, activerecord, big data
