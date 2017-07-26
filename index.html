@@ -9,7 +9,9 @@ layout: default
       {% for post in site.posts %}
         <article class="post">
 
-          <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
+          <h1>Blog Entries</h1>
+          <br></br>
+          <h3><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
 
           <div class="entry">
             {{ post.excerpt }}
@@ -21,8 +23,10 @@ layout: default
     </div>
   </div>
   <div style="width: 25%; float:right">
-    <a href="{{ site.baseurl }}/weathercraft" class="read-more">WeatherCraft</a>
-    <img src="http://i.imgur.com/APiZxP0.png" />
+    <h1>Projects</h1>
+    <br></br>
+    <a href="{{ site.baseurl }}/weathercraft" class="read-more">WeatherCraft
+    <img src="http://i.imgur.com/APiZxP0.png"/></a>
   </div>
   <br style="clear:both;"/>
 </div>
