@@ -4,7 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-I'm a meteorologist changing careers to be a software engineer.
+I'm a meteorologist, teacher, and full stack web developer.
 
 ## Contact me
 
