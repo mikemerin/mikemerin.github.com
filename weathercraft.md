@@ -11,6 +11,8 @@ Blogs:
 
 [WeatherCraft Blog part 2](https://mikemerin.github.io/WeatherCraft-blog-2/)
 
+[WeatherCraft Blog part 4](https://mikemerin.github.io/WeatherCraft-blog-4/)
+
 Github links:
 
 [Front End Application](https://github.com/mikemerin/WeatherCraft)
