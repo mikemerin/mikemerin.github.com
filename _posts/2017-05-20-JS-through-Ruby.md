@@ -17,6 +17,9 @@ Ruby | JS Equivalent | Description
 ---|---|---
 ||**functions**
 N/A | ES6 / Arrow | New ES2017 shorthands for cleaning your code
+n.to_s | n.toString() | Converts to string
+"10".to_i | parseInt("10") | Converts to Integer
+"10".to_f | parseFloat("10") | Converts to Float (decimal)
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
