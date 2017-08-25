@@ -13,6 +13,20 @@ ES6  | Arrow Functions | Callbacks | while
  switch; case | .splice | .includes
  Object.keys() | Object.values() | .slice
 
+### Type Conversions
+```javascript
+var num = 5
+num.toString() //=> "5"
+
+// to integer: string, then radix (use 10 to stop errors,
+// things like 16 hexadimal, 2 binary, etc. are depreciated)
+parseInt("10") //=> 10
+parseInt("10", 10) //=> 10
+
+// to float (decimal)
+ parseFloat("10.5") //=> 10.5
+ ```
+
 ### ES6 Notation, Arrow Functions, and Implicit Returns
 Shorten/clean up your functions. These all do the same thing:
 ```javascript

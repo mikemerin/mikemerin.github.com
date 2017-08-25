@@ -18,10 +18,14 @@ We'll be going over these loops, iterations, and global methods:
 Ruby | Python Equivalent | Description
 ---|---|---
 ||**naming**
-Array | List | [1, 2, 3, 4]
+Array | List | [ 1, 2, 3, 4 ]
 Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
-N/A | Tuple | (1, 2, 3)
-
+N/A | Tuple | (1, 2, 3) (immutable)
+N/A | Set | { 1, 2, 3 } (immutable)
+||**functions**
+n.to_s | n.toString() | Converts to string
+"10".to_i | parseInt("10") | Converts to Integer
+"10".to_f | parseFloat("10") | Converts to Float (decimal)
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
