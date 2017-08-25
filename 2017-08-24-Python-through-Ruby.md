@@ -17,6 +17,11 @@ We'll be going over these loops, iterations, and global methods:
 
 Ruby | Python Equivalent | Description
 ---|---|---
+||**naming**
+Array | List | [1, 2, 3, 4]
+Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
+N/A | Tuple | (1, 2, 3)
+
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
