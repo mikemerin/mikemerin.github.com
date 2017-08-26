@@ -5,6 +5,123 @@ subtitle: "A Python Cheat Sheet"
 date:   2017-08-25 19:53:26 -0400
 categories: python, ruby, tutorial
 ---
+
+
+for
+```python
+a = [1,2,3,4,5]
+
+for x in a:
+  print a*2
+```
+
+map
+```python
+def double(n):
+  return n*2
+
+double(5) #=> 10
+
+a = [1,2,3,4,5]
+
+map(double, a) #=> [2,4,6,8,10]
+```
+
+lambda
+```python
+a = [1,2,3,4,5]
+
+map(lambda x: x*2, a) #=> [2,4,6,8,10]
+```
+
+filter
+```python
+def even(n):
+  return n%2 == 0
+
+even(4) #=> True
+even(5) #=> False
+
+a = [1,2,3,4,5]
+
+filter(even, a) #=> [2,4]
+```
+
+
+
+slice
+```python
+# a[low:high:spaces]
+a = ["a","b","c","d","e"]
+a[1:4] #=> ["b","c","d"]
+a[3:] #=> ["d","e"]
+a[:3] #=> ["a","b","c"]
+
+a[-1] #=> "e"
+a[-2] #=> "d"
+a[-2:] #=> ["d","e"]
+a[:-2] #=> ["a","b","c"
+
+a[1:4:2] #=> ["b","d"]
+a[::2] #=> ["a","c","e"]
+a[1::2] #=> ["b","d"]
+a[:3:2] #=> ["a","c"]
+
+a[::-1] #=> ["e","d","c","b","a"] (reverse)
+```
+
+dup
+```python
+a = [1,2,3,4,5]
+b = a
+b #=> [1,2,3,4,5]
+a[2] = 9
+a #=> [1,2,9,4,5]
+b #=> [1,2,9,4,5]
+
+a = [1,2,3,4,5]
+b = a[:]
+b #=> [1,2,3,4,5]
+a[2] = 9
+a #=> [1,2,9,4,5]
+b #=> [1,2,3,4,5]
+```
+range
+```python
+range(4) #=> [0, 1, 2, 3]
+range(4, 10) #=> [4, 5, 6, 7, 8, 9]
+range(4, 10, 2) #=> [4, 6, 8]
+range(0, -10, -3) #=> [0, -3, -6, -9]
+```
+
+no need to use procs
+```python
+def double(n):
+  return n*2
+
+def triple(n):
+  return n*3
+
+def multi(n, type):
+  return type(n)
+
+double(5) #=> 10
+triple(5) #=> 15
+multi(10, double) #=> 20
+```
+
+reduce
+```python
+a = [1,2,3,4,5]
+total = 0
+
+for x in a:
+  total += x
+
+reduce(lambda sum, x: sum + x, a)
+```
+
+
 If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. While JS has similar but more labor-intensive similarities, the syntax for Python is a little more abstract (at least at first). The lack of Ruby-like shortcuts in Python are very noticeable, and if like me you learned Ruby first you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and Python handle these shortcuts, iterations, and methods.
 
 I also have a [Javascript through Ruby](https://mikemerin.github.io/JS-through-Ruby/) post in the same fashion as this post if you're interested.
@@ -23,9 +140,10 @@ Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
 N/A | Tuple | (1, 2, 3) (immutable)
 N/A | Set | { 1, 2, 3 } (immutable)
 ||**functions**
-n.to_s | n.toString() | Converts to string
-"10".to_i | parseInt("10") | Converts to Integer
-"10".to_f | parseFloat("10") | Converts to Float (decimal)
+n.to_s | str(n) | converts to string
+"10".to_i | int("10") | converts to Integer 10
+"10".to_f | float("10") | converts to Float 10.0
+x.length | len(x) | length of an object (str, list, etc.)
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
@@ -50,34 +168,8 @@ case; each | switch; case | shorthand multiple `if` statements
 ||**more functions**
 call/procs | callbacks | function called within a function
 
-# ES6 Notation, Arrow Functions, Implicit Returns
----
-I'll be shortening my JS scripts with ES6 JS notation and/or *arrow functions*. This lets us turn our functions into cleaner looking arrow functions which do the same exact thing:
-```javascript
-// Javascript
-array.forEach( function(x) { array2.push(x) } )
-array.forEach( (x) => { array2.push(x) } )
 
-array.forEach( function(x, y) { array2.push(x * y) } )
-array.forEach( (x, y) => { array2.push(x * y) } )
-```
-Also, when there's only one element (in this case "x"), we can remove the parentheses:
-```javascript
-array.forEach( x => { array2.push(x) } )
-```
-Now there's less characters cluttering up the space and it's easier to see what the function points to (literally). It's also a good thing to know about something called "implicit returns", which means the arrow function will call `return` automatically without you having to type it in! You can do this by not using `{}` after the arrrows (you can surround them in `()` if you want to do multi-line).
-
-These all do the same thing:
-```javascript
-function(x) { return x * 2 }
-(x) => { return x * 2 }
-x => { return x * 2 }
-(x) => x * 2   // without the {} this implicitly returns
-x => x * 2     // same here
-(x) => (x * 2) // same here
-```
-
-# looping with `while`
+<!-- # looping with `while`
 ---
 Let's start off with the easiest example. These methods are almost identical in both Ruby and Javascript, in fact the only thing that's different is the syntax (using `var` and `{}` ). Here's a quick example:
 ```ruby
@@ -236,8 +328,8 @@ These both print out:
 
 "the index is 0, the element is Hello"
 
-"the index is 1, the element is World"
-# Iterating and manipulating with `.map`
+"the index is 1, the element is World" -->
+# Iterating and manipulating with - Ruby: `.map`, Python: `map()`
 ---
 Our newfound `.forEach` is great, but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? In comes `.map` which simply outputs our answer each time we call it! It's used in the same way we use `.forEach`. For example if we have `array = [1,2,3,4,5]` and compare `.each/.forEach` vs. `.map`:
 ```ruby
