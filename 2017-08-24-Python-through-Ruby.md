@@ -15,6 +15,21 @@ for x in a:
   print a*2
 ```
 
+each with index equivalent
+```python
+a = ["a","b","c","d","e"]
+for i, x in enumerate(a):
+  print x + " is at index " + str(i)
+
+''' result:
+a is at index 0
+b is at index 1
+c is at index 2
+d is at index 3
+e is at index 4
+'''
+```
+
 map
 ```python
 def double(n):
@@ -147,7 +162,7 @@ x.length | len(x) | length of an object (str, list, etc.)
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
-for | for / for..in | iterate over each element, more used in JS
+for | for | iterate over each element, more used in Python
 .each | .forEach | iterate over each element
 .each.with_index | .forEach | same, but also get the index
 .map | .map | iterate over each element, changes the output
