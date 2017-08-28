@@ -41,11 +41,10 @@ for | for | iterate over each element, more used in Python
 .flatten | TBD | merge multi-dimensional / nested arrays
 .compact | TBD | remove `nil` or `null` values from an array
 .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-case; each | switch; case | shorthand multiple `if` statements
-.insert | .splice | add element(s) from array/string
-.delete_at / .slice! | .splice | remove element(s) from array/string
+case; each | if/elif or dict | shorthand multiple `if` statements
+.insert | .insert(idx, elem) | add element(s) from array/string
+.delete | del a[idx:idx2] | remove element(s) from array/string
 ||**selecting methods**
-.include? | .includes | test if an element is included in an array/string
 .keys | for %s % k | get all keys in a hash
 .values | for %s % d[k] | get all values in a hash
 .slice | a[l:h:s] | select element(s) from array
@@ -213,6 +212,102 @@ These both print out:
 "the index is 0, the element is Hello"
 
 "the index is 1, the element is World" -->
+
+# Names of data types
+---
+Before we begin we'll need to just cover some basic terminology to avoid confusion when talking about Ruby vs. Python. There are a few data types that are the same in both Ruby and Python but have different names:
+
+Ruby | Python
+array = list = [1, 2, 3]
+hash = dictionary = { 1: "one", 2: "two", 3: "three" }
+
+In addition Python has a few immutable data types:
+
+tuple = (1, 2, 3)
+set = { 1, 2, 3 }
+
+Those will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
+
+# Functions to change data types
+---
+Ruby has quite a few types of `.to_something` that can change the data types. This section will also be short and sweet as it's fairly direct:
+
+Converting to strings:
+
+```ruby
+# Ruby
+150.to_s #=> "150"
+```
+```python
+# Python
+str(150) #=> "150"
+```
+
+Converting to an integer:
+
+```ruby
+# Ruby
+"10".to_i #=> 10
+```
+```python
+# Python
+int("10") #=> 10
+```
+
+Converting to a float:
+
+```ruby
+# Ruby
+"10".to_f #=> 10.0
+10.to_f #=> 10.0
+```
+```python
+# Python
+float("10") #=> 10.0
+float(10) #=> 10.0
+```
+
+# Length of a string, array/list, or hash/dictionary
+---
+You've probably noticed by now that Ruby has a lot more emphasis on calling functions on an object via `object.do_something` versus Python calling objects inside a function via `do_something(object)`. This is the same for for the length function:
+
+```ruby
+# Ruby
+[1, 2, 3, 4].size #=> 4
+[1, 2, 3, 4].length #=> 4
+"hey everyone".size #=> 12
+"hey everyone".length #=> 12
+```
+```python
+# Python
+len([1, 2, 3, 4]) #=> 4
+len("hey everyone") #=> 12
+```
+
+||**loops**
+while / until | while | loops while condition is true
+||**iteration**
+for | for | iterate over each element, more used in Python
+.each.with_index | for & enumerate | same, but also get the index
+.map | map | iterate over each element, changes the output
+.map.with_index | map | same, but also get the index
+||**manipulating methods**
+.dup |
+.reduce / .inject | reduce() | combines all elements via an operation
+.flatten | TBD | merge multi-dimensional / nested arrays
+.compact | TBD | remove `nil` or `null` values from an array
+.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
+case; each | if/elif or dict | shorthand multiple `if` statements
+.insert | .insert(idx, elem) | add element(s) from array/string
+.delete | del a[idx:idx2] | remove element(s) from array/string
+||**selecting methods**
+.keys | for %s % k | get all keys in a hash
+.values | for %s % d[k] | get all values in a hash
+.slice | a[l:h:s] | select element(s) from array
+||**more functions**
+call/procs | no need | function called within a function
+
+
 # Iterating and manipulating with - Ruby: `.map`, Python: `map()`
 ---
 Our newfound `.forEach` is great, but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? In comes `.map` which simply outputs our answer each time we call it! It's used in the same way we use `.forEach`. For example if we have `array = [1,2,3,4,5]` and compare `.each/.forEach` vs. `.map`:
