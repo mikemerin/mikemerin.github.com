@@ -6,137 +6,6 @@ date:   2017-08-25 19:53:26 -0400
 categories: python, ruby, tutorial
 ---
 
-
-for
-```python
-a = [1,2,3,4,5]
-
-for x in a:
-  print a*2
-```
-
-each with index equivalent
-```python
-a = ["a","b","c","d","e"]
-for i, x in enumerate(a):
-  print x + " is at index " + str(i)
-
-''' result:
-a is at index 0
-b is at index 1
-c is at index 2
-d is at index 3
-e is at index 4
-'''
-```
-
-map
-```python
-def double(n):
-  return n*2
-
-double(5) #=> 10
-
-a = [1,2,3,4,5]
-
-map(double, a) #=> [2,4,6,8,10]
-```
-
-lambda
-```python
-a = [1,2,3,4,5]
-
-map(lambda x: x*2, a) #=> [2,4,6,8,10]
-```
-
-filter
-```python
-def even(n):
-  return n%2 == 0
-
-even(4) #=> True
-even(5) #=> False
-
-a = [1,2,3,4,5]
-
-filter(even, a) #=> [2,4]
-```
-
-
-
-slice
-```python
-# a[low:high:spaces]
-a = ["a","b","c","d","e"]
-a[1:4] #=> ["b","c","d"]
-a[3:] #=> ["d","e"]
-a[:3] #=> ["a","b","c"]
-
-a[-1] #=> "e"
-a[-2] #=> "d"
-a[-2:] #=> ["d","e"]
-a[:-2] #=> ["a","b","c"
-
-a[1:4:2] #=> ["b","d"]
-a[::2] #=> ["a","c","e"]
-a[1::2] #=> ["b","d"]
-a[:3:2] #=> ["a","c"]
-
-a[::-1] #=> ["e","d","c","b","a"] (reverse)
-```
-
-dup
-```python
-a = [1,2,3,4,5]
-b = a
-b #=> [1,2,3,4,5]
-a[2] = 9
-a #=> [1,2,9,4,5]
-b #=> [1,2,9,4,5]
-
-a = [1,2,3,4,5]
-b = a[:]
-b #=> [1,2,3,4,5]
-a[2] = 9
-a #=> [1,2,9,4,5]
-b #=> [1,2,3,4,5]
-```
-range
-```python
-range(4) #=> [0, 1, 2, 3]
-range(4, 10) #=> [4, 5, 6, 7, 8, 9]
-range(4, 10, 2) #=> [4, 6, 8]
-range(0, -10, -3) #=> [0, -3, -6, -9]
-```
-
-no need to use procs
-```python
-def double(n):
-  return n*2
-
-def triple(n):
-  return n*3
-
-def multi(n, type):
-  return type(n)
-
-double(5) #=> 10
-triple(5) #=> 15
-multi(10, double) #=> 20
-```
-
-reduce
-```python
-a = [1,2,3,4,5]
-total = 0
-
-for x in a:
-  total += x
-
-reduce(lambda sum, x: sum + x, a)
-```
-
-
 If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. While JS has similar but more labor-intensive similarities, the syntax for Python is a little more abstract (at least at first). The lack of Ruby-like shortcuts in Python are very noticeable, and if like me you learned Ruby first you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and Python handle these shortcuts, iterations, and methods.
 
 I also have a [Javascript through Ruby](https://mikemerin.github.io/JS-through-Ruby/) post in the same fashion as this post if you're interested.
@@ -163,25 +32,25 @@ x.length | len(x) | length of an object (str, list, etc.)
 while / until | while | loops while condition is true
 ||**iteration**
 for | for | iterate over each element, more used in Python
-.each | .forEach | iterate over each element
-.each.with_index | .forEach | same, but also get the index
-.map | .map | iterate over each element, changes the output
-.map.with_index | .map | same, but also get the index
+.each.with_index | for & enumerate | same, but also get the index
+.map | map | iterate over each element, changes the output
+.map.with_index | map | same, but also get the index
 ||**manipulating methods**
-.reduce / .inject | .reduce | combines all elements via an operation
-.flatten | .concat | merge multi-dimensional / nested arrays
-.compact | .filter | remove `nil` or `null` values from an array
-.sort / .sort_by | .sort | sort an array or hash/Object
+.dup |
+.reduce / .inject | reduce() | combines all elements via an operation
+.flatten | TBD | merge multi-dimensional / nested arrays
+.compact | TBD | remove `nil` or `null` values from an array
+.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
 case; each | switch; case | shorthand multiple `if` statements
 .insert | .splice | add element(s) from array/string
 .delete_at / .slice! | .splice | remove element(s) from array/string
 ||**selecting methods**
 .include? | .includes | test if an element is included in an array/string
-.keys | Object.keys() | get all keys in a hash
-.values | Object.values() | get all values in a hash
-.slice | .slice | select element from array (different in Ruby vs. JS)
+.keys | for %s % k | get all keys in a hash
+.values | for %s % d[k] | get all values in a hash
+.slice | a[l:h:s] | select element(s) from array
 ||**more functions**
-call/procs | callbacks | function called within a function
+call/procs | no need | function called within a function
 
 
 <!-- # looping with `while`
