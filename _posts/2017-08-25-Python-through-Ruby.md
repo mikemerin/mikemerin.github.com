@@ -67,7 +67,7 @@ In addition Python has a few immutable data types:
 tuple = (1, 2, 3)
 set = { 1, 2, 3 }
 
-While tuples are used in Ruby they don't really have a name. It's basically used when taking in arguments such as `Time.local(2017, 8, 25)`. In Python that would be called a tuple but it's just arguments in Ruby. You must `require 'set'` in order to `Set.new [1, 2, 3]` in Ruby and aren't commonly used. More explanations of the last two types will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
+While tuples are used in Ruby they don't really have a name. It's basically used when taking in arguments such as `Time.local(2017, 8, 25)`. In Python that would be called a tuple but it's just arguments in Ruby. In order to use sets in Ruby you must `require 'set'` before you can `Set.new [1, 2, 3]`, and een then sets aren't commonly used in Ruby. More explanations of the last two types will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
 
 # String Interpolation
 ---
