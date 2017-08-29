@@ -24,6 +24,7 @@ Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
 N/A | Tuple | (1, 2, 3) (immutable)
 N/A | Set | { 1, 2, 3 } (immutable)
 ||**functions**
+"#{obj}" | "{}".format() / "%s" % obj | string interpolation
 n.to_s | str(n) | converts to string
 "10".to_i | int("10") | converts to Integer 10
 "10".to_f | float("10") | converts to Float 10.0
@@ -226,7 +227,180 @@ In addition Python has a few immutable data types:
 tuple = (1, 2, 3)
 set = { 1, 2, 3 }
 
-Those will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
+While tuples are used in Ruby they don't really have a name. It's basically used when taking in arguments such as `Time.local(2017, 8, 25)`. In Python that would be called a tuple but it's just arguments in Ruby. You must `require 'set'` in order to `Set.new [1, 2, 3]` in Ruby and aren't commonly used. More explanations of the last two types will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
+
+# String Interpolation
+---
+Ruby and Javascript's only difference when it comes to string interpolation is a pound `#` sign vs. a dollar `$` sign respectively. While Python's quite different and a bit more complex, it lets you do **much** more customization. Here's what I mean, in Ruby you can do something like this:
+
+```ruby
+animal = "dog"
+name = "Lily"
+age = 8
+
+puts "#{name}, the #{age} year old #{animal}."
+#=> "Lily, the 8 year old dog."
+```
+
+As you can see, whenever you want to interpolate something in your string, if you have double quotes `""` you can wrap your object in `#{this}` to get it working. There are two ways to do this in Python. The first uses `.format`:
+
+```python
+animal = "dog"
+name = "Lily"
+age = 8
+
+print("{}, the {} year old {}").format(name, age, animal)
+#=> "Lily, the 8 year old dog."
+```
+
+While using curly brackets are similar, what Python does is go through the string and any time it finds a placeholder `{}` it goes through an argument to format the string accordingly. If we wanted to, we can put numbers in our `{}` brackets to choose which argument to format our strings in, and this will also let us repeatedly use an argument without having to put it into the tuple over and over again.
+
+```python
+animal = "dog"
+name = "Lily"
+age = 8
+
+print("My {2} {0} is {1} years old. {0} is a very sweet {2}.").format(name, age, animal)
+#=> My dog Lily is 8 years old. Lily is a very sweet dog.
+```
+You can see how this can be useful in very long sentences. There's MUCH more you can do as well, but I'll just cover two quick things:
+
+```python
+animal = "dog"
+name = "Lily"
+age = 8
+
+print("My {2} {0} is {1:d} years old. {0} is a very {desc} {2}.").format(name, age, animal, desc="silly")
+#=> My dog Lily is 8 years old. Lily is a very silly dog.
+```
+
+I did two things here: the `{1:d}` denotes that argument as an integer, and the `{desc}` searches for which argument has the name of "desc". Again there's MUCH more we can do but we'll talk about them in another post. For now, while the placeholder `{}` works alright we can do things another way as well that's built off the data types:
+
+```python
+animal = "dog"
+name = "Lily"
+age = 8
+
+print "%s, the %d year old %s" % (name, age, animal)
+#=> "Lily, the 8 year old dog."
+```
+
+What Python does is go through the string, and if you put a `%` after the string it will go through the string searching for `%` and match them up to the argument(s) you put after it, matching each argument in order that it appears. You'll also notice I use both `%s` and `%d`, which is for string and integer respectively (I believe the d stands for digit). I can technically use `%s` for all of them since they'll all end up as a string.
+
+Here's some of the ways you can choose to interpolate:
+
+```python
+%s # string, or any type of object that can interpolate as a string instead
+%d # integer / digit
+ print("%d") % 60 #=> 60
+%f # float
+ print("%f") % 60 #=> 60.000000
+%.<number>f # float out to x digits
+ print("%.9f") % 60 #=> 60.000000000
+%e # float formatted to exponential
+ print("%e") % 60 #=> 6.000000e+01
+%g # ingeter formatted to exponential if more than 4 zeroes
+ print("%g") % 60 #=> 60
+ print("%g") % 600000000 #=> 60e+08
+%x # number formatted to hexadecimal
+ print("%x") % 60 #=> 3c
+%o # number formatted to octal
+ print("%o") % 60 #=> 74
+```
+
+Please note that ALL of the above also works with the `{}` format from before, aka `print("{0:.5g}").format(1384356)` would output `1.3844e+06`.
+
+Last up is breaking out of an interpolation. In Ruby if you wanted to use the same type of quote you'd use a slash `\` to break out of the string, aka `"He said \"wow\" that's useful."` and it wouldn't break. In Python you'd simply put a double `%` to put in a percentage sign without breaking the string. For example if I wanted to say "The tank is 50% full" I'd do:
+
+```python
+print("The tank is %d%% full.") % 50
+#=>  The tank is 50% full.
+```
+
+# Structure
+---
+One of the biggest, and possibly my favorite parts so far about Python is the way the language is structured. In Ruby you need to use `end` after you `do` something or declare something, however you won't see `end` when looking at Python scripts. Why? Python uses whitespace to structure scripts which makes it arguably much easier to read. If you're doing something inside a function, if you end a line with a colon `:`, just add some whitespace on the next line and Python will know you're inside it. Once you return to the left-most side Python will know you're moving on. Here's what I mean:
+
+```ruby
+# Ruby
+x = 5
+if x < 10
+  puts "x is small"
+else
+  puts "x is large"
+end
+```
+
+```python
+# Python
+x = 5
+if x < 10:
+  print "x is small"
+else:
+  print "x is large"
+```
+
+So there are two things that are different here: the colon after `x < 10` and `else`, and there's no `end`. It doesn't look like much here, but when our programs grow and we have more and more functions or objects then Python looks much, much neater. Let's take a look at some Object Oriented programming to see what we mean:
+
+```ruby
+# Ruby
+class Animal
+
+  attr_accessor :animal_type, :name, :age
+
+  def initialize(animal_type, name, age)
+    @animal_type = animal_type
+    @name = name
+    @age = age
+  end
+
+  def info
+    puts "#{name}, the #{age} year old #{animal_type}"
+  end
+
+end
+
+class Car
+
+  attr_accessor :name, :age
+
+  def initialize(make, model, year)
+    @make = make
+    @model = model
+    @year = year
+  end
+
+  def info
+    puts "The car is a #{year} #{make} #{model}"
+  end
+
+end
+```
+
+Now we have two classes, and can make a new animal by typing in `my_pet = Animal.new("dog", "Lily", 8)`. Here's how the same thing looks in Python:
+
+```python
+# python
+class Animal:
+  def __init__(self, animal_type, name, age):
+    self.animal_type = animal_type
+    self.name = name
+    self.age = age
+  def info(self):
+    print "%s, the %d year old %s" % (self.name, self.age, self.animal_type)
+
+class Car
+  def __init__(self, make, model, year):
+    self.make = make
+    self.model = model
+    self.year = year
+  def info(self):
+    print "The car is a %d %s %s" % (self.year, self.make, self.model)
+```
+
+The use of indenting the whitespace is very neat and makes the code much more readable. You can clearly see the cascade of where one part starts and the next continues. It's very much like a bulleted list. You can make a new animal by typing in `my_pet = Animal("dog", "Lily", 8)`.
+
+
 
 # Functions to change data types
 ---
@@ -284,7 +458,11 @@ len([1, 2, 3, 4]) #=> 4
 len("hey everyone") #=> 12
 ```
 
-||**loops**
+# While / until
+---
+
+
+
 while / until | while | loops while condition is true
 ||**iteration**
 for | for | iterate over each element, more used in Python
