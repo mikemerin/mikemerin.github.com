@@ -34,7 +34,7 @@ N/A | Set | { 1, 2, 3 } (immutable)
 x.length | len(x) | length of an object (str, list, etc.)
 push / << | append | add onto the end of an array
 pop(x) | pop(x) | remove from the end of the array (different)
-unshift | append | add onto the beginning of an array
+unshift | a = [x] + a | add onto the beginning of an array
 shift(x) | pop(0) | remove from the beginning of the array
 ||**loops**
 while / until | while | loops while condition is true
@@ -363,11 +363,28 @@ Unlike `push` though, Python's `append` is much more limited and works more like
 # Python
 array = [1, 2, 3, 4]
 array.append(5) #=> [1, 2, 3, 4, 5]
+array = array + [6, 7] #=> [1, 2, 3, 4, 5, 6, 7]
 ```
 
-#### Ruby: unshift | Python: append
+#### Ruby: unshift | Python: a = [x] + a
 
-add onto the beginning of an array
+There's no direct `unshift` in Python, so we have to manually add it together:
+
+```ruby
+# Ruby
+array = [1, 2, 3, 4]
+array.unshift(0) #=> [0, 1, 2, 3, 4]
+array.unshift(-2, -1) #=> [-2, -1, 0, 1, 2, 3, 4]
+```
+
+```python
+# Python
+array = [1, 2, 3, 4]
+array = [0] + array  #=> [0, 1, 2, 3, 4]
+array = [-2, -1] + array #=> [-2, -1, 0, 1, 2, 3, 4]
+```
+
+
 
 
 pop(x) | pop(x) | remove from the end of the array (different)
