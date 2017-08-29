@@ -26,10 +26,10 @@ Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
 N/A | Tuple | (1, 2, 3) (immutable)
 N/A | Set | { 1, 2, 3 } (immutable)
 ||**functions**
-`"#{obj}"` | "{}".format() / "%s" % obj | string interpolation
-n.to_s | str(n) | converts to string
-"10".to_i | int("10") | converts to Integer 10
-"10".to_f | float("10") | converts to Float 10.0
+`"#{obj}"` | `"{}".format()` / `"%s" % obj` | string interpolation
+`n.to_s` | `str(n)` | converts to string
+`"10".to_i` | `int("10")` | converts to Integer 10
+`"10".to_f` | `float("10")` | converts to Float 10.0
 x.length | len(x) | length of an object (str, list, etc.)
 ||**loops**
 while / until | while | loops while condition is true
