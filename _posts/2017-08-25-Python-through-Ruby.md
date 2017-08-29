@@ -25,12 +25,17 @@ Array | List | [ 1, 2, 3, 4 ]
 Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
 N/A | Tuple | (1, 2, 3) (immutable)
 N/A | Set | { 1, 2, 3 } (immutable)
+||**string interpolation**
+`"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
 ||**functions**
-`"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | string interpolation
 `n.to_s` | `str(n)` | converts to string
 `"10".to_i` | `int("10")` | converts to Integer 10
 `"10".to_f` | `float("10")` | converts to Float 10.0
 x.length | len(x) | length of an object (str, list, etc.)
+push \ `<<` | append | add onto the end of an array
+pop(x) | pop(x) | remove from the end of the array (different)
+unshift | append | add onto the beginning of an array
+shift(x) | pop(0) | remove from the beginning of the array
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
@@ -67,7 +72,7 @@ In addition Python has a few immutable data types:
 tuple = (1, 2, 3)
 set = { 1, 2, 3 }
 
-While tuples are used in Ruby they don't really have a name. It's basically used when taking in arguments such as `Time.local(2017, 8, 25)`. In Python that would be called a tuple but it's just arguments in Ruby. In order to use sets in Ruby you must `require 'set'` before you can `Set.new [1, 2, 3]`, and een then sets aren't commonly used in Ruby. More explanations of the last two types will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
+While tuples are used in Ruby they don't really have a name. It's basically used when taking in arguments such as `Time.local(2017, 8, 25)`. In Python that would be called a tuple but it's just arguments in Ruby. In order to use sets in Ruby you must `require 'set'` before you can `Set.new [1, 2, 3]`, and een then sets aren't commonly used in Ruby. More explanations of tuples and sets will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
 
 # String Interpolation
 ---
@@ -171,23 +176,29 @@ One of the biggest, and possibly my favorite parts so far about Python is the wa
 ```ruby
 # Ruby
 x = 5
-if x < 10
-  puts "x is small"
+y = 10
+if x < y
+  puts "x is smaller than y"
+  puts "#{y} - #{x} = #{y-x}"
 else
-  puts "x is large"
+  puts "x is larger than y"
+  puts "#{x} - #{y} = #{x-y}"
 end
 ```
 
 ```python
 # Python
 x = 5
-if x < 10:
-  print "x is small"
+y = 10
+if x < y:
+  print "x is smaller than y"
+  print "{} - {} = {}".format(y, x, y-x)
 else:
-  print "x is large"
+  print "x is larger than y"
+  print "{} - {} = {}".format(x, y, x-y)
 ```
 
-So there are two things that are different here: the colon after `x < 10` and `else`, and there's no `end`. It doesn't look like much here, but when our programs grow and we have more and more functions or objects then Python looks much, much neater. Let's take a look at some Object Oriented programming to see what we mean:
+So there are two things that are different here: the colon after `x < 10` and `else`, and there's no `end`. It doesn't look like much here, but when our programs grow and we have more and more functions or objects then Python looks much, much neater. Let's take a look at some Object Oriented programming to see what we mean. Don't worry if this is confusing, we're merely taking a look at how the scripts are structured:
 
 ```ruby
 # Ruby
@@ -305,16 +316,21 @@ len("hey everyone") #=> 12
 ```
 
 
+push \ `<<` | append | add onto the end of an array
+pop(x) | pop(x) | remove from the end of the array (different)
+unshift | append | add onto the beginning of an array
+shift(x) | pop(0) | remove from the beginning of the array a[1:len(a)]
+
+
+
 # WORK IN PROGRESS BELOW
 ---
-
-
 
 
 # While / until
 ---
 
-Onto loops! Let's start off with the easiest example.
+Onto loops! Let's start off with the easiest example of the while loop.
 
 ```ruby
 # Ruby
@@ -327,45 +343,30 @@ end
 array #=> [1,2,3,4,5]
 ```
 
-
-
-
-<!-- # looping with `while`
----
-Let's start off with the easiest example. These methods are almost identical in both Ruby and Javascript, in fact the only thing that's different is the syntax (using `var` and `{}` ). Here's a quick example:
-```ruby
-# Ruby
+```python
+# Python
 array = []
 x = 1
-while x < 6
-    array.push(x)
+while x < 6:
+    array.append(x)
     x += 1
-end
+
 array #=> [1,2,3,4,5]
 ```
-```javascript
-// Javascript
-var array = []
-var x = 1
-while (x < 6) {
-    array.push(x)
-    x += 1
-}
-array //=> [1,2,3,4,5]
-```
+
 Let's do a side-by-side:
 
-Ruby | Javascript | Difference
+Ruby | Python | Difference
 ---|---|---
-array = [] | var array = [] | var for JS (can also do let)
-x = 1 | var x = 1 | same, doing var (or let)
-while x < 6 | while (x < 6) | JS needs its test to be in parenthesis `()`
-array.push(x) | { array.push(x) | same, but JS needs to be in a block `{}`
-x += 1 | x += 1 | same (but in JS you can also do `x++`)
-end | } | JS must ends by closing off the curly bracket
+array = [] | array = [] | N/A
+x = 1 | x = 1 | N/A
+while x < 6 | while x < 6: | Python needs a colon `:` to go to the next line
+array.push(x) | array.append(x) | push is append and the lines needs to be indented
+x += 1 | x += 1 | same (but indented)
+end |  | only Ruby needs `end`, Python just needs to be un-indented
 array | array | both #=> [1,2,3,4,5]
 
-While Ruby does much of the work for us, JS we need to manually put in the parentheses and curly brackets. However knowing this means we can more easily do one line solutions (helpful if combining with other complex scripts):
+They're almost identical, but Python needs the colon `:` to say we're going to use the lines under the original one, and then those lines need to be indented. Once the lines un-indent Python knows that we're done working with the original line. However there are some tricks to doing one line solutions (helpful if combining with other complex scripts):
 ```ruby
 # Ruby
 array = []
@@ -373,14 +374,15 @@ x = 1
 while x < 6; array.push(x); x += 1 end
 array #=> [1,2,3,4,5]
 ```
-```javascript
-// Javascript
+```python
+# Python
 array = []
 x = 1
-while ( x < 6 ) { array.push(x); x++ }
-array //=> [1,2,3,4,5]
+while x < 6: a.append(x); x += 1
+array #=> [1,2,3,4,5]
 ```
-While in this case our JS looks a bit cleaner, this is by no means the cleanest way to do this type of operation. Ruby has quite a few ways to shorten this, including a trick using `.reduce` (also known as `.inject` in Ruby only), but I'll cover that later on.
+While in this case our Python script looks a bit cleaner, this is by no means the cleanest way to do this type of operation. Ruby has quite a few ways to shorten this, including a trick using `.reduce` (also known as `.inject` in Ruby only), but I'll cover that later on.
+
 # Using `for`
 ---
 While `for` isn't used much in Ruby (since `while`, `until`, or other iterations can do much more, are cleaner, and get the job done easier), it's very important in JS. While this is a nice trick in Ruby:
