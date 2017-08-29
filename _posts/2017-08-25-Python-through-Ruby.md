@@ -32,7 +32,7 @@ N/A | Set | { 1, 2, 3 } (immutable)
 `"10".to_i` | `int("10")` | converts to Integer 10
 `"10".to_f` | `float("10")` | converts to Float 10.0
 x.length | len(x) | length of an object (str, list, etc.)
-push \ `<<` | append | add onto the end of an array
+push / `<<` | append | add onto the end of an array
 pop(x) | pop(x) | remove from the end of the array (different)
 unshift | append | add onto the beginning of an array
 shift(x) | pop(0) | remove from the beginning of the array
@@ -198,7 +198,33 @@ else:
   print "{} - {} = {}".format(x, y, x-y)
 ```
 
-So there are two things that are different here: the colon after `x < 10` and `else`, and there's no `end`. It doesn't look like much here, but when our programs grow and we have more and more functions or objects then Python looks much, much neater. Let's take a look at some Object Oriented programming to see what we mean. Don't worry if this is confusing, we're merely taking a look at how the scripts are structured:
+So there are two things that are different here: the colon after `x < 10` and `else`, and there's no `end`. It doesn't look like much here, but when our programs grow and we have more and more functions or objects then Python looks much, much neater. As far as working towards one liners, Ruby basically simply uses semi-colons `;`, and Python uses those same colons `:` to declare and then and semi-colons `;` to use our scripts:
+
+```ruby
+# Ruby
+x = 5
+y = 10
+if x < y; puts "small"; else puts "large" end
+# or
+puts (if x < y; "small"; else "large" end)
+# or the ternary
+puts (x < y ? "small" : "large")
+```
+
+```python
+# Python
+x = 5
+y = 10
+# mainly use this first example when writing code
+print ("small" if x < y else "large")
+# or a pseudo ternary (not used as much)
+print( ("large", "small") [x < y] )
+#=> aka print( ("F", "T")[True])
+# or the more explicit using a dictionary (however it evaluates both)
+print ( {False: "large", True: "small"} [x<y] )
+```
+
+Let's take a look at some Object Oriented programming to see what we mean. Don't worry if this is confusing, we're merely taking a look at how the scripts are structured:
 
 ```ruby
 # Ruby
@@ -315,8 +341,33 @@ len([1, 2, 3, 4]) #=> 4
 len("hey everyone") #=> 12
 ```
 
+# Modifying an Array
+---
+While Ruby and JS have the same push/pop/unshift/shift methods for modifying arrays, only Python's `.append` is the exact same as `.push`. Let's quickly go through them and how we can both directly and indirectly handle the same types of functions.
 
-push \ `<<` | append | add onto the end of an array
+#### Ruby: push / << | Python: append
+
+Ruby's `push` or shovel `<<` operator works the same as Python's `append`, which adds element(s) onto the end of an array.
+
+```ruby
+# Ruby
+array = [1, 2, 3, 4]
+array.push(5) #=> [1, 2, 3, 4, 5]
+array.push(6, 7) #=> [1, 2, 3, 4, 5, 6, 7]
+array << 8 #=> [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+Unlike `push` though, Python's `append` is much more limited and works more like the shovel operator which can only handle a single argument.
+
+```python
+# Python
+array = [1, 2, 3, 4]
+array.append(5) #=> [1, 2, 3, 4, 5]
+```
+
+
+
+ | add onto the end of an array
 pop(x) | pop(x) | remove from the end of the array (different)
 unshift | append | add onto the beginning of an array
 shift(x) | pop(0) | remove from the beginning of the array a[1:len(a)]
