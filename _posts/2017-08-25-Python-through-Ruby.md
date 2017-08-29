@@ -365,11 +365,13 @@ array = [1, 2, 3, 4]
 array.append(5) #=> [1, 2, 3, 4, 5]
 ```
 
+#### Ruby: unshift | Python: append
+
+add onto the beginning of an array
 
 
- | add onto the end of an array
 pop(x) | pop(x) | remove from the end of the array (different)
-unshift | append | add onto the beginning of an array
+
 shift(x) | pop(0) | remove from the beginning of the array a[1:len(a)]
 
 
