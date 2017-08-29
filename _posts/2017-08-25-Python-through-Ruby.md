@@ -32,7 +32,7 @@ N/A | Set | { 1, 2, 3 } (immutable)
 `"10".to_i` | `int("10")` | converts to Integer 10
 `"10".to_f` | `float("10")` | converts to Float 10.0
 x.length | len(x) | length of an object (str, list, etc.)
-push / `<<` | append | add onto the end of an array
+push / << | append | add onto the end of an array
 pop(x) | pop(x) | remove from the end of the array (different)
 unshift | append | add onto the beginning of an array
 shift(x) | pop(0) | remove from the beginning of the array
