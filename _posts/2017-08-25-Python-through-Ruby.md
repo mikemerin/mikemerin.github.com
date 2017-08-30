@@ -53,7 +53,6 @@ case; each | if/elif or dict | shorthand multiple `if` statements
 .insert | .insert(idx, elem) | add element(s) from array/string
 .delete_at | del a[idx:idx2] | remove element(s) from array/string
 .delete(e) | .remove(e) | remove element by element
-.
 ||**selecting methods**
 .keys | for %s % k | get all keys in a hash
 .values | for %s % d[k] | get all values in a hash
