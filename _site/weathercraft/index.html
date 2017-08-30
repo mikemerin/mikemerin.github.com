@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WeatherCraft – Mike Merin's Code Corner – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I'm a meteorologist-turned-programmer. You can find my projects and blog here.">
+    <meta property="og:description" content="I'm a meteorologist-turned-programmer. You can find my projects and blog here." />
+    
+    <meta name="author" content="Mike Merin's Code Corner" />
+
+    
+    <meta property="og:title" content="WeatherCraft" />
+    <meta property="twitter:title" content="WeatherCraft" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Mike Merin's Code Corner - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">Mike Merin's Code Corner</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav>
+            <a href="https://mikemerin.github.io/" target="_blank">Blog</a>
+            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="page">
+
+  <h1>WeatherCraft</h1>
+
+  <div class="entry">
+    <p>Blogs:</p>
+
+<p><a href="https://mikemerin.github.io/WeatherCraft-blog-1/">WeatherCraft Blog part 1</a></p>
+
+<p><a href="https://mikemerin.github.io/WeatherCraft-blog-2/">WeatherCraft Blog part 2</a></p>
+
+<p><a href="https://mikemerin.github.io/WeatherCraft-blog-4/">WeatherCraft Blog part 4</a></p>
+
+<p>Github links:</p>
+
+<p><a href="https://github.com/mikemerin/WeatherCraft">Front End Application</a></p>
+
+<p><a href="https://github.com/mikemerin/WeatherCraftAPI">Back End API</a></p>
+
+<h1 id="weathercraftapp">WeatherCraftApp</h1>
+
+<p><img src="http://imgur.com/APiZxP0.png" alt="KNYC 20160123 Front End" /></p>
+
+<p>This React application allows a user to view all data of weather conditions that occurred for any date and location in the US over the past 10 years, including clear weather graphs to help visualize the weather breakdowns.</p>
+
+<p>For any date and location, a user can view the main info for that day, including its daily and weekly data.</p>
+
+<p>The API creates neat JSON data for stations:</p>
+
+<p><img src="http://imgur.com/RW9IPSb.png" alt="Central Park Station" /></p>
+
+<p>Daily data:</p>
+
+<p><img src="http://imgur.com/BK1dZCW.png" alt="Central Park on January 23, 2016" /></p>
+
+<p>And much more, which is easily viewed on the front end.</p>
+
+<p>This application also allows you to view historical data for each year’s given date.</p>
+
+<p><img src="http://imgur.com/FwLXU9X.png" alt="KNYC 20160123 Front End Historical" /></p>
+
+<p>With soon-to-be-released monthly climatological information, including trend lines to view how the weather may look like in the future.</p>
+
+<h3 id="future-updates">Future updates</h3>
+<ul>
+  <li>Navigation - Buttons near date to easily go forward/backward a day/year</li>
+  <li>Navigation - Clear data button</li>
+  <li>Media - queries for #weather tweets/images based on date/location</li>
+  <li>Favorites - save your favorite stations for quick loading</li>
+  <li>Forecasts - show comparisons to MOS forecasts for that day</li>
+  <li>
+    <h2 id="nearby---show-a-map-with-nearby-locations-to-load-in-data-for">Nearby - show a map with nearby locations to load in data for</h2>
+    <h3 id="future-bug-fixes">Future bug fixes</h3>
+  </li>
+  <li>Fix primary rendering bug</li>
+  <li>Fix state/station section not loading in information on refresh</li>
+</ul>
+
+<h1 id="weathercraftapi">WeatherCraftAPI</h1>
+
+<p>This Rails/ActiveRecord API is a collection of all hourly/daily/monthly data from every NWS-certified station in the USA. Main information has been pulled into the SQL database accessed by this API, if you would like to pull this information yourself and seed your own database please visit the <a href="https://www.ncdc.noaa.gov/orders/qclcd/">NCEI</a> site and view the <code class="highlighter-rouge">QCLCDdate.zip</code> links.</p>
+
+<ul>
+  <li>Run <code class="highlighter-rouge">bundle</code> to install Ruby gems for the API</li>
+  <li>
+    <p>Run <code class="highlighter-rouge">npm install</code> to install Javascript files for the app</p>
+  </li>
+  <li>Database creation
+    <ul>
+      <li><code class="highlighter-rouge">rake db:scrape_stations</code> pulls all station data</li>
+      <li><code class="highlighter-rouge">rake db:scrape_hourlies</code> pulls all hourly data</li>
+      <li><code class="highlighter-rouge">rake db:scrape_dailies</code> pulls all daily data</li>
+      <li><code class="highlighter-rouge">rake db:scrape_monthlies</code> pulls all monthly data</li>
+    </ul>
+  </li>
+</ul>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

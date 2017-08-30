@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Are You Smarter Than a 00110110 Grader – Mike Merin's Code Corner – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I'm a meteorologist-turned-programmer. You can find my projects and blog here.">
+    <meta property="og:description" content="I'm a meteorologist-turned-programmer. You can find my projects and blog here." />
+    
+    <meta name="author" content="Mike Merin's Code Corner" />
+
+    
+    <meta property="og:title" content="Are You Smarter Than a 00110110 Grader" />
+    <meta property="twitter:title" content="Are You Smarter Than a 00110110 Grader" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Mike Merin's Code Corner - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">Mike Merin's Code Corner</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav>
+            <a href="https://mikemerin.github.io/" target="_blank">Blog</a>
+            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="page">
+
+  <h1>Are You Smarter Than a 00110110 Grader</h1>
+
+  <div class="entry">
+    <p>Blogs:</p>
+
+<p><a href="https://mikemerin.github.io/Random-Question-Generator-1/">Random Question Generator Blog part 1</a></p>
+
+<p><a href="https://mikemerin.github.io/Random-Question-Generator-2/">Random Question Generator Blog part 2</a></p>
+
+<p>Github link:</p>
+
+<p><a href="https://github.com/jross111/AreYouSmarterThanAPI">Application (front and back ends)</a></p>
+
+<h1 id="are-you-smarter-than-a-00110101-grader">Are You Smarter Than a 00110101 Grader</h1>
+
+<p><img src="http://imgur.com/BuDU8z9.png" alt="Multiple Choice" /></p>
+
+<p>This program is a <strong>dynamically generated question generator</strong> aimed at helping those wishing to master the basics of different coding languages.</p>
+
+<p>While normal quizzes load in a set number of questions and answers manually, this application can create <strong>one of a current 300,000 possible questions</strong> each time, so no two quizzes are ever alike!</p>
+
+<h4 id="questions">Questions</h4>
+
+<p>Every question creates a randomly generated array, operator type, element, index, and method. The question is then randomly presented as “multiple choice”, “true or false”, or “enter the correct answer”. Finally, multiple choice questions always shuffle the right and wrong answers, and the true false questions will 50/50 present a true or false answer.</p>
+
+<p><img src="http://imgur.com/5qmw4SA.png" alt="True or False" /></p>
+
+<h4 id="answers">Answers</h4>
+
+<p>It’s easy enough to render out a correct answer from the question asked, however every wrong answer generated is specifically designed to make the user think deeply and eventually master the type of question. Like each question, all wrong answers are <strong>also</strong> dynamically generated. Each method has its own unique algorithm to produce a similar enough set of wrong answers that can be believable while not simply changing a number here and there.</p>
+
+<h4 id="interface">Interface</h4>
+
+<p>The program tells you when you are right or wrong, and lets you know the correct answer if you get it wrong. During a quiz, it keeps track of the questions you have gotten right or wrong, and at the end you are awarded a score based on how well you did.</p>
+
+<p><img src="http://imgur.com/niuZeDx.png" alt="Enter" /></p>
+
+<p>Try it out and get to learning!</p>
+
+<h4 id="pending-features">Pending Features</h4>
+
+<ul>
+  <li>Truly random question generation
+    <ul>
+      <li>Currently: this program does use a pre-seeded database with questions stored from a Ruby dynamically generated question generator.</li>
+      <li>Next Step: importing and converting the above system into this application.
+        <ul>
+          <li>requires a system to convert to an ajax request.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Timer system
+    <ul>
+      <li>Currently: this program creates a quiz and then gives you 10 questions to answer.</li>
+      <li>Next step: add on: answer as many questions in 60 seconds.</li>
+    </ul>
+  </li>
+  <li>Unique scoring system
+    <ul>
+      <li>Currently: you get a point for each question you get right.</li>
+      <li>Next step: multiplier system based on answering questions correctly in a row.</li>
+    </ul>
+  </li>
+  <li>Different languages
+    <ul>
+      <li>Currently: Ruby only</li>
+      <li>Next step: JS, then others</li>
+    </ul>
+  </li>
+  <li>Leaderboards</li>
+  <li>Can choose type of quiz to take
+    <ul>
+      <li>Based on language</li>
+      <li>Based on method</li>
+      <li>TF/MC/enter/Mix rather than a mix of all right now (each increases in difficulty)</li>
+    </ul>
+  </li>
+  <li>Results show how many of each type of question you were given (method, type)</li>
+  <li>Hint button / tutorial version</li>
+  <li>Improve visuals / animations</li>
+  <li>Fix DOM issue</li>
+  <li>Clean up back end code more</li>
+  <li>Hosting on Heroku</li>
+</ul>
+
+<p>Made with ♥ in the Flatiron School by
+Brian Hopman, James Ross, Mike Merin</p>
+
+  </div>
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

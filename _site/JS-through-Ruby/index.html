@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Seeing Javascript Through Ruby-Colored Glasses – Mike Merin's Code Corner – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="If you learned how to program in Ruby, you probably noticed there’s a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward “English-like” syntax. JS sort of has these but require more labor to actually get working. These shortcuts are very noticeable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let’s dive right in and compare how Ruby and Javascript handle these shortcuts, iterations, and methods.
+
+" />
+    <meta property="og:description" content="If you learned how to program in Ruby, you probably noticed there’s a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward “English-like” syntax. JS sort of has these but require more labor to actually get working. These shortcuts are very noticeable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let’s dive right in and compare how Ruby and Javascript handle these shortcuts, iterations, and methods.
+
+" />
+    
+    <meta name="author" content="Mike Merin's Code Corner" />
+
+    
+    <meta property="og:title" content="Seeing Javascript Through Ruby-Colored Glasses" />
+    <meta property="twitter:title" content="Seeing Javascript Through Ruby-Colored Glasses" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Mike Merin's Code Corner - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">Mike Merin's Code Corner</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav>
+            <a href="https://mikemerin.github.io/" target="_blank">Blog</a>
+            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Seeing Javascript Through Ruby-Colored Glasses</h1>
+  <h3>A JS Cheat Sheet</h3>
+
+  <div class="entry">
+    <p>If you learned how to program in Ruby, you probably noticed there’s a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward “English-like” syntax. JS sort of has these but require more labor to actually get working. These shortcuts are very noticeable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let’s dive right in and compare how Ruby and Javascript handle these shortcuts, iterations, and methods.</p>
+
+<p><strong>I’ll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that <a href="https://mikemerin.github.io/Javascript-Cheat-Sheet/">here</a>, though I would recommend going through this post if you want a better understanding of how everything works.</strong></p>
+
+<p>I’ll assume you know how to iterate in Ruby already, but if not then look at my <a href="https://mikemerin.github.io/cryptography/">first cryptography post</a> for a detailed explanation.</p>
+
+<p>We’ll be going over these loops, iterations, and global methods:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ruby</th>
+      <th>JS Equivalent</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td><strong>functions</strong></td>
+    </tr>
+    <tr>
+      <td>N/A</td>
+      <td>ES6 / Arrow</td>
+      <td>New ES2017 shorthands for cleaning your code</td>
+    </tr>
+    <tr>
+      <td>n.to_s</td>
+      <td>n.toString()</td>
+      <td>Converts to string</td>
+    </tr>
+    <tr>
+      <td>“10”.to_i</td>
+      <td>parseInt(“10”)</td>
+      <td>Converts to Integer</td>
+    </tr>
+    <tr>
+      <td>“10”.to_f</td>
+      <td>parseFloat(“10”)</td>
+      <td>Converts to Float (decimal)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td><strong>loops</strong></td>
+    </tr>
+    <tr>
+      <td>while / until</td>
+      <td>while</td>
+      <td>loops while condition is true</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td><strong>iteration</strong></td>
+    </tr>
+    <tr>
+      <td>for</td>
+      <td>for / for..in</td>
+      <td>iterate over each element, more used in JS</td>
+    </tr>
+    <tr>
+      <td>.each</td>
+      <td>.forEach</td>
+      <td>iterate over each element</td>
+    </tr>
+    <tr>
+      <td>.each.with_index</td>
+      <td>.forEach</td>
+      <td>same, but also get the index</td>
+    </tr>
+    <tr>
+      <td>.map</td>
+      <td>.map</td>
+      <td>iterate over each element, changes the output</td>
+    </tr>
+    <tr>
+      <td>.map.with_index</td>
+      <td>.map</td>
+      <td>same, but also get the index</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td><strong>manipulating methods</strong></td>
+    </tr>
+    <tr>
+      <td>.reduce / .inject</td>
+      <td>.reduce</td>
+      <td>combines all elements via an operation</td>
+    </tr>
+    <tr>
+      <td>.flatten</td>
+      <td>.concat</td>
+      <td>merge multi-dimensional / nested arrays</td>
+    </tr>
+    <tr>
+      <td>.compact</td>
+      <td>.filter</td>
+      <td>remove <code class="highlighter-rouge">nil</code> or <code class="highlighter-rouge">null</code> values from an array</td>
+    </tr>
+    <tr>
+      <td>.sort / .sort_by</td>
+      <td>.sort</td>
+      <td>sort an array or hash/Object</td>
+    </tr>
+    <tr>
+      <td>case; each</td>
+      <td>switch; case</td>
+      <td>shorthand multiple <code class="highlighter-rouge">if</code> statements</td>
+    </tr>
+    <tr>
+      <td>.insert</td>
+      <td>.splice</td>
+      <td>add element(s) from array/string</td>
+    </tr>
+    <tr>
+      <td>.delete_at / .slice!</td>
+      <td>.splice</td>
+      <td>remove element(s) from array/string</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td><strong>selecting methods</strong></td>
+    </tr>
+    <tr>
+      <td>.include?</td>
+      <td>.includes</td>
+      <td>test if an element is included in an array/string</td>
+    </tr>
+    <tr>
+      <td>.keys</td>
+      <td>Object.keys()</td>
+      <td>get all keys in a hash</td>
+    </tr>
+    <tr>
+      <td>.values</td>
+      <td>Object.values()</td>
+      <td>get all values in a hash</td>
+    </tr>
+    <tr>
+      <td>.slice</td>
+      <td>.slice</td>
+      <td>select element from array (different in Ruby vs. JS)</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td> </td>
+      <td><strong>more functions</strong></td>
+    </tr>
+    <tr>
+      <td>call/procs</td>
+      <td>callbacks</td>
+      <td>function called within a function</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="es6-notation-arrow-functions-implicit-returns">ES6 Notation, Arrow Functions, Implicit Returns</h1>
+<hr />
+<p>I’ll be shortening my JS scripts with ES6 JS notation and/or <em>arrow functions</em>. This lets us turn our functions into cleaner looking arrow functions which do the same exact thing:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span> <span class="p">)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span> <span class="p">)</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">y</span><span class="p">)</span> <span class="p">}</span> <span class="p">)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">y</span><span class="p">)</span> <span class="p">}</span> <span class="p">)</span>
+</code></pre>
+</div>
+<p>Also, when there’s only one element (in this case “x”), we can remove the parentheses:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span> <span class="p">)</span>
+</code></pre>
+</div>
+<p>Now there’s less characters cluttering up the space and it’s easier to see what the function points to (literally). It’s also a good thing to know about something called “implicit returns”, which means the arrow function will call <code class="highlighter-rouge">return</code> automatically without you having to type it in! You can do this by not using <code class="highlighter-rouge"><span class="p">{}</span></code> after the arrrows (you can surround them in <code class="highlighter-rouge">()</code> if you want to do multi-line).</p>
+
+<p>These all do the same thing:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span>
+<span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span>   <span class="c1">// without the {} this implicitly returns</span>
+<span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span>     <span class="c1">// same here</span>
+<span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// same here</span>
+</code></pre>
+</div>
+
+<h1 id="looping-with-while">looping with <code class="highlighter-rouge">while</code></h1>
+<hr />
+<p>Let’s start off with the easiest example. These methods are almost identical in both Ruby and Javascript, in fact the only thing that’s different is the syntax (using <code class="highlighter-rouge">var</code> and <code class="highlighter-rouge"><span class="p">{}</span></code> ). Here’s a quick example:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">6</span>
+    <span class="n">array</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">end</span>
+<span class="n">array</span> <span class="c1">#=&gt; [1,2,3,4,5]</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+    <span class="nx">x</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="p">}</span>
+<span class="nx">array</span> <span class="c1">//=&gt; [1,2,3,4,5]</span>
+</code></pre>
+</div>
+<p>Let’s do a side-by-side:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ruby</th>
+      <th>Javascript</th>
+      <th>Difference</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>array = []</td>
+      <td>var array = []</td>
+      <td>var for JS (can also do let)</td>
+    </tr>
+    <tr>
+      <td>x = 1</td>
+      <td>var x = 1</td>
+      <td>same, doing var (or let)</td>
+    </tr>
+    <tr>
+      <td>while x &lt; 6</td>
+      <td>while (x &lt; 6)</td>
+      <td>JS needs its test to be in parenthesis <code class="highlighter-rouge">()</code></td>
+    </tr>
+    <tr>
+      <td>array.push(x)</td>
+      <td>{ array.push(x)</td>
+      <td>same, but JS needs to be in a block <code class="highlighter-rouge"><span class="p">{}</span></code></td>
+    </tr>
+    <tr>
+      <td>x += 1</td>
+      <td>x += 1</td>
+      <td>same (but in JS you can also do <code class="highlighter-rouge">x++</code>)</td>
+    </tr>
+    <tr>
+      <td>end</td>
+      <td>}</td>
+      <td>JS must ends by closing off the curly bracket</td>
+    </tr>
+    <tr>
+      <td>array</td>
+      <td>array</td>
+      <td>both #=&gt; [1,2,3,4,5]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>While Ruby does much of the work for us, JS we need to manually put in the parentheses and curly brackets. However knowing this means we can more easily do one line solutions (helpful if combining with other complex scripts):</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="n">array</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">end</span>
+<span class="n">array</span> <span class="c1">#=&gt; [1,2,3,4,5]</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="p">(</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="p">)</span> <span class="p">{</span> <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="nx">x</span><span class="o">++</span> <span class="p">}</span>
+<span class="nx">array</span> <span class="c1">//=&gt; [1,2,3,4,5]</span>
+</code></pre>
+</div>
+<p>While in this case our JS looks a bit cleaner, this is by no means the cleanest way to do this type of operation. Ruby has quite a few ways to shorten this, including a trick using <code class="highlighter-rouge">.reduce</code> (also known as <code class="highlighter-rouge">.inject</code> in Ruby only), but I’ll cover that later on.</p>
+<h1 id="using-for">Using <code class="highlighter-rouge">for</code></h1>
+<hr />
+<p>While <code class="highlighter-rouge">for</code> isn’t used much in Ruby (since <code class="highlighter-rouge">while</code>, <code class="highlighter-rouge">until</code>, or other iterations can do much more, are cleaner, and get the job done easier), it’s very important in JS. While this is a nice trick in Ruby:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="k">in</span> <span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">5</span>
+    <span class="n">array</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="n">array</span> <span class="c1">#=&gt; [1,2,3,4,5]</span>
+</code></pre>
+</div>
+<p>Unfortunately there’s no quick way to do a range iterator in Javascript (the <code class="highlighter-rouge">(1..5)</code> above), <strong><em>however</em></strong> <code class="highlighter-rouge">for</code> is still very useful if we use it another way. Remember that while loop from before? Here’s how we’d cleanly do it in JS:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span>
+    <span class="nx">x</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span> <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">array</span> <span class="err">#</span><span class="o">=&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+</code></pre>
+</div>
+<p>Or the MUCH cleaner one-liner:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">array</span> <span class="c1">//=&gt; [1,2,3,4,5]</span>
+</code></pre>
+</div>
+<p>We basically include what we want our number <code class="highlighter-rouge">x</code> to do all in one neat place (our parenthesis), and then operate on it within our block. As you’d expect, we can do this with other things too, like iterating over an array!</p>
+<h1 id="iterating-with-eachforforin-then-eachforeach">iterating with <code class="highlighter-rouge">.each</code>/<code class="highlighter-rouge">for</code>/<code class="highlighter-rouge">for..in</code> then <code class="highlighter-rouge">each</code>/<code class="highlighter-rouge">forEach</code></h1>
+<hr />
+<p>Onto iterations. As I said before, <code class="highlighter-rouge">.each</code> in Ruby is incredibly useful, and does what both <code class="highlighter-rouge">for</code> and <code class="highlighter-rouge">.forEach</code> does in JS. Before we get to the latter, let’s flash back to Ruby and cover how we can iterate over an array using <code class="highlighter-rouge">.each</code> beginning with a more lengthy iteration (similar to JS’s <code class="highlighter-rouge">for</code>) and ending with a shortcut (similar to JS’s <code class="highlighter-rouge">.forEach</code>). These first three examples are the former:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">array2</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">array</span><span class="p">.</span><span class="nf">length</span><span class="p">).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="nb">print</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">}</span>
+<span class="c1">#=&gt; 12345</span>
+
+<span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">array</span><span class="p">.</span><span class="nf">length</span><span class="p">).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">array2</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
+<span class="n">array2</span> <span class="c1">#=&gt; [1,2,3,4,5]</span>
+
+<span class="n">array2</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="p">.</span><span class="nf">array</span><span class="p">.</span><span class="nf">length</span><span class="p">).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">array2</span><span class="p">.</span><span class="nf">unshift</span><span class="p">(</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
+<span class="n">array2</span> <span class="c1">#=&gt; [5,4,3,2,1]</span>
+</code></pre>
+</div>
+<p>Now let’s finally do that fancy JS iteration using <code class="highlighter-rouge">for</code> but this time over an array. To spoof the range we’ll set our index to 0, limit it to the array.length, and add up by 1:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="nx">array2</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1">// long version for clarification:</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="c1">// declare i, l as variables</span>
+     <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span> <span class="c1">// while index is less than the array length</span>
+     <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="c1">// increment by 1</span>
+    <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
+<span class="nx">array2</span> <span class="c1">//=&gt; [1,2,3,4,5]</span>
+
+<span class="c1">// shorter and clean version:</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
+<span class="c1">//=&gt; [1,2,3,4,5]</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">unshift</span><span class="p">(</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
+<span class="c1">//=&gt; [5,4,3,2,1]</span>
+</code></pre>
+</div>
+<p>This is how <code class="highlighter-rouge">.each</code> directly correlates with <code class="highlighter-rouge">for</code>, but there’s a better way to iterate over an array that inherently <strong>knows</strong> to go from the start to the end of an array without us needing to tell it. Doing this in Ruby:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="k">for</span> <span class="n">x</span> <span class="k">in</span> <span class="n">array</span><span class="p">;</span> <span class="nb">puts</span> <span class="n">x</span> <span class="k">end</span>
+<span class="k">for</span> <span class="n">x</span> <span class="k">in</span> <span class="n">array</span><span class="p">;</span> <span class="n">array2</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">end</span>
+</code></pre>
+</div>
+<p>In JS we’ll introduce <code class="highlighter-rouge">in</code>:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">array</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">array</span><span class="p">)</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
+</code></pre>
+</div>
+<p>We’re obtaining the index <code class="highlighter-rouge">i</code> from the <code class="highlighter-rouge">array</code>, then using it in our code block.</p>
+
+<p>This is as far we can go using <code class="highlighter-rouge">for</code> in JS. You’ll notice that there’s a very important difference in how Ruby handles <code class="highlighter-rouge">for</code> compared to JS: while Ruby calls on the element, JS calls on the index, and we can’t grab the element directly, therefore we <strong>still</strong> have to do <code class="highlighter-rouge">array[i]</code> instead of how we were just using <code class="highlighter-rouge">x</code> in Ruby above. Time to break out <code class="highlighter-rouge">forEach</code> and fix that:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">x</span> <span class="p">}</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">array2</span><span class="p">.</span><span class="nf">push2</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span> <span class="p">)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span> <span class="p">)</span>
+</code></pre>
+</div>
+<h1 id="using-rubys-each_with_index-or-eachwith_index-in-js">Using Ruby’s <code class="highlighter-rouge">.each_with_index</code> or <code class="highlighter-rouge">.each.with_index</code> in JS</h1>
+<p>These are the same thing in Ruby, however JS has neither of these functions available. Thankfuly though JS has a way to easily iterate over both the element <strong>and</strong> the index at the <strong>same time</strong>:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">each_with_index</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="n">i</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">"the index is </span><span class="si">#{</span><span class="n">i</span><span class="si">}</span><span class="s2">, the element is </span><span class="si">#{</span><span class="n">x</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">The</span> <span class="nx">index</span> <span class="nx">is</span> <span class="nx">$</span><span class="p">{</span><span class="nx">i</span><span class="p">},</span> <span class="nx">the</span> <span class="nx">element</span> <span class="nx">is</span> <span class="nx">$</span><span class="p">{</span><span class="nx">x</span><span class="p">}</span><span class="err">`</span><span class="p">)</span> <span class="p">)</span>
+</code></pre>
+</div>
+<p>These both print out:</p>
+
+<p>“the index is 0, the element is Hello”</p>
+
+<p>“the index is 1, the element is World”</p>
+<h1 id="iterating-and-manipulating-with-map">Iterating and manipulating with <code class="highlighter-rouge">.map</code></h1>
+<hr />
+<p>Our newfound <code class="highlighter-rouge">.forEach</code> is great, but there’s a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? In comes <code class="highlighter-rouge">.map</code> which simply outputs our answer each time we call it! It’s used in the same way we use <code class="highlighter-rouge">.forEach</code>. For example if we have <code class="highlighter-rouge">array = [1,2,3,4,5]</code> and compare <code class="highlighter-rouge">.each/.forEach</code> vs. <code class="highlighter-rouge">.map</code>:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span> <span class="c1">#=&gt; [1,2,3,4,5] unchanged output</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span> <span class="c1">#=&gt; [2,4,6,8,10] changed output</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">//=&gt; undefined (no output)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span><span class="p">)</span> <span class="c1">//=&gt; [1,2,3,4,5] unchanged output (technically spoofs the input like Ruby .each)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">//=&gt; [2,4,6,8,10] changed output</span>
+</code></pre>
+</div>
+<p><code class="highlighter-rouge">.map</code> is great for shortening your code and making them one-liners, which cleans up your code and makes it much more readable.</p>
+<h1 id="using-rubys-mapwith_index-in-js">Using Ruby’s <code class="highlighter-rouge">.map.with_index</code> in JS</h1>
+<p>Just like with <code class="highlighter-rouge">.each.with_index</code>, JS has a way to easily iterate over both the element <strong>and</strong> the index at the <strong>same time</strong> and output the value you want:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">50</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">map</span><span class="p">.</span><span class="nf">with_index</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="p">}</span> <span class="c1">#=&gt; [0,1,2,3,4]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">map</span><span class="p">.</span><span class="nf">with_index</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="n">i</span><span class="o">|</span> <span class="n">x</span> <span class="o">*</span> <span class="n">i</span> <span class="p">}</span> <span class="c1">#=&gt; [0,20,60,120,200]</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">)</span> <span class="c1">//=&gt; [0,1,2,3,4]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">i</span><span class="p">)</span> <span class="c1">//=&gt; [0,20,60,120,200]</span>
+</code></pre>
+</div>
+<h1 id="manipulating-arrays-with-reduce">Manipulating arrays with <code class="highlighter-rouge">.reduce</code></h1>
+<hr />
+<p>Now let’s go over what <code class="highlighter-rouge">.reduce</code> does (also known as <code class="highlighter-rouge">.inject</code> in ruby) and add up all values in the array, starting with the shortcut then expanding out to see what’s under the hood. Note that all of these will produce the correct answer of 15:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="n">array</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(:</span><span class="o">+</span><span class="p">)</span>
+<span class="c1"># reduce takes in an addition symbol</span>
+<span class="c1"># note: (:+) is also a smiley face</span>
+
+<span class="n">array</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="o">+</span><span class="p">)</span>
+<span class="c1"># start at 0, then perform the reducing</span>
+
+<span class="n">array</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">x</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">x</span> <span class="p">}</span>
+<span class="c1"># what the (:+) is actually doing</span>
+
+<span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+=</span> <span class="n">x</span> <span class="p">}</span>
+<span class="n">sum</span> <span class="c1">#=&gt; 15</span>
+<span class="c1"># an even more literal example</span>
+</code></pre>
+</div>
+<p>As you can see, what reduce does is:
+start at 0 (default), add 1, now sum = 1
+start at sum (1), add 2, now sum = 3
+start at sum (3), add 3, now sum = 6
+etc. until the end.</p>
+
+<p>In JS however, we don’t have these shortcuts available to us, so instead we have to write it out, albeit a little bit. Let’s look at the following four Ruby scripts in order to understand their JS counterparts. They all do the same thing, and JS sort of has something to do with all of them. Let’s go through them and build up our <code class="highlighter-rouge">.reduce</code> statement:</p>
+
+<h4 id="1-reduce-takes-place-inside-a-single-parenthesis">1. reduce takes place inside a single parenthesis</h4>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(:</span><span class="o">+</span><span class="p">)</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="s2">"sum script"</span> <span class="p">)</span>
+</code></pre>
+</div>
+<h4 id="2-you-can-set-a-default-value-js-will-be-in-the-2nd-position-not-the-1st">2. you can set a default value (JS will be in the 2nd position, not the 1st)</h4>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="o">+</span><span class="p">)</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="s2">"sum script"</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+</code></pre>
+</div>
+<h4 id="3-the-operation-inside-the-ruby-block-looks-almost-identical-to-the-js-version">3. the operation inside the Ruby block looks almost identical to the JS version.</h4>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">reduce</span> <span class="p">{</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">x</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">x</span> <span class="p">}</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">reduce</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">x</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">x</span> <span class="p">}</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">}</span> <span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>Here’s how these same reduce functions can look in JS, including with the cleaner ES6 notation:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">}</span> <span class="p">)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="c1">// vs ES6:</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">x</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+</code></pre>
+</div>
+<p>Again the default value in JS is AFTER the sum variable, not before it. So here’s the answer to what that <code class="highlighter-rouge">(:+)</code> symbol (smiley) was doing under the hood in Ruby, but we’ll explain it through JS! We can make our reduce function cleaner though by making <code class="highlighter-rouge">sum</code> into a variable (using <code class="highlighter-rouge">const</code>), and we can also make one for multiplication while we’re at it:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">const</span> <span class="nx">sum</span> <span class="o">=</span> <span class="p">(</span><span class="nx">sum</span><span class="p">,</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">x</span>
+<span class="kr">const</span> <span class="nx">multi</span> <span class="o">=</span> <span class="p">(</span><span class="nx">multi</span><span class="p">,</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">multi</span> <span class="o">*</span> <span class="nx">x</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">sum</span><span class="p">)</span> <span class="c1">//=&gt; 15</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">//=&gt; 25</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">multi</span><span class="p">)</span> <span class="c1">//=&gt; 120</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">multi</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">//=&gt; 240</span>
+</code></pre>
+</div>
+<h1 id="making-arrays-neater-with---ruby-flatten--js-concat">Making arrays neater with - Ruby: <code class="highlighter-rouge">.flatten</code> | JS: <code class="highlighter-rouge">.concat</code></h1>
+<hr />
+<p>What happens when you have an array nested within an array (a multi-dimensional array) and want to make it look neater (into a single-dimensional array)? For example we want this ugly nested array:</p>
+
+<p><code class="highlighter-rouge">array = [1, 2, [[3, 4], 5], [6, nil, 7], 8, 9]</code></p>
+
+<p>to look like this neat one:</p>
+
+<p><code class="highlighter-rouge">array = [1, 2, 3, 4, 5, 6, nil, 7, 8, 9]</code></p>
+
+<p>In Ruby it’s simple enough as we’d simply call <code class="highlighter-rouge">.flatten</code> on the array (Ruby once again takes care of the behind-the-scenes code for us)</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">flatten</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5, 6, nil, 7, 8, 9]</span>
+</code></pre>
+</div>
+<p>In JS it’s a bit more complicated, though only by a bit when you get used to it. I’ll explain each of these in detail along with what goes into both of these methods.</p>
+
+<p>The first way is the easiest (and my preferred) way: use <code class="highlighter-rouge">.concat</code> to append each element onto a blank array along with a neat little JS trick:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// javascript</span>
+<span class="p">[].</span><span class="nx">concat</span><span class="p">(...</span><span class="nx">array</span><span class="p">)</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5, 6, null, 7, 8, 9]</span>
+<span class="p">[].</span><span class="nx">concat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">...</span><span class="nx">array</span><span class="p">)</span> <span class="c1">//=&gt; [0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9]</span>
+<span class="p">[].</span><span class="nx">concat</span><span class="p">(...[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">...</span><span class="nx">array</span><span class="p">,</span> <span class="s2">"woo!"</span><span class="p">)</span> <span class="c1">//=&gt; [-1, 0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9, "woo!"]</span>
+</code></pre>
+</div>
+<p>I’ll explain the <code class="highlighter-rouge">...</code> in a second, but the important part about this <code class="highlighter-rouge">.concat</code> method is that you can combine <strong>any number of arrays or values</strong> and it will combine them all! Meanwhile, in the <code class="highlighter-rouge">(...array)</code>, that <code class="highlighter-rouge">...</code> is what’s known in JS as a <code class="highlighter-rouge">spread operator</code> which, well, spreads out an array. It’s used during creation or changing of arrays to expand the array and call on all elements in it. For your understanding, here is an example of what this operator does:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">a1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="nx">a2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
+<span class="p">[</span><span class="nx">a1</span><span class="p">,</span><span class="nx">a2</span><span class="p">]</span> <span class="c1">//=&gt; [ [1,2,3], [4,5,6] ]</span>
+<span class="p">[...</span><span class="nx">a1</span><span class="p">,</span><span class="nx">a2</span><span class="p">]</span> <span class="c1">//=&gt; [1,2,3, [4,5,6] ]</span>
+<span class="p">[...</span><span class="nx">a1</span><span class="p">,...</span><span class="nx">a2</span><span class="p">]</span> <span class="c1">//=&gt; [1,2,3,4,5,6]</span>
+</code></pre>
+</div>
+<p>The second way is by using <code class="highlighter-rouge">.apply</code>, which, well, applies what you want into an array. We can either do this to an empty array or to an existing one. Note that unlike the first way you cannot combine more than one array or value:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="p">[].</span><span class="nx">concat</span><span class="p">.</span><span class="nx">apply</span><span class="p">([],</span><span class="nx">array</span><span class="p">)</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5, 6, null, 7, 8, 9]</span>
+<span class="p">[].</span><span class="nx">concat</span><span class="p">.</span><span class="nx">apply</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nx">array</span><span class="p">)</span> <span class="c1">//=&gt; [-1, 0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9]</span>
+</code></pre>
+</div>
+<p>Again though, the first method is shorter and is much more useful especially for multiple arrays. It’s good to know though what <code class="highlighter-rouge">.apply</code> can do.</p>
+
+<h1 id="removing-unwanted-values-with---ruby-compact--js-filter">Removing unwanted values with - Ruby: <code class="highlighter-rouge">.compact</code> | JS: <code class="highlighter-rouge">.filter</code></h1>
+<hr />
+<p>Hold on though, in the above example, even though we ran <code class="highlighter-rouge">flatten</code>/<code class="highlighter-rouge">concat</code> on our array, we still have a <code class="highlighter-rouge">nil</code>/<code class="highlighter-rouge">null</code> value in there. To get rid of them we simply run the following in Ruby:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"hey"</span><span class="p">].</span><span class="nf">compact</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5, "hey"]</span>
+</code></pre>
+</div>
+<p>Which basically iterates over the array and removes <code class="highlighter-rouge">nil</code> whenever it finds it (non-destructively). To destructively do this just use <code class="highlighter-rouge">.compact!</code> or <code class="highlighter-rouge">array.delete(nil)</code>. The syntax will look very similar to the latter where we’ll tell our program to delete any element that doesn’t pass our test, aka keeping elements that pass. This brings us to how <code class="highlighter-rouge">.filter</code> is used in JS:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"hey"</span><span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span><span class="p">)</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5, "hey"]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"hey"</span><span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nb">Number</span><span class="p">)</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"hey"</span><span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">//=&gt; [2, null, 4]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"hey"</span><span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">//=&gt; [1, 3, 5]</span>
+</code></pre>
+</div>
+<p>The first basically says: “filter this array by calling the element, and if it’s true then it passes through the filter” which gets rid of all <code class="highlighter-rouge">null</code> values. The second says “filter this array, and if it’s a number then it passes through the filter.” Note that the second only works if all elements are numbers, but the first works even if you have a mixture of numbers, strings, or otherwise!</p>
+
+<p>The third/fourth filters show the usefulness of filtering out our array as we can test if certain things are true, in this case testing which elements are even or odd respectively. Notice that <code class="highlighter-rouge">null</code> still passes as <code class="highlighter-rouge">null % 2</code> is 0, weird right?</p>
+
+<h1 id="sorting-an-arraystringhashobject-with-sort">Sorting an array/string/hash/Object with <code class="highlighter-rouge">.sort</code></h1>
+
+<p>Let’s start off simple and we’ll end with some neat tricks. Say you have an array of strings that you want to sort alphabetically:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array_string</span> <span class="o">=</span> <span class="s2">"hey everyone how's it going?"</span><span class="p">.</span><span class="nf">split</span>
+<span class="n">array_string</span> <span class="c1">#=&gt; ["hey", "everyone", "how's", "it", "going?"]</span>
+<span class="n">array_string</span><span class="p">.</span><span class="nf">sort</span> <span class="c1">#=&gt; ["everyone", "going?", "hey", "how's", "it"]</span>
+<span class="n">array_string</span><span class="p">.</span><span class="nf">sort</span><span class="p">.</span><span class="nf">reverse</span> <span class="c1">#=&gt; ["it", "how's", "hey", "going?", "everyone"]</span>
+</code></pre>
+</div>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">array_string</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"hey"</span><span class="p">,</span> <span class="s2">"everyone"</span><span class="p">,</span> <span class="s2">"how's"</span><span class="p">,</span> <span class="s2">"it"</span><span class="p">,</span> <span class="s2">"going?"</span><span class="p">]</span>
+<span class="nx">array_string</span><span class="p">.</span><span class="nx">sort</span><span class="p">()</span> <span class="c1">//=&gt; [ "everyone", "going?", "hey", "how's", "it" ]</span>
+<span class="nx">array_string</span><span class="p">.</span><span class="nx">sort</span><span class="p">().</span><span class="nx">reverse</span><span class="p">()</span> <span class="c1">//=&gt; [ "it", "how's", "hey", "going?", "everyone" ]</span>
+</code></pre>
+</div>
+
+<p>Great easy enough, so let’s move onto an array of integers:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">sort</span> <span class="c1">#=&gt; [5, 14, 16, 22, 25]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">sort</span><span class="p">.</span><span class="nf">reverse</span> <span class="c1">#=&gt; [25, 22, 16, 14, 5]</span>
+</code></pre>
+</div>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">()</span> <span class="c1">//=&gt; [ 14, 16, 22, 25, 5 ]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">().</span><span class="nx">reverse</span><span class="p">()</span> <span class="c1">//=&gt; [ 5, 25, 22, 16, 14 ]</span>
+</code></pre>
+</div>
+
+<p>Oh that’s strange, Ruby’s smart enough to sort numbers normally but Javascript isn’t. Why? Javascript first converts everything to a string first before sorting, then does the actual sort, so it sorts it “alphabetically” instead of numerically. Here’s what it’s doing from the viewpoint of Ruby:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">array_string</span> <span class="o">=</span> <span class="n">array</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_s</span><span class="p">)</span> <span class="c1">#=&gt; ["14", "25", "16", "22", "5"]</span>
+<span class="n">array_string</span><span class="p">.</span><span class="nf">sort</span> <span class="c1">#=&gt; ["14", "16", "22", "25", "5"]</span>
+<span class="n">array_string</span><span class="p">.</span><span class="nf">sort</span><span class="p">.</span><span class="nf">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:to_i</span><span class="p">)</span> <span class="c1">#=&gt; [14, 16, 22, 25, 5]</span>
+</code></pre>
+</div>
+
+<p>The number “1” in 14 appears before the number “5”, just like how the “h” in hey appears before the “i” in it, even though “it” is two letters long and “hey” is three letters long, like how 5 is one digits long and 14 is two digits long. So how do we fix this? There’s a little trick and it involves forcing Javascript to compare values of adjacent elements. I’ll explain this after we do it:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span> <span class="p">}</span> <span class="p">)</span> <span class="c1">//=&gt; [ 5, 14, 16, 22, 25 ]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span> <span class="p">}</span> <span class="p">)</span> <span class="c1">//=&gt; [ 5, 14, 16, 22, 25 ]</span>
+<span class="c1">// and reverse:</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">b</span> <span class="o">-</span> <span class="nx">a</span> <span class="p">}</span> <span class="p">)</span> <span class="c1">//=&gt; [ 25, 22, 16, 14, 5 ]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">&lt;</span> <span class="nx">b</span> <span class="p">}</span> <span class="p">)</span> <span class="c1">//=&gt; [ 25, 22, 16, 14, 5 ]</span>
+
+<span class="c1">// ES6 notation</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span> <span class="p">)</span> <span class="c1">//=&gt; [ 5, 14, 16, 22, 25 ]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span> <span class="p">)</span> <span class="c1">//=&gt; [ 5, 14, 16, 22, 25 ]</span>
+<span class="c1">// and reverse:</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">b</span> <span class="o">-</span> <span class="nx">a</span> <span class="p">)</span> <span class="c1">//=&gt; [ 25, 22, 16, 14, 5 ]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">b</span> <span class="o">&lt;</span> <span class="nx">a</span> <span class="p">)</span> <span class="c1">//=&gt; [ 25, 22, 16, 14, 5 ]</span>
+</code></pre>
+</div>
+
+<p>Basically we have to inputs, <code class="highlighter-rouge">a</code> and <code class="highlighter-rouge">b</code>. When we return <code class="highlighter-rouge">a - b</code> or <code class="highlighter-rouge">a &gt; b</code> we’re telling our script to first return smaller values and then larger values, and vice-versa for <code class="highlighter-rouge">a &lt; b</code> where we tell our script to first return larger values. Remember this trick because it will be used <strong>everywhere</strong>. Let’s first try and sort our old string by string length instead of alphabetically. We’ll do this by introducing <code class="highlighter-rouge">.sort_by</code> in Ruby, and just using our prior trick for Javascript:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array_string</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"hey"</span><span class="p">,</span> <span class="s2">"everyone"</span><span class="p">,</span> <span class="s2">"how's"</span><span class="p">,</span> <span class="s2">"it"</span><span class="p">,</span> <span class="s2">"going?"</span><span class="p">]</span>
+<span class="n">array_string</span><span class="p">.</span><span class="nf">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">.</span><span class="nf">length</span> <span class="p">}</span> <span class="c1">#=&gt; ["it", "hey", "how's", "going?", "everyone"]</span>
+<span class="n">array_string</span><span class="p">.</span><span class="nf">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">.</span><span class="nf">length</span> <span class="p">}.</span><span class="nf">reverse</span> <span class="c1">#=&gt;  ["everyone", "going?", "how's", "hey", "it"]</span>
+</code></pre>
+</div>
+
+<p>For Javascript, we’ll use that trick from before but instead of comparing each element <code class="highlighter-rouge">a</code> to <code class="highlighter-rouge">b</code>, we’ll compare their <em>lengths</em>:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">array_string</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"hey"</span><span class="p">,</span> <span class="s2">"everyone"</span><span class="p">,</span> <span class="s2">"how's"</span><span class="p">,</span> <span class="s2">"it"</span><span class="p">,</span> <span class="s2">"going?"</span><span class="p">]</span>
+<span class="nx">array_string</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">b</span><span class="p">.</span><span class="nx">length</span> <span class="p">)</span> <span class="c1">//=&gt; [ "it", "hey", "how's", "going?", "everyone" ]</span>
+<span class="nx">array_string</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">length</span> <span class="p">)</span> <span class="c1">//=&gt; [ "it", "hey", "how's", "going?", "everyone" ]</span>
+<span class="nx">array_string</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="p">)</span> <span class="c1">//=&gt; [ "everyone", "going?", "how's", "hey", "it" ]</span>
+<span class="nx">array_string</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">length</span> <span class="p">)</span> <span class="c1">//=&gt; [ "everyone", "going?", "how's", "hey", "it" ]</span>
+</code></pre>
+</div>
+
+<p>This is for an array of elements or object, but what if we have an array of Ruby hashes also known in JS as Objects?</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array_hash</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span><span class="ss">borough: </span><span class="s1">'Manhattan'</span><span class="p">,</span> <span class="ss">population: </span><span class="mi">1585874</span><span class="p">},</span>
+               <span class="p">{</span><span class="ss">borough: </span><span class="s1">'Brooklyn'</span><span class="p">,</span> <span class="ss">population: </span><span class="mi">2504706</span><span class="p">},</span>
+               <span class="p">{</span><span class="ss">borough: </span><span class="s1">'Queens'</span><span class="p">,</span> <span class="ss">population: </span><span class="mi">2230545</span><span class="p">},</span>
+               <span class="p">{</span><span class="ss">borough: </span><span class="s1">'Bronx'</span><span class="p">,</span> <span class="ss">population: </span><span class="mi">1385107</span><span class="p">},</span>
+               <span class="p">{</span><span class="ss">borough: </span><span class="s1">'Staten_Island'</span><span class="p">,</span> <span class="ss">population: </span><span class="mi">486730</span><span class="p">}</span> <span class="p">]</span>
+
+<span class="n">array_hash</span><span class="p">.</span><span class="nf">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">[</span><span class="ss">:borough</span><span class="p">]</span> <span class="p">}</span>
+<span class="c1">#=&gt; [{:borough=&gt;"Bronx", :population=&gt;1385107},</span>
+   <span class="c1"># {:borough=&gt;"Brooklyn", :population=&gt;2504706},</span>
+   <span class="c1"># {:borough=&gt;"Manhattan", :population=&gt;1585874},</span>
+   <span class="c1"># {:borough=&gt;"Queens", :population=&gt;2230545},</span>
+   <span class="c1"># {:borough=&gt;"Staten_Island", :population=&gt;486730}]</span>
+
+<span class="n">array_hash</span><span class="p">.</span><span class="nf">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">[</span><span class="ss">:population</span><span class="p">]</span> <span class="p">}</span>
+<span class="c1">#=&gt; [{:borough=&gt;"Staten_Island", :population=&gt;486730},</span>
+   <span class="c1"># {:borough=&gt;"Bronx",        :population=&gt;1385107},</span>
+   <span class="c1"># {:borough=&gt;"Manhattan",    :population=&gt;1585874},</span>
+   <span class="c1"># {:borough=&gt;"Queens",       :population=&gt;2230545},</span>
+   <span class="c1"># {:borough=&gt;"Brooklyn",     :population=&gt;2504706}]</span>
+</code></pre>
+</div>
+
+<p>We call on the attribute in ruby, however in JS we call it the exact same way as we would the length, but as the attribute!</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">array_hash</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Manhattan'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">1585874</span><span class="p">},</span>
+                   <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Brooklyn'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">2504706</span><span class="p">},</span>
+                   <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Queens'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">2230545</span><span class="p">},</span>
+                   <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Bronx'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">1385107</span><span class="p">},</span>
+                   <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Staten_Island'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">486730</span><span class="p">}</span> <span class="p">]</span>
+
+<span class="nx">array_hash</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">borough</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">borough</span> <span class="p">)</span>
+<span class="c1">//=&gt; [ { burough: 'Bronx', population: 1385107 },</span>
+    <span class="c1">// { burough: 'Brooklyn', population: 2504706 },</span>
+    <span class="c1">// { burough: 'Manhattan', population: 1585874 },</span>
+    <span class="c1">// { burough: 'Queens', population: 2230545 },</span>
+    <span class="c1">// { burough: 'Staten_Island', population: 486730 } ]</span>
+
+<span class="c1">// By the length of the borough name</span>
+<span class="nx">array_hash</span><span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">borough</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">b</span><span class="p">.</span><span class="nx">borough</span><span class="p">.</span><span class="nx">length</span> <span class="p">)</span> <span class="c1">// or</span>
+<span class="nx">array_hash</span><span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">borough</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">borough</span><span class="p">.</span><span class="nx">length</span> <span class="p">)</span>
+<span class="c1">//=&gt; [ { borough: 'Bronx', population: 1385107 },</span>
+    <span class="c1">// { borough: 'Queens', population: 2230545 },</span>
+    <span class="c1">// { borough: 'Brooklyn', population: 2504706 },</span>
+    <span class="c1">// { borough: 'Manhattan', population: 1585874 },</span>
+    <span class="c1">// { borough: 'Staten_Island', population: 486730 } ]</span>
+
+<span class="nx">array_hash</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">population</span> <span class="o">-</span> <span class="nx">b</span><span class="p">.</span><span class="nx">population</span> <span class="p">)</span> <span class="c1">// or</span>
+<span class="nx">array_hash</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">population</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">population</span> <span class="p">)</span>
+<span class="c1">//=&gt; [ { borough: 'Staten_Island',  population: 486730 },</span>
+    <span class="c1">// { borough: 'Bronx',         population: 1385107 },</span>
+    <span class="c1">// { borough: 'Queens',        population: 2230545 },</span>
+    <span class="c1">// { borough: 'Brooklyn',      population: 2504706 },</span>
+    <span class="c1">// { borough: 'Manhattan',     population: 1585874 } ]</span>
+</code></pre>
+</div>
+
+<p>Last up is fairly useless and therefore a but more tricky: sorting a Ruby hash/JS object by its values. This usually isn’t <em>ever</em> done because a hash/object by nature isn’t actually in an order like an array is, it’s just <strong>presented</strong> to us visually in an order. In fact if you try to reorder a hash/object you won’t get a hash/object back, you’ll get an <em>array</em>.</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="nb">hash</span> <span class="o">=</span> <span class="p">{</span><span class="no">Manhattan</span><span class="p">:</span> <span class="mi">1585874</span><span class="p">,</span> <span class="no">Brooklyn</span><span class="p">:</span> <span class="mi">2504706</span><span class="p">,</span> <span class="no">Queens</span><span class="p">:</span> <span class="mi">2230545</span><span class="p">,</span> <span class="no">Bronx</span><span class="p">:</span> <span class="mi">1385107</span><span class="p">,</span> <span class="no">Staten_Island</span><span class="p">:</span> <span class="mi">486730</span><span class="p">}</span>
+
+<span class="c1"># by key</span>
+<span class="nb">hash</span><span class="p">.</span><span class="nf">sort</span> <span class="c1"># or</span>
+<span class="nb">hash</span><span class="p">.</span><span class="nf">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span> <span class="n">key</span> <span class="p">}</span>
+<span class="c1">#=&gt; [[:Bronx, 1385107], [:Brooklyn, 2504706], [:Manhattan, 1585874], [:Queens, 2230545], [:Staten_Island, 486730]]</span>
+
+<span class="c1"># by value</span>
+<span class="nb">hash</span><span class="p">.</span><span class="nf">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span> <span class="n">value</span> <span class="p">}</span>
+<span class="c1">#=&gt; [[:Staten_Island, 486730], [:Bronx, 1385107], [:Manhattan, 1585874], [:Queens, 2230545], [:Brooklyn, 2504706]]</span>
+</code></pre>
+</div>
+
+<p>Javascript can’t actually directly do this using sort, only indirectly, in fact it will give you the error “hash.sort is not a function”. So we have to use a trick called <code class="highlighter-rouge">Object.values()</code>, which I’ll explain when we get to that section! For now I’ll just show you what it looks like:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{</span><span class="na">Manhattan</span><span class="p">:</span> <span class="mi">1585874</span><span class="p">,</span> <span class="na">Brooklyn</span><span class="p">:</span> <span class="mi">2504706</span><span class="p">,</span> <span class="na">Queens</span><span class="p">:</span> <span class="mi">2230545</span><span class="p">,</span> <span class="na">Bronx</span><span class="p">:</span> <span class="mi">1385107</span><span class="p">,</span> <span class="na">Staten_Island</span><span class="p">:</span> <span class="mi">486730</span><span class="p">}</span>
+<span class="nx">object</span><span class="p">.</span><span class="nx">sort</span><span class="p">()</span> <span class="c1">//=&gt; error, not a function</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">object</span><span class="p">).</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">object</span><span class="p">[</span><span class="nx">a</span><span class="p">]</span> <span class="o">-</span> <span class="nx">object</span><span class="p">[</span><span class="nx">b</span><span class="p">]</span> <span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">x</span><span class="p">}</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">hash</span><span class="p">[</span><span class="nx">x</span><span class="p">]}</span><span class="err">`</span><span class="p">)</span>
+<span class="c1">//=&gt; [ 'Staten_Island: 486730',</span>
+    <span class="c1">// 'Bronx:        1385107',</span>
+    <span class="c1">// 'Manhattan:    1585874',</span>
+    <span class="c1">// 'Queens:       2230545',</span>
+    <span class="c1">// 'Brooklyn:     2504706' ]</span>
+</code></pre>
+</div>
+
+<p>In basic terms, we sort the values by descending order but we can only get an array of keys back, then we just map that key on itself to get the values.</p>
+
+<h1 id="easier-ifelseetc-with---ruby-case-each--js-switch-case">Easier if/else/etc with - Ruby: <code class="highlighter-rouge">Case; each</code> | JS: <code class="highlighter-rouge">Switch; case</code></h1>
+<hr />
+<p>The thing about <code class="highlighter-rouge">if/else/elsif/else if</code> statements is that they can get very repetitive, especially when going through multiple conditions. Say we’re watching West Wing and want to get a main character’s White House title. We <em>could</em> do a series of if statements:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nb">name</span> <span class="o">==</span> <span class="s2">"CJ"</span><span class="p">;</span> <span class="s2">"Press Secretary"</span>
+  <span class="k">elsif</span> <span class="nb">name</span> <span class="o">==</span> <span class="s2">"Donna"</span><span class="p">;</span> <span class="s2">"Assistant to the DCoS"</span>
+  <span class="k">elsif</span> <span class="nb">name</span> <span class="o">==</span> <span class="s2">"Abbey"</span><span class="p">;</span> <span class="s2">"First Lady"</span>
+  <span class="k">elsif</span> <span class="nb">name</span> <span class="o">==</span> <span class="s2">"Jed"</span><span class="p">;</span> <span class="s2">"President"</span>
+  <span class="k">elsif</span> <span class="nb">name</span> <span class="o">==</span> <span class="s2">"Josh"</span><span class="p">;</span> <span class="s2">"Deputy Chief of Staff"</span>
+  <span class="k">elsif</span> <span class="nb">name</span> <span class="o">==</span> <span class="s2">"Sam"</span><span class="p">;</span> <span class="s2">"Deputy Communications Director"</span>
+  <span class="k">elsif</span> <span class="nb">name</span> <span class="o">==</span> <span class="s2">"Toby"</span><span class="p">;</span> <span class="s2">"Communications Director"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">function</span> <span class="nx">title</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"CJ"</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Press Secretary"</span> <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"Donna"</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Assistant to the DCoS"</span><span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"Abbey"</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"First Lady"</span><span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"Jed"</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"President"</span><span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"Josh"</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Deputy Chief of Staff"</span><span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"Sam"</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Deputy Communications Director"</span><span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"Toby"</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Communications Director"</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p>If we call <code class="highlighter-rouge">title("CJ")</code> we’ll get “Press Secretary”, or <code class="highlighter-rouge">title("Jed")</code> we’ll get “President” which is great! But in our code we have to call on <code class="highlighter-rouge">name ===</code> every. single. time. In addition to a few other things in the code, they’re repetitive and constrictive, so instead we can use a <code class="highlighter-rouge">case statement</code> in Ruby or a <code class="highlighter-rouge">switch statement</code> in JS.</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="k">case</span> <span class="nb">name</span><span class="p">;</span>
+    <span class="k">when</span> <span class="s2">"CJ"</span><span class="p">;</span> <span class="s2">"Press Secretary"</span>
+    <span class="k">when</span> <span class="s2">"Donna"</span><span class="p">;</span> <span class="s2">"Assistant to the DCoS"</span>
+    <span class="k">when</span> <span class="s2">"Abbey"</span><span class="p">;</span> <span class="s2">"First Lady"</span>
+    <span class="k">when</span> <span class="s2">"Jed"</span><span class="p">;</span> <span class="s2">"President"</span>
+    <span class="k">when</span> <span class="s2">"Josh"</span><span class="p">;</span> <span class="s2">"Deputy Chief of Staff"</span>
+    <span class="k">when</span> <span class="s2">"Sam"</span><span class="p">;</span> <span class="s2">"Deputy Communications Director"</span>
+    <span class="k">when</span> <span class="s2">"Toby"</span><span class="p">;</span> <span class="s2">"Communications Director"</span>
+    <span class="k">else</span> <span class="s2">"Name Not Found"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">function</span> <span class="nx">title</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">switch</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="s2">"CJ"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Press Secretary"</span>
+    <span class="k">case</span> <span class="s2">"Donna"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Assistant to the DCoS"</span>
+    <span class="k">case</span> <span class="s2">"Abbey"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"First Lady"</span>
+    <span class="k">case</span> <span class="s2">"Jed"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"President"</span>
+    <span class="k">case</span> <span class="s2">"Josh"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Deputy Chief of Staff"</span>
+    <span class="k">case</span> <span class="s2">"Sam"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Deputy Communications Director"</span>
+    <span class="k">case</span> <span class="s2">"Toby"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Communications Director"</span>
+    <span class="nl">default</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Name Not Found"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+<p><strong>SO</strong> much better! We can even link this to our <code class="highlighter-rouge">.map</code> method if we’d like to call on an array</p>
+
+<p><code class="highlighter-rouge">names = ["Josh", "Jed", "Toby", "CJ", "Sam"]</code></p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">names</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
+  <span class="k">case</span> <span class="nb">name</span><span class="p">;</span>
+    <span class="k">when</span> <span class="s2">"CJ"</span><span class="p">;</span> <span class="s2">"Press Secretary"</span>
+    <span class="k">when</span> <span class="s2">"Donna"</span><span class="p">;</span> <span class="s2">"Assistant to the DCoS"</span>
+    <span class="k">when</span> <span class="s2">"Abbey"</span><span class="p">;</span> <span class="s2">"First Lady"</span>
+    <span class="k">when</span> <span class="s2">"Jed"</span><span class="p">;</span> <span class="s2">"President"</span>
+    <span class="k">when</span> <span class="s2">"Josh"</span><span class="p">;</span> <span class="s2">"Deputy Chief of Staff"</span>
+    <span class="k">when</span> <span class="s2">"Sam"</span><span class="p">;</span> <span class="s2">"Deputy Communications Director"</span>
+    <span class="k">when</span> <span class="s2">"Toby"</span><span class="p">;</span> <span class="s2">"Communications Director"</span>
+    <span class="k">else</span> <span class="s2">"Name Not Found"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">names</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">name</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">switch</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="s2">"CJ"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Press Secretary"</span>
+    <span class="k">case</span> <span class="s2">"Donna"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Assistant to the DCoS"</span>
+    <span class="k">case</span> <span class="s2">"Abbey"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"First Lady"</span>
+    <span class="k">case</span> <span class="s2">"Jed"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"President"</span>
+    <span class="k">case</span> <span class="s2">"Josh"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Deputy Chief of Staff"</span>
+    <span class="k">case</span> <span class="s2">"Sam"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Deputy Communications Director"</span>
+    <span class="k">case</span> <span class="s2">"Toby"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Communications Director"</span>
+    <span class="na">default</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Name Not Found"</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</code></pre>
+</div>
+<p>Both of these output:</p>
+
+<p><code class="highlighter-rouge">[ 'Deputy Chief of Staff', 'President',
+  'Communications Director', 'Press Secretary',
+  'Deputy Communications Director' ]</code></p>
+
+<p>Let’s do one more example with an array of grades someone got on their tests:</p>
+
+<p><code class="highlighter-rouge">grades = [95, 83, 68, 99, 75, 60]</code></p>
+
+<p>And we want to map those into basic letter grades, aka an A is 90-100, B is in the 80’s, etc. Unfortunately JS doesn’t have ranges like Ruby does, so it may only be <em>slightly</em> better than a series of if statements, but we can still make it work by simply testing to see which case is <code class="highlighter-rouge">true</code>:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">grades</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">grade</span><span class="o">|</span>
+  <span class="k">case</span> <span class="n">grade</span><span class="p">;</span>
+    <span class="k">when</span> <span class="mi">90</span><span class="p">.</span><span class="nf">.</span><span class="mi">100</span><span class="p">;</span> <span class="s2">"A"</span>
+    <span class="k">when</span> <span class="mi">80</span><span class="p">.</span><span class="nf">.</span><span class="mi">89</span><span class="p">;</span> <span class="s2">"B"</span>
+    <span class="k">when</span> <span class="mi">70</span><span class="p">.</span><span class="nf">.</span><span class="mi">79</span><span class="p">;</span> <span class="s2">"C"</span>
+    <span class="k">when</span> <span class="mi">65</span><span class="p">.</span><span class="nf">.</span><span class="mi">69</span><span class="p">;</span> <span class="s2">"D"</span>
+    <span class="k">when</span> <span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">64</span><span class="p">;</span> <span class="s2">"F"</span>
+    <span class="k">else</span> <span class="s2">"That grade is impossible!"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">grades</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">grade</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">switch</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"A"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">80</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"B"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">70</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"C"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">65</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"D"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"F"</span>
+    <span class="na">default</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"That grade is impossible!"</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</code></pre>
+</div>
+<p>Both of these output <code class="highlighter-rouge">["A", "B", "D", "A", "C", "F"]</code>, great!</p>
+
+<h1 id="adding-to--removing-from-arrays-with">Adding to / removing from arrays with:</h1>
+<h1 id="ruby-insert--delete_at--slice----js-splice">Ruby: <code class="highlighter-rouge">.insert</code> / <code class="highlighter-rouge">.delete_at</code> / <code class="highlighter-rouge">.slice!</code> /  | JS: <code class="highlighter-rouge">.splice</code></h1>
+<hr />
+<p>It’s easy to use <code class="highlighter-rouge">.unshift</code>/<code class="highlighter-rouge">.shift</code>/<code class="highlighter-rouge">.push</code>/<code class="highlighter-rouge">.pop</code> to add/remove items from the beginning/end of arrays respectively, but what about when we have to add/remove items at certain points <em>within</em> the array? Ruby uses <code class="highlighter-rouge">.insert</code> and <code class="highlighter-rouge">.delete_at</code>/<code class="highlighter-rouge">.slice!</code> to do these separately.</p>
+
+<p><code class="highlighter-rouge">.insert</code> takes in an index along with a value (or values) you’d like to add, while <code class="highlighter-rouge">.delete_at</code> takes in just an index:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+
+<span class="n">array</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"!"</span><span class="p">)</span> <span class="c1">#=&gt; ["Hello", "World", "!", "How", "Are", "You?"]</span>
+
+<span class="n">array</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s2">"Everyone"</span><span class="p">,</span> <span class="s2">"In"</span><span class="p">,</span> <span class="s2">"The"</span><span class="p">)</span>
+<span class="c1">#=&gt; ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]</span>
+
+<span class="n">array</span><span class="p">.</span><span class="nf">delete_at</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; ["Hello", "Everyone", "In", "The", "World", "How", "Are", "You?"]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">slice!</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># array #=&gt; ["Everyone", "In", "The", "World", "How", "Are", "You?"]</span>
+</code></pre>
+</div>
+<p>JS can do both of these with one method, <code class="highlighter-rouge">.splice</code>! Splice like <code class="highlighter-rouge">.insert</code> or <code class="highlighter-rouge">.delete_at</code> takes in an index, and while the rest are optional they change splice’s behavior entirely. Splice’s default behavior is to delete, and we need those extra values in there to instead insert. Here’s how it looks:</p>
+
+<p><code class="highlighter-rouge">array.splice(index, how_many_positions_out_to_delete, add_element(s) )</code></p>
+
+<p>Since <code class="highlighter-rouge">.splice</code> is destructive (changes the array permanently), in these examples I’ll be remaking the array quite a bit. Let’s test it out bit by bit:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nx">array</span> <span class="c1">//=&gt; ["Hello", "World"]</span>
+</code></pre>
+</div>
+<p>If we just put in one value (the index), it will delete all elements starting at that index until the end of the array. It works the same as if we put in a second value:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="nx">array</span> <span class="c1">//=&gt; ["Hello", "World"]</span>
+</code></pre>
+</div>
+<p>In this case we’re deleting all elements starting at index 2 and going 100 elements out, which covers the end of the array. Let’s try deleting just a few at a time instead:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nx">array</span> <span class="c1">//=&gt; ["Hello", "World", "How", "Are", "You?"]</span>
+<span class="c1">// start at index 2, then delete 0 elements out (which is none!)</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">//=&gt; ["How"] removed</span>
+<span class="nx">array</span> <span class="c1">//=&gt; ["Hello", "World", "Are", "You?"]</span>
+<span class="c1">// start at index 2, then delete 1 element out (just 2)</span>
+
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">//=&gt; ["World", "How", "Are"] removed</span>
+<span class="nx">array</span> <span class="c1">//=&gt; ["Hello", "You?"]</span>
+<span class="c1">// start at index 1, then delete 3 elements out (1-3)</span>
+</code></pre>
+</div>
+<p>Anything after these two numbers is <strong>added</strong> to the array, so let’s mimic what we did in Ruby:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"!"</span><span class="p">)</span> <span class="c1">//=&gt; ["Hello", "World", "!", "How", "Are", "You?"]</span>
+<span class="c1">// start at index 2, delete nothing, then add "!" at index 2</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Everyone"</span><span class="p">,</span> <span class="s2">"In"</span><span class="p">,</span> <span class="s2">"The"</span><span class="p">)</span>
+<span class="c1">//=&gt; ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]</span>
+<span class="c1">// start at index 1, delete nothing, then add "Everyone", "In", and "The" at index 1</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"Universe"</span><span class="p">)</span>
+<span class="c1">//=&gt; ["Hello", "Everyone", "In", "The", "Universe", "!", "How", "Are", "You?"]</span>
+<span class="c1">// start at index 4, delete 1 element out, then add "Universe" at index 4</span>
+</code></pre>
+</div>
+<h1 id="test-if-somethings-included---ruby-include--js-includes">Test if something’s included - Ruby: <code class="highlighter-rouge">.include?</code> | JS: <code class="highlighter-rouge">.includes</code></h1>
+<hr />
+<p>There’s a great way to test for inclusion which can be utilized in many ways, and surprisingly JS is the one here that can do more! While Ruby’s <code class="highlighter-rouge">.include?</code> can only test to see if something is included:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"hello"</span><span class="p">,</span> <span class="s2">"world"</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">#=&gt; true</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">)</span> <span class="c1">#=&gt; true</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">include?</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1">#=&gt; false</span>
+</code></pre>
+</div>
+<p>JS can do this, but in addition it can even test for inclusion at a specific index!</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"hello"</span><span class="p">,</span> <span class="s2">"world"</span><span class="p">]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1">//=&gt; false</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s2">"world"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">//=&gt; false</span>
+</code></pre>
+</div>
+<h1 id="keys-and-values">Keys and Values</h1>
+<hr />
+<p>If you have a Hash in ruby you can simply call <code class="highlighter-rouge">.keys</code> or <code class="highlighter-rouge">.values</code> on it to easily get their information:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">pets</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">dogs: </span><span class="mi">3</span><span class="p">,</span> <span class="ss">cats: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">birds: </span><span class="mi">1</span> <span class="p">}</span>
+<span class="n">pets</span><span class="p">.</span><span class="nf">keys</span> <span class="c1">#=&gt; [:dogs, :cats, :birds]</span>
+<span class="n">pets</span><span class="p">.</span><span class="nf">values</span> <span class="c1">#=&gt; [3, 2, 1]</span>
+</code></pre>
+</div>
+<p>Under the hood, these methods are basically going through each element in the hash and pulling out the chosen value and putting them in an array. These shortcuts work a bit different in JS. First off, a <strong>hash in Ruby</strong> is known as an <strong>object in JS</strong>. So we’ll have to call <code class="highlighter-rouge">.keys</code> or <code class="highlighter-rouge">.values</code> on a blank <code class="highlighter-rouge">Object</code> class and have it take in the Object pets:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// JavaScript</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">pets</span><span class="p">)</span> <span class="c1">//=&gt; ["dogs", "cats", "birds"]</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">values</span><span class="p">(</span><span class="nx">pets</span><span class="p">)</span> <span class="c1">//=&gt; [3, 2, 1]</span>
+</code></pre>
+</div>
+<h1 id="slice">slice</h1>
+<hr />
+<p>Slice is a nice method that goes into an array (or string) and selects the element(s) of your choice. While in Ruby you can directly call on the array/string to get these values using <code class="highlighter-rouge">array[0]</code> for the first value, or in Ruby only doing more fancy <code class="highlighter-rouge">array[1..4]</code> to get</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+<span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#=&gt; "Hello"</span>
+<span class="n">array</span><span class="p">[</span><span class="mi">2</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">]</span> <span class="c1">#=&gt; ["How", "Are", "You?"]</span>
+<span class="n">array</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="c1">#=&gt; ["How", "Are", "You?"]</span>
+</code></pre>
+</div>
+<p>only the first script <code class="highlighter-rouge">array[0]</code> can be used in JS. This is where <code class="highlighter-rouge">.slice</code> comes in, however just like <code class="highlighter-rouge">.reduce</code> it’s used differently. If you’re familiar with Ruby, <code class="highlighter-rouge">.slice</code> is used exactly like the above scripts and has the same exact outputs:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># select at index 0</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># select from index 2 to index 4</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># select from index 2 and go 3 positions further</span>
+</code></pre>
+</div>
+<p>JS operates differently however. Obviously we don’t have ranges so the middle script is of no use to us, but what happens if we try the other two scripts?</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">//=&gt; ["Hello", "World", "How", "Are", "You?"]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">//=&gt; ["How"]</span>
+</code></pre>
+</div>
+<p>“How” is right… what is happening here? Well in both languages the slice takes in two instances:
+<code class="highlighter-rouge">array.slice( start_index, optional_second_number ) </code>
+The <code class="highlighter-rouge">start_here</code> is the same in both languages, however the <code class="highlighter-rouge">optional_second_number</code> is what’s different.</p>
+
+<p>Ruby says: <code class="highlighter-rouge">start_index</code>, <code class="highlighter-rouge">go_this_many_positions_further (default is 0)</code>
+JS says: <code class="highlighter-rouge">start_index (default is 0)</code>, <code class="highlighter-rouge">end_index (default is array.length)</code></p>
+
+<p>Wait a second, <code class="highlighter-rouge">(start_index, end_index)</code>? that’s a range! Specifically it’s the three-dotted <code class="highlighter-rouge">(n1...n2)</code> range where we go <strong>up until</strong> the end index. So with that knowledge:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">// start at index 0, go to the default end of array.length</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="c1">// same</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">// same (array.length is 5, the last index in it is 4)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">// start at index 2, go up until 3 (therefore only index 2)</span>
+
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">()</span> <span class="c1">//=&gt; ["Hello", "World", "How", "Are", "You?"]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">||</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="o">||</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1">// all of them //=&gt; ["How", "Are", "You?"]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">//=&gt; ["How", "Are"]</span>
+</code></pre>
+</div>
+
+<h1 id="ruby-call--proc--js-callbacks">Ruby: <code class="highlighter-rouge">.call</code> / <code class="highlighter-rouge">.proc</code> | JS: <code class="highlighter-rouge">callbacks</code></h1>
+<hr />
+<p>Finally, what if we had a function inside of another function? Let’s come back to that question shortly.</p>
+
+<p>Say we were writing a function that did a few complicated things within it, but then wanted to easily change them or call on them again? For example, what if we wanted to multiply two numbers but have them squared first? We <em>could</em> do something like write it all out:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="k">def</span> <span class="nf">multiply_squared</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span>
+<span class="k">end</span>
+
+<span class="n">multiply_squared</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">#=&gt; 2*2 * 3*3 = 4 * 9 = 36</span>
+</code></pre>
+</div>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">function</span> <span class="nx">multiply_squared</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span> <span class="nx">x</span><span class="o">*</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">y</span><span class="o">*</span><span class="nx">y</span> <span class="p">}</span>
+
+<span class="nx">multiply_squared</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">//=&gt; 2*2 * 3*3 = 4 * 9 = 36</span>
+</code></pre>
+</div>
+<p>Great, but what if instead of squaring these I wanted to cube them? What if I wanted to have <code class="highlighter-rouge">x</code> equal another equation? Sure for cubing I could simply change the equation to <code class="highlighter-rouge">2*2*2 * 3*3*3</code> but that’d get messy especially if I wanted to add another one to the exponent, or I could change the equation to <code class="highlighter-rouge">2**3 * 3**3</code> and just simply change the exponent that way, but that’d get tedious and I also wouldn’t be able to call that as its own function. For <code class="highlighter-rouge">x</code> as another equation that’d also get ugly as for example <code class="highlighter-rouge">multiply_squared(2, (32/8) + 4)</code>. <code class="highlighter-rouge">.call</code> / <code class="highlighter-rouge">.proc</code> in Ruby and <code class="highlighter-rouge">callbacks</code> in Javascript fix this.</p>
+
+<p>In Ruby, we can first make a <code class="highlighter-rouge">Proc</code> which is a function that can be called on in the future. For example:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">say_hello</span> <span class="o">=</span> <span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="nb">puts</span> <span class="s2">"hello"</span> <span class="p">}</span>
+<span class="c1">#=&gt; &lt;Proc:0x007fbf7019b270@(irb):41&gt;</span>
+
+<span class="c1"># we then can call on this Proc object</span>
+
+<span class="n">say_hello</span><span class="p">.</span><span class="nf">call</span> <span class="c1">#=&gt; "hello"</span>
+
+<span class="n">say_hello</span><span class="p">()</span>
+</code></pre>
+</div>
+<p>A proc is an object that has its own set of variables. If you know about classes, then the <code class="highlighter-rouge">&lt;Proc:0x007fbf7019b270@(irb):41&gt;</code> looks very similar:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="k">class</span> <span class="nc">Dog</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">)</span>
+    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+    <span class="vi">@breed</span> <span class="o">=</span> <span class="n">breed</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+
+<span class="n">dog</span> <span class="o">=</span> <span class="no">Dog</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Lily"</span><span class="p">,</span> <span class="s2">"Pit Mix"</span><span class="p">)</span>
+<span class="c1">#=&gt; &lt;Dog:0x007fbf701290d0 @name="Lily", @breed="Pit Mix"&gt;</span>
+</code></pre>
+</div>
+<p>So what can we do with Procs? Here’s an example of what a basic function, and then a proc function does:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="k">def</span> <span class="nf">multi_basic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+<span class="k">end</span>
+
+<span class="n">multi_basic</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">#=&gt; 6</span>
+
+<span class="k">def</span> <span class="nf">multi_proc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">multi_proc</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">#=&gt; &lt;Proc:0x007fbf701808d0@(irb):47&gt;</span>
+<span class="n">multi_proc</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">).</span><span class="nf">call</span> <span class="c1">#=&gt; 6</span>
+</code></pre>
+</div>
+<p>Why is this so special? Our proc isn’t simply the answer to <code class="highlighter-rouge">2*3</code>, it’s an <strong>object</strong> that stores that answer, and we can call on it at any point or even do more with it. In the very simplest form we can create an object that simply can output the answer:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">multiply_5_6</span> <span class="o">=</span> <span class="n">multi_proc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="c1">#=&gt; &lt;Proc:0x007fbf7016adf0@(irb):48&gt;</span>
+<span class="n">multiply_5_6</span><span class="p">.</span><span class="nf">call</span> <span class="c1">#=&gt; 30</span>
+
+<span class="n">say_hello_to_someone</span> <span class="o">=</span> <span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">"Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!"</span> <span class="p">}</span>
+<span class="n">say_hello_to_someone</span> <span class="c1">#=&gt; &lt;Proc:0x007fb0d20b4ca0@(irb):49&gt;</span>
+<span class="n">say_hello_to_someone</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="s2">"Mike"</span><span class="p">)</span> <span class="c1">#=&gt; "Hello Mike!"</span>
+</code></pre>
+</div>
+<p>OR, we can get to the real reason why calls and procs are great: the ability to create an open-ended proc function that can be completed with a call:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">*</span> <span class="n">n</span> <span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">multiply_by_six</span> <span class="o">=</span> <span class="n">multiply</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">multiply_by_six</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; 30</span>
+<span class="n">multiply_by_six</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1">#=&gt; 60</span>
+
+<span class="n">multiply_by_thirty</span> <span class="o">=</span> <span class="n">multiply</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">multiply_by_thirty</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; 150</span>
+<span class="n">multiply_by_thirty</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span> <span class="c1">#=&gt; 750</span>
+</code></pre>
+</div>
+<p>If we wrote these same scripts out as functions within a function it would get pretty messy. Going back to what we did before:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="k">def</span> <span class="nf">multiply_squared</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span>
+<span class="k">end</span>
+
+<span class="n">multiply_squared</span><span class="p">(</span><span class="n">multiply_by_six</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; 12*12 * 2*2 = 144 * 4 = 576</span>
+
+<span class="c1"># instead with callbacks</span>
+
+<span class="n">multiply_six_squared</span> <span class="o">=</span> <span class="no">Proc</span><span class="p">.</span><span class="nf">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">|</span> <span class="n">multiply_by_six</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="p">}</span>
+<span class="n">multiply_six_squared</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; 576</span>
+</code></pre>
+</div>
+<p>We have our object to call on, and can change it any way we want. Why did I take a long time to go through what these do? Because this is one of those times where Javascript makes things easier than Ruby and it’s important to be able to visualize what goes on under the hood. Here’s how a callback would work in Javascript; see if you can see the similarities:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">say_hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">say_hello</span><span class="p">()</span> <span class="c1">//=&gt; "Hello"</span>
+
+<span class="c1">// The same in ES6 notation:</span>
+
+<span class="kd">var</span> <span class="nx">say_hello</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">say_hello</span><span class="p">()</span> <span class="c1">//=&gt; "Hello"</span>
+
+<span class="c1">// as a callback:</span>
+
+<span class="kd">var</span> <span class="nx">say_hello_callback</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span> <span class="nx">callback</span> <span class="p">}</span>
+<span class="nx">say_hello_callback</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">))</span> <span class="c1">//=&gt; "Hello"</span>
+
+<span class="c1">// ES6</span>
+<span class="kd">var</span> <span class="nx">say_hello_callback</span> <span class="o">=</span> <span class="nx">callback</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">callback</span> <span class="p">}</span>
+<span class="nx">say_hello_callback</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">))</span> <span class="c1">//=&gt; "Hello"</span>
+
+<span class="c1">// extract "hello" as another callback</span>
+
+<span class="kd">function</span> <span class="nx">hello</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Hello"</span> <span class="p">}</span>
+<span class="nx">say_hello_callback</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">hello</span><span class="p">()</span> <span class="p">))</span> <span class="c1">//=&gt; "Hello"</span>
+</code></pre>
+</div>
+<p>As you can see, Javascript handles our “proc” by just naming a function. Let’s callback even further:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">say_hello_to_someone</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">Hello</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">say_hello_to_someone</span><span class="p">(</span><span class="s2">"Mike"</span><span class="p">)</span> <span class="c1">//=&gt; "Hello Mike!"</span>
+
+<span class="c1">//ES6:</span>
+<span class="kd">var</span> <span class="nx">say_hello_to_someone</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">Hello</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">say_hello_to_someone</span><span class="p">(</span><span class="s2">"Mike"</span><span class="p">)</span> <span class="c1">//=&gt; "Hello Mike!"</span>
+
+<span class="c1">// extract "hello" again</span>
+
+<span class="kd">function</span> <span class="nx">hello</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Hello"</span> <span class="p">}</span>
+<span class="kd">var</span> <span class="nx">say_hello_to_someone</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">hello</span><span class="p">()}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">say_hello_to_someone</span><span class="p">(</span><span class="s2">"Mike"</span><span class="p">)</span> <span class="c1">//=&gt; "Hello Mike!"</span>
+
+<span class="c1">// and name</span>
+
+<span class="kd">function</span> <span class="nx">hello</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Hello"</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">name</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Mike"</span> <span class="p">}</span>
+<span class="kd">var</span> <span class="nx">say_hello_to_someone</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">hello</span><span class="p">()}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">()}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">say_hello_to_someone</span><span class="p">()</span> <span class="c1">//=&gt; "Hello Mike!"</span>
+
+<span class="c1">// with a callback</span>
+
+<span class="kd">var</span> <span class="nx">say_hello_to_someone_callback</span> <span class="o">=</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">callback</span> <span class="p">}</span>
+<span class="nx">say_hello_to_someone_callback</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">hello</span><span class="p">()}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">()}</span><span class="o">!</span><span class="err">`</span><span class="p">))</span>
+
+<span class="c1">// double callback!</span>
+
+<span class="kd">function</span> <span class="nx">greeting</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Hello"</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">name</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Mike"</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">log</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">hello</span><span class="p">()}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">()}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="kd">var</span> <span class="nx">say_hello_to_someone_callback_callback</span><span class="p">(</span><span class="nx">callback_2</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">callback</span> <span class="p">}</span>
+<span class="nx">say_hello_to_someone_callback_callback</span><span class="p">(</span><span class="nx">log</span><span class="p">())</span> <span class="c1">//=&gt; "Hello Mike!"</span>
+
+<span class="c1">// another way with multiple inputs</span>
+
+<span class="kd">var</span> <span class="nx">say_hello_to_someone_input</span> <span class="o">=</span> <span class="p">(</span><span class="nx">greeting</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">greeting</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="nx">say_hello_to_someone_input</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"Mike"</span><span class="p">)</span> <span class="c1">//=&gt; "Hello Mike!"</span>
+<span class="nx">say_hello_to_someone_input</span><span class="p">(</span><span class="nx">greeting</span><span class="p">(),</span> <span class="nx">name</span><span class="p">())</span> <span class="c1">//=&gt; "Hello Mike!"</span>
+</code></pre>
+</div>
+<p>We can even call our function and do things before we callback:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">lastly_say_hello_callback</span> <span class="o">=</span> <span class="nx">callback</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Loading greeting..."</span><span class="p">)</span>
+  <span class="nx">callback</span>
+<span class="p">}</span>
+<span class="nx">lastly_say_hello_callback</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">))</span>
+<span class="c1">//=&gt; "Hello"</span>
+<span class="c1">//=&gt; "Loading greeting..."</span>
+</code></pre>
+</div>
+<p>Oops our greeting callback loaded before our loading message because this is asynchronous. Let’s add a <code class="highlighter-rouge">timeout</code> to our callback:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">var</span> <span class="nx">lastly_say_hello_callback</span> <span class="o">=</span> <span class="nx">callback</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Loading greeting..."</span><span class="p">)</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">callback</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">lastly_say_hello_callback</span><span class="p">(()</span><span class="o">=&gt;</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">))</span>
+<span class="c1">//=&gt; "Loading greeting..."</span>
+<span class="c1">// sleep for 1 second</span>
+<span class="c1">//=&gt; "Hello"</span>
+</code></pre>
+</div>
+<p>And to be really cheeky, let’s have some callbacks that also take in inputs:</p>
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<span class="kd">function</span> <span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">greeting</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">say_hello_to_someone_callback_inputs</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">}</span>
+<span class="nx">say_hello_to_someone_callback_inputs</span><span class="p">(</span><span class="nx">log</span><span class="p">,</span> <span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"Mike"</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>There’s so much more you can do with this, try it out yourselves!</p>
+
+<hr />
+
+<p>So that covers some of the most important JS loops/iterations/methods. If there are any others you’d like added let me know!</p>
+
+<p>Code on.</p>
+
+<p>Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on May 20, 2017
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>

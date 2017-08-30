@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Making New Code: Ruby, Encryption, and Cryptography Part 2 – Mike Merin's Code Corner – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="In my last post we talked about making your own Monoalphabetic Cipher using Ruby (view that if you don’t understand what’s happening below). To summarize, we created a Caesar Cipher by shifting all letters forward by one letter:
+
+" />
+    <meta property="og:description" content="In my last post we talked about making your own Monoalphabetic Cipher using Ruby (view that if you don’t understand what’s happening below). To summarize, we created a Caesar Cipher by shifting all letters forward by one letter:
+
+" />
+    
+    <meta name="author" content="Mike Merin's Code Corner" />
+
+    
+    <meta property="og:title" content="Making New Code: Ruby, Encryption, and Cryptography Part 2" />
+    <meta property="twitter:title" content="Making New Code: Ruby, Encryption, and Cryptography Part 2" />
+    
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Mike Merin's Code Corner - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a href="/">Mike Merin's Code Corner</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav>
+            <a href="https://mikemerin.github.io/" target="_blank">Blog</a>
+            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
+            <a href="/about">About</a>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Making New Code: Ruby, Encryption, and Cryptography Part 2</h1>
+  <h3></h3>
+
+  <div class="entry">
+    <p>In my last post we talked about making your own Monoalphabetic Cipher using Ruby (view that if you don’t understand what’s happening below). To summarize, we created a Caesar Cipher by shifting all letters forward by one letter:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># create the alphabet array:</span>
+<span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"a"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"z"</span><span class="p">).</span><span class="nf">to_a</span>
+</code></pre>
+</div>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># turn the alphabet into a hash, and keep punctuation from changing by appending it to the hash (using merge)</span>
+<span class="n">punctuation</span> <span class="o">=</span> <span class="p">{</span><span class="s2">" "</span><span class="o">=&gt;</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">","</span><span class="o">=&gt;</span><span class="s2">","</span><span class="p">,</span> <span class="s2">"."</span><span class="o">=&gt;</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">"?"</span><span class="o">=&gt;</span><span class="s2">"?"</span><span class="p">,</span><span class="s2">"'"</span><span class="o">=&gt;</span><span class="s2">"'"</span><span class="p">,</span><span class="s1">'"'</span><span class="o">=&gt;</span><span class="s1">'"'</span><span class="p">}</span>
+<span class="no">Caesar_cipher</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">)]</span>
+<span class="no">Caesar_cipher</span><span class="p">.</span><span class="nf">merge!</span><span class="p">(</span><span class="n">punctuation</span><span class="p">)</span>
+<span class="c1"># output =&gt; { "a"=&gt;"b", "b"=&gt;"c", "c"=&gt;"d", "d"=&gt;"e", "e"=&gt;"f", "f"=&gt;"g", "g"=&gt;"h", "h"=&gt;"i", "i"=&gt;"j", "j"=&gt;"k", "k"=&gt;"l", "l"=&gt;"m", "m"=&gt;"n", "n"=&gt;"o", "o"=&gt;"p", "p"=&gt;"q", "q"=&gt;"r", "r"=&gt;"s", "s"=&gt;"t", "t"=&gt;"u", "u"=&gt;"v",  "v"=&gt;"w", "w"=&gt;"x", "x"=&gt;"y", "y"=&gt;"z", "z"=&gt;"a", " "=&gt;" ", ","=&gt;",", "."=&gt;".", "?"=&gt;"?","'"=&gt;"'",'"'=&gt;'"' }</span>
+</code></pre>
+</div>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">to_caesar</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Ceaser_cipher</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">to_caesar</span><span class="p">(</span><span class="s2">"here is a sentence"</span><span class="p">)</span> <span class="c1">#=&gt; "ifsf jt b tfoufodf"</span>
+</code></pre>
+</div>
+<p>But remember, from a cryptography standpoint, since this is a Monoalphabetic Cipher it can decrypted easily by substituting the letters one by one. If we reverse the step above:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Caesar_cipher</span><span class="p">.</span><span class="nf">invert</span> <span class="c1">#=&gt; { "b"=&gt;"a", "c"=&gt;"b", "d"=&gt;"c", "e"=&gt;"d", "f"=&gt;"e", "g"=&gt;"f", "h"=&gt;"g", "i"=&gt;"h", "j"=&gt;"i", "k"=&gt;"j", "l"=&gt;"k", "m"=&gt;"l", "n"=&gt;"m", "o"=&gt;"n", "p"=&gt;"o", "q"=&gt;"p", "r"=&gt;"q", "s"=&gt;"r", "t"=&gt;"s", "u"=&gt;"t", "v"=&gt;"u", "w"=&gt;"v", "x"=&gt;"w", "y"=&gt;"x", "z"=&gt;"y", "a"=&gt;"z", " " =&gt; " " }</span>
+
+<span class="k">def</span> <span class="nf">from_Caesar</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Caesar_cipher</span><span class="p">.</span><span class="nf">invert</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span>
+<span class="k">end</span>
+
+<span class="n">encrypted_message</span> <span class="o">=</span> <span class="n">to_Caesar</span><span class="p">(</span><span class="s2">"et tu brute"</span><span class="p">)</span> <span class="c1">#=&gt; "fu uv csvuf"</span>
+<span class="n">from_caesar</span><span class="p">(</span><span class="n">encrypted_message</span><span class="p">)</span> <span class="c1">#=&gt; "et tu brute"</span>
+<span class="n">from_Caesar</span><span class="p">(</span><span class="n">to_Caesar</span><span class="p">(</span><span class="s2">"et tu brute"</span><span class="p">))</span> <span class="c1">#=&gt; "et tu brute"</span>
+</code></pre>
+</div>
+
+<p>This wouldn’t be a good way to encrpt a message or a password since people can easily decrypt it (remember, Cryptoquotes in a puzzle section of the newspaper are just Monoalphabetic Ciphers). So let’s move onto the next evolution in ciphers: a <strong>Poly</strong>alphabetic Cipher!</p>
+<h1 id="the-polyalphabetic-cipher">The Polyalphabetic Cipher</h1>
+<hr />
+
+<p>Let’s go through some keywords first to make this easier:</p>
+<ul>
+  <li><strong>plaintext</strong>: the unencrypted text you type in</li>
+  <li><strong>key</strong>: how you encrypt your plaintext, usually a codeword</li>
+  <li><strong>ciphertext</strong>: the encrypted text</li>
+</ul>
+
+<p>So what is a Polyalphabetic Cipher? Well instead of using <strong>one</strong> shift applied to all letters (<em>mono</em>), we’ll be using <strong>multiple</strong> shifts (<em>poly</em>). Let’s compare the two with the same plaintext of “AAAAAAAAA”. In a Monoalphabetic Cipher a shift of 1 would make our <strong>ciphertext</strong> “BBBBBBBBBB”, so our <strong>key</strong> would be the single (<em>mono</em>) letter “B”, aka what the letter “A” turns into:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">key</span> <span class="o">=</span> <span class="s2">"B"</span>
+<span class="n">plaintext_1</span> <span class="o">=</span> <span class="s2">"AAAAAAAAAA"</span>
+<span class="n">ciphertext_1</span> <span class="o">=</span> <span class="s2">"BBBBBBBBB"</span>
+
+<span class="n">plaintext_2</span> <span class="o">=</span> <span class="s2">"Hello world, how are you?"</span>
+<span class="n">ciphertext_2</span> <span class="o">=</span> <span class="s2">"Ifmmp xpsme, ipx bsf zpv?"</span>
+</code></pre>
+</div>
+<p>However in a Polyalphabetic Cipher our <strong>key</strong> isn’t a single letter but multiple (<em>poly</em>) letters! If we had a key of “BCD”, we’d shift the first letter by 1, the second letter by 2, third by 3, then repeat until our entire message is encrypted.</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">key</span> <span class="o">=</span> <span class="s2">"BCD"</span>
+<span class="n">plaintext_1</span> <span class="o">=</span> <span class="s2">"AAAAAAAAAA"</span>
+<span class="n">ciphertext_1</span> <span class="o">=</span> <span class="s2">"BCDBCDBCDB"</span>
+
+<span class="n">plaintext_2</span> <span class="o">=</span> <span class="s2">"Hello world, how are you?"</span>
+<span class="n">ciphertext_2</span> <span class="o">=</span> <span class="s2">"Igomq xqumf, iqz cuf bpw?"</span>
+</code></pre>
+</div>
+
+<p>Pretty easy to grasp right? While the execution is slightly more complex we still can picture how this works. Let’s walk through the questions we should think about:
+1) How do we code this? Can our prior Monoalphabetic Cipher code help us out?
+2) Why did this cipher take 300 years to break? Is it really that much harder to decrypt?</p>
+
+<h1 id="coding-our-cipher">Coding our cipher</h1>
+<hr />
+<p>Let’s tackle the first question: coding the Polyalphabatic Cipher and using our prior code to our advantage. Once again I’ll start off with a step-by-step (though not as in depth as the last post) before we make some clean and brief looking code. The name of this revolutionary cipher is called a <em>Vigenère Cipher</em>, also known as le chiffre indéchiffrable (the indecipherable cipher).</p>
+
+<p>Once again in out example above, the plaintext we used was “AAAAAAAAAA”, the key was “BCD” (B = 1 shift, C = 2, D = 3), and the ciphertext obtained after we applied the key was “BCDBCDBCDB”. So if we think about this in code:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"a"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"z"</span><span class="p">).</span><span class="nf">to_a</span>
+<span class="no">Key_B</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">)]</span>
+<span class="c1"># =&gt; { "a" =&gt; "b", "b" =&gt; "c", "c" =&gt; "d", "d"=&gt;"e"....etc}</span>
+<span class="no">Key_C</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">)]</span>
+<span class="c1"># =&gt; { "a" =&gt; "c", "b" =&gt; "d", "c" =&gt; "e", "d"=&gt;"f"....etc}</span>
+<span class="no">Key_D</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="p">)]</span>
+<span class="c1"># =&gt; { "a" =&gt; "d", "b" =&gt; "e", "c" =&gt; "f", "d"=&gt;"g"....etc}</span>
+</code></pre>
+</div>
+<p>We’d like our code to do something like this:
+1) If it’s the 1st/4th/7th/etc. letter then use Key_B
+2) If it’s the 2nd/5th/8th/etc. letter then use Key_C
+3) If it’s the 3rd/6th/9th/etc. letter then use Key_D</p>
+
+<p>We’ll use a <strong>modulo</strong> here to figure out the letter’s position. A modulo gives the remainder after you divide a number. For example <code class="highlighter-rouge">3 / 3 = 0</code> divides in evenly and has 0 remaining after you divide, but <code class="highlighter-rouge">5 / 3 = 1.66</code> doesn’t divide evenly. We can rewrite this as <code class="highlighter-rouge">5 / 3 = 1 + 2/3</code> so it divides with a remainder of 2. If we use modulos we can direclty get the remainder: <code class="highlighter-rouge">5 % 3 = 2</code>.</p>
+
+<p>Since our key “ABC” is 3 letters we’ll modulo by 3. Remember that in code we start our counting at 0, so expanding on the above:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="s2">"If our letter is at index 0/3/6 etc. then use Key_B"</span>
+<span class="no">Key_B</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="k">if</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="no">Key_B</span><span class="p">[</span><span class="s2">"H"</span><span class="p">]</span> <span class="c1">#=&gt; I</span>
+</code></pre>
+</div>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="s2">"If our letter is at index 1/4/7 etc. then use Key_C"</span>
+<span class="no">Key_C</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="k">if</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">1</span>
+<span class="no">Key_C</span><span class="p">[</span><span class="s2">"e"</span><span class="p">]</span> <span class="c1">#=&gt; g</span>
+</code></pre>
+</div>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="s2">"If our letter is at index 2/5/8 etc. then use Key_D"</span>
+<span class="no">Key_D</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="k">if</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="no">Key_D</span><span class="p">[</span><span class="s2">"l"</span><span class="p">]</span> <span class="c1">#=&gt; o</span>
+</code></pre>
+</div>
+<p>With this knowledge, there’s two things we need to know before we can make our iteration work: <strong>.with_index</strong> and <strong>case</strong>. You already know about <strong>each</strong> and <strong>map</strong> which lets us iterate through each character one by one, but we only get the letter and not the index as we need above. In the last post we started off by doing <code class="highlighter-rouge">(0..sentence.size)</code> to get our index numbers, but that’s messy. If we simply do <code class="highlighter-rouge">each.with_index</code> or <code class="highlighter-rouge">map.with_index</code> we can now use the letter along with the index as we iterate! A quick note that <code class="highlighter-rouge">each_with_index</code> works but <code class="highlighter-rouge">map_with_index</code> doesn’t. We’ll make the start of our iteration look like this:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span><span class="p">.</span><span class="nf">with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
+</code></pre>
+</div>
+<p>So for every <code class="highlighter-rouge">letter</code> we have its <code class="highlighter-rouge">index</code> at our disposal. Next up is our <strong>case</strong> statement. You can think of this like a more clean <strong>if/elsif/else</strong>. These two do the exact same thing:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="no">Key_B</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+<span class="k">elsif</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="no">Key_C</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+<span class="k">elsif</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="no">Key_D</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">case</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span>
+    <span class="k">when</span> <span class="mi">0</span>
+        <span class="no">Key_B</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">when</span> <span class="mi">1</span>
+        <span class="no">Key_C</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">when</span> <span class="mi">2</span>
+        <span class="no">Key_D</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>It’s much easier to read as we’re not repeating <code class="highlighter-rouge">index % 0</code> every time. We can further condense these by replacing the line breaks with a semi-colon:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span> <span class="no">Key_B</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+<span class="k">elsif</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span> <span class="no">Key_C</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+<span class="k">elsif</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">2</span><span class="p">;</span> <span class="no">Key_D</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">case</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span>
+    <span class="k">when</span> <span class="mi">0</span><span class="p">;</span> <span class="no">Key_B</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">when</span> <span class="mi">1</span><span class="p">;</span> <span class="no">Key_C</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">when</span> <span class="mi">2</span><span class="p">;</span> <span class="no">Key_D</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>Case is still the winner. So let’s combine the two to make our cipher, adding a little twist at the end:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span><span class="p">.</span><span class="nf">with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
+        <span class="k">case</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span>
+            <span class="k">when</span> <span class="mi">0</span><span class="p">;</span> <span class="no">Key_B</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="k">when</span> <span class="mi">1</span><span class="p">;</span> <span class="no">Key_C</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="k">when</span> <span class="mi">2</span><span class="p">;</span> <span class="no">Key_D</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span>
+        <span class="k">end</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span><span class="p">.</span><span class="nf">upcase</span>
+<span class="k">end</span>
+
+<span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">)</span> <span class="c1">#=&gt; IGOMQXQUMFIQZCUFBPW</span>
+</code></pre>
+</div>
+<p>You’ll notice I took away spaces, didn’t add punctuation, and made it all uppercase. If we don’t have spaces we make our cipher even harder to break, and the uppercase simply makes it easier to read. When we have the key at our disposal and decrypt the message we’ll get: <code class="highlighter-rouge">HELLOWORLDHOWAREYOU</code>. Even though it doesn’t have spaces or punctuation we can still read it, but that won’t help for a jumble of letters for those who don’t have a key, so our cipher is more secure!</p>
+<h1 id="making-this-simpler">Making this simpler</h1>
+<hr />
+<p>If it’s not obvious already, this isn’t the best way by far to make our cipher work. I made mine like this for the time being so you can understand how it works, but there are many problems with it. Let’s ask ourselves 5 questions:
+1) We’d have to make a new <code class="highlighter-rouge">Key_#[letter]</code> for every letter in the alphabet
+2) Even if we had a new <code class="highlighter-rouge">Key_#[letter]</code> for each of the 26 letters, our code would be VERY long
+3) Is a case statement really the best way to do this if we start iterating?
+4) What’s the best way for us to define a key?
+5) Our code isn’t modular for any key length (it only works for 3 letter keys)</p>
+
+<p>So how do we fix these? Let’s go down the list one by one!</p>
+<blockquote>
+  <p>1 - We’d have to make a new <code class="highlighter-rouge">Key_#[letter]</code> for every letter in the alphabet</p>
+</blockquote>
+
+<p>Once again iteration is our friend; let’s think back to our original hash creation of the alphabet with a slight change:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>Notice that we have a <code class="highlighter-rouge">rotation(x)</code> method, and instead of having <code class="highlighter-rouge">rotate(1)</code> or <code class="highlighter-rouge">rotate(2)</code> etc. hard-coded in each time, we now have a value <code class="highlighter-rouge">x</code> we can change freely. In essence, if our Key was “B” we’d rewriting <code class="highlighter-rouge">Key_B[letter]</code> as <code class="highlighter-rouge">rotation(1)[letter]</code>, both of which do ` #=&gt; Hash[ Alphabet.zip( Alphabet.rotate(1))][letter]`.</p>
+
+<p>Before we get to customizing this let’s simply hard-code this to visualize it:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span> <span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span><span class="p">.</span><span class="nf">with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
+        <span class="k">case</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span>
+            <span class="k">when</span> <span class="mi">0</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># same as Key_B[letter]</span>
+            <span class="k">when</span> <span class="mi">1</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="mi">2</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># same as Key_C[letter]</span>
+            <span class="k">when</span> <span class="mi">2</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="mi">3</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># same as Key_D[letter]</span>
+        <span class="k">end</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span><span class="p">.</span><span class="nf">upcase</span>
+<span class="k">end</span>
+
+<span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">)</span> <span class="c1">#=&gt; "IGOMQXQUMFIQZCUFBPW"</span>
+</code></pre>
+</div>
+<blockquote>
+  <p>2 - Even if we had a new <code class="highlighter-rouge">Key_#[letter]</code> for each of the 26 letters, our code would be VERY long</p>
+</blockquote>
+
+<p>This is all great, but how can we tell our program to know that <code class="highlighter-rouge">A = rotate(0)</code> or <code class="highlighter-rouge">B = rotate(1)</code> without having to make a new line for each letter/rotation? Think back to the last post, what did we create near the end? We made a Monoalphabetic Cipher where letters pointed to a number! Let’s zip up an uppercase alphabet with the numbers 0 to 25:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+<span class="no">Key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="no">Alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">25</span><span class="p">).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+<span class="c1">#=&gt; {"A"=&gt;0, "B"=&gt;1, "C"=&gt;2, "D"=&gt;3, "E"=&gt;4, etc }</span>
+</code></pre>
+</div>
+
+<p>Why all this work? You’ll notice that even though we turned something like <code class="highlighter-rouge">Key_B[letter]</code> into <code class="highlighter-rouge">rotation(1)[letter]</code> we’d still need to have a new line for each <code class="highlighter-rouge">when</code> in our case statement. Let’s fix that with our <code class="highlighter-rouge">Key_#[letter]</code> trick:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">rotation</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+<span class="c1"># We can turn the 1 in this to the Key_to_num[letter] right?</span>
+<span class="no">Key_to_num</span><span class="p">[</span><span class="s2">"B"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># therefore</span>
+
+<span class="n">rotation</span><span class="p">(</span>        <span class="mi">1</span>        <span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+<span class="n">rotation</span><span class="p">(</span> <span class="no">Key_to_num</span><span class="p">[</span><span class="s2">"B"</span><span class="p">]</span> <span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+</code></pre>
+</div>
+<p>Putting it together:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="no">Alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span><span class="p">.</span><span class="nf">with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
+        <span class="k">case</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span>
+            <span class="k">when</span> <span class="mi">0</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="no">Key_to_num</span><span class="p">[</span><span class="s2">"B"</span><span class="p">])[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="k">when</span> <span class="mi">1</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="no">Key_to_num</span><span class="p">[</span><span class="s2">"C"</span><span class="p">])[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="k">when</span> <span class="mi">2</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="no">Key_to_num</span><span class="p">[</span><span class="s2">"D"</span><span class="p">])[</span><span class="n">letter</span><span class="p">]</span>
+        <span class="k">end</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span><span class="p">.</span><span class="nf">upcase</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>There’s still some repetition here though and it’s getting a bit messy, so let’s move our <code class="highlighter-rouge">Key_to_num</code> object into our <code class="highlighter-rouge">rotation(x)</code> helper method, and finally make those objects lowercase (it’s generally not good to make your own uppercase objects since they can mistakenly overwrite existing ones like <code class="highlighter-rouge">Hash</code> or if you have a bigger program they can overwrite other ones you wrote, same thing with global variables, just don’t do it).</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+    <span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">25</span><span class="p">).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span><span class="p">.</span><span class="nf">with_index</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="p">,</span> <span class="n">index</span><span class="o">|</span>
+        <span class="k">case</span> <span class="n">index</span> <span class="o">%</span> <span class="mi">3</span>
+            <span class="k">when</span> <span class="mi">0</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="s2">"B"</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="k">when</span> <span class="mi">1</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="s2">"C"</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+            <span class="k">when</span> <span class="mi">2</span><span class="p">;</span> <span class="n">rotation</span><span class="p">(</span><span class="s2">"D"</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+        <span class="k">end</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span><span class="p">.</span><span class="nf">upcase</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>Hey we’re back to having a letter being taken into our rotation method! Funny how that worked right? This is important for a reason which you’ll see shortly.</p>
+<blockquote>
+  <p>3 - Is a case statement really the best way to do this if we start iterating?</p>
+</blockquote>
+
+<p>We’re almost there! This is a good question, and the answer is <strong><em>NO!</em></strong> When we start iterating we no longer need to use a case statement! It technically still works but there ends up not being a need for it. Let’s think about it this way:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">rotation</span><span class="p">(</span><span class="s2">"B"</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># first do this</span>
+<span class="n">rotation</span><span class="p">(</span><span class="s2">"C"</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># then do this</span>
+<span class="n">rotation</span><span class="p">(</span><span class="s2">"D"</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># lastly do this</span>
+<span class="c1"># and repeat until you reach the end of the sentence</span>
+</code></pre>
+</div>
+<p>We keep talking about our <strong>key</strong> of “BCD” but all we’ve been doing so far is hard-coding in our “B” then “C” then “D”. Let’s actually make an object <code class="highlighter-rouge">key = "BCD"</code> and iterate over it! We’d  like this:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">key</span> <span class="o">=</span> <span class="s2">"BCD"</span>
+<span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># convert key[0] (which is "B")</span>
+<span class="n">rotation</span><span class="p">(</span> <span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># which is</span>
+<span class="n">rotation</span><span class="p">(</span>     <span class="s2">"B"</span>    <span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+<span class="c1"># then add 1 to the index</span>
+<span class="n">rotation</span><span class="p">(</span> <span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># which is</span>
+<span class="n">rotation</span><span class="p">(</span>     <span class="s2">"C"</span>    <span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+<span class="c1"># and add another one to the index (2), when you get to 3 reset it to 0</span>
+</code></pre>
+</div>
+<p>A neat trick for making our iteration repeat from 0-2, 0-2, etc. is to once again use the modulo operator:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="c1">#=&gt; 0 % 3 becomes 0</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="c1">#=&gt; 1 % 3 becomes 1</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="c1">#=&gt; 2 % 3 becomes 2</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span> <span class="c1">#=&gt; 3 % 3 becomes 0</span>
+</code></pre>
+</div>
+<p>Notice we start at -1 so the first time we trigger the modulo equation it becomes 0 (you’ll see why we don’t start at 0 shortly). So with this information in our hands, let’s take down points 2 and 3!</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+    <span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">25</span><span class="p">).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="s2">"BCD"</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span>
+        <span class="n">rotation</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">])[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span>
+<span class="k">end</span>
+
+<span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">)</span> <span class="c1">#=&gt; "IGOMQXQUMFIQZCUFBPW"</span>
+</code></pre>
+</div>
+<p>Still works! By the way when you use <strong>map</strong> it will output the last line in the iteration, hence why we have our <code class="highlighter-rouge">index = (index + 1) % 3</code> starting at -1 since we need to trigger it <em>before</em> the rotation method.</p>
+<blockquote>
+  <p>4 - What’s the best way for us to define a key?</p>
+</blockquote>
+
+<p>These last two steps are actually the easiest and shortest! Right now we have “BCD” defined as our key inside our vigenere method, but why don’t we have the user put in the key just like they put in the sentence? That way it’s the user telling us what key they want to use:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span>
+        <span class="n">rotation</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">])[</span><span class="n">letter</span><span class="p">]</span>
+
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span>
+<span class="k">end</span>
+<span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">,</span> <span class="s2">"BCD"</span><span class="p">)</span> <span class="c1">#=&gt; "IGOMQXQUMFIQZCUFBPW"</span>
+<span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">,</span> <span class="s2">"HEY"</span><span class="p">)</span> <span class="c1">#=&gt; "OIJSSDSPSHOSUEPLWVY"</span>
+<span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">,</span> <span class="s2">"KEY"</span><span class="p">)</span> <span class="c1">#=&gt; "RIJVSGSPVHRSUEPOWYY"</span>
+</code></pre>
+</div>
+<blockquote>
+  <p>5 - Our code isn’t modular for any key length (it only works for 3 letter keys)</p>
+</blockquote>
+
+<p>Last step! It’s great that I now have the user input their own key, but as the 5th question states: it only works for 3 letter keys, so how do we change our code? Well where’s the only place there’s a 3? That’s right the index modulo part! Now that <code class="highlighter-rouge">key</code> is an instance the user puts in, we’ll just change this:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span>
+<span class="c1"># to</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">key</span><span class="p">.</span><span class="nf">size</span>
+</code></pre>
+</div>
+<p>All together:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+    <span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">25</span><span class="p">).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">key</span><span class="p">.</span><span class="nf">size</span>
+        <span class="n">rotation</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">])[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span>
+<span class="k">end</span>
+<span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">,</span> <span class="s2">"AMAZING"</span><span class="p">)</span> <span class="c1">#=&gt; "HQLKWCODLCUUWAQMEOG"</span>
+</code></pre>
+</div>
+<p>One quick thing before we continue, we only want letters to be encrypted and decrypted right? So let’s switch out <code class="highlighter-rouge">chars</code> for a simple regular expression (regex) to only iterate over letters:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span>
+<span class="c1"># becomes</span>
+<span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">scan</span><span class="p">(</span><span class="sr">/[A-Z]/</span><span class="p">).</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span>
+</code></pre>
+</div>
+<p>This will prevent some mishaps from happening, especially when we try decrypting this message. Anyways hooray we completed our Vigenère Cipher!</p>
+<h1 id="decrypting-our-vigenère-cipher">Decrypting our Vigenère Cipher</h1>
+<hr />
+<p>Obviously it’s not as simple to write our code to decrypt a Polyalphabetic Cipher as it is a Monoalphabetic one. Just kidding, we just have to change one thing from the code we already wrote. Before I reveal it though think about this:</p>
+
+<p>We can’t simply invert our hash, or our key, we have to invert <em>each</em> key’s letter once at a time. If we do we’ll get even more of a jumble, so how do we do that? Let’s think about this:</p>
+<ul>
+  <li>forwards:
+    <ul>
+      <li>plaintext = “hey”</li>
+      <li>key = “B” #=&gt; { “a”=&gt;”b”, “b”=&gt;”c” etc. }</li>
+      <li>ciphertext = “ifz”</li>
+    </ul>
+  </li>
+  <li>reverse:
+    <ul>
+      <li>ciphertext = “ifz”</li>
+      <li>key = “B” inverted #=&gt; { “a”=&gt;”z”, “b”=&gt;”a” etc. }</li>
+      <li>plaintext = “hey”</li>
+    </ul>
+  </li>
+</ul>
+
+<p>So let’s go to those two Hashes we used in our <code class="highlighter-rouge">rotation(x)</code> method, specifically at the <code class="highlighter-rouge">key_to_num</code> object. Why? Normally if our key is “B” we’d be shifting a letter up by one, but if we’re deciphering we’ll be shifting the letter <strong><em>down</em></strong> by one. There are multiple ways to do this but I’ll go through two of them. The first is easier to understand, but the second is what we’ll actually use.</p>
+
+<h4 id="method-1">Method 1:</h4>
+<p>Basically, instead of going from 0 up to 25 which we have as our <code class="highlighter-rouge">(0..25)</code> range also known as <code class="highlighter-rouge">(0.upto(25))</code>:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">25</span><span class="p">).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+<span class="c1"># also done with "upto" as</span>
+<span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">upto</span><span class="p">(</span><span class="mi">25</span><span class="p">)).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+<span class="p">{</span> <span class="s2">"A"</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"B"</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"C"</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"D"</span> <span class="o">=&gt;</span> <span class="mi">3</span> <span class="n">etc</span><span class="o">.</span><span class="p">}</span>
+</code></pre>
+</div>
+<p>We’ll instead go from 0 <strong>down to</strong> -25:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">downto</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">)).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+<span class="p">{</span> <span class="s2">"A"</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"B"</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"C"</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"D"</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">3</span> <span class="n">etc</span><span class="o">.</span><span class="p">}</span>
+</code></pre>
+</div>
+<p>Changing this code we’ll get:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">reverse_rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+    <span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">downto</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">)).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<h4 id="method-2">Method 2:</h4>
+<p>This time we’ll work off of the second Hash. When we zip our numbers we’ll simply negate them! This works by just making our rotations negative instead of positive:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="p">{</span> <span class="s2">"A"</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"B"</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"C"</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"D"</span> <span class="o">=&gt;</span> <span class="mi">3</span> <span class="n">etc</span><span class="o">.</span><span class="p">}</span>
+<span class="c1"># reverse with one simple trick!</span>
+<span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="p">{</span> <span class="s2">"A"</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"B"</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"C"</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"D"</span> <span class="o">=&gt;</span> <span class="o">-</span><span class="mi">3</span> <span class="n">etc</span><span class="o">.</span><span class="p">}</span>
+</code></pre>
+</div>
+<p>Changing this code we’ll get:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">reverse_rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+    <span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">upto</span><span class="p">(</span><span class="mi">25</span><span class="p">)).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>And putting it all together:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">ciphertext</span> <span class="o">=</span> <span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">,</span> <span class="s2">"AMAZING"</span><span class="p">)</span> <span class="c1">#=&gt; "HQLKWCODLCUUWAQMEOG"</span>
+
+<span class="k">def</span> <span class="nf">reverse_rotation</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+    <span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">upto</span><span class="p">(</span><span class="mi">25</span><span class="p">)).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">decrypt_vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">scan</span><span class="p">(</span><span class="sr">/[A-Z]/</span><span class="p">).</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">key</span><span class="p">.</span><span class="nf">size</span>
+        <span class="n">reverse_rotation</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">])[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span>
+<span class="k">end</span>
+
+<span class="n">decrypt_vigenere</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="s2">"AMAZING"</span><span class="p">)</span> <span class="c1">#=&gt; "HELLOWORLDHOWAREYOU"</span>
+</code></pre>
+</div>
+<p>Easy enough!</p>
+<h1 id="thats-a-lot-of-methods">That’s a lot of methods…</h1>
+<hr />
+<p>I’m not satisfied though, there’s so much repeated code between encryption and decryption with the four separate methods, so let’s change our vigenere method around to do both at once! Basically what we want to is four things here:
+1) Merge our <code class="highlighter-rouge">vigenere</code> and <code class="highlighter-rouge">decrypt vigenere</code> methods
+2) Merge our <code class="highlighter-rouge">rotation</code> and <code class="highlighter-rouge">reverse_rotation</code> methods</p>
+
+<p>Let’s do this quickly; I already have over 3000 words for this post.</p>
+<blockquote>
+  <p>1 - Merge our <code class="highlighter-rouge">vigenere</code> and <code class="highlighter-rouge">decrypt vigenere</code> methods</p>
+</blockquote>
+
+<p>Simple fix: in addition to having our vigenere method take in a sentence and key, we’ll also have it take in an encryption type, or <code class="highlighter-rouge">type</code> for short, then choose to do a rot:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">type</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">scan</span><span class="p">(</span><span class="sr">/[A-Z]/</span><span class="p">).</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">key</span><span class="p">.</span><span class="nf">size</span>
+        <span class="n">rotation</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">])[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+<p>Note that we <em>could</em> make an if statement for the rotation based on encryption type (if “encrypt” then rotation, elsif “decrypt” then r_rotation), but we’ll fix that with the next step and actually USE the <code class="highlighter-rouge">type</code> instance we added:</p>
+<blockquote>
+  <p>2 - Merge our <code class="highlighter-rouge">rotation</code> and <code class="highlighter-rouge">reverse_rotation</code> methods</p>
+</blockquote>
+
+<p>Method 1: rotation vs. reverse_rotation</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">upto</span><span class="p">(</span><span class="mi">25</span><span class="p">)).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+<span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">downto</span><span class="p">(</span><span class="o">-</span><span class="mi">25</span><span class="p">)).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+</code></pre>
+</div>
+
+<p>Look at method 1 above, what’s the difference there? <code class="highlighter-rouge">(0.upto(25))</code> and <code class="highlighter-rouge">0.downto(-25)</code>. That’s <em>two</em> things to change, the up/down and the +/- 25, and making the upto and downto flexible isn’t as straightforward as what’s next:</p>
+
+<p>Method 2: rotation vs. reverse_rotation</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+</code></pre>
+</div>
+
+<p>Look at method 2 above, what’s the difference there? Just the <code class="highlighter-rouge">* -1</code> right? Think about it this way:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span>
+</code></pre>
+</div>
+<p>So let’s have our rotation method take in the <code class="highlighter-rouge">type</code> from our vigenere method, and if it’s “encrypt” we’ll make it positive 1 and if it’s negative it’ll be negative 1. Let’s set an object <code class="highlighter-rouge">sign</code> to it (think plus or minus sign)</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="n">type</span> <span class="o">==</span> <span class="s2">"encrypt"</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">elsif</span> <span class="n">type</span> <span class="o">==</span> <span class="s2">"decrypt
+    sign = -1
+end
+</span></code></pre>
+</div>
+<p>That’s a bit sloppy so I’ll use a ternary operator instead. Also since our rotation method is now <code class="highlighter-rouge">def rotation(x, type)</code> we’ll finally add the <code class="highlighter-rouge">type</code> to our vigenere method:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">rotation</span><span class="p">(</span> <span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>       <span class="p">)[</span><span class="n">letter</span><span class="p">]</span> <span class="c1"># becomes</span>
+<span class="n">rotation</span><span class="p">(</span> <span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">type</span> <span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+</code></pre>
+</div>
+<p>Bringing it all together:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">rotation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">type</span><span class="p">)</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"Z"</span><span class="p">).</span><span class="nf">to_a</span>
+    <span class="n">key_to_num</span> <span class="o">=</span> <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">upto</span><span class="p">(</span><span class="mi">25</span><span class="p">)).</span><span class="nf">to_a</span> <span class="p">)</span> <span class="p">]</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="p">(</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"encrypt"</span> <span class="p">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="no">Hash</span><span class="p">[</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span> <span class="n">alphabet</span><span class="p">.</span><span class="nf">rotate</span><span class="p">(</span> <span class="n">key_to_num</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">*</span> <span class="n">sign</span> <span class="p">)</span> <span class="p">)</span> <span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">vigenere</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">type</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">upcase</span><span class="p">.</span><span class="nf">scan</span><span class="p">(</span><span class="sr">/[A-Z]/</span><span class="p">).</span><span class="nf">map</span> <span class="k">do</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">key</span><span class="p">.</span><span class="nf">size</span>
+        <span class="n">rotation</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">type</span><span class="p">)[</span><span class="n">letter</span><span class="p">]</span>
+    <span class="k">end</span><span class="p">.</span><span class="nf">join</span>
+<span class="k">end</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="n">vigenere</span><span class="p">(</span><span class="s2">"hello world how are you?"</span><span class="p">,</span> <span class="s2">"AMAZING"</span><span class="p">,</span> <span class="s2">"encrypt"</span><span class="p">)</span> <span class="c1">#=&gt; "HQLKWJURXDGWJGRQYNC"</span>
+<span class="n">vigenere</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="s2">"AMAZING"</span><span class="p">,</span> <span class="s2">"decrypt"</span><span class="p">)</span> <span class="c1">#=&gt; "HELLOWORLDHOWAREYOU"</span>
+</code></pre>
+</div>
+<p>Finally done with our methods! And with that a question, are these methods be best way to do this?</p>
+
+<p>NO!</p>
+
+<p>Not by a long shot. First off we can create a Vigenere Cipher so much cleaner with less code, but also it’s a hassle to type in our message each time along with our key and encryption type. The fix:</p>
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Cipher</span>
+</code></pre>
+</div>
+<p>Which I’ll cover next time.</p>
+<h1 id="takeaways">Takeaways</h1>
+<hr />
+<p>In addition to a Polyalphabetic Cipher being MUCH more secure than a Monoalphabetic Cipher, we saw that there a few more techniques to making a message more secure, including removing all spaces and punctuation. Even in a Monoalphabetic Cipher these techniques will help:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">to_caesar</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+    <span class="n">sentence</span><span class="p">.</span><span class="nf">chars</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">letter</span><span class="o">|</span> <span class="no">Ceaser_cipher</span><span class="p">[</span><span class="n">letter</span><span class="p">]</span> <span class="p">}.</span><span class="nf">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">to_caesar</span><span class="p">(</span><span class="err">“</span><span class="no">Here</span> <span class="n">is</span> <span class="n">a</span><span class="p">,</span> <span class="n">sentence?</span><span class="err">”</span><span class="p">)</span> <span class="c1">#=&gt; "IFSFJTBTFOUFODF"</span>
+</code></pre>
+</div>
+
+<p>But they all fall weakness to something called Frequency Analysis, coming up in the next blog post!</p>
+
+<p>As always let me know if you have any questions. Happy encrypting!</p>
+
+<p>-Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on May  7, 2017
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    <div class="wrapper-footer">
+      <div class="container">
+        <footer class="footer">
+          
+<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+
+        </footer>
+      </div>
+    </div>
+
+    
+
+  </body>
+</html>
