@@ -8,6 +8,9 @@ for x in a:
   print a*2
 ```
 
+
+
+
 each with index equivalent
 ```python
 a = ["a","b","c","d","e"]
@@ -32,6 +35,7 @@ double(5) #=> 10
 
 a = [1,2,3,4,5]
 
+[n*2 for n in a] #=> [2,4,6,8,10]
 map(double, a) #=> [2,4,6,8,10]
 ```
 
