@@ -44,14 +44,16 @@ for | for | iterate over each element, more used in Python
 .map | map | iterate over each element, changes the output
 .map.with_index | map | same, but also get the index
 ||**manipulating methods**
-.dup |
+.dup | a[:] | duplicates an object rather than copies
 .reduce / .inject | reduce() | combines all elements via an operation
 .flatten | TBD | merge multi-dimensional / nested arrays
 .compact | TBD | remove `nil` or `null` values from an array
 .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
 case; each | if/elif or dict | shorthand multiple `if` statements
 .insert | .insert(idx, elem) | add element(s) from array/string
-.delete | del a[idx:idx2] | remove element(s) from array/string
+.delete_at | del a[idx:idx2] | remove element(s) from array/string
+.delete(e) | .remove(e) | remove element by element
+.
 ||**selecting methods**
 .keys | for %s % k | get all keys in a hash
 .values | for %s % d[k] | get all values in a hash
@@ -384,14 +386,50 @@ array = [0] + array  #=> [0, 1, 2, 3, 4]
 array = [-2, -1] + array #=> [-2, -1, 0, 1, 2, 3, 4]
 ```
 
+#### Ruby: pop/shift | Python: pop
 
+While Python doesn't have `shift`, it's `pop` method does both jobs here. Why? Pop works differently in Python than it does in Ruby. In both languages, these functions return the removed item(s), not the changed array. But how they remove them is what makes the difference.
 
+In Ruby, both shift and pop can either be called without taking in a number and it'll remove the first or last element respectively.
 
-pop(x) | pop(x) | remove from the end of the array (different)
+Here's where the difference lies: in Ruby if you have it take in an argument it will remove x elements from the beginning or the end.
 
-shift(x) | pop(0) | remove from the beginning of the array a[1:len(a)]
+```ruby
+# Ruby
+array = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
+array.pop #=> "eight"
+array #=> ["one", "two", "three", "four", "five", "six", "seven"]
+array.pop(2) #=> ["six", "seven"]
+array = ["one", "two", "three", "four", "five"]
 
+array.shift #=> "one"
+array #=> ["two", "three", "four", "five"]
+array.shift(2) #=> ["two", "three"]
+array #=> ["four", "five"]
+```
 
+In Python, if you take in an element it will remove the element at the **index** put in. That means to imitate `shift` we'll simply say "pop at index 0"
+
+```python
+# Python
+array = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
+array.pop() #=> "eight"
+array #=> ["one", "two", "three", "four", "five", "six", "seven"]
+array.pop(2) #=> "three"
+array #=> ["one", "two", "four", "five", "six", "seven"]
+
+array.pop(0) #=> "one"
+array #=> ["two", "four", "five", "six", "seven"]
+```
+
+However this operation is very slow when talking about Big O notation as operationally it's going through each bit of memory to shift the elements down by one. Instead we can create a new array from index 1 until the end:
+
+```python
+# Python
+array = [1, 2, 3, 4, 5]
+array = array[1:len(array)]
+array #=> [2, 3, 4, 5]
+```
 
 # WORK IN PROGRESS BELOW
 ---
