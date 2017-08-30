@@ -431,9 +431,24 @@ array = array[1:len(array)]
 array #=> [2, 3, 4, 5]
 ```
 
-# WORK IN PROGRESS BELOW
----
+Right let's quickly cover that as well:
 
+```ruby
+# Ruby
+array = [1, 2, 3, 4, 5]
+array.length #=> 5
+array.size #=> 5
+"testing out a string".length #=> 20
+```
+
+```python
+# Python
+array = [1, 2, 3, 4, 5]
+len(array) #=> 5
+len("testing out a string") #=> 20
+```
+
+Easy enough.
 
 # While / until
 ---
@@ -489,7 +504,12 @@ x = 1
 while x < 6: a.append(x); x += 1
 array #=> [1,2,3,4,5]
 ```
-While in this case our Python script looks a bit cleaner, this is by no means the cleanest way to do this type of operation. Ruby has quite a few ways to shorten this, including a trick using `.reduce` (also known as `.inject` in Ruby only), but I'll cover that later on.
+
+While in this case our Python script looks a bit cleaner, this is by no means the cleanest way to do this type of operation. There are quite a few ways to shorten this, including a trick using `.reduce` (also known as `.inject` in Ruby only), but I'll cover that later on.
+
+# WORK IN PROGRESS BELOW
+---
+
 
 # Using `for`
 ---
