@@ -507,7 +507,7 @@ array #=> [1,2,3,4,5]
 
 While in this case our Python script looks a bit cleaner, this is by no means the cleanest way to do this type of operation. There are quite a few ways to shorten this, including a trick using `.reduce` (also known as `.inject` in Ruby only), but I'll cover that later on.
 
-# WORK IN PROGRESS BELOW
+# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
 ---
 
 
