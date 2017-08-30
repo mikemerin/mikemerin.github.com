@@ -431,12 +431,13 @@ array = array[1:len(array)]
 array #=> [2, 3, 4, 5]
 ```
 
-Right let's quickly cover that as well:
+Right let's quickly cover the difference between the `length` functions as well:
 
 ```ruby
 # Ruby
 array = [1, 2, 3, 4, 5]
 array.length #=> 5
+# size is the same thing
 array.size #=> 5
 "testing out a string".length #=> 20
 ```
