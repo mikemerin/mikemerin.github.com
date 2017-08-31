@@ -1,31 +1,5 @@
 
 
-for
-```python
-a = [1,2,3,4,5]
-
-for x in a:
-  print a*2
-```
-
-
-
-
-each with index equivalent
-```python
-a = ["a","b","c","d","e"]
-for i, x in enumerate(a):
-  print x + " is at index " + str(i)
-
-''' result:
-a is at index 0
-b is at index 1
-c is at index 2
-d is at index 3
-e is at index 4
-'''
-```
-
 map
 ```python
 def double(n):
@@ -35,7 +9,7 @@ double(5) #=> 10
 
 a = [1,2,3,4,5]
 
-[n*2 for n in a] #=> [2,4,6,8,10]
+
 map(double, a) #=> [2,4,6,8,10]
 ```
 
@@ -58,22 +32,6 @@ a = [1,2,3,4,5]
 
 filter(even, a) #=> [2,4]
 ```
-
-keys/values
-```python
-dictionary = {1: "one", 2: "two"}
-
-for key in dictionary:
-    print "%s" % key
-
-    #=> 1
-    #=> 2
-
-for key in dictionary:
-    print "%s" % dictionary[key]
-
-```
-
 slice
 ```python
 # a[low:high:spaces]

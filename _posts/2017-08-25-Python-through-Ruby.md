@@ -42,6 +42,7 @@ while / until | while | loops while condition is true
 ||**iteration**
 for | for | iterate over each element, more used in Python
 .each.with_index | for & enumerate | same, but also get the index
+.map | for..in | in-line iteration
 .map | map | iterate over each element, changes the output
 .map.with_index | map | same, but also get the index
 ||**manipulating methods**
@@ -506,7 +507,7 @@ However this operation is very slow when talking about Big O notation as operati
 ```python
 # Python
 array = [1, 2, 3, 4, 5]
-array = array[1:len(array)]
+array = array[1:]
 array #=> [2, 3, 4, 5]
 ```
 
@@ -520,10 +521,10 @@ Onto loops! Let's start off with the easiest example of the while loop.
 array = []
 x = 1
 while x < 6
-    array.push(x)
-    x += 1
+  array.push(x)
+  x += 1
 end
-array #=> [1,2,3,4,5]
+array #=> [1, 2, 3, 4, 5]
 ```
 
 ```python
@@ -531,10 +532,10 @@ array #=> [1,2,3,4,5]
 array = []
 x = 1
 while x < 6:
-    array.append(x)
-    x += 1
+  array.append(x)
+  x += 1
 
-array #=> [1,2,3,4,5]
+array #=> [1, 2, 3, 4, 5]
 ```
 
 Let's do a side-by-side:
@@ -547,7 +548,7 @@ while x < 6 | while x < 6: | Python needs a colon `:` to go to the next line
 array.push(x) | array.append(x) | push is append and the lines needs to be indented
 x += 1 | x += 1 | same (but indented)
 end |  | only Ruby needs `end`, Python just needs to be unindented
-array | array | both #=> [1,2,3,4,5]
+array | array | both #=> [1, 2, 3, 4, 5]
 
 They're almost identical, but Python needs the colon `:` to say we're going to use the lines under the original one, and then those lines need to be indented. Once the lines unindent Python knows that we're done working with the original line. However there are some tricks to doing one line solutions (helpful if combining with other complex scripts):
 ```ruby
@@ -555,72 +556,203 @@ They're almost identical, but Python needs the colon `:` to say we're going to u
 array = []
 x = 1
 while x < 6; array.push(x); x += 1 end
-array #=> [1,2,3,4,5]
+array #=> [1, 2, 3, 4, 5]
 ```
 ```python
 # Python
 array = []
 x = 1
 while x < 6: a.append(x); x += 1
-array #=> [1,2,3,4,5]
+array #=> [1, 2, 3, 4, 5]
 ```
 
 While in this case our Python script looks a bit cleaner, this is by no means the cleanest way to do this type of operation. There are quite a few ways to shorten this, including a trick using `.reduce` (also known as `.inject` in Ruby only), but I'll cover that later on.
 
-# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
+# Iterating with `for`
 ---
-
-
-# Using `for`
----
-While `for` isn't used much in Ruby (since `while`, `until`, or other iterations can do much more, are cleaner, and get the job done easier), it's very important in Python. There's a nice trick in Ruby using a `range`, which in the following example we'll go from 1 to 5 and then push that number into an array:
+While `for` isn't used much in Ruby (since `while`, `until`, or other iterations can do much more, are cleaner, and get the job done easier), it's very important in Python. We can use the `range` trick we learned before to make a cleaner 1-5 array, or modify it.
 
 ```ruby
 # Ruby
 array = []
+array2 = []
 for x in 1..5
-    array.push(x)
+  array.push(x)
+  array2.push(x * x)
 end
-array #=> [1,2,3,4,5]
+array #=> [1, 2, 3, 4, 5]
+array2 #=> [1, 4, 9, 16, 25]
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-THere's just as easy of a trick there's no quick way to do a range iterator in Javascript (the `(1..5)` above), ***however*** `for` is still very useful if we use it another way. Remember that while loop from before? Here's how we'd cleanly do it in JS:
-```javascript
-// Javascript
+```python
+# Python
+range(1,6) #=> [1, 2, 3, 4, 5]
 array = []
-for (let x = 1;
-    x < 6;
-    x++ )
-    { array.push(x) }
-array #=> [1,2,3,4,5]
+array2 = []
+for x in range(1,6):
+  array.append(x)
+  array2.append(x * x)
+
+array #=> [1, 2, 3, 4, 5]
+array2 #=> [1, 4, 9, 16, 25]
 ```
-Or the MUCH cleaner one-liner:
-```javascript
-// Javascript
+
+And of course doing it one lined:
+
+```ruby
+# Ruby
 array = []
-for (let x = 1; x < 6; x++) { array.push(x) }
-array //=> [1,2,3,4,5]
+array2 = []
+
+for x in 1..5; array.push(x); array2.push(x * x) end
+
+array #=> [1, 2, 3, 4, 5]
+array2 #=> [1, 4, 9, 16, 25]
 ```
-We basically include what we want our number `x` to do all in one neat place (our parenthesis), and then operate on it within our block. As you'd expect, we can do this with other things too, like iterating over an array!
-# iterating with `.each`/`for`/`for..in` then `each`/`forEach`
+
+```python
+# Python
+range(1,6) #=> [1, 2, 3, 4, 5]
+array = []
+array2 = []
+
+for x in range(1,6): array.append(x); array2.append(x * x)
+
+array #=> [1, 2, 3, 4, 5]
+array2 #=> [1, 4, 9, 16, 25]
+```
+
+You can also use `for` with existing arrays:
+
+```ruby
+# Ruby
+array2 = [1, 4, 9, 16, 25]
+array3 = []
+for x in array2
+  array3.unshift(x)
+end
+array3 #=> [25, 16, 9, 4, 1]
+```
+
+Python though can do one more thing: work on strings without having to split it into an array of strings:
+
+```python
+# Python
+array2 = [1, 4, 9, 16, 25]
+array3 = []
+for x in array2:
+  array3 = [x] + array3
+
+array3 #=> [25, 16, 9, 4, 1]
+
+s = "hey all"
+s2 = ""
+for l in s:
+  s2 += "|" + s2
+
+s2 #=> "|h|e|y| |a|l|l"
+```
+
+# Getting the index
+## Ruby: `.each_with_index` | Python: enumerate
 ---
+
+Iterating with `for` is okay but sometimes we want to use the index along with the element. Ruby has the easy to use methods `.each_with_index` or `each.with_index` that lets you simply grab both in a block. Python's not too far off though you need to use `enumerate` in order to do it. It's a little less intuitive but it works nonetheless:
+
+```ruby
+# Ruby
+array = ["a","b","c","d","e"]
+array.each_with_index do |x, i|
+  puts "#{x} is at index #{i}"
+end
+
+''' result:
+a is at index 0
+b is at index 1
+c is at index 2
+d is at index 3
+e is at index 4
+'''
+```
+
+each with index equivalent
+```python
+# Python
+array = ["a","b","c","d","e"]
+for i, x in enumerate(array):
+  print x + " is at index " + str(i)
+
+''' result:
+a is at index 0
+b is at index 1
+c is at index 2
+d is at index 3
+e is at index 4
+'''
+```
+
+And last up can use the index in math:
+
+```ruby
+# Ruby
+array = []
+(1..5).each_with_index { |x, i| array << x*i }
+array #=> [0, 2, 6, 12, 20]
+```
+
+```python
+# Python
+array = []
+for i, x in enumerate(range(1,6)): array.append(i*x)
+array #=> [0, 2, 6, 12, 20]
+```
+
+# iterating with `for..in`
+---
+`for` is useful, but we're sandwiching in our script between creating an empty array, pushing/appending to it, and then displaying it. It's better practice to do it all at once. Ruby can use `.map` to help, and we'll get to mapping in Python later, but for now we'll build off of the `for` method from before.
+
+```ruby
+# Ruby
+(1..5).map { |x| x*x } #=> [1, 4, 9, 16, 25]
+```
+
+```python
+# Python
+[x*x for x in range(1,6)] #=> [1, 4, 9, 16, 25]
+```
+
+We can also use this trick when using hashes/dictionaries. Ruby has an easy shortcut to do this, but a little `for..in` trick works just as well:
+
+```ruby
+# Ruby
+hash = {1=>"one", 2=>"two", 3=>"three"}
+hash.keys #=> [1, 2, 3]
+hash.values #=> ["one", "two", "three"]
+```
+
+```python
+dictionary = {1: "one", 2: "two", 3: "three"}
+
+for key in dictionary:
+    print "%s" % key
+
+    #=> 1
+    #=> 2
+    #=> 3
+
+for key in dictionary:
+    print "%s" % dictionary[key]
+
+    #=> "one"
+    #=> "two"
+    #=> "three"
+```
+
+# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
+### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
+---
+
+
 Onto iterations. As I said before, `.each` in Ruby is incredibly useful, and does what both `for` and `.forEach` does in JS. Before we get to the latter, let's flash back to Ruby and cover how we can iterate over an array using `.each` beginning with a more lengthy iteration (similar to JS's `for`) and ending with a shortcut (similar to JS's `.forEach`). These first three examples are the former:
 ```ruby
 # ruby
