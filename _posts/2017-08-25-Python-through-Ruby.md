@@ -707,7 +707,7 @@ for i, x in enumerate(range(1,6)): array.append(i*x)
 array #=> [0, 2, 6, 12, 20]
 ```
 
-# iterating with `for..in`
+# Iterating with `for..in`
 ---
 `for` is useful, but we're sandwiching in our script between creating an empty array, pushing/appending to it, and then displaying it. It's better practice to do it all at once. Ruby can use `.map` to help, and we'll get to mapping in Python later, but for now we'll build off of the `for` method from before.
 
@@ -751,6 +751,28 @@ for key in dictionary:
 # WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
 ### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
 ---
+
+
+
+.map | map | iterate over each element, changes the output
+.map.with_index | map | same, but also get the index
+||**manipulating methods**
+.dup | a[:] | duplicates an object rather than copies
+.reduce / .inject | reduce() | combines all elements via an operation
+.flatten | TBD | merge multi-dimensional / nested arrays
+.compact | TBD | remove `nil` or `null` values from an array
+.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
+case; each | if/elif or dict | shorthand multiple `if` statements
+.insert | .insert(idx, elem) | add element(s) from array/string
+.delete_at | del a[idx:idx2] | remove element(s) from array/string
+.delete(e) | .remove(e) | remove element by element
+||**selecting methods**
+.keys | for %s % k | get all keys in a hash
+.values | for %s % d[k] | get all values in a hash
+.slice | a[l:h:s] | select element(s) from array
+||**more functions**
+call/procs | no need | function called within a function
+
 
 
 Onto iterations. As I said before, `.each` in Ruby is incredibly useful, and does what both `for` and `.forEach` does in JS. Before we get to the latter, let's flash back to Ruby and cover how we can iterate over an array using `.each` beginning with a more lengthy iteration (similar to JS's `for`) and ending with a shortcut (similar to JS's `.forEach`). These first three examples are the former:
