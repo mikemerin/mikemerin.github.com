@@ -345,26 +345,82 @@ len("testing out a string") #=> 20
 
 # Ranges
 ---
-Ranges are very important and thankfully both Ruby and Python have easy ways to create them. They work differently in each language and Ruby's more 
+Ranges are very important and thankfully both Ruby and Python have easy ways to create them. They work differently in each language, and even though Ruby's more versatile in what it can do, it's incredibly important to know how to use it in both languages.
 
-Ruby
+Ruby uses two periods `..` to denote a range. For example if you want to go from 1 to 5 you'd put `1..5`, or use three periods `...` to go from 1 *up until* 5 by doing `1...5`. Ranges must go from the lowest number to the highest number otherwise it won't work, though you can use negative numbers as long as the first one is smaller:
 
 ```ruby
 # Ruby
 (1..5).to_a #=> [1, 2, 3, 4, 5]
 (1...5).to_a #=> [1, 2, 3, 4]
 (-5..-1).to_a #=> [-5, -4, -3, -2, -1]
+```
 
+Additionally in Ruby only you can also do ranges of letters:
+
+```ruby
+# Ruby
 ("a".."e").to_a #=> ["a", "b", "c", "d", "e"]
 ("M"..."Q").to_a #=> ["M", "N", "O", "P"]
 ```
 
+Finally you can space out how many numbers/letters by using `.step` and it'll skip ahead by that many numbers/letters:
 
 ```ruby
 # Ruby
 (1..10).step(3).to_a #=> [1, 4, 7, 10]
 ("a".."i").step(2).to_a #=> ["a", "c", "e", "g", "i"]
 ```
+
+Onto Python. The `range` method takes in 1-3 arguments. If you put in one number it'll go from 0 *up until* that number just like Ruby's three period `...` operator. If you put in two numbers it'll go from the first number *up until* the second number in the same fashion. If you put in a **third** number that'll be the step.
+
+```python
+# Python
+range(4) #=> [0, 1, 2, 3]
+range(1, 5) #=> [1, 2, 3, 4]
+range(1, 10, 3) #=> [1, 4, 7] (notice 10's not there, again it's 1 up until 10, not including)
+range(-5, 0) #=> [-5, -4, -3, -2, -1]
+```
+
+Here's something nifty though that Python can only do: reverse steps. Just negate the step and you're good to go.
+
+```python
+# Python
+range(0, -5, -1) #=> [0, -1, -2, -3, -4]
+range(1, -10, -3) #=> [1, -2, -5, -8]
+range(100, 20, -18) #=> [100, 82, 64, 46, 28]
+```
+
+While not native to Python, there's a way to do floats by importing `numpy`. This will let us use `arange`:
+
+```python
+# Python
+import numpy
+numpy.arange(1.0, 2.0, 0.1)
+#=> array([1., 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9])
+```
+
+There are some problems with this though as if you type a[3] for example you'll get `1.3000000000000003`. Obviously you'd want to round these values which you can do by:
+
+```python
+# Python
+print "%.1f" % a[3] #=> 1.3
+```
+
+There's a way to map over each element in this array, but we'll get to that later as well. Alternatively we can use numpy's `linspace` to list how many elements appear in a range as well as control the endpoints manually:
+
+```python
+import numpy
+numpy.linspace(1, 2, 11)
+#=> array([1., 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9])
+numpy.linspace(1, 2, 10)
+#=> array([ 1., 1.11111111, 1.22222222, 1.33333333, 1.44444444, 1.55555556, 1.66666667, 1.77777778, 1.88888889, 2.])
+# fixed with this:
+numpy.linspace(1, 2, 10, endpoint=False)
+#=> array([ 1. ,  1.1,  1.2,  1.3,  1.4,  1.5,  1.6,  1.7,  1.8,  1.9])
+```
+
+It's not perfect, and you may have to use the `%.1f` trick to make sure it works, but these are some good tricks for working with floats if you need it.
 
 # Push/Append/Pop/Shift/Unshift
 ---
@@ -453,15 +509,6 @@ array = [1, 2, 3, 4, 5]
 array = array[1:len(array)]
 array #=> [2, 3, 4, 5]
 ```
-
-
-
-
-
-
-
-
-
 
 # While / until
 ---
