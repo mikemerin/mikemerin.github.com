@@ -32,6 +32,7 @@ N/A | Set | { 1, 2, 3 } (immutable)
 `"10".to_i` | `int("10")` | converts to Integer 10
 `"10".to_f` | `float("10")` | converts to Float 10.0
 x.length | len(x) | length of an object (str, list, etc.)
+(1...5).to_a | range(1,5) | creates a ranged array (different)
 push / `<<` | append | add onto the end of an array
 pop(x) | pop(x) | remove from the end of the array (different)
 unshift | a = [x] + a | add onto the beginning of an array
@@ -327,22 +328,45 @@ float(10) #=> 10.0
 
 # Length of a string, array/list, or hash/dictionary
 ---
-You've probably noticed by now that Ruby has a lot more emphasis on calling functions on an object via `object.do_something` versus Python calling objects inside a function via `do_something(object)`. This is the same for for the length function:
+You've probably noticed by now that Ruby has a lot more emphasis on calling functions on an object via `object.do_something` versus Python calling objects inside a function via `do_something(object)`. This is the same for for the length function (also can be done as `Size` in Ruby):
 
 ```ruby
 # Ruby
 [1, 2, 3, 4].size #=> 4
 [1, 2, 3, 4].length #=> 4
-"hey everyone".size #=> 12
-"hey everyone".length #=> 12
+"testing out a string".size #=> 20
+"testing out a string".length #=> 20
 ```
 ```python
 # Python
 len([1, 2, 3, 4]) #=> 4
-len("hey everyone") #=> 12
+len("testing out a string") #=> 20
 ```
 
-# Modifying an Array
+# Ranges
+---
+Ranges are very important and thankfully both Ruby and Python have easy ways to create them. They work differently in each language and Ruby's more 
+
+Ruby
+
+```ruby
+# Ruby
+(1..5).to_a #=> [1, 2, 3, 4, 5]
+(1...5).to_a #=> [1, 2, 3, 4]
+(-5..-1).to_a #=> [-5, -4, -3, -2, -1]
+
+("a".."e").to_a #=> ["a", "b", "c", "d", "e"]
+("M"..."Q").to_a #=> ["M", "N", "O", "P"]
+```
+
+
+```ruby
+# Ruby
+(1..10).step(3).to_a #=> [1, 4, 7, 10]
+("a".."i").step(2).to_a #=> ["a", "c", "e", "g", "i"]
+```
+
+# Push/Append/Pop/Shift/Unshift
 ---
 While Ruby and JS have the same push/pop/unshift/shift methods for modifying arrays, only Python's `.append` is the exact same as `.push`. Let's quickly go through them and how we can both directly and indirectly handle the same types of functions.
 
@@ -430,25 +454,14 @@ array = array[1:len(array)]
 array #=> [2, 3, 4, 5]
 ```
 
-Right let's quickly cover the difference between the `length` functions as well:
 
-```ruby
-# Ruby
-array = [1, 2, 3, 4, 5]
-array.length #=> 5
-# size is the same thing
-array.size #=> 5
-"testing out a string".length #=> 20
-```
 
-```python
-# Python
-array = [1, 2, 3, 4, 5]
-len(array) #=> 5
-len("testing out a string") #=> 20
-```
 
-Easy enough.
+
+
+
+
+
 
 # While / until
 ---
@@ -486,10 +499,10 @@ x = 1 | x = 1 | N/A
 while x < 6 | while x < 6: | Python needs a colon `:` to go to the next line
 array.push(x) | array.append(x) | push is append and the lines needs to be indented
 x += 1 | x += 1 | same (but indented)
-end |  | only Ruby needs `end`, Python just needs to be un-indented
+end |  | only Ruby needs `end`, Python just needs to be unindented
 array | array | both #=> [1,2,3,4,5]
 
-They're almost identical, but Python needs the colon `:` to say we're going to use the lines under the original one, and then those lines need to be indented. Once the lines un-indent Python knows that we're done working with the original line. However there are some tricks to doing one line solutions (helpful if combining with other complex scripts):
+They're almost identical, but Python needs the colon `:` to say we're going to use the lines under the original one, and then those lines need to be indented. Once the lines unindent Python knows that we're done working with the original line. However there are some tricks to doing one line solutions (helpful if combining with other complex scripts):
 ```ruby
 # Ruby
 array = []
@@ -513,7 +526,8 @@ While in this case our Python script looks a bit cleaner, this is by no means th
 
 # Using `for`
 ---
-While `for` isn't used much in Ruby (since `while`, `until`, or other iterations can do much more, are cleaner, and get the job done easier), it's very important in JS. While this is a nice trick in Ruby:
+While `for` isn't used much in Ruby (since `while`, `until`, or other iterations can do much more, are cleaner, and get the job done easier), it's very important in Python. There's a nice trick in Ruby using a `range`, which in the following example we'll go from 1 to 5 and then push that number into an array:
+
 ```ruby
 # Ruby
 array = []
@@ -522,7 +536,25 @@ for x in 1..5
 end
 array #=> [1,2,3,4,5]
 ```
-Unfortunately there's no quick way to do a range iterator in Javascript (the `(1..5)` above), ***however*** `for` is still very useful if we use it another way. Remember that while loop from before? Here's how we'd cleanly do it in JS:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+THere's just as easy of a trick there's no quick way to do a range iterator in Javascript (the `(1..5)` above), ***however*** `for` is still very useful if we use it another way. Remember that while loop from before? Here's how we'd cleanly do it in JS:
 ```javascript
 // Javascript
 array = []
