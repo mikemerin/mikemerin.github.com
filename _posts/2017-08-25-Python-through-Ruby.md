@@ -37,6 +37,7 @@ push / `<<` | append | add onto the end of an array
 pop(x) | pop(x) | remove from the end of the array (different)
 unshift | a = [x] + a | add onto the beginning of an array
 shift(x) | pop(0) | remove from the beginning of the array
+.include? | in | find if something is included
 ||**loops**
 while / until | while | loops while condition is true
 ||**iteration**
@@ -50,8 +51,8 @@ for | for | iterate over each element, more used in Python
 lambda | lambda | function called within a function
 .map.with_index | map & enumerate | map, but also get the index
 .reduce / .inject | reduce() | combines all elements via an operation
-.flatten | TBD | merge multi-dimensional / nested arrays
-.compact | TBD | remove `nil` or `null` values from an array
+.select | filter | remove `nil` or `None` values from an array
+.compact | filter | remove `nil` or `None` values from an array
 ||**selecting methods**
 .slice | a[l:h:s] | select element(s) from array
 .dup | a[:] | duplicates an object rather than copies
@@ -513,6 +514,42 @@ array = array[1:]
 array #=> [2, 3, 4, 5]
 ```
 
+# include / in
+---
+We're about to see the word `in` much more in Python, so let's get used to using it. Ruby has a very useful function called `include?` which lets us test if something is included in an array or string.
+
+```ruby
+# Ruby
+[1, 2, 3, 4, 5].include?(5) #=> true
+[1, 2, 3, 4, 5].include?(7) #=> false
+"this is a string".include?("t") #=> true
+"this is a string".include?("is") #=> true
+"this is a string".include?("e") #=> false
+```
+
+Thankfully it's just as easy to do this in Python, the difference again is merely syntax:
+
+```python
+# Python
+5 in [1, 2, 3, 4, 5] #=> True
+7 in [1, 2, 3, 4, 5] #=> False
+"t" in "this is a string" #=> True
+"is" in "this is a string" #=> True
+"e" in "this is a string" #=> False
+```
+
+There's also a way to negate both of these scripts. Though Ruby doesn't have an `exclude?` function, we can simply put an exclamation point `!` in front of the script to negate it, and in Python we'll simply put `not`
+
+```Ruby
+# Ruby
+![1, 2, 3, 4, 5].include?(5) #=> false
+```
+
+```python
+# Python
+"t" not in "this is a string" #=> False
+```
+
 # While / until
 ---
 
@@ -927,21 +964,21 @@ That's it, easy enough, just change `each` to `map` and the functions are change
 # Python
 array = [1, 2, 3, 4, 5]
 
-for x in a: x*x
+for x in array: x*x
 #=> [1, 4, 9, 16, 25]
-for i, x in enumerate(a): x*i
+for i, x in enumerate(array): x*i
 #=> [0, 2, 6, 12, 20]
 
 # or
 
-[x*x for x in a]
+[x*x for x in array]
 #=> [1, 4, 9, 16, 25]
-[x*i for i, x in enumerate(a)]
+[x*i for i, x in enumerate(array)]
 #=> [0, 2, 6, 12, 20]
 
-map(lambda x: x*x, a)
+map(lambda x: x*x, array)
 #=> [1, 4, 9, 16, 25]
-map(lambda (i, x): x*i, enumerate(a))
+map(lambda (i, x): x*i, enumerate(array))
 #=> [0, 2, 6, 12, 20]
 ```
 
@@ -970,13 +1007,14 @@ array.each { |x| sum += x }
 sum #=> 15
 # an even more literal example
 ```
+
 As you can see, what reduce does is:
 start at 0 (default), add 1, now sum = 1
 start at sum (1), add 2, now sum = 3
 start at sum (3), add 3, now sum = 6
 etc. until the end.
 
-In JS however, we don't have these shortcuts available to us, so instead we have to write it out, albeit a little bit. Let's look at the following four Ruby scripts in order to understand their JS counterparts. They all do the same thing, and JS sort of has something to do with all of them. Let's go through them and build up our `.reduce` statement:
+In Python however, we don't have the basic shortcut available to us, so instead we have to write it out, albeit a little bit. Let's look at the following four Ruby scripts in order to understand their JS counterparts. They all do the same thing, and Python sort of has something to do with all of them. Let's go through them and build up our `.reduce` statement:
 
 #### 1. reduce takes place inside a single parenthesis
 
@@ -984,51 +1022,254 @@ In JS however, we don't have these shortcuts available to us, so instead we have
 # Ruby
 array.reduce(:+)
 ```
-```javascript
-// Javascript
-array.reduce( "sum script" )
+```python
+# Python
+reduce("sum script", array)
 ```
-#### 2. you can set a default value (JS will be in the 2nd position, not the 1st)
+#### 2. you can set a default value (Python will be in the 3rd position, not the 1st)
 ```ruby
 # Ruby
 array.reduce(0, :+)
 ```
-```javascript
-// Javascript
-array.reduce( "sum script", 0 )
+```python
+# Python
+reduce( "sum script", array, 0 )
 ```
-#### 3. the operation inside the Ruby block looks almost identical to the JS version.
+#### 3. the operation inside the Ruby block looks almost identical to the Python version.
 ```ruby
 # Ruby
 array.reduce { |sum, x| sum + x }
 array.reduce(0) { |sum, x| sum + x }
 ```
-```javascript
-// Javascript
-array.reduce( function(sum, x) { return sum + x } , 0)
-```
- Here's how these same reduce functions can look in JS, including with the cleaner ES6 notation:
-```javascript
-// Javascript
-array.reduce( function(sum, x) { return sum + x } )
-array.reduce( function(sum, x) { return sum + x }, 0 )
-// vs ES6:
-array.reduce( (sum, x) => sum + x )
-array.reduce( (sum, x) => sum + x, 0 )
-```
-Again the default value in JS is AFTER the sum variable, not before it. So here's the answer to what that `(:+)` symbol (smiley) was doing under the hood in Ruby, but we'll explain it through JS! We can make our reduce function cleaner though by making `sum` into a variable (using `const`), and we can also make one for multiplication while we're at it:
-```javascript
-const sum = (sum,x) => sum + x
-const multi = (multi,x) => multi * x
+```python
+# Python
+reduce(lambda sum, x: sum + x, array) #=> 15
+reduce(lambda sum, x: sum + x, array, 0) #=> 15
+reduce(lambda sum, x: sum + x, array, 10) #=> 25
 
-array.reduce(sum) //=> 15
-array.reduce(sum, 10) //=> 25
+# with the literal example of this being:
 
-array.reduce(multi) //=> 120
-array.reduce(multi, 2) //=> 240
+array = [1,2,3,4,5]
+total = 0
+for x in array: total += x
+total #=> 15
 ```
 
+Again the default value in Python is AFTER the script (and array), not before it. So here's the answer to what that `(:+)` symbol (smiley) was doing under the hood in Ruby, but we'll explain it through Python! We can make our reduce function cleaner though by making `sum` into a variable, and we can also make one for multiplication while we're at it:
 
+```python
+# Python
+array = [1, 2, 3, 4, 5]
+
+sum = lambda s, x: s + x
+multi = lambda m ,x: m * x
+
+reduce(sum, array) #=> 15
+reduce(sum, array, 10) #=> 25
+
+reduce(multi, array) #=> 120
+reduce(multi, array, 2) #=> 240
+```
+
+# Selecting / filtering
+---
+Say you have an array but only want to use certain elements in it. Ruby has a `.select` to do this and Python has `filter`. They're pretty much the same thing in the end. Let's get any element in an array that's even by using the modulo script of `x % 2 == 0` to say "any value divided by 2 will give no remainder":
+
+```ruby
+# Ruby
+array = [1, 2, 3, 4, 5]
+array.select { |x| x % 2 == 0 } #=> [2, 4]
+```
+
+```python
+# Python
+array = [1, 2, 3, 4, 5]
+filter(lambda x: x % 2 == 0, array) #=> [2, 4]
+```
+
+Once again, just like with mapping or reducing, filter takes in a function first and the array second. Lambda strikes again. What if we want to reverse filter though? Aka what Ruby's `.reject` does? Simply enough we'll just throw a `not` in there:
+
+```ruby
+# Ruby
+array = [1, 2, 3, 4, 5]
+array.reject { |x| x % 2 == 0 } #=> [1, 3, 5]
+```
+
+```python
+# Python
+array = [1, 2, 3, 4, 5]
+filter(lambda x: not x % 2 == 0, array) #=> [1, 3, 5]
+```
+
+If we don't want to always write out this entire lambda function every time we can also use a normal function along with filter to get it working:
+
+```python
+def even(n): return n % 2 == 0
+
+even(4) #=> True
+even(5) #=> False
+
+a = [1, 2, 3, 4, 5]
+
+filter(even, a) #=> [2, 4]
+```
+
+What about if we have a `nil` value in our Ruby array or a `None` value in our Python list? Ruby has a nice little method called `compact` which does it for us automatically, but we can simply use `filter` again and filter out anything that doesn't give us a false value like `None`
+
+```ruby
+# Ruby
+array = [1, 2, 3, nil, 4, 5]
+array.compact #=> [1, 2, 3, 4, 5]
+```
+
+```python
+# Python
+array = [1, 2, 3, None, 4, 5]
+filter( lambda x: x, array ) #=> [1, 2, 3, 4, 5]
+```
+
+# slice, aka accessing
+---
+Slice in Ruby is a nice method that goes into an array (or string) and selects the element(s) of your choice. It's mimicked by basically using hard brackets `[]` after an array or string. Though Python doesn't have a slice method, its use of hard brackets actually goes much, much farther.
+
+Again, Ruby's slice method is exactly the same as the hard brackets, so here's how it looks on both arrays and strings:
+
+```ruby
+# Ruby
+array = ["Hello", "World", "How", "Are", "You?"]
+# access index 0
+array[0] #=> "Hello"
+array.slice(0) #=> "Hello"
+
+# access indexes 2 through 4 with a range
+array[2..4] #=> ["How", "Are", "You?"]
+array.slice(2..4) #=> ["How", "Are", "You?"]
+array.slice(2...4) #=> ["How", "Are"]
+
+# start at index 2, and access the next 3 elements
+array[2, 3] #=> ["How", "Are", "You?"]
+array.slice(2, 3) #=> ["How", "Are", "You?"]
+
+string = "this is a string"
+string[0] #=> "t"
+string[1,4] #=> "his "
+string[1..4] #=> "his "
+string[1...4] #=> "his"
+```
+
+That's the extent of what Ruby can do. Python blows it out of the water. Python can take in 1 to 3 arguments instead of Ruby's 1 to 2, and that opens up the possibilities exponentially. The syntax is different of course, instead of separating them by commas like in Ruby we separate them with colons.
+
+`array[low value : high value : step]`
+
+Let's start off with simple examples.
+
+```python
+# Python
+a = ["a", "b" ,"c" ,"d" ,"e"]
+
+# one value just gives the index, negatives work the same
+a[0] #=> "a"
+a[-1] #=> "e"
+
+# two values, first value up until the second, just like Ruby's `...` operator
+a[0:1] #=> ["a"]
+a[0:2] #=> ["a", "b"]
+a[1:4] #=> ["b", "c', "d"]
+
+# three values, third is the step
+a[1:4:2] #=> ["b", "d"]
+a[0:5:2] #=> ["a", "c", "e"]
+```
+
+Again it's important to know that the `[low:high]` works just like Ruby's `low...high` operator in that it goes *up until* the second number but does not include it. All of the above is just the beginning though as we don't *have* to use all three numbers here. I'll just give you examples below to show what I mean, bit by bit:
+
+```python
+# Python
+a = ["a", "b" ,"c" ,"d" ,"e"]
+
+# go from index until the end of the array
+a[1:] #=> ["b" ,"c" ,"d" ,"e"]
+
+# go up until index 3
+a[:3] #=> ["a", "b", "c"]
+
+# both work with negatives as well
+a[-2:] #=> ["d", "e"]
+a[:-2] #=> ["a", "b", "c"]
+
+# go through the whole array, step of 2
+# aka, no low, no high, only step
+a[::2] #=> ["a", "c", "e"]
+
+# do the same, but start at index 1, no end index
+a[1::2] #=> ["b", "d"]
+
+# and the same, but end at an index, no start index
+a[:3:2] #=> ["a", "c"]
+```
+
+And of course this works with strings as well:
+
+```python
+# Python
+string = "this is a string"
+string[0] #=> "t"
+string[1:] #=> "his is a string"
+string[:7] #=> "this is"
+string[-6:] #=> "string"
+string[:-7] #=> "this is a"
+string[5:9] #=> "is a"
+string[::2] #=> "ti sasrn"
+```
+
+# Duplicating an Array/List
+---
+You may have run into this problem before where you have an array and want to duplicate it. You may start off doing array2 = array, but there's an issue: if you change `array`, then `array2` will also change because you merely set it to equal the array object, not the array of numbers. Ruby has a quick fix by simply adding `.dup` to the array, and Python has a similar trick. Let's go through the problem so you can see how it will be fixed:
+
+
+```ruby
+# Ruby
+
+# problem
+array_a = [1, 2, 3, 4, 5]
+array_b = array_a
+array_b #=> [1, 2, 3, 4, 5]
+array_a[2] = 9
+array_a #=> [1, 2, 9, 4, 5]
+array_b #=> [1, 2, 9, 4, 5] (changed)
+
+# we didn't want array_b to change, only array_a. the fix:
+array_a = [1, 2, 3, 4, 5]
+array_b = array_a.dup
+array_b #=> [1, 2, 3, 4, 5]
+array_a[2] = 9
+array_a #=> [1, 2, 9, 4, 5]
+array_b #=> [1, 2, 3, 4, 5] (doesn't change)
+```
+
+Here's the same problem and fix in Python:
+
+```python
+# Python
+
+# problem
+array_a = [1, 2, 3, 4, 5]
+array_b = array_a
+array_b #=> [1, 2, 3, 4, 5]
+array_a[2] = 9
+array_a #=> [1, 2, 9, 4, 5]
+array_b #=> [1, 2, 9, 4, 5] (changed)
+
+# we didn't want array_b to change, only array_a. the fix:
+array_a = [1, 2, 3, 4, 5]
+array_b = array_a[:]
+array_b #=> [1, 2, 3, 4, 5]
+array_a[2] = 9
+array_a #=> [1, 2, 9, 4, 5]
+array_b #=> [1, 2, 3, 4, 5] (doesn't change)
+```
+
+The `array[:]` operator says "select everything from this array" which means when we set our `array_b` object to it, we're taking in the elements of the array instead of the object that holds the array.
 
 
 
@@ -1036,136 +1277,12 @@ array.reduce(multi, 2) //=> 240
 ### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
 ---
 
-.reduce / .inject | reduce() | combines all elements via an operation
-.flatten | TBD | merge multi-dimensional / nested arrays
-.compact | TBD | remove `nil` or `null` values from an array
-||**selecting methods**
-.slice | a[l:h:s] | select element(s) from array
-.dup | a[:] | duplicates an object rather than copies
 ||**manipulating methods**
 .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
 case; each | if/elif or dict | shorthand multiple `if` statements
 .insert | .insert(idx, elem) | add element(s) from array/string
 .delete_at | del a[idx:idx2] | remove element(s) from array/string
 .delete(e) | .remove(e) | remove element by element
-
-
-
-
-
-# Making arrays neater with - Ruby: `.flatten` | JS: `.concat`
----
-What happens when you have an array nested within an array (a multi-dimensional array) and want to make it look neater (into a single-dimensional array)? For example we want this ugly nested array:
-
-`array = [1, 2, [[3, 4], 5], [6, nil, 7], 8, 9]`
-
-to look like this neat one:
-
-`array = [1, 2, 3, 4, 5, 6, nil, 7, 8, 9]`
-
-In Ruby it's simple enough as we'd simply call `.flatten` on the array (Ruby once again takes care of the behind-the-scenes code for us)
-```ruby
-# Ruby
-array.flatten #=> [1, 2, 3, 4, 5, 6, nil, 7, 8, 9]
-```
-In JS it's a bit more complicated, though only by a bit when you get used to it. I'll explain each of these in detail along with what goes into both of these methods.
-
-The first way is the easiest (and my preferred) way: use `.concat` to append each element onto a blank array along with a neat little JS trick:
-```javascript
-// javascript
-[].concat(...array) //=> [1, 2, 3, 4, 5, 6, null, 7, 8, 9]
-[].concat(0, ...array) //=> [0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9]
-[].concat(...[-1,0], ...array, "woo!") //=> [-1, 0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9, "woo!"]
-```
-I'll explain the `...` in a second, but the important part about this `.concat` method is that you can combine **any number of arrays or values** and it will combine them all! Meanwhile, in the `(...array)`, that `...` is what's known in JS as a `spread operator` which, well, spreads out an array. It's used during creation or changing of arrays to expand the array and call on all elements in it. For your understanding, here is an example of what this operator does:
-```javascript
-// Javascript
-a1 = [1,2,3]
-a2 = [4,5,6]
-[a1,a2] //=> [ [1,2,3], [4,5,6] ]
-[...a1,a2] //=> [1,2,3, [4,5,6] ]
-[...a1,...a2] //=> [1,2,3,4,5,6]
-```
-The second way is by using `.apply`, which, well, applies what you want into an array. We can either do this to an empty array or to an existing one. Note that unlike the first way you cannot combine more than one array or value:
-```javascript
-// Javascript
-[].concat.apply([],array) //=> [1, 2, 3, 4, 5, 6, null, 7, 8, 9]
-[].concat.apply([-1,0],array) //=> [-1, 0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9]
-```
-Again though, the first method is shorter and is much more useful especially for multiple arrays. It's good to know though what `.apply` can do.
-
-# Removing unwanted values with - Ruby: `.compact` | JS: `.filter`
----
-Hold on though, in the above example, even though we ran `flatten`/`concat` on our array, we still have a `nil`/`null` value in there. To get rid of them we simply run the following in Ruby:
-```ruby
-# Ruby
-[1, 2, nil, 3, 4, 5, "hey"].compact #=> [1, 2, 3, 4, 5, "hey"]
-```
-Which basically iterates over the array and removes `nil` whenever it finds it (non-destructively). To destructively do this just use `.compact!` or `array.delete(nil)`. The syntax will look very similar to the latter where we'll tell our program to delete any element that doesn't pass our test, aka keeping elements that pass. This brings us to how `.filter` is used in JS:
-```javascript
-// Javascript
-[1, 2, null, 3, 4, 5, "hey"].filter(x => x) //=> [1, 2, 3, 4, 5, "hey"]
-[1, 2, null, 3, 4, 5, "hey"].filter(Number) //=> [1, 2, 3, 4, 5]
-[1, 2, null, 3, 4, 5, "hey"].filter(x => x % 2 === 0) //=> [2, null, 4]
-[1, 2, null, 3, 4, 5, "hey"].filter(x => x % 2 === 1) //=> [1, 3, 5]
-```
-The first basically says: "filter this array by calling the element, and if it's true then it passes through the filter" which gets rid of all `null` values. The second says "filter this array, and if it's a number then it passes through the filter." Note that the second only works if all elements are numbers, but the first works even if you have a mixture of numbers, strings, or otherwise!
-
-The third/fourth filters show the usefulness of filtering out our array as we can test if certain things are true, in this case testing which elements are even or odd respectively. Notice that `null` still passes as `null % 2` is 0, weird right?
-
-
-
-
-
-
-# slice
----
-Slice is a nice method that goes into an array (or string) and selects the element(s) of your choice. While in Ruby you can directly call on the array/string to get these values using `array[0]` for the first value, or in Ruby only doing more fancy `array[1..4]` to get
-```ruby
-# Ruby
-array = ["Hello", "World", "How", "Are", "You?"]
-array[0] #=> "Hello"
-array[2..4] #=> ["How", "Are", "You?"]
-array[2, 3] #=> ["How", "Are", "You?"]
-```
-only the first script `array[0]` can be used in JS. This is where `.slice` comes in, however just like `.reduce` it's used differently. If you're familiar with Ruby, `.slice` is used exactly like the above scripts and has the same exact outputs:
-```ruby
-# Ruby
-array = ["Hello", "World", "How", "Are", "You?"]
-array.slice(0) # select at index 0
-array.slice(2..4) # select from index 2 to index 4
-array.slice(2, 3) # select from index 2 and go 3 positions further
-```
-JS operates differently however. Obviously we don't have ranges so the middle script is of no use to us, but what happens if we try the other two scripts?
-```javascript
-// Javascript
-array = ["Hello", "World", "How", "Are", "You?"]
-array.slice(0) //=> ["Hello", "World", "How", "Are", "You?"]
-array.slice(2, 3) //=> ["How"]
-```
-"How" is right... what is happening here? Well in both languages the slice takes in two instances:
-`array.slice( start_index, optional_second_number ) `
-The `start_here` is the same in both languages, however the `optional_second_number` is what's different.
-
-Ruby says: `start_index`, `go_this_many_positions_further (default is 0)`
-JS says: `start_index (default is 0)`, `end_index (default is array.length)`
-
-Wait a second, `(start_index, end_index)`? that's a range! Specifically it's the three-dotted `(n1...n2)` range where we go **up until** the end index. So with that knowledge:
-```javascript
-// Javascript
-array = ["Hello", "World", "How", "Are", "You?"]
-
-array.slice(0) // start at index 0, go to the default end of array.length
-array.slice(0, array.length) // same
-array.slice(0, 5) // same (array.length is 5, the last index in it is 4)
-array.slice(2, 3) // start at index 2, go up until 3 (therefore only index 2)
-
-array.slice() //=> ["Hello", "World", "How", "Are", "You?"]
-array.slice(2) || array.slice(2,array.length) || array.slice(2, 5)
-// all of them //=> ["How", "Are", "You?"]
-array.slice(2, 4) //=> ["How", "Are"]
-```
-
 
 
 # Sorting an array/string/hash/Object with `.sort`
