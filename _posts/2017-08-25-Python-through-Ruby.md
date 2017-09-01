@@ -740,7 +740,12 @@ d = {1: "one", 2: "two", 3: "three"}
 [d[key] for key in d] #=> ["one", "two", "three"]
 ```
 
-Note that I just named `key` in there to make things clearer but the value can be anything you want. `[x for x in d]` works just as well.
+Note that I just named `key` in there to make things clearer but the value can be anything you want. `[x for x in d]` works just as well. Of course we can also get the index by using enumerate just like before:
+
+```python
+# Python
+[x*i for i, x in enumerate(range(1,6))] #=> [0, 2, 6, 12, 20]
+```
 
 # Iterating and manipulating with - Ruby: `.map`, Python: `map()`
 ---
