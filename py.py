@@ -1,18 +1,4 @@
 
-
-map
-```python
-def double(n):
-  return n*2
-
-double(5) #=> 10
-
-a = [1,2,3,4,5]
-
-
-map(double, a) #=> [2,4,6,8,10]
-```
-
 lambda
 ```python
 a = [1,2,3,4,5]

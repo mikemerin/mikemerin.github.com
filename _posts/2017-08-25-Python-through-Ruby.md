@@ -43,10 +43,14 @@ while / until | while | loops while condition is true
 for | for | iterate over each element, more used in Python
 .each.with_index | for & enumerate | same, but also get the index
 .map | for..in | in-line iteration
+.keys | for..in | get all keys in a hash
+.values | for..in | get all values in a hash
 .map | map | iterate over each element, changes the output
 .map.with_index | map | same, but also get the index
-||**manipulating methods**
+||**selecting methods**
+.slice | a[l:h:s] | select element(s) from array
 .dup | a[:] | duplicates an object rather than copies
+||**manipulating methods**
 .reduce / .inject | reduce() | combines all elements via an operation
 .flatten | TBD | merge multi-dimensional / nested arrays
 .compact | TBD | remove `nil` or `null` values from an array
@@ -55,11 +59,7 @@ case; each | if/elif or dict | shorthand multiple `if` statements
 .insert | .insert(idx, elem) | add element(s) from array/string
 .delete_at | del a[idx:idx2] | remove element(s) from array/string
 .delete(e) | .remove(e) | remove element by element
-||**selecting methods**
-.keys | for %s % k | get all keys in a hash
-.values | for %s % d[k] | get all values in a hash
-.slice | a[l:h:s] | select element(s) from array
-||**more functions**
+||**extra**
 call/procs | no need | function called within a function
 
 # Names of data types
@@ -721,7 +721,7 @@ array #=> [0, 2, 6, 12, 20]
 [x*x for x in range(1,6)] #=> [1, 4, 9, 16, 25]
 ```
 
-We can also use this trick when using hashes/dictionaries. Ruby has an easy shortcut to do this, but a little `for..in` trick works just as well:
+We can also use this trick when using hashes/dictionaries to obtain its keys or values. Ruby has an easy shortcut to do this by calling `.keys` and `.values` respectively, but a little `for..in` trick works just as well:
 
 ```ruby
 # Ruby
@@ -731,33 +731,26 @@ hash.values #=> ["one", "two", "three"]
 ```
 
 ```python
-dictionary = {1: "one", 2: "two", 3: "three"}
+# Python
+d = {1: "one", 2: "two", 3: "three"}
 
-for key in dictionary:
-    print "%s" % key
-
-    #=> 1
-    #=> 2
-    #=> 3
-
-for key in dictionary:
-    print "%s" % dictionary[key]
-
-    #=> "one"
-    #=> "two"
-    #=> "three"
+[key for key in d] #=> [1, 2, 3]
+[d[key] for key in d] #=> ["one", "two", "three"]
 ```
+
+Note that I just named `key` in there to make things clearer but the value can be anything you want. `[x for x in d]` works just as well.
 
 # WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
 ### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
 ---
 
 
-
 .map | map | iterate over each element, changes the output
 .map.with_index | map | same, but also get the index
-||**manipulating methods**
+||**selecting methods**
+.slice | a[l:h:s] | select element(s) from array
 .dup | a[:] | duplicates an object rather than copies
+||**manipulating methods**
 .reduce / .inject | reduce() | combines all elements via an operation
 .flatten | TBD | merge multi-dimensional / nested arrays
 .compact | TBD | remove `nil` or `null` values from an array
@@ -766,121 +759,37 @@ case; each | if/elif or dict | shorthand multiple `if` statements
 .insert | .insert(idx, elem) | add element(s) from array/string
 .delete_at | del a[idx:idx2] | remove element(s) from array/string
 .delete(e) | .remove(e) | remove element by element
-||**selecting methods**
-.keys | for %s % k | get all keys in a hash
-.values | for %s % d[k] | get all values in a hash
-.slice | a[l:h:s] | select element(s) from array
 ||**more functions**
 call/procs | no need | function called within a function
-
-
-
-Onto iterations. As I said before, `.each` in Ruby is incredibly useful, and does what both `for` and `.forEach` does in JS. Before we get to the latter, let's flash back to Ruby and cover how we can iterate over an array using `.each` beginning with a more lengthy iteration (similar to JS's `for`) and ending with a shortcut (similar to JS's `.forEach`). These first three examples are the former:
-```ruby
-# ruby
-array = [1,2,3,4,5]
-array2 = []
-
-(0...array.length).each { |i| print array[i] }
-#=> 12345
-
-(0...array.length).each { |i| array2.push( array[i] ) }
-array2 #=> [1,2,3,4,5]
-
-array2 = []
-(0...array.length).each { |i| array2.unshift( array[i] ) }
-array2 #=> [5,4,3,2,1]
-```
-Now let's finally do that fancy JS iteration using `for` but this time over an array. To spoof the range we'll set our index to 0, limit it to the array.length, and add up by 1:
-```javascript
-// Javascript
-array = [1,2,3,4,5]
-array2 = []
-
-// long version for clarification:
-
-for (let i = 0, l = array.length; // declare i, l as variables
-     i < l; // while index is less than the array length
-     i++ ) // increment by 1
-    { array2.push( array[i] ) }
-array2 //=> [1,2,3,4,5]
-
-// shorter and clean version:
-
-for (let i = 0, l = array.length; i < l; i++) { array2.push( array[i] ) }
-//=> [1,2,3,4,5]
-for (let i = 0, l = array.length; i < l; i++) { array2.unshift( array[i] ) }
-//=> [5,4,3,2,1]
-```
-This is how `.each` directly correlates with `for`, but there's a better way to iterate over an array that inherently **knows** to go from the start to the end of an array without us needing to tell it. Doing this in Ruby:
-```ruby
-# Ruby
-for x in array; puts x end
-for x in array; array2.push(x) end
-```
-In JS we'll introduce `in`:
-```javascript
-// Javascript
-for (let i in array) { console.log( array[i] ) }
-for (let i in array) { array2.push( array[i] ) }
-```
-We're obtaining the index `i` from the `array`, then using it in our code block.
-
-This is as far we can go using `for` in JS. You'll notice that there's a very important difference in how Ruby handles `for` compared to JS: while Ruby calls on the element, JS calls on the index, and we can't grab the element directly, therefore we **still** have to do `array[i]` instead of how we were just using `x` in Ruby above. Time to break out `forEach` and fix that:
-```ruby
-# Ruby
-array.each { |x| puts x }
-array.each { |x| array2.push2.push( array[i] ) }
-```
-```javascript
-// Javascript
-array.forEach( x => { console.log(x) } )
-array.forEach( x => { array2.push(x) } )
-```
-# Using Ruby's `.each_with_index` or `.each.with_index` in JS
-These are the same thing in Ruby, however JS has neither of these functions available. Thankfuly though JS has a way to easily iterate over both the element **and** the index at the **same time**:
-```ruby
-# Ruby
-array = ["Hello", "World"]
-array.each_with_index { |x,i| puts "the index is #{i}, the element is #{x}" }
-```
-```javascript
-// Javascript
-array.forEach( (x, i) => console.log(`The index is ${i}, the element is ${x}`) )
-```
-These both print out:
-
-"the index is 0, the element is Hello"
-
-"the index is 1, the element is World" -->
-
-
-while / until | while | loops while condition is true
-||**iteration**
-for | for | iterate over each element, more used in Python
-.each.with_index | for & enumerate | same, but also get the index
-.map | map | iterate over each element, changes the output
-.map.with_index | map | same, but also get the index
-||**manipulating methods**
-.dup |
-.reduce / .inject | reduce() | combines all elements via an operation
-.flatten | TBD | merge multi-dimensional / nested arrays
-.compact | TBD | remove `nil` or `null` values from an array
-.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-case; each | if/elif or dict | shorthand multiple `if` statements
-.insert | .insert(idx, elem) | add element(s) from array/string
-.delete | del a[idx:idx2] | remove element(s) from array/string
-||**selecting methods**
-.keys | for %s % k | get all keys in a hash
-.values | for %s % d[k] | get all values in a hash
-.slice | a[l:h:s] | select element(s) from array
-||**more functions**
-call/procs | no need | function called within a function
-
 
 # Iterating and manipulating with - Ruby: `.map`, Python: `map()`
 ---
-Our newfound `.forEach` is great, but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? In comes `.map` which simply outputs our answer each time we call it! It's used in the same way we use `.forEach`. For example if we have `array = [1,2,3,4,5]` and compare `.each/.forEach` vs. `.map`:
+In Ruby `.each` is incredibly useful, and does what both `for` and `for..in` does in Python, or what `.forEach` does in JavaScript. They're all great but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? We saw in the Ruby example just above how map goes a step farther in modifying the output of what you put in. Let's do the same thing we did before in Python, but this time use map as well:
+
+```ruby
+# Ruby
+(1..5).map { |x| x*x } #=> [1, 4, 9, 16, 25]
+```
+
+```python
+# Python
+# from before
+[x*x for x in range(1,6)] #=> [1, 4, 9, 16, 25]
+
+def double(n):
+  return n*2
+
+double(5) #=> 10
+
+a = [1,2,3,4,5]
+
+map(double, a) #=> [2,4,6,8,10]
+```
+
+
+
+
+It's used in the same way we use `.forEach`. For example if we have `array = [1,2,3,4,5]` and compare `.each/.forEach` vs. `.map`:
 ```ruby
 # Ruby
 array.each { |x| x * 2 } #=> [1,2,3,4,5] unchanged output
