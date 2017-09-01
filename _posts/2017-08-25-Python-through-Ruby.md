@@ -77,7 +77,7 @@ In addition Python has a few immutable data types:
 tuple = (1, 2, 3)
 set = { 1, 2, 3 }
 
-While tuples are used in Ruby they don't really have a name. It's basically used when taking in arguments such as `Time.local(2017, 8, 25)`. In Python that would be called a tuple but it's just arguments in Ruby. In order to use sets in Ruby you must `require 'set'` before you can `Set.new [1, 2, 3]`, and een then sets aren't commonly used in Ruby. More explanations of tuples and sets will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
+While tuples are used in Ruby they don't really have a name. It's basically used when taking in arguments such as `Time.local(2017, 8, 25)`. In Python that would be called a tuple but it's just arguments in Ruby. In order to use sets in Ruby you must `require 'set'` before you can `Set.new [1, 2, 3]`, and even then sets aren't commonly used in Ruby. More explanations of tuples and sets will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
 
 # String Interpolation
 ---
@@ -902,35 +902,54 @@ map(lambda x, y: x*y, array_a, array_b)
 #=> [2, 8, 18, 32, 50]
 ```
 
+# Getting the index with map
+### Ruby: `.map.with_index` | Python: `map() & enumerate`
 
+Just like before when using `.each` in Ruby, it's very simple to get the index. Here's the difference between `.each`, it's `with_index` and `.map` and its `with_index`:
 
+```ruby
+# Ruby
+array = [1, 2, 3, 4, 5]
+array.each { |x| x*x }
+#=> [1, 2, 3, 4, 5] (output not changed)
+array.each.with_index { |x, i| x*i }
+#=> [1, 2, 3, 4, 5] (output not changed)
 
-# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
-### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
----
+array.map { |x| x*x }
+#=> [1, 4, 9, 16, 25] (output is changed)
+array.map.with_index { |x, i| x*i }
+#=> [0, 2, 6, 12, 20] (output is changed)
+```
 
-.map.with_index | map & enumerate | map, but also get the index
-.reduce / .inject | reduce() | combines all elements via an operation
-.flatten | TBD | merge multi-dimensional / nested arrays
-.compact | TBD | remove `nil` or `null` values from an array
-||**selecting methods**
-.slice | a[l:h:s] | select element(s) from array
-.dup | a[:] | duplicates an object rather than copies
-||**manipulating methods**
-.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-case; each | if/elif or dict | shorthand multiple `if` statements
-.insert | .insert(idx, elem) | add element(s) from array/string
-.delete_at | del a[idx:idx2] | remove element(s) from array/string
-.delete(e) | .remove(e) | remove element by element
+That's it, easy enough, just change `each` to `map` and the functions are changed, and add `.with_index` and you can get their index by calling it in the block. Python is another story as we're going from `for..in` instead of the similar `.each` and we need to use `enumerate` in order to get the index. Here's the difference between those in Python:
 
+```python
+# Python
+array = [1, 2, 3, 4, 5]
 
+for x in a: x*x
+#=> [1, 4, 9, 16, 25]
+for i, x in enumerate(a): x*i
+#=> [0, 2, 6, 12, 20]
 
+# or
 
+[x*x for x in a]
+#=> [1, 4, 9, 16, 25]
+[x*i for i, x in enumerate(a)]
+#=> [0, 2, 6, 12, 20]
 
+map(lambda x: x*x, a)
+#=> [1, 4, 9, 16, 25]
+map(lambda (i, x): x*i, enumerate(a))
+#=> [0, 2, 6, 12, 20]
+```
+
+Now this is a little bit of a false equivalency going from Ruby to Python as each isn't exactly the same as `for..in` since the output does in fact change. The key here though is to see how useful `enumerate` can be in obtaining an array's index. Also as you noticed we're still using lambda in our scripts. That'll be a common theme so keep it in mind.
 
 # Manipulating arrays with `.reduce`
 ---
-Now let's go over what `.reduce` does (also known as `.inject` in ruby) and add up all values in the array, starting with the shortcut then expanding out to see what's under the hood. Note that all of these will produce the correct answer of 15:
+Now let's go over what `.reduce` does (also known as `.inject` in Ruby) and add up all values in the array, starting with the shortcut then expanding out to see what's under the hood. Note that all of these will produce the correct answer of 15:
 
 ```ruby
 # ruby
@@ -1008,6 +1027,32 @@ array.reduce(sum, 10) //=> 25
 array.reduce(multi) //=> 120
 array.reduce(multi, 2) //=> 240
 ```
+
+
+
+
+
+# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
+### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
+---
+
+.reduce / .inject | reduce() | combines all elements via an operation
+.flatten | TBD | merge multi-dimensional / nested arrays
+.compact | TBD | remove `nil` or `null` values from an array
+||**selecting methods**
+.slice | a[l:h:s] | select element(s) from array
+.dup | a[:] | duplicates an object rather than copies
+||**manipulating methods**
+.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
+case; each | if/elif or dict | shorthand multiple `if` statements
+.insert | .insert(idx, elem) | add element(s) from array/string
+.delete_at | del a[idx:idx2] | remove element(s) from array/string
+.delete(e) | .remove(e) | remove element by element
+
+
+
+
+
 # Making arrays neater with - Ruby: `.flatten` | JS: `.concat`
 ---
 What happens when you have an array nested within an array (a multi-dimensional array) and want to make it look neater (into a single-dimensional array)? For example we want this ugly nested array:
