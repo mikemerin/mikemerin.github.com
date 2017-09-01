@@ -47,8 +47,8 @@ for | for | iterate over each element, more used in Python
 .values | for..in | get all values in a hash
 ||**callback-esque functions**
 .map | map | iterate over each element, changes the output
-.map.with_index | map | same, but also get the index
-lambda | lambda | call/procs, function called within a function
+lambda | lambda | function called within a function
+.map.with_index | map & enumerate | map, but also get the index
 .reduce / .inject | reduce() | combines all elements via an operation
 .flatten | TBD | merge multi-dimensional / nested arrays
 .compact | TBD | remove `nil` or `null` values from an array
@@ -61,6 +61,8 @@ case; each | if/elif or dict | shorthand multiple `if` statements
 .insert | .insert(idx, elem) | add element(s) from array/string
 .delete_at | del a[idx:idx2] | remove element(s) from array/string
 .delete(e) | .remove(e) | remove element by element
+||**extra functions**
+call/proc | N/A: inherent | function called within a function
 
 # Names of data types
 ---
@@ -740,28 +742,6 @@ d = {1: "one", 2: "two", 3: "three"}
 
 Note that I just named `key` in there to make things clearer but the value can be anything you want. `[x for x in d]` works just as well.
 
-# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
-### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
----
-
-
-.map | map | iterate over each element, changes the output
-.map.with_index | map | same, but also get the index
-||**selecting methods**
-.slice | a[l:h:s] | select element(s) from array
-.dup | a[:] | duplicates an object rather than copies
-||**manipulating methods**
-.reduce / .inject | reduce() | combines all elements via an operation
-.flatten | TBD | merge multi-dimensional / nested arrays
-.compact | TBD | remove `nil` or `null` values from an array
-.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-case; each | if/elif or dict | shorthand multiple `if` statements
-.insert | .insert(idx, elem) | add element(s) from array/string
-.delete_at | del a[idx:idx2] | remove element(s) from array/string
-.delete(e) | .remove(e) | remove element by element
-||**more functions**
-call/procs | no need | function called within a function
-
 # Iterating and manipulating with - Ruby: `.map`, Python: `map()`
 ---
 In Ruby `.each` is incredibly useful, and does what both `for` and `for..in` does in Python, or what `.forEach` does in JavaScript. They're all great but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? We saw in the Ruby example just above how map goes a step farther in modifying the output of what you put in. Let's do the same thing we did before in Python, but this time use map as well. You'll see why it's different:
@@ -777,17 +757,17 @@ In Ruby `.each` is incredibly useful, and does what both `for` and `for..in` doe
 [x*x for x in range(1,6)] #=> [1, 4, 9, 16, 25]
 
 # Here's a basic function
-def exponential(x): return x*x
+def square(x): return x*x
 def double(x): return x*2
 
 # calling that function with one element
-exponential(5) #=> 25
+square(5) #=> 25
 double(5) #=> 10
 
 array = [1,2,3,4,5]
 
 # using map to call that function over every element in an array
-map(exponential, array) #=> [1, 4, 9, 16, 25]
+map(square, array) #=> [1, 4, 9, 16, 25]
 map(double, array) #=> [2, 4, 6, 8, 10]
 ```
 
@@ -795,7 +775,7 @@ As you can see, `map` in Python acts more like a callback rather than Ruby calli
 
 ```ruby
 # Ruby
-def exponential(x)
+def square(x)
   x*x
 end
 
@@ -803,58 +783,146 @@ def double(x)
   x*2
 end
 
-(1..5).map { |x| exponential(x) } #=> [1, 4, 9, 16, 25]
+(1..5).map { |x| square(x) } #=> [1, 4, 9, 16, 25]
 (1..5).map { |x| double(x) } #=> [2, 4, 6, 8, 10]
 ```
 
-I'll get more into callbacks soon, but in Python `map` first takes in a function and then an array to iterate over. This is great, and is highly interchangeable as we can replace the function or the array at will, just like in the last Ruby example above. However what if we wanted to map just like the first part in the block? In comes lambda.
+I'll get more into what an actual callback is in a second, but in Python `map` first takes in a function and then an array to iterate over. This is great, and is highly interchangeable as we can replace the function or the array at will, just like in the last Ruby example above. However what if we wanted to map just like the first part in the block?
 
-# Lambda
+# Creating functions with lambda
 ---
 
-
-```ruby
-# Ruby
-function = lambda { |x| puts x }
-function.call("hey") #=> puts "hey"
-```
+If you try to do something like Ruby's `(1..5).map { |x| x*x }` that has a function in the block, you'll get an error:
 
 ```python
 # Python
-a = [1,2,3,4,5]
+map(x*x, array)
+#=> Traceback (most recent call last):
+#=> File "<stdin>", line 1, in <module>
+#=> TypeError: 'int' object is not callable
 
-map(lambda x: x*2, a) #=> [2,4,6,8,10]
+# or getting that |x| from Ruby
+map(x*x for x, array)
+#=> File "<stdin>", line 1
+#=>   map(x*x for x, array)
+#=>                       ^
+#=> SyntaxError: invalid syntax
 ```
 
+You can't simply port in `for` to mimick Ruby's `|x|` otherwise it'll break. In comes lambda which allows you to define the letter or word to make into a function. We'll cover calls and procs at the end of the post, but lambda is much simpler on its own, and the only major difference in Ruby vs. Python's use of it is its syntax. Here's what lambda looks like in Ruby:
 
-
-
-It's used in the same way we use `.forEach`. For example if we have `array = [1,2,3,4,5]` and compare `.each/.forEach` vs. `.map`:
 ```ruby
 # Ruby
-array.each { |x| x * 2 } #=> [1,2,3,4,5] unchanged output
-array.map { |x| x * 2 } #=> [2,4,6,8,10] changed output
+# lambda has a block that stores a function "puts polo"
+marco = lambda { puts "polo" }
+# marco is now an object that has the stored function
+marco #=> #<Proc:0x007fb8ed169150@(irb):358 (lambda)>
+# you can call the function by putting .call
+marco.call #=> puts "polo"
+
+# you can also have it take in an argument
+function = lambda { |x| puts x }
+function.call("hey") #=> puts "hey"
+
+# it can be called multiple ways
+square = lambda { |x| x*x }
+square.call(5) #=> 25
+square.(5) #=> 25
+square[5] #=> 25
+
+# or take in multiple arguments
+exponential = lambda { |x, y| x**y }
+exponential.call(3, 4) #=> 81
 ```
-```javascript
-// Javascript
-array.forEach(x => x * 2) //=> undefined (no output)
-array.map(x => x) //=> [1,2,3,4,5] unchanged output (technically spoofs the input like Ruby .each)
-array.map(x => x * 2) //=> [2,4,6,8,10] changed output
+
+In Python, here's the most direct comparison for what lambda does.
+
+```python
+# Python
+def normal(x): return x*x
+normal(5) #=> 25
+
+lam = lambda x: x*x
+lam(5) #=> 25
 ```
-`.map` is great for shortening your code and making them one-liners, which cleans up your code and makes it much more readable.
-# Using Ruby's `.map.with_index` in JS
-Just like with `.each.with_index`, JS has a way to easily iterate over both the element **and** the index at the **same time** and output the value you want:
-```ruby
-# Ruby
-array = [10,20,30,40,50]
-array.map.with_index { |x,i| i } #=> [0,1,2,3,4]
-array.map.with_index { |x,i| x * i } #=> [0,20,60,120,200]
+
+lambda is very similar to what's in Ruby's block. The `|x|` is instead a `x:`, and after that is the function, all without needing to be wrapped in curly brackets. Here are what the Ruby examples from before look like in Python:
+
+```python
+# Python
+marco = lambda: "polo"
+marco #=> <function <lambda> at 0x10221d668>
+marco() #=> "polo"
+
+square = lambda x: x*x
+square(5) #=> 25
+
+function = lambda x: x
+function("hey") #=> "hey"
+
+exponential = lambda x, y: x**y
+exponential(3, 4) #=> 81
 ```
-```javascript
-// Javascript
-array.map((x, i) => i) //=> [0,1,2,3,4]
-array.map((x, i) => x * i) //=> [0,20,60,120,200]
+
+Now that we know how to use lambda, let's bring it full circle and use it in our `map` function. Here's the before and after, and some more fancy things you can do:
+
+```python
+# Python
+
+# before with functions:
+array = [1,2,3,4,5]
+def square(x): return x*x
+
+map(square, array) #=> [1, 4, 9, 16, 25]
+
+# after with lambda:
+
+array = [1,2,3,4,5]
+map(lambda x: x**, array) #=> [1, 4, 9, 16, 25]
+
+# and more you can do:
+
+array_a = [1,2,3,4,5]
+array_b = [2,4,6,8,10]
+
+# doesn't alter the original array
+map(lambda x: x*2, array_a) #=> [2, 4, 6, 8, 10]
+map(lambda x: x+5, array_a) #=> [6, 7, 8, 9, 10]
+
+# handles multiple arrays if they're the same length, acting on the same index
+map(lambda x, y: [x,y], a, b)
+#=> [[1, 2], [2, 4], [3, 6], [4, 8], [5, 10]]
+
+map(lambda x, y: x*y, array_a, array_b)
+#=> [2, 8, 18, 32, 50]
 ```
+
+
+
+
+# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
+### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
+---
+
+.map.with_index | map & enumerate | map, but also get the index
+.reduce / .inject | reduce() | combines all elements via an operation
+.flatten | TBD | merge multi-dimensional / nested arrays
+.compact | TBD | remove `nil` or `null` values from an array
+||**selecting methods**
+.slice | a[l:h:s] | select element(s) from array
+.dup | a[:] | duplicates an object rather than copies
+||**manipulating methods**
+.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
+case; each | if/elif or dict | shorthand multiple `if` statements
+.insert | .insert(idx, elem) | add element(s) from array/string
+.delete_at | del a[idx:idx2] | remove element(s) from array/string
+.delete(e) | .remove(e) | remove element by element
+
+
+
+
+
+
 # Manipulating arrays with `.reduce`
 ---
 Now let's go over what `.reduce` does (also known as `.inject` in ruby) and add up all values in the array, starting with the shortcut then expanding out to see what's under the hood. Note that all of these will produce the correct answer of 15:
@@ -994,6 +1062,61 @@ Which basically iterates over the array and removes `nil` whenever it finds it (
 The first basically says: "filter this array by calling the element, and if it's true then it passes through the filter" which gets rid of all `null` values. The second says "filter this array, and if it's a number then it passes through the filter." Note that the second only works if all elements are numbers, but the first works even if you have a mixture of numbers, strings, or otherwise!
 
 The third/fourth filters show the usefulness of filtering out our array as we can test if certain things are true, in this case testing which elements are even or odd respectively. Notice that `null` still passes as `null % 2` is 0, weird right?
+
+
+
+
+
+
+# slice
+---
+Slice is a nice method that goes into an array (or string) and selects the element(s) of your choice. While in Ruby you can directly call on the array/string to get these values using `array[0]` for the first value, or in Ruby only doing more fancy `array[1..4]` to get
+```ruby
+# Ruby
+array = ["Hello", "World", "How", "Are", "You?"]
+array[0] #=> "Hello"
+array[2..4] #=> ["How", "Are", "You?"]
+array[2, 3] #=> ["How", "Are", "You?"]
+```
+only the first script `array[0]` can be used in JS. This is where `.slice` comes in, however just like `.reduce` it's used differently. If you're familiar with Ruby, `.slice` is used exactly like the above scripts and has the same exact outputs:
+```ruby
+# Ruby
+array = ["Hello", "World", "How", "Are", "You?"]
+array.slice(0) # select at index 0
+array.slice(2..4) # select from index 2 to index 4
+array.slice(2, 3) # select from index 2 and go 3 positions further
+```
+JS operates differently however. Obviously we don't have ranges so the middle script is of no use to us, but what happens if we try the other two scripts?
+```javascript
+// Javascript
+array = ["Hello", "World", "How", "Are", "You?"]
+array.slice(0) //=> ["Hello", "World", "How", "Are", "You?"]
+array.slice(2, 3) //=> ["How"]
+```
+"How" is right... what is happening here? Well in both languages the slice takes in two instances:
+`array.slice( start_index, optional_second_number ) `
+The `start_here` is the same in both languages, however the `optional_second_number` is what's different.
+
+Ruby says: `start_index`, `go_this_many_positions_further (default is 0)`
+JS says: `start_index (default is 0)`, `end_index (default is array.length)`
+
+Wait a second, `(start_index, end_index)`? that's a range! Specifically it's the three-dotted `(n1...n2)` range where we go **up until** the end index. So with that knowledge:
+```javascript
+// Javascript
+array = ["Hello", "World", "How", "Are", "You?"]
+
+array.slice(0) // start at index 0, go to the default end of array.length
+array.slice(0, array.length) // same
+array.slice(0, 5) // same (array.length is 5, the last index in it is 4)
+array.slice(2, 3) // start at index 2, go up until 3 (therefore only index 2)
+
+array.slice() //=> ["Hello", "World", "How", "Are", "You?"]
+array.slice(2) || array.slice(2,array.length) || array.slice(2, 5)
+// all of them //=> ["How", "Are", "You?"]
+array.slice(2, 4) //=> ["How", "Are"]
+```
+
+
 
 # Sorting an array/string/hash/Object with `.sort`
 
@@ -1401,71 +1524,30 @@ array.includes(7) //=> false
 array.includes("world", 4) //=> true
 array.includes(1, 3) //=> false
 ```
-# Keys and Values
----
-If you have a Hash in ruby you can simply call `.keys` or `.values` on it to easily get their information:
-```ruby
-# Ruby
-pets = { dogs: 3, cats: 2, birds: 1 }
-pets.keys #=> [:dogs, :cats, :birds]
-pets.values #=> [3, 2, 1]
-```
-Under the hood, these methods are basically going through each element in the hash and pulling out the chosen value and putting them in an array. These shortcuts work a bit different in JS. First off, a **hash in Ruby** is known as an **object in JS**. So we'll have to call `.keys` or `.values` on a blank `Object` class and have it take in the Object pets:
-```javascript
-// JavaScript
-Object.keys(pets) //=> ["dogs", "cats", "birds"]
-Object.values(pets) //=> [3, 2, 1]
-```
-# slice
----
-Slice is a nice method that goes into an array (or string) and selects the element(s) of your choice. While in Ruby you can directly call on the array/string to get these values using `array[0]` for the first value, or in Ruby only doing more fancy `array[1..4]` to get
-```ruby
-# Ruby
-array = ["Hello", "World", "How", "Are", "You?"]
-array[0] #=> "Hello"
-array[2..4] #=> ["How", "Are", "You?"]
-array[2, 3] #=> ["How", "Are", "You?"]
-```
-only the first script `array[0]` can be used in JS. This is where `.slice` comes in, however just like `.reduce` it's used differently. If you're familiar with Ruby, `.slice` is used exactly like the above scripts and has the same exact outputs:
-```ruby
-# Ruby
-array = ["Hello", "World", "How", "Are", "You?"]
-array.slice(0) # select at index 0
-array.slice(2..4) # select from index 2 to index 4
-array.slice(2, 3) # select from index 2 and go 3 positions further
-```
-JS operates differently however. Obviously we don't have ranges so the middle script is of no use to us, but what happens if we try the other two scripts?
-```javascript
-// Javascript
-array = ["Hello", "World", "How", "Are", "You?"]
-array.slice(0) //=> ["Hello", "World", "How", "Are", "You?"]
-array.slice(2, 3) //=> ["How"]
-```
-"How" is right... what is happening here? Well in both languages the slice takes in two instances:
-`array.slice( start_index, optional_second_number ) `
-The `start_here` is the same in both languages, however the `optional_second_number` is what's different.
 
-Ruby says: `start_index`, `go_this_many_positions_further (default is 0)`
-JS says: `start_index (default is 0)`, `end_index (default is array.length)`
-
-Wait a second, `(start_index, end_index)`? that's a range! Specifically it's the three-dotted `(n1...n2)` range where we go **up until** the end index. So with that knowledge:
-```javascript
-// Javascript
-array = ["Hello", "World", "How", "Are", "You?"]
-
-array.slice(0) // start at index 0, go to the default end of array.length
-array.slice(0, array.length) // same
-array.slice(0, 5) // same (array.length is 5, the last index in it is 4)
-array.slice(2, 3) // start at index 2, go up until 3 (therefore only index 2)
-
-array.slice() //=> ["Hello", "World", "How", "Are", "You?"]
-array.slice(2) || array.slice(2,array.length) || array.slice(2, 5)
-// all of them //=> ["How", "Are", "You?"]
-array.slice(2, 4) //=> ["How", "Are"]
-```
 
 # Ruby: `.call` / `.proc` | JS: `callbacks`
 ---
+
+We'll be using lambda quite a bit with other major functions, but first I wanted to touch on actual callbacks. In JavaScript
+
+```python
+def double(n):
+  return n*2
+
+def triple(n):
+  return n*3
+
+def multi(n, type):
+  return type(n)
+
+double(5) #=> 10
+triple(5) #=> 15
+multi(10, double) #=> 20
+```
+
+
+
 Finally, what if we had a function inside of another function? Let's come back to that question shortly.
 
 Say we were writing a function that did a few complicated things within it, but then wanted to easily change them or call on them again? For example, what if we wanted to multiply two numbers but have them squared first? We *could* do something like write it all out:

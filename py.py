@@ -56,22 +56,6 @@ range(4, 10, 2) #=> [4, 6, 8]
 range(0, -10, -3) #=> [0, -3, -6, -9]
 ```
 
-no need to use procs
-```python
-def double(n):
-  return n*2
-
-def triple(n):
-  return n*3
-
-def multi(n, type):
-  return type(n)
-
-double(5) #=> 10
-triple(5) #=> 15
-multi(10, double) #=> 20
-```
-
 sort
 ```python
 a = [1, 4, 2, 5, 6, 3, 7]
