@@ -45,22 +45,22 @@ for | for | iterate over each element, more used in Python
 .map | for..in | in-line iteration
 .keys | for..in | get all keys in a hash
 .values | for..in | get all values in a hash
+||**callback-esque functions**
 .map | map | iterate over each element, changes the output
 .map.with_index | map | same, but also get the index
+lambda | lambda | call/procs, function called within a function
+.reduce / .inject | reduce() | combines all elements via an operation
+.flatten | TBD | merge multi-dimensional / nested arrays
+.compact | TBD | remove `nil` or `null` values from an array
 ||**selecting methods**
 .slice | a[l:h:s] | select element(s) from array
 .dup | a[:] | duplicates an object rather than copies
 ||**manipulating methods**
-.reduce / .inject | reduce() | combines all elements via an operation
-.flatten | TBD | merge multi-dimensional / nested arrays
-.compact | TBD | remove `nil` or `null` values from an array
 .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
 case; each | if/elif or dict | shorthand multiple `if` statements
 .insert | .insert(idx, elem) | add element(s) from array/string
 .delete_at | del a[idx:idx2] | remove element(s) from array/string
 .delete(e) | .remove(e) | remove element by element
-||**extra**
-call/procs | no need | function called within a function
 
 # Names of data types
 ---
@@ -709,7 +709,7 @@ array #=> [0, 2, 6, 12, 20]
 
 # Iterating with `for..in`
 ---
-`for` is useful, but we're sandwiching in our script between creating an empty array, pushing/appending to it, and then displaying it. It's better practice to do it all at once. Ruby can use `.map` to help, and we'll get to mapping in Python later, but for now we'll build off of the `for` method from before.
+`for` is useful, but we're sandwiching in our script between creating an empty array, pushing/appending to it, and then displaying it. It's better practice to do it all at once. Ruby can use `.map` to help, and we'll get to mapping in Python later, but for now we'll build off of the `for` method from before. After all `for` in Python is technically more useful and better practice overall, an Python mapping is more of a callback. Anyways here's how `for` works:
 
 ```ruby
 # Ruby
@@ -764,7 +764,7 @@ call/procs | no need | function called within a function
 
 # Iterating and manipulating with - Ruby: `.map`, Python: `map()`
 ---
-In Ruby `.each` is incredibly useful, and does what both `for` and `for..in` does in Python, or what `.forEach` does in JavaScript. They're all great but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? We saw in the Ruby example just above how map goes a step farther in modifying the output of what you put in. Let's do the same thing we did before in Python, but this time use map as well:
+In Ruby `.each` is incredibly useful, and does what both `for` and `for..in` does in Python, or what `.forEach` does in JavaScript. They're all great but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? We saw in the Ruby example just above how map goes a step farther in modifying the output of what you put in. Let's do the same thing we did before in Python, but this time use map as well. You'll see why it's different:
 
 ```ruby
 # Ruby
@@ -776,14 +776,54 @@ In Ruby `.each` is incredibly useful, and does what both `for` and `for..in` doe
 # from before
 [x*x for x in range(1,6)] #=> [1, 4, 9, 16, 25]
 
-def double(n):
-  return n*2
+# Here's a basic function
+def exponential(x): return x*x
+def double(x): return x*2
 
+# calling that function with one element
+exponential(5) #=> 25
 double(5) #=> 10
 
+array = [1,2,3,4,5]
+
+# using map to call that function over every element in an array
+map(exponential, array) #=> [1, 4, 9, 16, 25]
+map(double, array) #=> [2, 4, 6, 8, 10]
+```
+
+As you can see, `map` in Python acts more like a callback rather than Ruby calling a script within a block. What would this look like in Ruby? Something like:
+
+```ruby
+# Ruby
+def exponential(x)
+  x*x
+end
+
+def double(x)
+  x*2
+end
+
+(1..5).map { |x| exponential(x) } #=> [1, 4, 9, 16, 25]
+(1..5).map { |x| double(x) } #=> [2, 4, 6, 8, 10]
+```
+
+I'll get more into callbacks soon, but in Python `map` first takes in a function and then an array to iterate over. This is great, and is highly interchangeable as we can replace the function or the array at will, just like in the last Ruby example above. However what if we wanted to map just like the first part in the block? In comes lambda.
+
+# Lambda
+---
+
+
+```ruby
+# Ruby
+function = lambda { |x| puts x }
+function.call("hey") #=> puts "hey"
+```
+
+```python
+# Python
 a = [1,2,3,4,5]
 
-map(double, a) #=> [2,4,6,8,10]
+map(lambda x: x*2, a) #=> [2,4,6,8,10]
 ```
 
 

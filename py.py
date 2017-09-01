@@ -1,11 +1,4 @@
 
-lambda
-```python
-a = [1,2,3,4,5]
-
-map(lambda x: x*2, a) #=> [2,4,6,8,10]
-```
-
 filter
 ```python
 def even(n):
