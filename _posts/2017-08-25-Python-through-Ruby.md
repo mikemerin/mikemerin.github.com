@@ -1277,7 +1277,6 @@ The `array[:]` operator says "select everything from this array" which means whe
 ### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
 ---
 
-||**manipulating methods**
 .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
 case; each | if/elif or dict | shorthand multiple `if` statements
 .insert | .insert(idx, elem) | add element(s) from array/string
@@ -1285,100 +1284,60 @@ case; each | if/elif or dict | shorthand multiple `if` statements
 .delete(e) | .remove(e) | remove element by element
 
 
-# Sorting an array/string/hash/Object with `.sort`
 
-Let's start off simple and we'll end with some neat tricks. Say you have an array of strings that you want to sort alphabetically:
+# Sorting an array/string/hash/Object with `.sort` | `sorted`
+
+Say you have an array/list of mixed up numbers or strings (or anything else), or a hash/dictionary with keys and values but want to sort them into an array/list. Putting aside the many, many types of sorts of varying efficiencies, Ruby's native `.sort` is a quicksort and Python's native `sorted` is a Timsort (mix between merge sort and insert sort). That aside, here's the many ways you can sort in Ruby:
+
+```ruby
+array = [1, 7, 4, 2, 5, 6, 3]
+array2 = ["hello", "everyone", "how", "are", "you?"]
+hash = {1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five"}
+animals = {Lily:  { animal_type: "dog",
+                    age: 8,
+                    breed: "pit mix"},
+           Rhana: { animal_type: "horse",
+                    age: 28,
+                    breed: "Norwegian Fjord"},
+           Lira:  { animal_type: "cat",
+                    age: 15,
+                    breed: "chartreux"},
+           Sasha: { animal_type: "dog",
+                    age: 11,
+                    breed: "corgi"}
+           }
+
+# basic sorting
+array.sort #=> [1, 2, 3, 4, 5, 6, 7]
+array2.sort #=> ["are", "everyone", "hello", "how", "you?"]
+hash.sort #=> [[1, "one"], [2, "two"], [3, "three"], [4, "four"], [5, "five"]]
+array_hash #=>
+animals.sort #=> [[:Lily, info], [:Lira, info], [:Rhana, info, [:Sasha, info]]
+
+# you can reverse it easily
+array.sort.reverse #=> [7, 6, 5, 4, 3, 2, 1]
+```
+
+In addition Ruby has a `sort_by` method, and though it's slower is incredibly useful because you can also sort by other parameters and use it to sort hashes as well:
 
 ```ruby
 # Ruby
-array_string = "hey everyone how's it going?".split
-array_string #=> ["hey", "everyone", "how's", "it", "going?"]
-array_string.sort #=> ["everyone", "going?", "hey", "how's", "it"]
-array_string.sort.reverse #=> ["it", "how's", "hey", "going?", "everyone"]
-```
+array.sort_by { |x| x } #=> [1, 2, 3, 4, 5, 6, 7]
+array.sort_by { |x| -x } #=> [7, 6, 5, 4, 3, 2, 1]
 
-```javascript
-// Javascript
-var array_string = ["hey", "everyone", "how's", "it", "going?"]
-array_string.sort() //=> [ "everyone", "going?", "hey", "how's", "it" ]
-array_string.sort().reverse() //=> [ "it", "how's", "hey", "going?", "everyone" ]
-```
+array2.sort_by { |x| x.length }
+array2.sort_by(&:length) #=> ["how", "are", "you?", "hello", "everyone"]
 
-Great easy enough, so let's move onto an array of integers:
+# multiple sorts at once, first length then alphabetically
+array2.sort_by { |x| [x.length, x] }
+#=> ["are", "how", "you?", "hello", "everyone"]
 
-```ruby
-# Ruby
-array = [14, 25, 16, 22, 5]
-array.sort #=> [5, 14, 16, 22, 25]
-array.sort.reverse #=> [25, 22, 16, 14, 5]
-```
-
-```javascript
-// Javascript
-var array = [14, 25, 16, 22, 5]
-array.sort() //=> [ 14, 16, 22, 25, 5 ]
-array.sort().reverse() //=> [ 5, 25, 22, 16, 14 ]
-```
-
-Oh that's strange, Ruby's smart enough to sort numbers normally but Javascript isn't. Why? Javascript first converts everything to a string first before sorting, then does the actual sort, so it sorts it "alphabetically" instead of numerically. Here's what it's doing from the viewpoint of Ruby:
-
-```ruby
-# Ruby
-array = [14, 25, 16, 22, 5]
-array_string = array.map(&:to_s) #=> ["14", "25", "16", "22", "5"]
-array_string.sort #=> ["14", "16", "22", "25", "5"]
-array_string.sort.map(&:to_i) #=> [14, 16, 22, 25, 5]
-```
-
-The number "1" in 14 appears before the number "5", just like how the "h" in hey appears before the "i" in it, even though "it" is two letters long and "hey" is three letters long, like how 5 is one digits long and 14 is two digits long. So how do we fix this? There's a little trick and it involves forcing Javascript to compare values of adjacent elements. I'll explain this after we do it:
-
-```javascript
-// Javascript
-var array = [14, 25, 16, 22, 5]
-array.sort( function(a,b) { return a - b } ) //=> [ 5, 14, 16, 22, 25 ]
-array.sort( function(a,b) { return a > b } ) //=> [ 5, 14, 16, 22, 25 ]
-// and reverse:
-array.sort( function(a,b) { return b - a } ) //=> [ 25, 22, 16, 14, 5 ]
-array.sort( function(a,b) { return a < b } ) //=> [ 25, 22, 16, 14, 5 ]
-
-// ES6 notation
-
-array.sort( (a,b) => a - b ) //=> [ 5, 14, 16, 22, 25 ]
-array.sort( (a,b) => a > b ) //=> [ 5, 14, 16, 22, 25 ]
-// and reverse:
-array.sort( (a,b) => b - a ) //=> [ 25, 22, 16, 14, 5 ]
-array.sort( (a,b) => b < a ) //=> [ 25, 22, 16, 14, 5 ]
-```
-
-Basically we have to inputs, `a` and `b`. When we return `a - b` or `a > b` we're telling our script to first return smaller values and then larger values, and vice-versa for `a < b` where we tell our script to first return larger values. Remember this trick because it will be used **everywhere**. Let's first try and sort our old string by string length instead of alphabetically. We'll do this by introducing `.sort_by` in Ruby, and just using our prior trick for Javascript:
-
-```ruby
-# Ruby
-array_string = ["hey", "everyone", "how's", "it", "going?"]
-array_string.sort_by { |x| x.length } #=> ["it", "hey", "how's", "going?", "everyone"]
-array_string.sort_by { |x| x.length }.reverse #=>  ["everyone", "going?", "how's", "hey", "it"]
-```
-
-For Javascript, we'll use that trick from before but instead of comparing each element `a` to `b`, we'll compare their *lengths*:
-
-```javascript
-// Javascript
-var array_string = ["hey", "everyone", "how's", "it", "going?"]
-array_string.sort( (a,b) => a.length - b.length ) //=> [ "it", "hey", "how's", "going?", "everyone" ]
-array_string.sort( (a,b) => a.length > b.length ) //=> [ "it", "hey", "how's", "going?", "everyone" ]
-array_string.sort( (a,b) => b.length - a.length ) //=> [ "everyone", "going?", "how's", "hey", "it" ]
-array_string.sort( (a,b) => a.length < b.length ) //=> [ "everyone", "going?", "how's", "hey", "it" ]
-```
-
-This is for an array of elements or object, but what if we have an array of Ruby hashes also known in JS as Objects?
-
-```ruby
-# Ruby
-array_hash = [ {borough: 'Manhattan', population: 1585874},
-               {borough: 'Brooklyn', population: 2504706},
-               {borough: 'Queens', population: 2230545},
-               {borough: 'Bronx', population: 1385107},
-               {borough: 'Staten_Island', population: 486730} ]
+hash.sort_by { |key, value| value }
+#=>  [[5, "five"], [4, "four"], [1, "one"], [3, "three"], [2, "two"]]
+hash.sort_by { |k, v| v.length }
+#=> [[1, "one"], [2, "two"], [4, "four"], [5, "five"], [3, "three"]]
+hash.sort_by { |k, v| [v.length, v] }
+#=> [[1, "one"], [2, "two"], [5, "five"], [4, "four"], [3, "three"]]
 
 array_hash.sort_by { |x| x[:borough] }
 #=> [{:borough=>"Bronx", :population=>1385107},
@@ -1393,75 +1352,104 @@ array_hash.sort_by { |x| x[:population] }
    # {:borough=>"Manhattan",    :population=>1585874},
    # {:borough=>"Queens",       :population=>2230545},
    # {:borough=>"Brooklyn",     :population=>2504706}]
+
+animals.sort_by { |key, value| value[:age] }
+#=> [[:Lily, {:animal_type=>"dog", :age=>8, :breed=>"pit mix"}],
+  # [:Sasha, {:animal_type=>"dog", :age=>11, :breed=>"corgi"}],
+  # [:Lira, {:animal_type=>"cat", :age=>15, :breed=>"chartreux"}],
+  # [:Rhana, {:animal_type=>"horse", :age=>28, :breed=>"Norwegian Fjord"}]]
 ```
 
-We call on the attribute in ruby, however in JS we call it the exact same way as we would the length, but as the attribute!
+As far as Python goes, its `sorted` method can do both of the above Ruby methods.
 
-```javascript
-// Javascript
-var array_hash = [ {borough: 'Manhattan', population: 1585874},
-                   {borough: 'Brooklyn', population: 2504706},
-                   {borough: 'Queens', population: 2230545},
-                   {borough: 'Bronx', population: 1385107},
-                   {borough: 'Staten_Island', population: 486730} ]
 
-array_hash.sort( (a,b) => a.borough > b.borough )
-//=> [ { burough: 'Bronx', population: 1385107 },
-    // { burough: 'Brooklyn', population: 2504706 },
-    // { burough: 'Manhattan', population: 1585874 },
-    // { burough: 'Queens', population: 2230545 },
-    // { burough: 'Staten_Island', population: 486730 } ]
+```python
+# Python
+array = [1, 7, 4, 2, 5, 6, 3]
+array2 = ["hello", "everyone", "how", "are", "you?"]
+dictionary = {1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five"}
+animals = {"Lily":  { "animal_type": "dog",
+                    "age": 8,
+                    "breed": "pit mix"},
+           "Rhana": { "animal_type": "horse",
+                    "age": 28,
+                    "breed": "Norwegian Fjord"},
+           "Lira":  { "animal_type": "cat",
+                    "age": 15,
+                    "breed": "chartreux"},
+           "Sasha": { "animal_type": "dog",
+                    "age": 11,
+                    "breed": "corgi"}
+           }
 
-// By the length of the borough name
-array_hash.sort((a,b) => a.borough.length - b.borough.length ) // or
-array_hash.sort((a,b) => a.borough.length > b.borough.length )
-//=> [ { borough: 'Bronx', population: 1385107 },
-    // { borough: 'Queens', population: 2230545 },
-    // { borough: 'Brooklyn', population: 2504706 },
-    // { borough: 'Manhattan', population: 1585874 },
-    // { borough: 'Staten_Island', population: 486730 } ]
+sorted(a) #=> [1, 2, 3, 4, 6, 7]
+sorted(a, reverse=True) #=> [7, 6, 4, 3, 2, 1]
 
-array_hash.sort( (a,b) => a.population - b.population ) // or
-array_hash.sort( (a,b) => a.population > b.population )
-//=> [ { borough: 'Staten_Island',  population: 486730 },
-    // { borough: 'Bronx',         population: 1385107 },
-    // { borough: 'Queens',        population: 2230545 },
-    // { borough: 'Brooklyn',      population: 2504706 },
-    // { borough: 'Manhattan',     population: 1585874 } ]
+sorted(a2)
+ #=> ['are', 'everyone', 'hello', 'how', 'you?']
+sorted(a2, key=len)
+ #=> ['how', 'are', 'you?', 'hello', 'everyone']
+sorted(a2, key=len, reverse=True)
+ #=> ['everyone', 'hello', 'you?', 'how', 'are']
+
+sorted(d) #=> [1, 2, 3, 4, 5]
+#=> sort by value
+sorted(d.items(), key=lambda x: x[1])
+#=> [(5, 'five'), (4, 'four'), (1, 'one'), (3, 'three'), (2, 'two')]
+
 ```
 
-Last up is fairly useless and therefore a but more tricky: sorting a Ruby hash/JS object by its values. This usually isn't *ever* done because a hash/object by nature isn't actually in an order like an array is, it's just **presented** to us visually in an order. In fact if you try to reorder a hash/object you won't get a hash/object back, you'll get an *array*.
+If you're doing object oriented programming, these sorting methods also work with classes:
 
 ```ruby
 # Ruby
-hash = {Manhattan: 1585874, Brooklyn: 2504706, Queens: 2230545, Bronx: 1385107, Staten_Island: 486730}
+class Animal
 
-# by key
-hash.sort # or
-hash.sort_by { |key, value| key }
-#=> [[:Bronx, 1385107], [:Brooklyn, 2504706], [:Manhattan, 1585874], [:Queens, 2230545], [:Staten_Island, 486730]]
+   def initialize(name, age)
+     @name = name
+     @age = age
+   end
 
-# by value
-hash.sort_by { |key, value| value }
-#=> [[:Staten_Island, 486730], [:Bronx, 1385107], [:Manhattan, 1585874], [:Queens, 2230545], [:Brooklyn, 2504706]]
+end
+
+canine = Animal.new("dog", 4)
+feline = Animal.new("cat", 5)
+chiroptera = Animal.new("bat", 3)
+
+class_animals = [ dog, cat, bat ]
+class_animals.sort_by { |x| x.name } #=> [chiroptera, feline, canine]
+class_animals.sort_by { |x| x.age } #=> [chiroptera, canine, feline]
+
+# remapping to the object.name
+class_animals.sort_by { |x| x.age }.map { |x| x.name } #=> ["bat", "dog", "cat"]
 ```
 
-Javascript can't actually directly do this using sort, only indirectly, in fact it will give you the error "hash.sort is not a function". So we have to use a trick called `Object.values()`, which I'll explain when we get to that section! For now I'll just show you what it looks like:
+```python
+# Python
+class Animal
+    def __init__(self, breed, age):
+        self.breed = breed
+        self.age = age
 
-```javascript
-// Javascript
-var object = {Manhattan: 1585874, Brooklyn: 2504706, Queens: 2230545, Bronx: 1385107, Staten_Island: 486730}
-object.sort() //=> error, not a function
+animals = { Animal("dog", 4), Animal("cat", 5), Animal("bat", 3) }
+sorted(animals, lambda x: x.breed)
+    #=> [<"bat" instance">, <"cat" instance>, <"dog" instance>]
+sorted(animals, lambda x: x.age)
+    #=> [<"bat" age 3 instance">, <"dog" age 4 instance>, <"cat" age 5 instance>,]
 
-Object.keys(object).sort( (a,b) => object[a] - object[b] ).map(x => `${x}: ${hash[x]}`)
-//=> [ 'Staten_Island: 486730',
-    // 'Bronx:        1385107',
-    // 'Manhattan:    1585874',
-    // 'Queens:       2230545',
-    // 'Brooklyn:     2504706' ]
+map(lambda x: x.breed, sorted(animal, key=lambda x: x.breed))
+    #=> ["bat", "cat", "dog"]
+map(lambda x: x.breed, sorted(animal, key=lambda x: x.age))
+    #=> ["bat", "dog", "cat"]
 ```
 
-In basic terms, we sort the values by descending order but we can only get an array of keys back, then we just map that key on itself to get the values.
+
+
+
+
+
+
+
 
 # Easier if/else/etc with - Ruby: `Case; each` | JS: `Switch; case`
 ---
