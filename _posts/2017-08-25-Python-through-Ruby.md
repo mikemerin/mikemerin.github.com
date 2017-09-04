@@ -1354,8 +1354,7 @@ sorted(array, reverse=True) #=> [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
 
 In Python, any argument after the collection you want to sort will be a modifier. Let's put that information to use by introducing different ways to modify your sort.
 
-Ruby has a `sort_by` method, and though it's slower than the native sort it's incredibly useful because you can also sort by other parameters and use it to sort hashes as well:
-
+The most direct comparison in Ruby is its `sort_by` method, and though it's slower than the native sort it's incredibly useful because you can also sort by other parameters and use it to sort hashes as well. Here are some examples going through each of the 5 collections:
 
 
 ```ruby
@@ -1363,43 +1362,44 @@ Ruby has a `sort_by` method, and though it's slower than the native sort it's in
 array.sort_by { |x| x } #=> [1, 2, 3, 4, 5, 6, 7]
 array.sort_by { |x| -x } #=> [7, 6, 5, 4, 3, 2, 1]
 
-array2.sort_by { |x| x.length }
-array2.sort_by(&:length) #=> ["how", "are", "you?", "hello", "everyone"]
+array_string.sort_by { |x| x.length }
+# or the less used:
+array_string.sort_by(&:length)
+# both => ["how", "are", "you?", "hello", "everyone"]
 
 # multiple sorts at once, first length then alphabetically
-array2.sort_by { |x| [x.length, x] }
+array_string.sort_by { |x| [x.length, x] }
 #=> ["are", "how", "you?", "hello", "everyone"]
 
-hash.sort_by { |key, value| value }
+hashes.sort_by { |key, value| value }
 #=>  [[5, "five"], [4, "four"], [1, "one"], [3, "three"], [2, "two"]]
-hash.sort_by { |k, v| v.length }
+hashes.sort_by { |key, value| value.length }
 #=> [[1, "one"], [2, "two"], [4, "four"], [5, "five"], [3, "three"]]
-hash.sort_by { |k, v| [v.length, v] }
+hashes.sort_by { |key, value| [value.length, value] }
 #=> [[1, "one"], [2, "two"], [5, "five"], [4, "four"], [3, "three"]]
 
 array_hash.sort_by { |x| x[:borough] }
-#=> [{:borough=>"Bronx", :population=>1385107},
-   # {:borough=>"Brooklyn", :population=>2504706},
-   # {:borough=>"Manhattan", :population=>1585874},
-   # {:borough=>"Queens", :population=>2230545},
+#=> [{:borough=>"Bronx",         :population=>1385107},
+   # {:borough=>"Brooklyn",      :population=>2504706},
+   # {:borough=>"Manhattan",     :population=>1585874},
+   # {:borough=>"Queens",        :population=>2230545},
    # {:borough=>"Staten_Island", :population=>486730}]
 
 array_hash.sort_by { |x| x[:population] }
 #=> [{:borough=>"Staten_Island", :population=>486730},
-   # {:borough=>"Bronx",        :population=>1385107},
-   # {:borough=>"Manhattan",    :population=>1585874},
-   # {:borough=>"Queens",       :population=>2230545},
-   # {:borough=>"Brooklyn",     :population=>2504706}]
+   # {:borough=>"Bronx",         :population=>1385107},
+   # {:borough=>"Manhattan",     :population=>1585874},
+   # {:borough=>"Queens",        :population=>2230545},
+   # {:borough=>"Brooklyn",      :population=>2504706}]
 
 animals.sort_by { |key, value| value[:age] }
 #=> [[:Lily, {:animal_type=>"dog", :age=>8, :breed=>"pit mix"}],
   # [:Sasha, {:animal_type=>"dog", :age=>11, :breed=>"corgi"}],
-  # [:Lira, {:animal_type=>"cat", :age=>15, :breed=>"chartreux"}],
+  # [:Lira,  {:animal_type=>"cat", :age=>15, :breed=>"chartreux"}],
   # [:Rhana, {:animal_type=>"horse", :age=>28, :breed=>"Norwegian Fjord"}]]
 ```
 
 As far as Python goes, its `sorted` method can do both of the above Ruby methods.
-
 
 ```python
 # Python
