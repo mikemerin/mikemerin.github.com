@@ -1287,38 +1287,76 @@ case; each | if/elif or dict | shorthand multiple `if` statements
 
 # Sorting an array/string/hash/Object with `.sort` | `sorted`
 
-Say you have an array/list of mixed up numbers or strings (or anything else), or a hash/dictionary with keys and values but want to sort them into an array/list. Putting aside the many, many types of sorts of varying efficiencies, Ruby's native `.sort` is a quicksort and Python's native `sorted` is a Timsort (mix between merge sort and insert sort). That aside, here's the many ways you can sort in Ruby:
+Say you have an array/list of mixed up numbers or strings (or anything else), or a hash/dictionary with keys and values but want to sort them into an array/list, or a bunch of objects of a certain class. Ruby and Python both have native sorting methods that you can use, separate of course from scripts you can write for the many, many sorting types of varying efficiencies,
+
+Ruby's `.sort` is a quicksort and Python's `sorted` is a Timsort (mix between merge sort and insert sort). Here are the many ways you can use these sort methods. We'll be covering these 5 types of collections:
 
 ```ruby
-array = [1, 7, 4, 2, 5, 6, 3]
-array2 = ["hello", "everyone", "how", "are", "you?"]
-hash = {1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five"}
+array = [1, 7, 4, 9, 2, 8, 5, 10, 6, 3]
+array_strings = ["hello", "everyone", "how", "are", "you?"]
+hashes = {1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five"}
+array_hash = [ {borough: 'Manhattan', population: 1585874},
+               {borough: 'Brooklyn', population: 2504706},
+               {borough: 'Queens', population: 2230545},
+               {borough: 'Bronx', population: 1385107},
+               {borough: 'Staten_Island', population: 486730} ]
 animals = {Lily:  { animal_type: "dog",
                     age: 8,
-                    breed: "pit mix"},
+                    breed: "Pit Mix"},
            Rhana: { animal_type: "horse",
                     age: 28,
                     breed: "Norwegian Fjord"},
            Lira:  { animal_type: "cat",
                     age: 15,
-                    breed: "chartreux"},
+                    breed: "Chartreux"},
            Sasha: { animal_type: "dog",
                     age: 11,
-                    breed: "corgi"}
+                    breed: "Corgi"}
            }
+```
+In addition to an object oriented collection which I'll do per language. Please note as well the above hashes are Ruby-styled as Python requires the keys to be strings or integers. The simple fix: encase each named key in quotes, or if it's an integer just replace the rocket `=>` with a colon `:`. Sidenote that you can't technically sort a hash/dictionary as they're inherently orderless so sorting will return an array/list.
 
-# basic sorting
-array.sort #=> [1, 2, 3, 4, 5, 6, 7]
-array2.sort #=> ["are", "everyone", "hello", "how", "you?"]
-hash.sort #=> [[1, "one"], [2, "two"], [3, "three"], [4, "four"], [5, "five"]]
-array_hash #=>
-animals.sort #=> [[:Lily, info], [:Lira, info], [:Rhana, info, [:Sasha, info]]
+Let's cover basic sorting first and what they do:
 
-# you can reverse it easily
-array.sort.reverse #=> [7, 6, 5, 4, 3, 2, 1]
+```ruby
+# Ruby
+array.sort #=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+array_strings.sort #=> ["are", "everyone", "hello", "how", "you?"]
+hashes.sort #=> [[1, "one"], [2, "two"], [3, "three"], [4, "four"], [5, "five"]]
+array_hash.sort #=> ArgumentError: comparison of Hash with Hash failed
+animals.sort #=> [[:Lily, all_info], [:Lira, all_info], [:Rhana, all_info, [:Sasha, all_info]]
 ```
 
-In addition Ruby has a `sort_by` method, and though it's slower is incredibly useful because you can also sort by other parameters and use it to sort hashes as well:
+```python
+# Python
+sorted(array) #=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+sorted(array_strings) #=> ["are", "everyone", "hello", "how", "you?"]
+sorted(hashes) #=> [1, 2, 3, 4, 5]
+sorted(array_hash) #=> [ {Bronx_dict}, {Brooklyn_dict}, {Manhattan_dict} ... ]
+sorted(animals) #=> ["Lily", "Lira", "Rhana", "Sasha"]
+```
+
+Both languages handle basic arrays the same way, but past that you can see the obvious differences. When you sort a basic hash or a nested hash, Ruby will give you every piece of information for each key and value while Python will just give you the key. Python basically does Ruby's version of `hashes.sort.map { |key, value| key }` to limit the huge amount of information can can be spit out on your screen.
+
+The other difference is in the array of hashes: Ruby will give you an ArgumentError because it can't parse which key to sort in each element, however Python will go through and find the first key by alphabetical order and sort out the array accordingly. I tested it out thoroughly and the only way it will natively sort via population using `sorted` is if you rename `population` to something that comes before `borough`, aka renaming it to `all_population` will let the native `sorted` sort by the population instead. We don't need to go through the trouble of doing that though as we can specifically target specific keys.
+
+Before that though lemme quickly cover how to reverse the sorts to get you used to the syntax:
+
+```ruby
+# Ruby
+array.sort.reverse #=> [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+```
+
+```python
+# Python
+sorted(array, reverse=True) #=> [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+```
+
+In Python, any argument after the collection you want to sort will be a modifier. Let's put that information to use by introducing different ways to modify your sort.
+
+Ruby has a `sort_by` method, and though it's slower than the native sort it's incredibly useful because you can also sort by other parameters and use it to sort hashes as well:
+
+
 
 ```ruby
 # Ruby
@@ -1366,8 +1404,13 @@ As far as Python goes, its `sorted` method can do both of the above Ruby methods
 ```python
 # Python
 array = [1, 7, 4, 2, 5, 6, 3]
-array2 = ["hello", "everyone", "how", "are", "you?"]
-dictionary = {1 => "one", 2 => "two", 3 => "three", 4 => "four", 5 => "five"}
+array_strings = ["hello", "everyone", "how", "are", "you?"]
+hashes = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five"}
+array_hash = [ {"borough": 'Manhattan', "population": 1585874},
+               {"borough": 'Brooklyn', "population": 2504706},
+               {"borough": 'Queens', "population": 2230545},
+               {"borough": 'Bronx', "population": 1385107},
+               {"borough": 'Staten_Island', "population": 486730} ]
 animals = {"Lily":  { "animal_type": "dog",
                     "age": 8,
                     "breed": "pit mix"},
@@ -1404,20 +1447,21 @@ If you're doing object oriented programming, these sorting methods also work wit
 ```ruby
 # Ruby
 class Animal
-
-   def initialize(name, age)
-     @name = name
-     @age = age
-   end
-
+  def initialize(animal_type, age, breed)
+    @animal_type = animal_type
+    @age = age
+    @breed = breed
+  end
 end
 
-canine = Animal.new("dog", 4)
-feline = Animal.new("cat", 5)
-chiroptera = Animal.new("bat", 3)
 
-class_animals = [ dog, cat, bat ]
-class_animals.sort_by { |x| x.name } #=> [chiroptera, feline, canine]
+lily = Animal.new("dog", 8, "Pit Mix")
+rhana = Animal.new("horse", 28, "Norwegian Fjord")
+lira = Animal.new("cat", 15, "Chartreux")
+sasha = Animal.new("dog", 11, "Corgi")
+
+class_animals = [ lily, rhana, lira, sasha ]
+class_animals.sort_by { |key, value| value.animal_type } #=> [chiroptera, feline, canine]
 class_animals.sort_by { |x| x.age } #=> [chiroptera, canine, feline]
 
 # remapping to the object.name
@@ -1427,8 +1471,8 @@ class_animals.sort_by { |x| x.age }.map { |x| x.name } #=> ["bat", "dog", "cat"]
 ```python
 # Python
 class Animal
-    def __init__(self, breed, age):
-        self.breed = breed
+    def __init__(self, name, age):
+        self.name = name
         self.age = age
 
 animals = { Animal("dog", 4), Animal("cat", 5), Animal("bat", 3) }
@@ -1437,9 +1481,9 @@ sorted(animals, lambda x: x.breed)
 sorted(animals, lambda x: x.age)
     #=> [<"bat" age 3 instance">, <"dog" age 4 instance>, <"cat" age 5 instance>,]
 
-map(lambda x: x.breed, sorted(animal, key=lambda x: x.breed))
+map(lambda x: x.name, sorted(animal, key=lambda x: x.name))
     #=> ["bat", "cat", "dog"]
-map(lambda x: x.breed, sorted(animal, key=lambda x: x.age))
+map(lambda x: x.name, sorted(animal, key=lambda x: x.age))
     #=> ["bat", "dog", "cat"]
 ```
 
