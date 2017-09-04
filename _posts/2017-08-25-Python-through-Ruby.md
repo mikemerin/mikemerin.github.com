@@ -1314,6 +1314,7 @@ animals = {Lily:  { animal_type: "dog",
                     breed: "Corgi"}
            }
 ```
+
 In addition to an object oriented collection which I'll do per language. Please note as well the above hashes are Ruby-styled as Python requires the keys to be strings or integers. The simple fix: encase each named key in quotes, or if it's an integer just replace the rocket `=>` with a colon `:`. Sidenote that you can't technically sort a hash/dictionary as they're inherently orderless so sorting will return an array/list.
 
 Let's cover basic sorting first and what they do:
@@ -1384,7 +1385,6 @@ array_hash.sort_by { |x| x[:borough] }
    # {:borough=>"Manhattan",     :population=>1585874},
    # {:borough=>"Queens",        :population=>2230545},
    # {:borough=>"Staten_Island", :population=>486730}]
-
 array_hash.sort_by { |x| x[:population] }
 #=> [{:borough=>"Staten_Island", :population=>486730},
    # {:borough=>"Bronx",         :population=>1385107},
@@ -1399,11 +1399,11 @@ animals.sort_by { |key, value| value[:age] }
   # [:Rhana, {:animal_type=>"horse", :age=>28, :breed=>"Norwegian Fjord"}]]
 ```
 
-As far as Python goes, its `sorted` method can do both of the above Ruby methods.
+As far as Python goes, its `sorted` method can do both of the above Ruby methods. Here's a reminder of what we're working with (hashes fixed to work with Python now) and then going through them all:
 
 ```python
 # Python
-array = [1, 7, 4, 2, 5, 6, 3]
+array = [1, 7, 4, 9, 2, 8, 5, 10, 6, 3]
 array_strings = ["hello", "everyone", "how", "are", "you?"]
 hashes = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five"}
 array_hash = [ {"borough": 'Manhattan', "population": 1585874},
@@ -1425,21 +1425,55 @@ animals = {"Lily":  { "animal_type": "dog",
                     "breed": "corgi"}
            }
 
-sorted(a) #=> [1, 2, 3, 4, 6, 7]
-sorted(a, reverse=True) #=> [7, 6, 4, 3, 2, 1]
+sorted(array) #=> [1, 2, 3, 4, 6, 7, 8, 9, 10]
+sorted(array, reverse=True) #=> [10, 9, 8, 7, 6, 4, 3, 2, 1]
 
-sorted(a2)
- #=> ['are', 'everyone', 'hello', 'how', 'you?']
-sorted(a2, key=len)
- #=> ['how', 'are', 'you?', 'hello', 'everyone']
-sorted(a2, key=len, reverse=True)
- #=> ['everyone', 'hello', 'you?', 'how', 'are']
+sorted(array_strings)
+#=> ['are', 'everyone', 'hello', 'how', 'you?']
+sorted(array_strings, key=len)
+#=> ['how', 'are', 'you?', 'hello', 'everyone']
+sorted(array_strings, key=len, reverse=True)
+#=> ['everyone', 'hello', 'you?', 'how', 'are']
 
-sorted(d) #=> [1, 2, 3, 4, 5]
-#=> sort by value
-sorted(d.items(), key=lambda x: x[1])
+sorted(hashes) #=> [1, 2, 3, 4, 5]
+# also get the values
+sorted(hashes.items())
+#=> [(1, 'one'), (2, 'two'), (3, 'three'), (4, 'four'), (5, 'five')]
+# sort by value, both give the same answer
+sorted(hashes.items(), key=lambda x: x[1])
+sorted(hashes.items(), key=lambda (key, value): value)
 #=> [(5, 'five'), (4, 'four'), (1, 'one'), (3, 'three'), (2, 'two')]
+sorted(hashes.items(), key=lambda (key, value): len(value))
+#=> [(1, 'one'), (2, 'two'), (4, 'four'), (5, 'five'), (3, 'three')]
+# sort multiple ways
+sorted(hashes.items(), key=lambda (key, value): (len(value), value))
+#=> [(1, 'one'), (2, 'two'), (5, 'five'), (4, 'four'), (3, 'three')]
 
+sorted(array_hash, key=lambda x: x["borough"])
+#=> [{:borough=>"Bronx",         :population=>1385107},
+   # {:borough=>"Brooklyn",      :population=>2504706},
+   # {:borough=>"Manhattan",     :population=>1585874},
+   # {:borough=>"Queens",        :population=>2230545},
+   # {:borough=>"Staten_Island", :population=>486730}]
+sorted(array_hash, key=lambda x: x["population"])
+#=> [{:borough=>"Staten_Island", :population=>486730},
+   # {:borough=>"Bronx",         :population=>1385107},
+   # {:borough=>"Manhattan",     :population=>1585874},
+   # {:borough=>"Queens",        :population=>2230545},
+   # {:borough=>"Brooklyn",      :population=>2504706}]
+
+# also get the values
+sorted(animals.items())
+#=> [('Lily', {'age': 8, 'breed': 'pit mix', 'animal_type': 'dog'}),
+   # ('Lira', {'age': 15, 'breed': 'chartreux', 'animal_type': 'cat'}),
+   # ('Rhana', {'age': 28, 'breed': 'Norwegian Fjord', 'animal_type': 'horse'}),
+   # ('Sasha', {'age': 11, 'breed': 'corgi', 'animal_type': 'dog'})]
+
+sorted(animals.items(), key=lambda (key, value): value["age"])
+#=> [[:Lily, {:animal_type=>"dog", :age=>8, :breed=>"pit mix"}],
+  # [:Sasha, {:animal_type=>"dog", :age=>11, :breed=>"corgi"}],
+  # [:Lira,  {:animal_type=>"cat", :age=>15, :breed=>"chartreux"}],
+  # [:Rhana, {:animal_type=>"horse", :age=>28, :breed=>"Norwegian Fjord"}]]
 ```
 
 If you're doing object oriented programming, these sorting methods also work with classes:
@@ -1447,6 +1481,7 @@ If you're doing object oriented programming, these sorting methods also work wit
 ```ruby
 # Ruby
 class Animal
+  attr_accessor :animal_type, :age, :breed
   def initialize(animal_type, age, breed)
     @animal_type = animal_type
     @age = age
@@ -1454,44 +1489,52 @@ class Animal
   end
 end
 
-
 lily = Animal.new("dog", 8, "Pit Mix")
 rhana = Animal.new("horse", 28, "Norwegian Fjord")
 lira = Animal.new("cat", 15, "Chartreux")
 sasha = Animal.new("dog", 11, "Corgi")
 
 class_animals = [ lily, rhana, lira, sasha ]
-class_animals.sort_by { |key, value| value.animal_type } #=> [chiroptera, feline, canine]
-class_animals.sort_by { |x| x.age } #=> [chiroptera, canine, feline]
+class_animals.sort_by { |x| x.age }
+#=> [#<Animal:0x007fb8ec016ad8 @age=8, @animal_type="dog", @breed="Pit Mix">,
+     #<Animal:0x007fb8ec859bc8 @age=11, @animal_type="dog", @breed="Corgi">,
+     #<Animal:0x007fb8ed0068a8 @age=15, @animal_type="cat", @breed="Chartreux">,
+     #<Animal:0x007fb8ec8e4318 @age=28, @animal_type="horse", @breed="Norwegian Fjord">]
 
-# remapping to the object.name
-class_animals.sort_by { |x| x.age }.map { |x| x.name } #=> ["bat", "dog", "cat"]
+# remapping to an attribute
+class_animals.sort_by { |x| x.age }.map { |x| x.animal_type }
+#=> ["dog", "dog", "cat", "horse"]
 ```
 
 ```python
 # Python
-class Animal
-    def __init__(self, name, age):
-        self.name = name
+class Animal:
+    def __init__(self, animal_type, age, breed):
+        self.animal_type = animal_type
         self.age = age
+        self.breed = breed
 
-animals = { Animal("dog", 4), Animal("cat", 5), Animal("bat", 3) }
-sorted(animals, lambda x: x.breed)
-    #=> [<"bat" instance">, <"cat" instance>, <"dog" instance>]
-sorted(animals, lambda x: x.age)
-    #=> [<"bat" age 3 instance">, <"dog" age 4 instance>, <"cat" age 5 instance>,]
 
-map(lambda x: x.name, sorted(animal, key=lambda x: x.name))
-    #=> ["bat", "cat", "dog"]
-map(lambda x: x.name, sorted(animal, key=lambda x: x.age))
-    #=> ["bat", "dog", "cat"]
+lily = Animal("dog", 8, "Pit Mix")
+rhana = Animal("horse", 28, "Norwegian Fjord")
+lira = Animal("cat", 15, "Chartreux")
+sasha = Animal("dog", 11, "Corgi")
+
+class_animals = [ lily, rhana, lira, sasha ]
+
+sorted(class_animals, key=lambda x: x.breed)
+#=> [<lira instance">, <sasha instance>, <rhana instance>, <lily instance>]
+# let's just map it to the breed and age so it's easier to see
+map(lambda x: "{} age {}".format(x.breed, x.age), sorted(class_animals, key=lambda x: x.breed))
+#=> ['Chartreux age 15', 'Corgi age 11', 'Norwegian Fjord age 28', 'Pit Mix age 8']
+
+sorted(class_animals, key=lambda x: x.age)
+#=> [<lily instance">, <sasha instance>, <lira instance>, <rhana instance>]
+map(lambda x: "{} age {}".format(x.breed, x.age), sorted(class_animals, key=lambda x: x.age))
+#=> ['Pit Mix age 8', 'Corgi age 11', 'Chartreux age 15', 'Norwegian Fjord age 28']
 ```
 
-
-
-
-
-
+There's even more you can do when you import in other methods, but this is just a small amount that you can do with the native sorting.
 
 
 
