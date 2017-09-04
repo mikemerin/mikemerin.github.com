@@ -1532,6 +1532,9 @@ sorted(class_animals, key=lambda x: x.age)
 #=> [<lily instance">, <sasha instance>, <lira instance>, <rhana instance>]
 map(lambda x: "{} age {}".format(x.breed, x.age), sorted(class_animals, key=lambda x: x.age))
 #=> ['Pit Mix age 8', 'Corgi age 11', 'Chartreux age 15', 'Norwegian Fjord age 28']
+
+map(lambda x: "{} age {}".format(x.breed, x.age), sorted(class_animals, key=lambda x: x.age, reverse=True))
+#=> ['Norwegian Fjord age 28', 'Chartreux age 15', 'Corgi age 11', 'Pit Mix age 8']
 ```
 
 There's even more you can do when you import in other methods, but this is just a small amount that you can do with the native sorting.
