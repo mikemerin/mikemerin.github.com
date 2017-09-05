@@ -22,6 +22,7 @@ Link | Ruby | Python Equivalent | Description
 ---|---|---|---
 |||**names of data types**
 [1)](https://mikemerin.github.io/Python-through-Ruby/#names-of-data-types) | Array | List | [ 1, 2, 3, 4 ]
+[1)](#names-of-data-types) | Array | List | [ 1, 2, 3, 4 ]
 | Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
 | N/A | Tuple | (1, 2, 3) (immutable)
 | N/A | Set | { 1, 2, 3 } (immutable)
