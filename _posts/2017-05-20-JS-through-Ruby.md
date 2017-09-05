@@ -1,27 +1,32 @@
 ---
 layout: post
-title:  "Seeing Javascript Through Ruby-Colored Glasses"
+title:  "Seeing JavaScript Through Ruby-Colored Glasses"
 subtitle: "A JS Cheat Sheet"
 date:   2017-05-20 22:43:38 -0400
 categories: javascript, ruby, tutorial
 ---
-If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. JS sort of has these but require more labor to actually get working. These shortcuts are very noticeable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and Javascript handle these shortcuts, iterations, and methods.
+If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. JS sort of has these but require more labor to actually get working. These shortcuts are very noticeable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and JavaScript handle these shortcuts, iterations, and methods.
 
-**I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/Javascript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
+I also have a [Python through Ruby](https://mikemerin.github.io/Python-through-Ruby/) post in the same fashion as this post if you're interested.
+
+**I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/JavaScript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
 
 I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation.
 
 We'll be going over these loops, iterations, and global methods:
 
-Ruby | JS Equivalent | Description
----|---|---
-||**functions**
-N/A | ES6 / Arrow | New ES2017 shorthands for cleaning your code
-n.to_s | n.toString() | Converts to string
-"10".to_i | parseInt("10") | Converts to Integer
-"10".to_f | parseFloat("10") | Converts to Float (decimal)
-||**loops**
-while / until | while | loops while condition is true
+Link | Ruby | JS Equivalent | Description
+---|---|---|---
+
+|||**structure**
+[1)](#1-es6-notation) | N/A | Arrow Functions / Returns | ES2017 shorthands for cleaning your code
+[2)](#2-string-interpolation) | `"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
+|||**functions**
+[3)](#3-functions-to-change-data-types) | n.to_s | n.toString() | Converts to string
+| "10".to_i | parseInt("10") | Converts to Integer
+| "10".to_f | parseFloat("10") | Converts to Float (decimal)
+|||**loops**
+[4)](#4-looping) | while / until | while | loops while condition is true
 ||**iteration**
 for | for / for..in | iterate over each element, more used in JS
 .each | .forEach | iterate over each element
@@ -44,11 +49,12 @@ case; each | switch; case | shorthand multiple `if` statements
 ||**more functions**
 call/procs | callbacks | function called within a function
 
-# ES6 Notation, Arrow Functions, Implicit Returns
+# 1) ES6 Notation
+### Arrow Functions, Implicit Returns
 ---
 I'll be shortening my JS scripts with ES6 JS notation and/or *arrow functions*. This lets us turn our functions into cleaner looking arrow functions which do the same exact thing:
 ```javascript
-// Javascript
+// JavaScript
 array.forEach( function(x) { array2.push(x) } )
 array.forEach( (x) => { array2.push(x) } )
 
@@ -63,6 +69,7 @@ Now there's less characters cluttering up the space and it's easier to see what 
 
 These all do the same thing:
 ```javascript
+// JavaScript-Cheat-Sheet
 function(x) { return x * 2 }
 (x) => { return x * 2 }
 x => { return x * 2 }
@@ -71,9 +78,89 @@ x => x * 2     // same here
 (x) => (x * 2) // same here
 ```
 
-# looping with `while`
+# 2) String Interpolation
 ---
-Let's start off with the easiest example. These methods are almost identical in both Ruby and Javascript, in fact the only thing that's different is the syntax (using `var` and `{}` ). Here's a quick example:
+There are only two differences between Ruby and JavaScript's string interpolation: Ruby uses a pound `#` sign with the string wrapped in double quotes, while JS uses a dollar `$` with the string wrapped in back quotes.
+
+```ruby
+# Ruby
+animal = "dog"
+name = "Lily"
+age = 8
+
+puts "#{name}, the #{age} year old #{animal}."
+#=> "Lily, the 8 year old dog."
+```
+
+```javascript
+// JavaScript
+animal = "dog"
+name = "Lily"
+age = 8
+
+console.log(`${name}, the ${age} year old ${animal}.`)
+//=> "Lily, the 8 year old dog."
+```
+
+This is easier than typing out this ugly looking mix of objects that work the exact same way in both languages:
+
+```ruby
+# Ruby
+puts name + ", the " + age.to_s + " year old " + animal + "."
+```
+```javascript
+// JavaScript
+console.log(name + ", the " + age + " year old " + animal + ".")
+```
+
+# 3) Functions to Change Data Type
+---
+Both Ruby and JS have quite a few types of `.to_something` that can change the data types. This section will be short and sweet as it's fairly direct:
+
+Converting to strings:
+
+```ruby
+# Ruby
+150.to_s #=> "150"
+```
+```javascript
+// JavaScript
+n = 150
+n.toString() //=> "150"
+```
+
+Converting to an integer:
+
+```ruby
+# Ruby
+"10".to_i #=> 10
+```
+```javascript
+// JavaScript
+parseInt("10") //=> 10
+// base 10
+parseInt("10", 10) //=> 10
+// to hexadecimal
+parseInt("E", 16) //=> 14
+```
+
+Converting to a float:
+
+```ruby
+# Ruby
+"10".to_f #=> 10.0
+10.to_f #=> 10.0
+```
+```javascript
+// JavaScript
+parseFloat("10.5") //=> 10.5
+parseFloat(10.5) //=> 10.5
+```
+
+# 4) Looping With `while`
+---
+Let's start off with the easiest example. These methods are almost identical in both Ruby and JavaScript, in fact the only thing that's different is the syntax (using `var` and `{}` ). Here's a quick example:
+
 ```ruby
 # Ruby
 array = []
@@ -84,8 +171,9 @@ while x < 6
 end
 array #=> [1,2,3,4,5]
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 var array = []
 var x = 1
 while (x < 6) {
@@ -94,9 +182,10 @@ while (x < 6) {
 }
 array //=> [1,2,3,4,5]
 ```
+
 Let's do a side-by-side:
 
-Ruby | Javascript | Difference
+Ruby | JavaScript | Difference
 ---|---|---
 array = [] | var array = [] | var for JS (can also do let)
 x = 1 | var x = 1 | same, doing var (or let)
@@ -107,6 +196,7 @@ end | } | JS must ends by closing off the curly bracket
 array | array | both #=> [1,2,3,4,5]
 
 While Ruby does much of the work for us, JS we need to manually put in the parentheses and curly brackets. However knowing this means we can more easily do one line solutions (helpful if combining with other complex scripts):
+
 ```ruby
 # Ruby
 array = []
@@ -114,17 +204,21 @@ x = 1
 while x < 6; array.push(x); x += 1 end
 array #=> [1,2,3,4,5]
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 array = []
 x = 1
 while ( x < 6 ) { array.push(x); x++ }
 array //=> [1,2,3,4,5]
 ```
+
 While in this case our JS looks a bit cleaner, this is by no means the cleanest way to do this type of operation. Ruby has quite a few ways to shorten this, including a trick using `.reduce` (also known as `.inject` in Ruby only), but I'll cover that later on.
-# Using `for`
+
+# 5) Using `for`
 ---
 While `for` isn't used much in Ruby (since `while`, `until`, or other iterations can do much more, are cleaner, and get the job done easier), it's very important in JS. While this is a nice trick in Ruby:
+
 ```ruby
 # Ruby
 array = []
@@ -133,9 +227,11 @@ for x in 1..5
 end
 array #=> [1,2,3,4,5]
 ```
-Unfortunately there's no quick way to do a range iterator in Javascript (the `(1..5)` above), ***however*** `for` is still very useful if we use it another way. Remember that while loop from before? Here's how we'd cleanly do it in JS:
+
+Unfortunately there's no quick way to do a range iterator in JavaScript (the `(1..5)` above), ***however*** `for` is still very useful if we use it another way. Remember that while loop from before? Here's how we'd cleanly do it in JS:
+
 ```javascript
-// Javascript
+// JavaScript
 array = []
 for (let x = 1;
     x < 6;
@@ -143,17 +239,23 @@ for (let x = 1;
     { array.push(x) }
 array #=> [1,2,3,4,5]
 ```
+
 Or the MUCH cleaner one-liner:
+
 ```javascript
-// Javascript
+// JavaScript
 array = []
 for (let x = 1; x < 6; x++) { array.push(x) }
 array //=> [1,2,3,4,5]
 ```
+
 We basically include what we want our number `x` to do all in one neat place (our parenthesis), and then operate on it within our block. As you'd expect, we can do this with other things too, like iterating over an array!
-# iterating with `.each`/`for`/`for..in` then `each`/`forEach`
+
+# 6) Iterating
+### Ruby: `.each` / for | JS: `for`/`for..in` then `.forEach`
 ---
 Onto iterations. As I said before, `.each` in Ruby is incredibly useful, and does what both `for` and `.forEach` does in JS. Before we get to the latter, let's flash back to Ruby and cover how we can iterate over an array using `.each` beginning with a more lengthy iteration (similar to JS's `for`) and ending with a shortcut (similar to JS's `.forEach`). These first three examples are the former:
+
 ```ruby
 # ruby
 array = [1,2,3,4,5]
@@ -169,9 +271,11 @@ array2 = []
 (0...array.length).each { |i| array2.unshift( array[i] ) }
 array2 #=> [5,4,3,2,1]
 ```
+
 Now let's finally do that fancy JS iteration using `for` but this time over an array. To spoof the range we'll set our index to 0, limit it to the array.length, and add up by 1:
+
 ```javascript
-// Javascript
+// JavaScript
 array = [1,2,3,4,5]
 array2 = []
 
@@ -190,76 +294,99 @@ for (let i = 0, l = array.length; i < l; i++) { array2.push( array[i] ) }
 for (let i = 0, l = array.length; i < l; i++) { array2.unshift( array[i] ) }
 //=> [5,4,3,2,1]
 ```
+
 This is how `.each` directly correlates with `for`, but there's a better way to iterate over an array that inherently **knows** to go from the start to the end of an array without us needing to tell it. Doing this in Ruby:
+
 ```ruby
 # Ruby
 for x in array; puts x end
 for x in array; array2.push(x) end
 ```
+
 In JS we'll introduce `in`:
+
 ```javascript
-// Javascript
+// JavaScript
 for (let i in array) { console.log( array[i] ) }
 for (let i in array) { array2.push( array[i] ) }
 ```
+
 We're obtaining the index `i` from the `array`, then using it in our code block.
 
 This is as far we can go using `for` in JS. You'll notice that there's a very important difference in how Ruby handles `for` compared to JS: while Ruby calls on the element, JS calls on the index, and we can't grab the element directly, therefore we **still** have to do `array[i]` instead of how we were just using `x` in Ruby above. Time to break out `forEach` and fix that:
+
 ```ruby
 # Ruby
 array.each { |x| puts x }
 array.each { |x| array2.push2.push( array[i] ) }
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 array.forEach( x => { console.log(x) } )
 array.forEach( x => { array2.push(x) } )
 ```
-# Using Ruby's `.each_with_index` or `.each.with_index` in JS
-These are the same thing in Ruby, however JS has neither of these functions available. Thankfuly though JS has a way to easily iterate over both the element **and** the index at the **same time**:
+
+# 7) Getting the Index
+### Using Ruby's `.each_with_index` or `.each.with_index` in JS
+---
+Both of these each functions are the same thing in Ruby, however JS has neither of these functions available. Thankfuly though JS has a way to easily iterate over both the element **and** the index at the **same time**:
+
 ```ruby
 # Ruby
 array = ["Hello", "World"]
 array.each_with_index { |x,i| puts "the index is #{i}, the element is #{x}" }
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 array.forEach( (x, i) => console.log(`The index is ${i}, the element is ${x}`) )
 ```
+
 These both print out:
 
 "the index is 0, the element is Hello"
 
 "the index is 1, the element is World"
-# Iterating and manipulating with `.map`
+
+# 8) Iterating and manipulating with `.map`
 ---
 Our newfound `.forEach` is great, but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? In comes `.map` which simply outputs our answer each time we call it! It's used in the same way we use `.forEach`. For example if we have `array = [1,2,3,4,5]` and compare `.each/.forEach` vs. `.map`:
+
 ```ruby
 # Ruby
 array.each { |x| x * 2 } #=> [1,2,3,4,5] unchanged output
 array.map { |x| x * 2 } #=> [2,4,6,8,10] changed output
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 array.forEach(x => x * 2) //=> undefined (no output)
 array.map(x => x) //=> [1,2,3,4,5] unchanged output (technically spoofs the input like Ruby .each)
 array.map(x => x * 2) //=> [2,4,6,8,10] changed output
 ```
+
 `.map` is great for shortening your code and making them one-liners, which cleans up your code and makes it much more readable.
-# Using Ruby's `.map.with_index` in JS
+
+# 9) Mapping With the Index
+### Using Ruby's `.map.with_index` in JS
+---
 Just like with `.each.with_index`, JS has a way to easily iterate over both the element **and** the index at the **same time** and output the value you want:
+
 ```ruby
 # Ruby
 array = [10,20,30,40,50]
 array.map.with_index { |x,i| i } #=> [0,1,2,3,4]
 array.map.with_index { |x,i| x * i } #=> [0,20,60,120,200]
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 array.map((x, i) => i) //=> [0,1,2,3,4]
 array.map((x, i) => x * i) //=> [0,20,60,120,200]
 ```
-# Manipulating arrays with `.reduce`
+
+# 9) Manipulating arrays with `.reduce`
 ---
 Now let's go over what `.reduce` does (also known as `.inject` in ruby) and add up all values in the array, starting with the shortcut then expanding out to see what's under the hood. Note that all of these will produce the correct answer of 15:
 
@@ -282,6 +409,7 @@ array.each { |x| sum += x }
 sum #=> 15
 # an even more literal example
 ```
+
 As you can see, what reduce does is:
 start at 0 (default), add 1, now sum = 1
 start at sum (1), add 2, now sum = 3
@@ -296,40 +424,52 @@ In JS however, we don't have these shortcuts available to us, so instead we have
 # Ruby
 array.reduce(:+)
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 array.reduce( "sum script" )
 ```
+
 #### 2. you can set a default value (JS will be in the 2nd position, not the 1st)
+
 ```ruby
 # Ruby
 array.reduce(0, :+)
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 array.reduce( "sum script", 0 )
 ```
+
 #### 3. the operation inside the Ruby block looks almost identical to the JS version.
+
 ```ruby
 # Ruby
 array.reduce { |sum, x| sum + x }
 array.reduce(0) { |sum, x| sum + x }
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 array.reduce( function(sum, x) { return sum + x } , 0)
 ```
+
  Here's how these same reduce functions can look in JS, including with the cleaner ES6 notation:
+
 ```javascript
-// Javascript
+// JavaScript
 array.reduce( function(sum, x) { return sum + x } )
 array.reduce( function(sum, x) { return sum + x }, 0 )
 // vs ES6:
 array.reduce( (sum, x) => sum + x )
 array.reduce( (sum, x) => sum + x, 0 )
 ```
+
 Again the default value in JS is AFTER the sum variable, not before it. So here's the answer to what that `(:+)` symbol (smiley) was doing under the hood in Ruby, but we'll explain it through JS! We can make our reduce function cleaner though by making `sum` into a variable (using `const`), and we can also make one for multiplication while we're at it:
+
 ```javascript
+// JavaScript
 const sum = (sum,x) => sum + x
 const multi = (multi,x) => multi * x
 
@@ -339,7 +479,9 @@ array.reduce(sum, 10) //=> 25
 array.reduce(multi) //=> 120
 array.reduce(multi, 2) //=> 240
 ```
-# Making arrays neater with - Ruby: `.flatten` | JS: `.concat`
+
+# 10) Making Arrays Neater
+### Ruby: `.flatten` | JS: `.concat`
 ---
 What happens when you have an array nested within an array (a multi-dimensional array) and want to make it look neater (into a single-dimensional array)? For example we want this ugly nested array:
 
@@ -350,56 +492,71 @@ to look like this neat one:
 `array = [1, 2, 3, 4, 5, 6, nil, 7, 8, 9]`
 
 In Ruby it's simple enough as we'd simply call `.flatten` on the array (Ruby once again takes care of the behind-the-scenes code for us)
+
 ```ruby
 # Ruby
 array.flatten #=> [1, 2, 3, 4, 5, 6, nil, 7, 8, 9]
 ```
+
 In JS it's a bit more complicated, though only by a bit when you get used to it. I'll explain each of these in detail along with what goes into both of these methods.
 
 The first way is the easiest (and my preferred) way: use `.concat` to append each element onto a blank array along with a neat little JS trick:
+
 ```javascript
 // javascript
 [].concat(...array) //=> [1, 2, 3, 4, 5, 6, null, 7, 8, 9]
 [].concat(0, ...array) //=> [0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9]
 [].concat(...[-1,0], ...array, "woo!") //=> [-1, 0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9, "woo!"]
 ```
+
 I'll explain the `...` in a second, but the important part about this `.concat` method is that you can combine **any number of arrays or values** and it will combine them all! Meanwhile, in the `(...array)`, that `...` is what's known in JS as a `spread operator` which, well, spreads out an array. It's used during creation or changing of arrays to expand the array and call on all elements in it. For your understanding, here is an example of what this operator does:
+
 ```javascript
-// Javascript
+// JavaScript
 a1 = [1,2,3]
 a2 = [4,5,6]
 [a1,a2] //=> [ [1,2,3], [4,5,6] ]
 [...a1,a2] //=> [1,2,3, [4,5,6] ]
 [...a1,...a2] //=> [1,2,3,4,5,6]
 ```
+
 The second way is by using `.apply`, which, well, applies what you want into an array. We can either do this to an empty array or to an existing one. Note that unlike the first way you cannot combine more than one array or value:
+
 ```javascript
-// Javascript
+// JavaScript
 [].concat.apply([],array) //=> [1, 2, 3, 4, 5, 6, null, 7, 8, 9]
 [].concat.apply([-1,0],array) //=> [-1, 0, 1, 2, 3, 4, 5, 6, null, 7, 8, 9]
 ```
+
 Again though, the first method is shorter and is much more useful especially for multiple arrays. It's good to know though what `.apply` can do.
 
-# Removing unwanted values with - Ruby: `.compact` | JS: `.filter`
+# 11) Removing Unwanted Values
+### Ruby: `.compact` | JS: `.filter`
 ---
 Hold on though, in the above example, even though we ran `flatten`/`concat` on our array, we still have a `nil`/`null` value in there. To get rid of them we simply run the following in Ruby:
+
 ```ruby
 # Ruby
 [1, 2, nil, 3, 4, 5, "hey"].compact #=> [1, 2, 3, 4, 5, "hey"]
 ```
+
 Which basically iterates over the array and removes `nil` whenever it finds it (non-destructively). To destructively do this just use `.compact!` or `array.delete(nil)`. The syntax will look very similar to the latter where we'll tell our program to delete any element that doesn't pass our test, aka keeping elements that pass. This brings us to how `.filter` is used in JS:
+
 ```javascript
-// Javascript
+// JavaScript
 [1, 2, null, 3, 4, 5, "hey"].filter(x => x) //=> [1, 2, 3, 4, 5, "hey"]
 [1, 2, null, 3, 4, 5, "hey"].filter(Number) //=> [1, 2, 3, 4, 5]
 [1, 2, null, 3, 4, 5, "hey"].filter(x => x % 2 === 0) //=> [2, null, 4]
 [1, 2, null, 3, 4, 5, "hey"].filter(x => x % 2 === 1) //=> [1, 3, 5]
 ```
+
 The first basically says: "filter this array by calling the element, and if it's true then it passes through the filter" which gets rid of all `null` values. The second says "filter this array, and if it's a number then it passes through the filter." Note that the second only works if all elements are numbers, but the first works even if you have a mixture of numbers, strings, or otherwise!
 
 The third/fourth filters show the usefulness of filtering out our array as we can test if certain things are true, in this case testing which elements are even or odd respectively. Notice that `null` still passes as `null % 2` is 0, weird right?
 
-# Sorting an array/string/hash/Object with `.sort`
+# 12) Sorting a Collection
+### array/string/hash/Object with `.sort`
+---
 
 Let's start off simple and we'll end with some neat tricks. Say you have an array of strings that you want to sort alphabetically:
 
@@ -412,7 +569,7 @@ array_string.sort.reverse #=> ["it", "how's", "hey", "going?", "everyone"]
 ```
 
 ```javascript
-// Javascript
+// JavaScript
 var array_string = ["hey", "everyone", "how's", "it", "going?"]
 array_string.sort() //=> [ "everyone", "going?", "hey", "how's", "it" ]
 array_string.sort().reverse() //=> [ "it", "how's", "hey", "going?", "everyone" ]
@@ -428,13 +585,13 @@ array.sort.reverse #=> [25, 22, 16, 14, 5]
 ```
 
 ```javascript
-// Javascript
+// JavaScript
 var array = [14, 25, 16, 22, 5]
 array.sort() //=> [ 14, 16, 22, 25, 5 ]
 array.sort().reverse() //=> [ 5, 25, 22, 16, 14 ]
 ```
 
-Oh that's strange, Ruby's smart enough to sort numbers normally but Javascript isn't. Why? Javascript first converts everything to a string first before sorting, then does the actual sort, so it sorts it "alphabetically" instead of numerically. Here's what it's doing from the viewpoint of Ruby:
+Oh that's strange, Ruby's smart enough to sort numbers normally but JavaScript isn't. Why? JavaScript first converts everything to a string first before sorting, then does the actual sort, so it sorts it "alphabetically" instead of numerically. Here's what it's doing from the viewpoint of Ruby:
 
 ```ruby
 # Ruby
@@ -444,10 +601,10 @@ array_string.sort #=> ["14", "16", "22", "25", "5"]
 array_string.sort.map(&:to_i) #=> [14, 16, 22, 25, 5]
 ```
 
-The number "1" in 14 appears before the number "5", just like how the "h" in hey appears before the "i" in it, even though "it" is two letters long and "hey" is three letters long, like how 5 is one digits long and 14 is two digits long. So how do we fix this? There's a little trick and it involves forcing Javascript to compare values of adjacent elements. I'll explain this after we do it:
+The number "1" in 14 appears before the number "5", just like how the "h" in hey appears before the "i" in it, even though "it" is two letters long and "hey" is three letters long, like how 5 is one digits long and 14 is two digits long. So how do we fix this? There's a little trick and it involves forcing JavaScript to compare values of adjacent elements. I'll explain this after we do it:
 
 ```javascript
-// Javascript
+// JavaScript
 var array = [14, 25, 16, 22, 5]
 array.sort( function(a,b) { return a - b } ) //=> [ 5, 14, 16, 22, 25 ]
 array.sort( function(a,b) { return a > b } ) //=> [ 5, 14, 16, 22, 25 ]
@@ -464,7 +621,7 @@ array.sort( (a,b) => b - a ) //=> [ 25, 22, 16, 14, 5 ]
 array.sort( (a,b) => b < a ) //=> [ 25, 22, 16, 14, 5 ]
 ```
 
-Basically we have to inputs, `a` and `b`. When we return `a - b` or `a > b` we're telling our script to first return smaller values and then larger values, and vice-versa for `a < b` where we tell our script to first return larger values. Remember this trick because it will be used **everywhere**. Let's first try and sort our old string by string length instead of alphabetically. We'll do this by introducing `.sort_by` in Ruby, and just using our prior trick for Javascript:
+Basically we have to inputs, `a` and `b`. When we return `a - b` or `a > b` we're telling our script to first return smaller values and then larger values, and vice-versa for `a < b` where we tell our script to first return larger values. Remember this trick because it will be used **everywhere**. Let's first try and sort our old string by string length instead of alphabetically. We'll do this by introducing `.sort_by` in Ruby, and just using our prior trick for JavaScript:
 
 ```ruby
 # Ruby
@@ -473,10 +630,10 @@ array_string.sort_by { |x| x.length } #=> ["it", "hey", "how's", "going?", "ever
 array_string.sort_by { |x| x.length }.reverse #=>  ["everyone", "going?", "how's", "hey", "it"]
 ```
 
-For Javascript, we'll use that trick from before but instead of comparing each element `a` to `b`, we'll compare their *lengths*:
+For JavaScript, we'll use that trick from before but instead of comparing each element `a` to `b`, we'll compare their *lengths*:
 
 ```javascript
-// Javascript
+// JavaScript
 var array_string = ["hey", "everyone", "how's", "it", "going?"]
 array_string.sort( (a,b) => a.length - b.length ) //=> [ "it", "hey", "how's", "going?", "everyone" ]
 array_string.sort( (a,b) => a.length > b.length ) //=> [ "it", "hey", "how's", "going?", "everyone" ]
@@ -512,7 +669,7 @@ array_hash.sort_by { |x| x[:population] }
 We call on the attribute in ruby, however in JS we call it the exact same way as we would the length, but as the attribute!
 
 ```javascript
-// Javascript
+// JavaScript
 var array_hash = [ {borough: 'Manhattan', population: 1585874},
                    {borough: 'Brooklyn', population: 2504706},
                    {borough: 'Queens', population: 2230545},
@@ -560,10 +717,10 @@ hash.sort_by { |key, value| value }
 #=> [[:Staten_Island, 486730], [:Bronx, 1385107], [:Manhattan, 1585874], [:Queens, 2230545], [:Brooklyn, 2504706]]
 ```
 
-Javascript can't actually directly do this using sort, only indirectly, in fact it will give you the error "hash.sort is not a function". So we have to use a trick called `Object.values()`, which I'll explain when we get to that section! For now I'll just show you what it looks like:
+JavaScript can't actually directly do this using sort, only indirectly, in fact it will give you the error "hash.sort is not a function". So we have to use a trick called `Object.values()`, which I'll explain when we get to that section! For now I'll just show you what it looks like:
 
 ```javascript
-// Javascript
+// JavaScript
 var object = {Manhattan: 1585874, Brooklyn: 2504706, Queens: 2230545, Bronx: 1385107, Staten_Island: 486730}
 object.sort() //=> error, not a function
 
@@ -577,7 +734,8 @@ Object.keys(object).sort( (a,b) => object[a] - object[b] ).map(x => `${x}: ${has
 
 In basic terms, we sort the values by descending order but we can only get an array of keys back, then we just map that key on itself to get the values.
 
-# Easier if/else/etc with - Ruby: `Case; each` | JS: `Switch; case`
+# 13) Easier if/else/etc
+### Ruby: `Case; each` | JS: `Switch; case`
 ---
 The thing about `if/else/elsif/else if` statements is that they can get very repetitive, especially when going through multiple conditions. Say we're watching West Wing and want to get a main character's White House title. We *could* do a series of if statements:
 
@@ -594,8 +752,9 @@ def title(name)
   end
 end
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 function title(name) {
   if (name === "CJ") { return "Press Secretary" }
   else if (name === "Donna") { return "Assistant to the DCoS"}
@@ -606,6 +765,7 @@ function title(name) {
   else if (name === "Toby") { return "Communications Director"}
 }
 ```
+
 If we call `title("CJ")` we'll get "Press Secretary", or `title("Jed")` we'll get "President" which is great! But in our code we have to call on `name ===` every. single. time. In addition to a few other things in the code, they're repetitive and constrictive, so instead we can use a `case statement` in Ruby or a `switch statement` in JS.
 
 ```ruby
@@ -623,8 +783,9 @@ def title(name)
   end
 end
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 function title(name) {
   switch(name) {
     case "CJ": return "Press Secretary"
@@ -638,9 +799,11 @@ function title(name) {
   }
 }
 ```
-**SO** much better! We can even link this to our `.map` method if we'd like to call on an array
+
+**SO** much better! We can even link this to our `.map` method if we'd like to call on an array:
 
 `names = ["Josh", "Jed", "Toby", "CJ", "Sam"]`
+
 ```ruby
 # Ruby
 names.map do |name|
@@ -656,8 +819,9 @@ names.map do |name|
   end
 end
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 names.map(name => {
   switch(name) {
     case "CJ": return "Press Secretary"
@@ -671,6 +835,7 @@ names.map(name => {
   }
 })
 ```
+
 Both of these output:
 
 `[ 'Deputy Chief of Staff', 'President',
@@ -679,9 +844,10 @@ Both of these output:
 
 Let's do one more example with an array of grades someone got on their tests:
 
-`grades = [95, 83, 68, 99, 75, 60]`
+`grades = [95, 83, 68, 102, 99, 75, 60]`
 
 And we want to map those into basic letter grades, aka an A is 90-100, B is in the 80's, etc. Unfortunately JS doesn't have ranges like Ruby does, so it may only be *slightly* better than a series of if statements, but we can still make it work by simply testing to see which case is `true`:
+
 ```ruby
 # Ruby
 grades.map do |grade|
@@ -695,10 +861,12 @@ grades.map do |grade|
   end
 end
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 grades.map(grade => {
   switch(true) {
+    case grade > 100: return "That grade is impossible!"
     case grade >= 90: return "A"
     case grade >= 80: return "B"
     case grade >= 70: return "C"
@@ -708,10 +876,11 @@ grades.map(grade => {
   }
 })
 ```
-Both of these output `["A", "B", "D", "A", "C", "F"]`, great!
 
-# Adding to / removing from arrays with:
-# Ruby: `.insert` / `.delete_at` / `.slice!` /  | JS: `.splice`
+Both of these output `["A", "B", "D", "That grade is impossible!", "A", "C", "F"]`, great!
+
+# 14) Adding to / removing from arrays
+### Ruby: `.insert` / `.delete_at` / `.slice!` /  | JS: `.splice`
 ---
 It's easy to use `.unshift`/`.shift`/`.push`/`.pop` to add/remove items from the beginning/end of arrays respectively, but what about when we have to add/remove items at certain points *within* the array? Ruby uses `.insert` and `.delete_at`/`.slice!` to do these separately.
 
@@ -736,7 +905,7 @@ JS can do both of these with one method, `.splice`! Splice like `.insert` or `.d
 Since `.splice` is destructive (changes the array permanently), in these examples I'll be remaking the array quite a bit. Let's test it out bit by bit:
 
 ```javascript
-// Javascript
+// JavaScript
 array = ["Hello", "World", "How", "Are", "You?"]
 
 array.splice(2)
@@ -744,7 +913,7 @@ array //=> ["Hello", "World"]
 ```
 If we just put in one value (the index), it will delete all elements starting at that index until the end of the array. It works the same as if we put in a second value:
 ```javascript
-// Javascript
+// JavaScript
 array = ["Hello", "World", "How", "Are", "You?"]
 
 array.splice(2, 100)
@@ -752,7 +921,7 @@ array //=> ["Hello", "World"]
 ```
 In this case we're deleting all elements starting at index 2 and going 100 elements out, which covers the end of the array. Let's try deleting just a few at a time instead:
 ```javascript
-// Javascript
+// JavaScript
 array = ["Hello", "World", "How", "Are", "You?"]
 
 array.splice(2, 0)
@@ -770,7 +939,7 @@ array //=> ["Hello", "You?"]
 ```
 Anything after these two numbers is **added** to the array, so let's mimic what we did in Ruby:
 ```javascript
-// Javascript
+// JavaScript
 array = ["Hello", "World", "How", "Are", "You?"]
 
 array.splice(2, 0, "!") //=> ["Hello", "World", "!", "How", "Are", "You?"]
@@ -784,7 +953,8 @@ array.splice(4, 1, "Universe")
 //=> ["Hello", "Everyone", "In", "The", "Universe", "!", "How", "Are", "You?"]
 // start at index 4, delete 1 element out, then add "Universe" at index 4
 ```
-# Test if something's included - Ruby: `.include?` | JS: `.includes`
+# 15) Testing for inclusion
+### Ruby: `.include?` | JS: `.includes`
 ---
 There's a great way to test for inclusion which can be utilized in many ways, and surprisingly JS is the one here that can do more! While Ruby's `.include?` can only test to see if something is included:
 
@@ -795,9 +965,11 @@ array.include?(3) #=> true
 array.include?("hello") #=> true
 array.include?(7) #=> false
 ```
+
 JS can do this, but in addition it can even test for inclusion at a specific index!
+
 ```javascript
-// Javascript
+// JavaScript
 array = [1, 2, 3, "hello", "world"]
 array.includes(3) //=> true
 array.includes("hello") //=> true
@@ -805,24 +977,30 @@ array.includes(7) //=> false
 array.includes("world", 4) //=> true
 array.includes(1, 3) //=> false
 ```
-# Keys and Values
+
+# 16) Keys and Values
 ---
 If you have a Hash in ruby you can simply call `.keys` or `.values` on it to easily get their information:
+
 ```ruby
 # Ruby
 pets = { dogs: 3, cats: 2, birds: 1 }
 pets.keys #=> [:dogs, :cats, :birds]
 pets.values #=> [3, 2, 1]
 ```
+
 Under the hood, these methods are basically going through each element in the hash and pulling out the chosen value and putting them in an array. These shortcuts work a bit different in JS. First off, a **hash in Ruby** is known as an **object in JS**. So we'll have to call `.keys` or `.values` on a blank `Object` class and have it take in the Object pets:
+
 ```javascript
 // JavaScript
 Object.keys(pets) //=> ["dogs", "cats", "birds"]
 Object.values(pets) //=> [3, 2, 1]
 ```
-# slice
+
+# 17) slice
 ---
 Slice is a nice method that goes into an array (or string) and selects the element(s) of your choice. While in Ruby you can directly call on the array/string to get these values using `array[0]` for the first value, or in Ruby only doing more fancy `array[1..4]` to get
+
 ```ruby
 # Ruby
 array = ["Hello", "World", "How", "Are", "You?"]
@@ -830,7 +1008,9 @@ array[0] #=> "Hello"
 array[2..4] #=> ["How", "Are", "You?"]
 array[2, 3] #=> ["How", "Are", "You?"]
 ```
-only the first script `array[0]` can be used in JS. This is where `.slice` comes in, however just like `.reduce` it's used differently. If you're familiar with Ruby, `.slice` is used exactly like the above scripts and has the same exact outputs:
+
+Only the first script `array[0]` can be used in JS. This is where `.slice` comes in, however just like `.reduce` it's used differently. If you're familiar with Ruby, `.slice` is used exactly like the above scripts and has the same exact outputs:
+
 ```ruby
 # Ruby
 array = ["Hello", "World", "How", "Are", "You?"]
@@ -838,13 +1018,16 @@ array.slice(0) # select at index 0
 array.slice(2..4) # select from index 2 to index 4
 array.slice(2, 3) # select from index 2 and go 3 positions further
 ```
+
 JS operates differently however. Obviously we don't have ranges so the middle script is of no use to us, but what happens if we try the other two scripts?
+
 ```javascript
-// Javascript
+// JavaScript
 array = ["Hello", "World", "How", "Are", "You?"]
 array.slice(0) //=> ["Hello", "World", "How", "Are", "You?"]
 array.slice(2, 3) //=> ["How"]
 ```
+
 "How" is right... what is happening here? Well in both languages the slice takes in two instances:
 `array.slice( start_index, optional_second_number ) `
 The `start_here` is the same in both languages, however the `optional_second_number` is what's different.
@@ -853,8 +1036,9 @@ Ruby says: `start_index`, `go_this_many_positions_further (default is 0)`
 JS says: `start_index (default is 0)`, `end_index (default is array.length)`
 
 Wait a second, `(start_index, end_index)`? that's a range! Specifically it's the three-dotted `(n1...n2)` range where we go **up until** the end index. So with that knowledge:
+
 ```javascript
-// Javascript
+// JavaScript
 array = ["Hello", "World", "How", "Are", "You?"]
 
 array.slice(0) // start at index 0, go to the default end of array.length
@@ -868,7 +1052,8 @@ array.slice(2) || array.slice(2,array.length) || array.slice(2, 5)
 array.slice(2, 4) //=> ["How", "Are"]
 ```
 
-# Ruby: `.call` / `.proc` | JS: `callbacks`
+# 18) Callbacks
+### Ruby: `.call` / `.proc` | JS: `callbacks`
 ---
 Finally, what if we had a function inside of another function? Let's come back to that question shortly.
 
@@ -882,13 +1067,15 @@ end
 
 multiply_squared(2, 3) #=> 2*2 * 3*3 = 4 * 9 = 36
 ```
+
 ```javascript
-// Javascript
+// JavaScript
 function multiply_squared(x, y) { x*x * y*y }
 
 multiply_squared(2, 3) //=> 2*2 * 3*3 = 4 * 9 = 36
 ```
-Great, but what if instead of squaring these I wanted to cube them? What if I wanted to have `x` equal another equation? Sure for cubing I could simply change the equation to `2*2*2 * 3*3*3` but that'd get messy especially if I wanted to add another one to the exponent, or I could change the equation to `2**3 * 3**3` and just simply change the exponent that way, but that'd get tedious and I also wouldn't be able to call that as its own function. For `x` as another equation that'd also get ugly as for example `multiply_squared(2, (32/8) + 4)`. `.call` / `.proc` in Ruby and `callbacks` in Javascript fix this.
+
+Great, but what if instead of squaring these I wanted to cube them? What if I wanted to have `x` equal another equation? Sure for cubing I could simply change the equation to `2*2*2 * 3*3*3` but that'd get messy especially if I wanted to add another one to the exponent, or I could change the equation to `2**3 * 3**3` and just simply change the exponent that way, but that'd get tedious and I also wouldn't be able to call that as its own function. For `x` as another equation that'd also get ugly as for example `multiply_squared(2, (32/8) + 4)`. `.call` / `.proc` in Ruby and `callbacks` in JavaScript fix this.
 
 In Ruby, we can first make a `Proc` which is a function that can be called on in the future. For example:
 
@@ -904,6 +1091,7 @@ say_hello.call #=> "hello"
 say_hello()
 ```
 A proc is an object that has its own set of variables. If you know about classes, then the `<Proc:0x007fbf7019b270@(irb):41>` looks very similar:
+
 ```ruby
 # Ruby
 class Dog
@@ -918,7 +1106,9 @@ end
 dog = Dog.new("Lily", "Pit Mix")
 #=> <Dog:0x007fbf701290d0 @name="Lily", @breed="Pit Mix">
 ```
+
 So what can we do with Procs? Here's an example of what a basic function, and then a proc function does:
+
 ```ruby
 # Ruby
 def multi_basic(x, y)
@@ -975,10 +1165,10 @@ multiply_squared(multiply_by_six.call(2), 2) #=> 12*12 * 2*2 = 144 * 4 = 576
 multiply_six_squared = Proc.new { |x,y| multiply_by_six.call(x)**2 * y**2 }
 multiply_six_squared.call(2, 2) #=> 576
 ```
-We have our object to call on, and can change it any way we want. Why did I take a long time to go through what these do? Because this is one of those times where Javascript makes things easier than Ruby and it's important to be able to visualize what goes on under the hood. Here's how a callback would work in Javascript; see if you can see the similarities:
+We have our object to call on, and can change it any way we want. Why did I take a long time to go through what these do? Because this is one of those times where JavaScript makes things easier than Ruby and it's important to be able to visualize what goes on under the hood. Here's how a callback would work in JavaScript; see if you can see the similarities:
 
 ```javascript
-// Javascript
+// JavaScript
 var say_hello = function() { console.log("Hello") }
 say_hello() //=> "Hello"
 
@@ -1001,9 +1191,11 @@ say_hello_callback(console.log("Hello")) //=> "Hello"
 function hello() { return "Hello" }
 say_hello_callback(console.log( hello() )) //=> "Hello"
 ```
-As you can see, Javascript handles our "proc" by just naming a function. Let's callback even further:
+
+As you can see, JavaScript handles our "proc" by just naming a function. Let's callback even further:
+
 ```javascript
-// Javascript
+// JavaScript
 var say_hello_to_someone = function(name) { console.log(`Hello ${name}!`) }
 say_hello_to_someone("Mike") //=> "Hello Mike!"
 
@@ -1044,8 +1236,9 @@ say_hello_to_someone_input("Hello", "Mike") //=> "Hello Mike!"
 say_hello_to_someone_input(greeting(), name()) //=> "Hello Mike!"
 ```
 We can even call our function and do things before we callback:
+
 ```javascript
-// Javascript
+// JavaScript
 var lastly_say_hello_callback = callback => {
   console.log("Loading greeting...")
   callback
@@ -1054,9 +1247,11 @@ lastly_say_hello_callback(console.log("Hello"))
 //=> "Hello"
 //=> "Loading greeting..."
 ```
+
 Oops our greeting callback loaded before our loading message because this is asynchronous. Let's add a `timeout` to our callback:
+
 ```javascript
-// Javascript
+// JavaScript
 var lastly_say_hello_callback = callback => {
   console.log("Loading greeting...")
   setTimeout(callback, 1000)
@@ -1066,13 +1261,16 @@ lastly_say_hello_callback(()=>console.log("Hello"))
 // sleep for 1 second
 //=> "Hello"
 ```
+
 And to be really cheeky, let's have some callbacks that also take in inputs:
+
 ```javascript
-// Javascript
+// JavaScript
 function log(greeting, name) { console.log(`${greeting} ${name}!`) }
 function say_hello_to_someone_callback_inputs(callback) { callback(arguments[1], arguments[2]) }
 say_hello_to_someone_callback_inputs(log, "Hello", "Mike")
 ```
+
 There's so much more you can do with this, try it out yourselves!
 
 ---
