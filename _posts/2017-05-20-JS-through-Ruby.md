@@ -28,26 +28,26 @@ Link | Ruby | JS Equivalent | Description
 |||**loops**
 [4)](#4-looping) | while / until | while | loops while condition is true
 ||**iteration**
-for | for / for..in | iterate over each element, more used in JS
-.each | .forEach | iterate over each element
-.each.with_index | .forEach | same, but also get the index
-.map | .map | iterate over each element, changes the output
-.map.with_index | .map | same, but also get the index
-||**manipulating methods**
-.reduce / .inject | .reduce | combines all elements via an operation
-.flatten | .concat | merge multi-dimensional / nested arrays
-.compact | .filter | remove `nil` or `null` values from an array
-.sort / .sort_by | .sort | sort an array or hash/Object
-case; each | switch; case | shorthand multiple `if` statements
-.insert | .splice | add element(s) from array/string
-.delete_at / .slice! | .splice | remove element(s) from array/string
-||**selecting methods**
-.include? | .includes | test if an element is included in an array/string
-.keys | Object.keys() | get all keys in a hash
-.values | Object.values() | get all values in a hash
-.slice | .slice | select element from array (different in Ruby vs. JS)
-||**more functions**
-call/procs | callbacks | function called within a function
+[5)](#-using-for) | for | for / for..in | iterate over each element, more used in JS
+| .each | .forEach | iterate over each element
+| .each.with_index | .forEach | same, but also get the index
+| .map | .map | iterate over each element, changes the output
+| .map.with_index | .map | same, but also get the index
+|||**manipulating methods**
+| .reduce / .inject | .reduce | combines all elements via an operation
+| .flatten | .concat | merge multi-dimensional / nested arrays
+| .compact | .filter | remove `nil` or `null` values from an array
+| .sort / .sort_by | .sort | sort an array or hash/Object
+| case; each | switch; case | shorthand multiple `if` statements
+| .insert | .splice | add element(s) from array/string
+| .delete_at / .slice! | .splice | remove element(s) from array/string
+|||**selecting methods**
+| .include? | .includes | test if an element is included in an array/string
+| .keys | Object.keys() | get all keys in a hash
+| .values | Object.values() | get all values in a hash
+| .slice | .slice | select element from array (different in Ruby vs. JS)
+|||**more functions**
+| call/procs | callbacks | function called within a function
 
 # 1) ES6 Notation
 ### Arrow Functions, Implicit Returns
