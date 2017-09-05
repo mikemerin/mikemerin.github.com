@@ -1529,6 +1529,15 @@ map(lambda x: "{} age {}".format(x.breed, x.age), sorted(class_animals, key=lamb
 
 There's even more you can do when you import in other methods, but this is just a small amount that you can do with the native sorting.
 
+# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
+### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
+---
+
+case; each | if/elif or dict | shorthand multiple `if` statements
+.insert | .insert(idx, elem) | add element(s) from array/string
+.delete_at | del a[idx:idx2] | remove element(s) from array/string
+.delete(e) | .remove(e) | remove element by element
+
 # Easier if/else/etc
 ### Ruby: `Case; each` | Python: dictionary manipulation
 ---
@@ -1754,15 +1763,6 @@ def grade(number): return letters.get(number, "Invalid")
 map(lambda x: grade(x), grades)
 #=> ["A", "B", "D", "Invalid", "A", "C", "F"]
 ```
-
-# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
-### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
----
-
-case; each | if/elif or dict | shorthand multiple `if` statements
-.insert | .insert(idx, elem) | add element(s) from array/string
-.delete_at | del a[idx:idx2] | remove element(s) from array/string
-.delete(e) | .remove(e) | remove element by element
 
 # Adding to / removing from arrays with:
 # Ruby: `.insert` / `.delete_at` / `.slice!` /  | JS: `.splice`

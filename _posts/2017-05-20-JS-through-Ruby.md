@@ -13,8 +13,8 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 
 We'll be going over these loops, iterations, and global methods:
 
-| Ruby | JS Equivalent | Description
----|---|---|---
+Ruby | JS Equivalent | Description
+---|---|---
 ||**functions**
 N/A | ES6 / Arrow | New ES2017 shorthands for cleaning your code
 n.to_s | n.toString() | Converts to string
