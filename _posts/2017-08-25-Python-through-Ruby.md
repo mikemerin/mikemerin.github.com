@@ -18,52 +18,52 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 
 We'll be going over these loops, iterations, and global methods:
 
-| Ruby | Python Equivalent | Description
----|---|---|---
-|||**names of data types**
-1) | Array | List | [ 1, 2, 3, 4 ]
-| Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
-| N/A | Tuple | (1, 2, 3) (immutable)
-| N/A | Set | { 1, 2, 3 } (immutable)
-|||**string interpolation**
-2) | `"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
-|||**functions**
-3) | `n.to_s` | `str(n)` | converts to string
-4) | `"10".to_i` | `int("10")` | converts to Integer 10
-5) | `"10".to_f` | `float("10")` | converts to Float 10.0
-6) | x.length | len(x) | length of an object (str, list, etc.)
-7) | (1...5).to_a | range(1,5) | creates a ranged array (different)
-8) | push / `<<` | append | add onto the end of an array
-| pop(x) | pop(x) | remove from the end of the array (different)
-| unshift | a = [x] + a | add onto the beginning of an array
-| shift(x) | pop(0) | remove from the beginning of the array
-9) | .include? | in | find if something is included
-|||**loops**
-10) | while / until | while | loops while condition is true
-|||**iteration**
-11) | for | for | iterate over each element, more used in Python
-12) | .each.with_index | for & enumerate | same, but also get the index
-13) | .map | for..in | in-line iteration
-14) | .keys | for..in | get all keys in a hash
-15) | .values | for..in | get all values in a hash
-|||**callback-esque functions**
-16) | .map | map | iterate over each element, changes the output
-17) | lambda | lambda | function called within a function
-18) | .map.with_index | map & enumerate | map, but also get the index
-19) | .reduce / .inject | reduce() | combines all elements via an operation
-20) | .select | filter | remove `nil` or `None` values from an array
-| .compact | filter | remove `nil` or `None` values from an array
-|||**selecting methods**
-21) | .slice | a[l:h:s] | select element(s) from array
-22) | .dup | a[:] | duplicates an object rather than copies
-|||**manipulating methods**
-23) | .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-24) | case; each | if/elif or dict | shorthand multiple `if` statements
-25) | .insert | .insert(idx, elem) | add element(s) from array/string
-26) | .delete_at | del a[idx:idx2] | remove element(s) from array/string
-27) | .delete(e) | .remove(e) | remove element by element
-|||**extra functions**
-28) | call/proc | N/A: inherent | function called within a function
+Ruby | Python Equivalent | Description
+---|---|---
+||**names of data types**
+Array | List | [ 1, 2, 3, 4 ]
+Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
+N/A | Tuple | (1, 2, 3) (immutable)
+N/A | Set | { 1, 2, 3 } (immutable)
+||**string interpolation**
+`"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
+||**functions**
+`n.to_s` | `str(n)` | converts to string
+`"10".to_i` | `int("10")` | converts to Integer 10
+`"10".to_f` | `float("10")` | converts to Float 10.0
+x.length | len(x) | length of an object (str, list, etc.)
+(1...5).to_a | range(1,5) | creates a ranged array (different)
+push / `<<` | append | add onto the end of an array
+pop(x) | pop(x) | remove from the end of the array (different)
+unshift | a = [x] + a | add onto the beginning of an array
+shift(x) | pop(0) | remove from the beginning of the array
+.include? | in | find if something is included
+||**loops**
+while / until | while | loops while condition is true
+||**iteration**
+for | for | iterate over each element, more used in Python
+.each.with_index | for & enumerate | same, but also get the index
+.map | for..in | in-line iteration
+.keys | for..in | get all keys in a hash
+.values | for..in | get all values in a hash
+||**callback-esque functions**
+.map | map | iterate over each element, changes the output
+lambda | lambda | function called within a function
+.map.with_index | map & enumerate | map, but also get the index
+.reduce / .inject | reduce() | combines all elements via an operation
+.select | filter | remove `nil` or `None` values from an array
+.compact | filter | remove `nil` or `None` values from an array
+||**selecting methods**
+.slice | a[l:h:s] | select element(s) from array
+.dup | a[:] | duplicates an object rather than copies
+||**manipulating methods**
+.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
+case; each | if/elif or dict | shorthand multiple `if` statements
+.insert | .insert(idx, elem) | add element(s) from array/string
+.delete_at | del a[idx:idx2] | remove element(s) from array/string
+.delete(e) | .remove(e) | remove element by element
+||**extra functions**
+call/proc | N/A: inherent | function called within a function
 
 # Names of data types
 ---
