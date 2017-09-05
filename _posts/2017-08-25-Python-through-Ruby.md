@@ -18,7 +18,7 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 
 We'll be going over these loops, iterations, and global methods:
 
-| Ruby | Python Equivalent | Description
+ | Ruby | Python Equivalent | Description
 ---|---|---|---
 |||**names of data types**
 1) | Array | List | [ 1, 2, 3, 4 ]
