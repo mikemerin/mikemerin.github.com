@@ -65,7 +65,7 @@ Link | Ruby | Python Equivalent | Description
 |||**extra functions**
 28) | call/proc | N/A: inherent | function called within a function
 
-# Names of data types
+# 1) Names of data types
 ---
 Before we begin we'll need to just cover some basic terminology to avoid confusion when talking about Ruby vs. Python. There are a few data types that are the same in both Ruby and Python but have different names:
 
