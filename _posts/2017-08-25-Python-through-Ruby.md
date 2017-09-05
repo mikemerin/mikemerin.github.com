@@ -18,52 +18,52 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 
 We'll be going over these loops, iterations, and global methods:
 
-Ruby | Python Equivalent | Description
----|---|---
-||**names of data types**
-Array | List | [ 1, 2, 3, 4 ]
-Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
-N/A | Tuple | (1, 2, 3) (immutable)
-N/A | Set | { 1, 2, 3 } (immutable)
-||**string interpolation**
-`"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
-||**functions**
-`n.to_s` | `str(n)` | converts to string
-`"10".to_i` | `int("10")` | converts to Integer 10
-`"10".to_f` | `float("10")` | converts to Float 10.0
-x.length | len(x) | length of an object (str, list, etc.)
-(1...5).to_a | range(1,5) | creates a ranged array (different)
-push / `<<` | append | add onto the end of an array
-pop(x) | pop(x) | remove from the end of the array (different)
-unshift | a = [x] + a | add onto the beginning of an array
-shift(x) | pop(0) | remove from the beginning of the array
-.include? | in | find if something is included
-||**loops**
-while / until | while | loops while condition is true
-||**iteration**
-for | for | iterate over each element, more used in Python
-.each.with_index | for & enumerate | same, but also get the index
-.map | for..in | in-line iteration
-.keys | for..in | get all keys in a hash
-.values | for..in | get all values in a hash
-||**callback-esque functions**
-.map | map | iterate over each element, changes the output
-lambda | lambda | function called within a function
-.map.with_index | map & enumerate | map, but also get the index
-.reduce / .inject | reduce() | combines all elements via an operation
-.select | filter | remove `nil` or `None` values from an array
-.compact | filter | remove `nil` or `None` values from an array
-||**selecting methods**
-.slice | a[l:h:s] | select element(s) from array
-.dup | a[:] | duplicates an object rather than copies
-||**manipulating methods**
-.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-case; each | if/elif or dict | shorthand multiple `if` statements
-.insert | .insert(idx, elem) | add element(s) from array/string
-.delete_at | del a[idx:idx2] | remove element(s) from array/string
-.delete(e) | .remove(e) | remove element by element
-||**extra functions**
-call/proc | N/A: inherent | function called within a function
+| Ruby | Python Equivalent | Description
+---|---|---|---
+|||**names of data types**
+1) | Array | List | [ 1, 2, 3, 4 ]
+| Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
+| N/A | Tuple | (1, 2, 3) (immutable)
+| N/A | Set | { 1, 2, 3 } (immutable)
+|||**string interpolation**
+2) | `"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
+|||**functions**
+3) | `n.to_s` | `str(n)` | converts to string
+4) | `"10".to_i` | `int("10")` | converts to Integer 10
+5) | `"10".to_f` | `float("10")` | converts to Float 10.0
+6) | x.length | len(x) | length of an object (str, list, etc.)
+7) | (1...5).to_a | range(1,5) | creates a ranged array (different)
+8) | push / `<<` | append | add onto the end of an array
+| pop(x) | pop(x) | remove from the end of the array (different)
+| unshift | a = [x] + a | add onto the beginning of an array
+| shift(x) | pop(0) | remove from the beginning of the array
+9) | .include? | in | find if something is included
+|||**loops**
+10) | while / until | while | loops while condition is true
+|||**iteration**
+11) | for | for | iterate over each element, more used in Python
+12) | .each.with_index | for & enumerate | same, but also get the index
+13) | .map | for..in | in-line iteration
+14) | .keys | for..in | get all keys in a hash
+15) | .values | for..in | get all values in a hash
+|||**callback-esque functions**
+16) | .map | map | iterate over each element, changes the output
+17) | lambda | lambda | function called within a function
+18) | .map.with_index | map & enumerate | map, but also get the index
+19) | .reduce / .inject | reduce() | combines all elements via an operation
+20) | .select | filter | remove `nil` or `None` values from an array
+| .compact | filter | remove `nil` or `None` values from an array
+|||**selecting methods**
+21) | .slice | a[l:h:s] | select element(s) from array
+22) | .dup | a[:] | duplicates an object rather than copies
+|||**manipulating methods**
+23) | .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
+24) | case; each | if/elif or dict | shorthand multiple `if` statements
+25) | .insert | .insert(idx, elem) | add element(s) from array/string
+26) | .delete_at | del a[idx:idx2] | remove element(s) from array/string
+27) | .delete(e) | .remove(e) | remove element by element
+|||**extra functions**
+28) | call/proc | N/A: inherent | function called within a function
 
 # Names of data types
 ---
@@ -330,7 +330,7 @@ float("10") #=> 10.0
 float(10) #=> 10.0
 ```
 
-# Length of a string, array/list, or hash/dictionary
+# Length of an object
 ---
 You've probably noticed by now that Ruby has a lot more emphasis on calling functions on an object via `object.do_something` versus Python calling objects inside a function via `do_something(object)`. This is the same for for the length function (also can be done as `Size` in Ruby):
 
@@ -514,7 +514,8 @@ array = array[1:]
 array #=> [2, 3, 4, 5]
 ```
 
-# include / in
+# Testing for inclusion
+### Ruby: `include` | Python: `in`
 ---
 We're about to see the word `in` much more in Python, so let's get used to using it. Ruby has a very useful function called `include?` which lets us test if something is included in an array or string.
 
@@ -550,7 +551,8 @@ There's also a way to negate both of these scripts. Though Ruby doesn't have an 
 "t" not in "this is a string" #=> False
 ```
 
-# While / until
+# Looping
+### While / until
 ---
 
 Onto loops! Let's start off with the easiest example of the while loop.
@@ -693,7 +695,7 @@ s2 #=> "|h|e|y| |a|l|l"
 ```
 
 # Getting the index
-## Ruby: `.each_with_index` | Python: enumerate
+### Ruby: `.each_with_index` | Python: `enumerate`
 ---
 
 Iterating with `for` is okay but sometimes we want to use the index along with the element. Ruby has the easy to use methods `.each_with_index` or `each.with_index` that lets you simply grab both in a block. Python's not too far off though you need to use `enumerate` in order to do it. It's a little less intuitive but it works nonetheless:
@@ -784,7 +786,8 @@ Note that I just named `key` in there to make things clearer but the value can b
 [x*i for i, x in enumerate(range(1,6))] #=> [0, 2, 6, 12, 20]
 ```
 
-# Iterating and manipulating with - Ruby: `.map`, Python: `map()`
+# Iterating and manipulating
+### Ruby: `.map`, Python: `map()`
 ---
 In Ruby `.each` is incredibly useful, and does what both `for` and `for..in` does in Python, or what `.forEach` does in JavaScript. They're all great but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? We saw in the Ruby example just above how map goes a step farther in modifying the output of what you put in. Let's do the same thing we did before in Python, but this time use map as well. You'll see why it's different:
 
@@ -1071,7 +1074,8 @@ reduce(multi, array) #=> 120
 reduce(multi, array, 2) #=> 240
 ```
 
-# Selecting / filtering
+# Selecting from an array
+### Ruby: `select` | Python: `filter`
 ---
 Say you have an array but only want to use certain elements in it. Ruby has a `.select` to do this and Python has `filter`. They're pretty much the same thing in the end. Let's get any element in an array that's even by using the modulo script of `x % 2 == 0` to say "any value divided by 2 will give no remainder":
 
@@ -1270,20 +1274,6 @@ array_b #=> [1, 2, 3, 4, 5] (doesn't change)
 ```
 
 The `array[:]` operator says "select everything from this array" which means when we set our `array_b` object to it, we're taking in the elements of the array instead of the object that holds the array.
-
-
-
-# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
-### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
----
-
-.sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-case; each | if/elif or dict | shorthand multiple `if` statements
-.insert | .insert(idx, elem) | add element(s) from array/string
-.delete_at | del a[idx:idx2] | remove element(s) from array/string
-.delete(e) | .remove(e) | remove element by element
-
-
 
 # Sorting an array/string/hash/Object with `.sort` | `sorted`
 
@@ -1539,9 +1529,8 @@ map(lambda x: "{} age {}".format(x.breed, x.age), sorted(class_animals, key=lamb
 
 There's even more you can do when you import in other methods, but this is just a small amount that you can do with the native sorting.
 
-
-
-# Easier if/else/etc with - Ruby: `Case; each` | JS: `Switch; case`
+# Easier if/else/etc
+### Ruby: `Case; each` | Python: dictionary manipulation
 ---
 The thing about `if/else/elsif/else if` statements is that they can get very repetitive, especially when going through multiple conditions. Say we're watching West Wing and want to get a main character's White House title. We *could* do a series of if statements:
 
@@ -1558,19 +1547,20 @@ def title(name)
   end
 end
 ```
-```javascript
-// Javascript
-function title(name) {
-  if (name === "CJ") { return "Press Secretary" }
-  else if (name === "Donna") { return "Assistant to the DCoS"}
-  else if (name === "Abbey") { return "First Lady"}
-  else if (name === "Jed") { return "President"}
-  else if (name === "Josh") { return "Deputy Chief of Staff"}
-  else if (name === "Sam") { return "Deputy Communications Director"}
-  else if (name === "Toby") { return "Communications Director"}
-}
+
+```python
+# Python
+def title(name):
+  if name == "CJ": return "Press Secretary"
+  elif name == "Donna": return "Assistant to the DCoS"
+  elif name == "Abbey": return "First Lady"
+  elif name == "Jed": return "President"
+  elif name == "Josh": return "Deputy Chief of Staff"
+  elif name == "Sam": return "Deputy Communications Director"
+  elif name == "Toby": return "Communications Director"
 ```
-If we call `title("CJ")` we'll get "Press Secretary", or `title("Jed")` we'll get "President" which is great! But in our code we have to call on `name ===` every. single. time. In addition to a few other things in the code, they're repetitive and constrictive, so instead we can use a `case statement` in Ruby or a `switch statement` in JS.
+
+If we call `title("CJ")` we'll get "Press Secretary", or `title("Jed")` we'll get "President" which is great! But in our code we have to call on `name == X` every. single. time. In addition to a few other things in the code, they're repetitive and constrictive, so instead we can use a `case statement` in Ruby or a dictionary in Python. Unfortunately unlike JavaScript with its switch/case statements, there's nothing that directly translates to it in Python. That being said using a dictionary works just fine.
 
 ```ruby
 # Ruby
@@ -1587,26 +1577,77 @@ def title(name)
   end
 end
 ```
-```javascript
-// Javascript
-function title(name) {
-  switch(name) {
-    case "CJ": return "Press Secretary"
-    case "Donna": return "Assistant to the DCoS"
-    case "Abbey": return "First Lady"
-    case "Jed": return "President"
-    case "Josh": return "Deputy Chief of Staff"
-    case "Sam": return "Deputy Communications Director"
-    case "Toby": return "Communications Director"
-    default: return "Name Not Found"
+```python
+# Python
+def title(name):
+  titles = {
+    "CJ": "Press Secretary",
+    "Donna": "Assistant to the DCoS",
+    "Abbey": "First Lady",
+    "Jed": "President",
+    "Josh": "Deputy Chief of Staff",
+    "Sam": "Deputy Communications Director",
+    "Toby": "Communications Director"
   }
-}
+  return titles[name]
 ```
-**SO** much better! We can even link this to our `.map` method if we'd like to call on an array
 
-`names = ["Josh", "Jed", "Toby", "CJ", "Sam"]`
+**SO** much better! Well, almost for the Python script. There's a major problem, and that's our missing "else" statement. Right now we simply have a dictionary of titles and are calling on our name as its key. What if we put in someone's name that isn't in our list, or misspell it? We'd get an error:
+
+```python
+# Python
+title("Abbey Bartlet")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 11, in title
+KeyError: 'Abbey Bartlet'
+```
+
+To fix this there's a fancy method called `.get` which can be called on a dictionary and give a separate output if the input isn't found. Here's a basic example building off what we did before in our sorting section:
+
+```python
+# Python
+hashes = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five"}
+hashes[1] #=> "one"
+
+# getting an error if not found
+hashes[7] #=> Traceback (most recent call last):  File "<stdin>", line 1, in <module>; KeyError: 7
+
+# fix by using .get instead
+hashes.get(1) #=> "one"
+hashes.get(7) #=> nothing returned
+
+# output a message if not found
+hashes.get(1, "Number not found") #=> "one"
+hashes.get(7, "Number not found") #=> "Number not found"
+```
+
+When we replace the `[number]` with `.get(number)` we're telling Python to not give us an error if the key isn't found, and a second argument will be the message given if that happens. This effectively becomes our "else" statement. Putting it all together with our West Wing dictionary:
+
+```python
+# Python
+def title(name):
+  return {
+    "CJ": "Press Secretary",
+    "Donna": "Assistant to the DCoS",
+    "Abbey": "First Lady",
+    "Jed": "President",
+    "Josh": "Deputy Chief of Staff",
+    "Sam": "Deputy Communications Director",
+    "Toby": "Communications Director"
+  }.get(name, "Name Not Found")
+
+title("CJ") #=> "Press Secretary"
+title("Josh") #=> "Deputy Chief of Staff"
+title("Josh 'Lemon' Lyman") #=> "Name Not Found"
+```
+
+Taking this a step further, we can even link this to our `map` method if we'd like to call on an array:
+
 ```ruby
 # Ruby
+names = ["Josh", "Jed", "Toby", "John", "CJ", "Sam"]
+
 names.map do |name|
   case name;
     when "CJ"; "Press Secretary"
@@ -1618,61 +1659,112 @@ names.map do |name|
     when "Toby"; "Communications Director"
     else "Name Not Found"
   end
-end
-```
-```javascript
-// Javascript
-names.map(name => {
-  switch(name) {
-    case "CJ": return "Press Secretary"
-    case "Donna": return "Assistant to the DCoS"
-    case "Abbey": return "First Lady"
-    case "Jed": return "President"
-    case "Josh": return "Deputy Chief of Staff"
-    case "Sam": return "Deputy Communications Director"
-    case "Toby": return "Communications Director"
-    default: return "Name Not Found"
-  }
-})
-```
-Both of these output:
 
-`[ 'Deputy Chief of Staff', 'President',
-  'Communications Director', 'Press Secretary',
-  'Deputy Communications Director' ]`
+#=> ["Deputy Chief of Staff", "President", "Communications Director", "Name Not Found", "Press Secretary", "Deputy Communications Director"]
+```
+
+```python
+# Python
+names = ["Josh", "Jed", "Toby", "John", "CJ", "Sam"]
+
+map(lambda name:
+    { "CJ": "Press Secretary",
+      "Donna": "Assistant to the DCoS",
+      "Abbey": "First Lady",
+      "Jed": "President",
+      "Josh": "Deputy Chief of Staff",
+      "Sam": "Deputy Communications Director",
+      "Toby": "Communications Director"
+    }.get(name, "Name Not Found"), names)
+
+#=> ["Deputy Chief of Staff", "President", "Communications Director", "Name Not Found", "Press Secretary", "Deputy Communications Director"]
+```
 
 Let's do one more example with an array of grades someone got on their tests:
 
-`grades = [95, 83, 68, 99, 75, 60]`
+`grades = [95, 83, 68, 102, 99, 75, 60]`
 
-And we want to map those into basic letter grades, aka an A is 90-100, B is in the 80's, etc. Unfortunately JS doesn't have ranges like Ruby does, so it may only be *slightly* better than a series of if statements, but we can still make it work by simply testing to see which case is `true`:
+And we want to map those into basic letter grades, aka an A is 90-100, B is in the 80's, etc. Ranges don't translate as well with Python dictionaries, so in this case a multiple if/elif/else may work better.
+
 ```ruby
 # Ruby
-grades.map do |grade|
-  case grade;
+def grade(number)
+  case number;
     when 90..100; "A"
     when 80..89; "B"
     when 70..79; "C"
     when 65..69; "D"
     when 0..64; "F"
-    else "That grade is impossible!"
+    else "Invalid"
   end
 end
+
+grades.map { |x| grade(x) }
+#=> ["A", "B", "D", "Invalid", "A", "C", "F"]
 ```
-```javascript
-// Javascript
-grades.map(grade => {
-  switch(true) {
-    case grade >= 90: return "A"
-    case grade >= 80: return "B"
-    case grade >= 70: return "C"
-    case grade >= 65: return "D"
-    case grade >= 0: return "F"
-    default: return "That grade is impossible!"
-  }
-})
+
+```python
+# Python
+def grade(number):
+  if number in range(90,101): return "A"
+  elif number in range(80,90): return "B"
+  elif number in range(70,80): return "C"
+  elif number in range(65,70): return "D"
+  elif number in range(0,65): return "F"
+  else: return "Invalid"
+
+map(lambda x: grade(x), grades)
+#=> ["A", "B", "D", "Invalid", "A", "C", "F"]
 ```
-Both of these output `["A", "B", "D", "A", "C", "F"]`, great!
+
+That being said we can still create a dictionary that covers every single number from 0 to 100 very quickly by using the `dict` method:
+
+```python
+# Python
+def grade(number):
+  return dict(
+      [(n, "A") for n in range(90, 101)] +
+      [(n, "B") for n in range(80, 90)] +
+      [(n, "C") for n in range(70, 80)] +
+      [(n, "D") for n in range(65, 70)] +
+      [(n, "F") for n in range(0, 65)]
+      ).get(number, "Invalid")
+
+# the dictionary in this function looks like this: {0: 'F', 1: 'F', 2: 'F', ... 99: 'A', 100: 'A'}
+
+map(lambda x: grade(x), grades)
+#=> ["A", "B", "D", "Invalid", "A", "C", "F"]
+```
+
+This is slower though since each time we call the function it will generate the dictionary. We can fix this by separating them out to make the dictionary first then simply call it:
+
+
+```python
+# Python
+letters = dict(
+    [(n, "A") for n in range(90, 101)] +
+    [(n, "B") for n in range(80, 90)] +
+    [(n, "C") for n in range(70, 80)] +
+    [(n, "D") for n in range(65, 70)] +
+    [(n, "F") for n in range(0, 65)]
+    )
+
+def grade(number): return letters.get(number, "Invalid")
+
+map(lambda x: grade(x), grades)
+#=> ["A", "B", "D", "Invalid", "A", "C", "F"]
+```
+
+# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
+### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
+---
+
+case; each | if/elif or dict | shorthand multiple `if` statements
+.insert | .insert(idx, elem) | add element(s) from array/string
+.delete_at | del a[idx:idx2] | remove element(s) from array/string
+.delete(e) | .remove(e) | remove element by element
+
+
 
 # Adding to / removing from arrays with:
 # Ruby: `.insert` / `.delete_at` / `.slice!` /  | JS: `.splice`
@@ -1748,27 +1840,12 @@ array.splice(4, 1, "Universe")
 //=> ["Hello", "Everyone", "In", "The", "Universe", "!", "How", "Are", "You?"]
 // start at index 4, delete 1 element out, then add "Universe" at index 4
 ```
-# Test if something's included - Ruby: `.include?` | JS: `.includes`
----
-There's a great way to test for inclusion which can be utilized in many ways, and surprisingly JS is the one here that can do more! While Ruby's `.include?` can only test to see if something is included:
 
-```ruby
-# Ruby
-array = [1, 2, 3, "hello", "world"]
-array.include?(3) #=> true
-array.include?("hello") #=> true
-array.include?(7) #=> false
-```
-JS can do this, but in addition it can even test for inclusion at a specific index!
-```javascript
-// Javascript
-array = [1, 2, 3, "hello", "world"]
-array.includes(3) //=> true
-array.includes("hello") //=> true
-array.includes(7) //=> false
-array.includes("world", 4) //=> true
-array.includes(1, 3) //=> false
-```
+
+
+
+
+
 
 
 # Ruby: `.call` / `.proc` | JS: `callbacks`
