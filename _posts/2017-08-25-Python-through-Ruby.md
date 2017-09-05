@@ -21,45 +21,46 @@ We'll be going over these loops, iterations, and global methods:
 Link | Ruby | Python Equivalent | Description
 ---|---|---|---
 |||**names of data types**
-[1)](#names-of-data-types) | Array | List | [ 1, 2, 3, 4 ]
+[1)](#1-names-of-data-types) | Array | List | [ 1, 2, 3, 4 ]
 | Hash | Dictionary | { 1: "one", 2: "two", 3: "three" }
 | N/A | Tuple | (1, 2, 3) (immutable)
 | N/A | Set | { 1, 2, 3 } (immutable)
-|||**string interpolation**
-2) | `"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
+|||**interpolation and structure**
+[2)](#2-string-interpolation) | `"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
+[3)](#3-structure) | do / end | : / space | formatting to open and close methods
 |||**functions**
-3) | `n.to_s` | `str(n)` | converts to string
-4) | `"10".to_i` | `int("10")` | converts to Integer 10
-5) | `"10".to_f` | `float("10")` | converts to Float 10.0
-6) | x.length | len(x) | length of an object (str, list, etc.)
-7) | (1...5).to_a | range(1,5) | creates a ranged array (different)
-8) | push / `<<` | append | add onto the end of an array
+[4)](#4-functions-to-change-data-types) | `n.to_s` | `str(n)` | converts to string
+| `"10".to_i` | `int("10")` | converts to Integer 10
+| `"10".to_f` | `float("10")` | converts to Float 10.0
+[5)](#5-length-of-an-object) | x.length | len(x) | length of an object (str, list, etc.)
+[6)](#6-ranges) | (1...5).to_a | range(1,5) | creates a ranged array (different)
+[7)](#7-pushappendpopshiftunshift) | push / `<<` | append | add onto the end of an array
 | pop(x) | pop(x) | remove from the end of the array (different)
 | unshift | a = [x] + a | add onto the beginning of an array
 | shift(x) | pop(0) | remove from the beginning of the array
-9) | .include? | in | find if something is included
+[8)](#8-testing-for-inclusion) | .include? | in | find if something is included
 |||**loops**
-10) | while / until | while | loops while condition is true
+[9)](#9-looping) | while / until | while | loops while condition is true
 |||**iteration**
-11) | for | for | iterate over each element, more used in Python
-12) | .each.with_index | for & enumerate | same, but also get the index
-13) | .map | for..in | in-line iteration
-14) | .keys | for..in | get all keys in a hash
-15) | .values | for..in | get all values in a hash
+[10)](#10-iterating-with-for) | for | for | iterate over each element, more used in Python
+[11)](#11-getting-the-index) | .each.with_index | for & enumerate | same, but also get the index
+[12)](#12-iterating-with-forin) | .map | for..in | in-line iteration
+| .keys | for..in | get all keys in a hash
+| .values | for..in | get all values in a hash
 |||**callback-esque functions**
-16) | .map | map | iterate over each element, changes the output
-17) | lambda | lambda | function called within a function
-18) | .map.with_index | map & enumerate | map, but also get the index
-19) | .reduce / .inject | reduce() | combines all elements via an operation
-20) | .select | filter | remove `nil` or `None` values from an array
+[13)](#13-iterating-and-manipulating) | .map | map | iterate over each element, changes the output
+[14)](#14-creating-functions-with-lambda) | lambda | lambda | function called within a function
+[15)](#15-getting-the-index-with-map) | .map.with_index | map & enumerate | map, but also get the index
+[16)](#16-manipulating-arrays-with-reduce) | .reduce / .inject | reduce() | combines all elements via an operation
+[17)](#17-selecting-from-an-array) | .select | filter | remove `nil` or `None` values from an array
 | .compact | filter | remove `nil` or `None` values from an array
 |||**selecting methods**
-21) | .slice | a[l:h:s] | select element(s) from array
-22) | .dup | a[:] | duplicates an object rather than copies
+[18)](#18-slice-aka-accessing) | .slice | a[l:h:s] | select element(s) from array
+[19)](#19-duplicating-an-arraylist) | .dup | a[:] | duplicates an object rather than copies
 |||**manipulating methods**
-23) | .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-24) | case; each | if/elif or dict | shorthand multiple `if` statements
-25) | .insert | .insert(idx, elem) | add element(s) from array/string
+[20)](#20-sorting-a-collection) | .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
+[21)](#21-easier-ifelseetc) | case; each | if/elif or dict | shorthand multiple `if` statements
+[22)](#22-adding-to--removing-from-arrays-with) | .insert | .insert(idx, elem) | add element(s) from array/string
 26) | .delete_at | del a[idx:idx2] | remove element(s) from array/string
 27) | .delete(e) | .remove(e) | remove element by element
 |||**extra functions**
@@ -80,7 +81,7 @@ set = { 1, 2, 3 }
 
 While tuples are used in Ruby they don't really have a name. It's basically used when taking in arguments such as `Time.local(2017, 8, 25)`. In Python that would be called a tuple but it's just arguments in Ruby. In order to use sets in Ruby you must `require 'set'` before you can `Set.new [1, 2, 3]`, and even then sets aren't commonly used in Ruby. More explanations of tuples and sets will be for another time, but when we reference things in Python arrays are lists and hashes are dictionaries.
 
-# String Interpolation
+# 2) String Interpolation
 ---
 Ruby and Javascript's only difference when it comes to string interpolation is a pound `#` sign vs. a dollar `$` sign respectively. While Python's quite different and a bit more complex, it lets you do **much** more customization. Here's what I mean, in Ruby you can do something like this:
 
@@ -175,7 +176,7 @@ print("The tank is %d%% full.") % 50
 #=>  The tank is 50% full.
 ```
 
-# Structure
+# 3) Structure
 ---
 One of the biggest, and possibly my favorite parts so far about Python is the way the language is structured. In Ruby you need to use `end` after you `do` something or declare something, however you won't see `end` when looking at Python scripts. Why? Python uses whitespace to structure scripts which makes it arguably much easier to read. If you're doing something inside a function, if you end a line with a colon `:`, just add some whitespace on the next line and Python will know you're inside it. Once you return to the left-most side Python will know you're moving on. Here's what I mean:
 
@@ -291,7 +292,7 @@ class Car
 The use of indenting the whitespace is very neat and makes the code much more readable. You can clearly see the cascade of where one part starts and the next continues. It's very much like a bulleted list. You can make a new animal by typing in `my_pet = Animal("dog", "Lily", 8)`.
 
 
-# Functions to change data types
+# 4) Functions to change data types
 ---
 Ruby has quite a few types of `.to_something` that can change the data types. This section will be short and sweet as it's fairly direct:
 
