@@ -1764,8 +1764,6 @@ case; each | if/elif or dict | shorthand multiple `if` statements
 .delete_at | del a[idx:idx2] | remove element(s) from array/string
 .delete(e) | .remove(e) | remove element by element
 
-
-
 # Adding to / removing from arrays with:
 # Ruby: `.insert` / `.delete_at` / `.slice!` /  | JS: `.splice`
 ---
