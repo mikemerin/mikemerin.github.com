@@ -21,7 +21,7 @@ Link | Ruby | JS Equivalent | Description
 [1)](#1-es6-notation) | N/A | Arrow Functions / Returns | ES2017 shorthands for cleaning your code
 [2)](#2-string-interpolation) | `"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
 |||**functions**
-[3)](#3-functions-to-change-data-types) | n.to_s | n.toString() | Converts to string
+[3)](#3-functions-to-change-data-type) | n.to_s | n.toString() | Converts to string
 | "10".to_i | parseInt("10") | Converts to Integer
 | "10".to_f | parseFloat("10") | Converts to Float (decimal)
 |||**loops**
