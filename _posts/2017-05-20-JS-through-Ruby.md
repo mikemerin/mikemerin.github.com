@@ -17,7 +17,6 @@ We'll be going over these loops, iterations, and global methods:
 
 Link | Ruby | JS Equivalent | Description
 ---|---|---|---
-
 |||**structure**
 [1)](#1-es6-notation) | N/A | Arrow Functions / Returns | ES2017 shorthands for cleaning your code
 [2)](#2-string-interpolation) | `"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
@@ -26,28 +25,28 @@ Link | Ruby | JS Equivalent | Description
 | "10".to_i | parseInt("10") | Converts to Integer
 | "10".to_f | parseFloat("10") | Converts to Float (decimal)
 |||**loops**
-[4)](#4-looping) | while / until | while | loops while condition is true
+[4)](#4-looping-with-while) | while / until | while | loops while condition is true
 ||**iteration**
-[5)](#-using-for) | for | for / for..in | iterate over each element, more used in JS
-| .each | .forEach | iterate over each element
-| .each.with_index | .forEach | same, but also get the index
-| .map | .map | iterate over each element, changes the output
-| .map.with_index | .map | same, but also get the index
+[5)](#5-using-for) | for | for / for..in | iterate over each element, more used in JS
+[6)](#6-iterating) | .each | .forEach | iterate over each element
+[7)](#7-getting-the-index) | .each.with_index | .forEach | same, but also get the index
+[8)](#8-iterating-and-manipulating-with-map) | .map | .map | iterate over each element, changes the output
+[9)](#9-mapping-with-the-index) | .map.with_index | .map | same, but also get the index
 |||**manipulating methods**
-| .reduce / .inject | .reduce | combines all elements via an operation
-| .flatten | .concat | merge multi-dimensional / nested arrays
-| .compact | .filter | remove `nil` or `null` values from an array
-| .sort / .sort_by | .sort | sort an array or hash/Object
-| case; each | switch; case | shorthand multiple `if` statements
-| .insert | .splice | add element(s) from array/string
+[10)](#10-manipulating-arrays-with-reduce) | .reduce / .inject | .reduce | combines all elements via an operation
+[11)](#11-making-arrays-neater) | .flatten | .concat | merge multi-dimensional / nested arrays
+[12)](#12-removing-unwanted-values) | .compact | .filter | remove `nil` or `null` values from an array
+[13)](#13-sorting-a-collection) | .sort / .sort_by | .sort | sort an array or hash/Object
+[14)](#14-easier-ifelseetc) | case; each | switch; case | shorthand multiple `if` statements
+[15)](#15-adding-to--removing-from-arrays) | .insert | .splice | add element(s) from array/string
 | .delete_at / .slice! | .splice | remove element(s) from array/string
 |||**selecting methods**
-| .include? | .includes | test if an element is included in an array/string
-| .keys | Object.keys() | get all keys in a hash
+[16)](#16-testing-for-inclusion) | .include? | .includes | test if an element is included in an array/string
+[17)](#17-keys-and-values) | .keys | Object.keys() | get all keys in a hash
 | .values | Object.values() | get all values in a hash
-| .slice | .slice | select element from array (different in Ruby vs. JS)
+[18)](#18-slice) | .slice | .slice | select element from array (different in Ruby vs. JS)
 |||**more functions**
-| call/procs | callbacks | function called within a function
+[19)](#19-callbacks) | call/procs | callbacks | function called within a function
 
 # 1) ES6 Notation
 ### Arrow Functions, Implicit Returns
@@ -386,7 +385,7 @@ array.map((x, i) => i) //=> [0,1,2,3,4]
 array.map((x, i) => x * i) //=> [0,20,60,120,200]
 ```
 
-# 9) Manipulating arrays with `.reduce`
+# 10) Manipulating arrays with `.reduce`
 ---
 Now let's go over what `.reduce` does (also known as `.inject` in ruby) and add up all values in the array, starting with the shortcut then expanding out to see what's under the hood. Note that all of these will produce the correct answer of 15:
 
@@ -480,7 +479,7 @@ array.reduce(multi) //=> 120
 array.reduce(multi, 2) //=> 240
 ```
 
-# 10) Making Arrays Neater
+# 11) Making Arrays Neater
 ### Ruby: `.flatten` | JS: `.concat`
 ---
 What happens when you have an array nested within an array (a multi-dimensional array) and want to make it look neater (into a single-dimensional array)? For example we want this ugly nested array:
@@ -530,7 +529,7 @@ The second way is by using `.apply`, which, well, applies what you want into an 
 
 Again though, the first method is shorter and is much more useful especially for multiple arrays. It's good to know though what `.apply` can do.
 
-# 11) Removing Unwanted Values
+# 12) Removing Unwanted Values
 ### Ruby: `.compact` | JS: `.filter`
 ---
 Hold on though, in the above example, even though we ran `flatten`/`concat` on our array, we still have a `nil`/`null` value in there. To get rid of them we simply run the following in Ruby:
@@ -554,7 +553,7 @@ The first basically says: "filter this array by calling the element, and if it's
 
 The third/fourth filters show the usefulness of filtering out our array as we can test if certain things are true, in this case testing which elements are even or odd respectively. Notice that `null` still passes as `null % 2` is 0, weird right?
 
-# 12) Sorting a Collection
+# 13) Sorting a Collection
 ### array/string/hash/Object with `.sort`
 ---
 
@@ -734,7 +733,7 @@ Object.keys(object).sort( (a,b) => object[a] - object[b] ).map(x => `${x}: ${has
 
 In basic terms, we sort the values by descending order but we can only get an array of keys back, then we just map that key on itself to get the values.
 
-# 13) Easier if/else/etc
+# 14) Easier if/else/etc
 ### Ruby: `Case; each` | JS: `Switch; case`
 ---
 The thing about `if/else/elsif/else if` statements is that they can get very repetitive, especially when going through multiple conditions. Say we're watching West Wing and want to get a main character's White House title. We *could* do a series of if statements:
@@ -879,7 +878,7 @@ grades.map(grade => {
 
 Both of these output `["A", "B", "D", "That grade is impossible!", "A", "C", "F"]`, great!
 
-# 14) Adding to / removing from arrays
+# 15) Adding to / removing from arrays
 ### Ruby: `.insert` / `.delete_at` / `.slice!` /  | JS: `.splice`
 ---
 It's easy to use `.unshift`/`.shift`/`.push`/`.pop` to add/remove items from the beginning/end of arrays respectively, but what about when we have to add/remove items at certain points *within* the array? Ruby uses `.insert` and `.delete_at`/`.slice!` to do these separately.
@@ -953,7 +952,7 @@ array.splice(4, 1, "Universe")
 //=> ["Hello", "Everyone", "In", "The", "Universe", "!", "How", "Are", "You?"]
 // start at index 4, delete 1 element out, then add "Universe" at index 4
 ```
-# 15) Testing for inclusion
+# 16) Testing for Inclusion
 ### Ruby: `.include?` | JS: `.includes`
 ---
 There's a great way to test for inclusion which can be utilized in many ways, and surprisingly JS is the one here that can do more! While Ruby's `.include?` can only test to see if something is included:
@@ -978,7 +977,7 @@ array.includes("world", 4) //=> true
 array.includes(1, 3) //=> false
 ```
 
-# 16) Keys and Values
+# 17) Keys and Values
 ---
 If you have a Hash in ruby you can simply call `.keys` or `.values` on it to easily get their information:
 
@@ -997,7 +996,7 @@ Object.keys(pets) //=> ["dogs", "cats", "birds"]
 Object.values(pets) //=> [3, 2, 1]
 ```
 
-# 17) slice
+# 18) slice
 ---
 Slice is a nice method that goes into an array (or string) and selects the element(s) of your choice. While in Ruby you can directly call on the array/string to get these values using `array[0]` for the first value, or in Ruby only doing more fancy `array[1..4]` to get
 
@@ -1052,7 +1051,7 @@ array.slice(2) || array.slice(2,array.length) || array.slice(2, 5)
 array.slice(2, 4) //=> ["How", "Are"]
 ```
 
-# 18) Callbacks
+# 19) Callbacks
 ### Ruby: `.call` / `.proc` | JS: `callbacks`
 ---
 Finally, what if we had a function inside of another function? Let's come back to that question shortly.
