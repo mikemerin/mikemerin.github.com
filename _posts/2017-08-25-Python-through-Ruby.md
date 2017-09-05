@@ -61,10 +61,10 @@ Link | Ruby | Python Equivalent | Description
 [20)](#20-sorting-a-collection) | .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
 [21)](#21-easier-ifelseetc) | case; each | if/elif or dict | shorthand multiple `if` statements
 [22)](#22-adding-to--removing-from-arrays) | .insert | .insert(idx, elem) | add element(s) from array/string
-23) | .delete_at | del a[idx:idx2] | remove element(s) from array/string
-24) | .delete(e) | .remove(e) | remove element by element
+| .delete_at | del a[idx:idx2] | remove element(s) from array/string
+| .delete(e) | .remove(e) | remove element(s) by element
 |||**extra functions**
-25) | call/proc | N/A: inherent | function called within a function
+[23)](#23-calls-and-procs) | call/proc | N/A: inherent | function called within a function
 
 # 1) Names of data types
 ---
@@ -1757,23 +1757,13 @@ map(lambda x: grade(x), grades)
 #=> ["A", "B", "D", "Invalid", "A", "C", "F"]
 ```
 
-# WORK IN PROGRESS BELOW. WORKING OVER THE NEXT FEW DAYS
-### IGNORE WHAT'S BELOW, IT'LL BE CONVERTED FROM JS
----
-
-case; each | if/elif or dict | shorthand multiple `if` statements
-.insert | .insert(idx, elem) | add element(s) from array/string
-.delete_at | del a[idx:idx2] | remove element(s) from array/string
-.delete(e) | .remove(e) | remove element by element
-
-
-
 # 22) Adding to / removing from arrays
-# Ruby: `.insert` / `.delete_at` / `.slice!` /  | JS: `.splice`
 ---
-It's easy to use `.unshift`/`.shift`/`.push`/`.pop` to add/remove items from the beginning/end of arrays respectively, but what about when we have to add/remove items at certain points *within* the array? Ruby uses `.insert` and `.delete_at`/`.slice!` to do these separately.
+#### Adding with Ruby: `.insert` | Python: `insert(idx, elem)` / accessing
 
-`.insert` takes in an index along with a value (or values) you'd like to add, while `.delete_at` takes in just an index:
+It's easy to use `.unshift`/`.shift`/`.push`/`.pop` to add/remove items from the beginning/end of arrays respectively, but what about when we have to add/remove items at certain points *within* the array? `insert` comes to the rescue, though it works differently in both languages.
+
+Ruby's `.insert` takes in an index along with a value (or values) you'd like to add:
 
 ```ruby
 # Ruby
@@ -1781,100 +1771,95 @@ array = ["Hello", "World", "How", "Are", "You?"]
 
 array.insert(2, "!") #=> ["Hello", "World", "!", "How", "Are", "You?"]
 
-array.insert(1,"Everyone", "In", "The")
+array.insert(1, "Everyone", "In", "The")
 #=> ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
-
-array.delete_at(5) #=> ["Hello", "Everyone", "In", "The", "World", "How", "Are", "You?"]
-array.slice!(0) # array #=> ["Everyone", "In", "The", "World", "How", "Are", "You?"]
-```
-JS can do both of these with one method, `.splice`! Splice like `.insert` or `.delete_at` takes in an index, and while the rest are optional they change splice's behavior entirely. Splice's default behavior is to delete, and we need those extra values in there to instead insert. Here's how it looks:
-
-`array.splice(index, how_many_positions_out_to_delete, add_element(s) )`
-
-Since `.splice` is destructive (changes the array permanently), in these examples I'll be remaking the array quite a bit. Let's test it out bit by bit:
-
-```javascript
-// Javascript
-array = ["Hello", "World", "How", "Are", "You?"]
-
-array.splice(2)
-array //=> ["Hello", "World"]
-```
-If we just put in one value (the index), it will delete all elements starting at that index until the end of the array. It works the same as if we put in a second value:
-```javascript
-// Javascript
-array = ["Hello", "World", "How", "Are", "You?"]
-
-array.splice(2, 100)
-array //=> ["Hello", "World"]
-```
-In this case we're deleting all elements starting at index 2 and going 100 elements out, which covers the end of the array. Let's try deleting just a few at a time instead:
-```javascript
-// Javascript
-array = ["Hello", "World", "How", "Are", "You?"]
-
-array.splice(2, 0)
-array //=> ["Hello", "World", "How", "Are", "You?"]
-// start at index 2, then delete 0 elements out (which is none!)
-
-array.splice(2, 1) //=> ["How"] removed
-array //=> ["Hello", "World", "Are", "You?"]
-// start at index 2, then delete 1 element out (just 2)
-
-array = ["Hello", "World", "How", "Are", "You?"]
-array.splice(1, 3) //=> ["World", "How", "Are"] removed
-array //=> ["Hello", "You?"]
-// start at index 1, then delete 3 elements out (1-3)
-```
-Anything after these two numbers is **added** to the array, so let's mimic what we did in Ruby:
-```javascript
-// Javascript
-array = ["Hello", "World", "How", "Are", "You?"]
-
-array.splice(2, 0, "!") //=> ["Hello", "World", "!", "How", "Are", "You?"]
-// start at index 2, delete nothing, then add "!" at index 2
-
-array.splice(1, 0, "Everyone", "In", "The")
-//=> ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
-// start at index 1, delete nothing, then add "Everyone", "In", and "The" at index 1
-
-array.splice(4, 1, "Universe")
-//=> ["Hello", "Everyone", "In", "The", "Universe", "!", "How", "Are", "You?"]
-// start at index 4, delete 1 element out, then add "Universe" at index 4
 ```
 
-
-
-
-
-
-
-
-# Ruby: `.call` / `.proc` | JS: `callbacks`
----
-
-We'll be using lambda quite a bit with other major functions, but first I wanted to touch on actual callbacks. In JavaScript
+Puthon's insert method works the same way *but can only add* ***one*** *element at once*. There's another way to add multiple elements at once though by taking advantage of its slice aka accessing method. If you use brackets and a colon like `[x:x]` you can add as many elements as you want and it will flatten it automatically as it inserts it.
 
 ```python
-def double(n):
-  return n*2
+# Python
+array = ["Hello", "World", "How", "Are", "You?"]
 
-def triple(n):
-  return n*3
+array.insert(2, "!") #=> ["Hello", "World", "!", "How", "Are", "You?"]
 
-def multi(n, type):
-  return type(n)
-
-double(5) #=> 10
-triple(5) #=> 15
-multi(10, double) #=> 20
+array[1:1] = ["Everyone", "In", "The"]
+#=> ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
 ```
 
+#### Removing with Ruby: `.delete_at` / `.slice!` | Python: `del a[idx:idx2]`
 
+Ruby's `.delete_at` takes in just the index as its argument, however we can use the `slice` method (that normally selects an element at an index) and make its selection permanent by changing it to `slice!`. This will let us remove a range of elements rather than just one. Note that when you use `.delete_at` or `slice/slice!`, just like with pop/shift it will **return the removed item(s)**, and you'll need to call on the array again to see its values:
 
-Finally, what if we had a function inside of another function? Let's come back to that question shortly.
+```ruby
+# Ruby
+array.delete_at(5) #=> "!"
+array #=> ["Hello", "Everyone", "In", "The", "World", "How", "Are", "You?"]
 
-Say we were writing a function that did a few complicated things within it, but then wanted to easily change them or call on them again? For example, what if we wanted to multiply two numbers but have them squared first? We *could* do something like write it all out:
+array.slice!(0) #=> "Hello"
+array #=> ["Everyone", "In", "The", "World", "How", "Are", "You?"]
+
+array.slice!(1,3) #=> ["In", "The", "World"]
+array #=> ["Everyone", "How", "Are", "You?"]
+```
+
+Python's `del` method works the same way except it doesn't return the removed element(s), only changes the array. However it also does what Ruby's `slice!` method can do by using a range:
+
+```python
+# Python
+del array[5] #=>
+array #=> ["Hello", "Everyone", "In", "The", "World", "How", "Are", "You?"]
+
+del array[0] #=>
+array #=> ["Everyone", "In", "The", "World", "How", "Are", "You?"]
+
+del array[1:4] #=>
+array #=> ["Everyone", "How", "Are", "You?"]
+```
+
+#### Removing element(s) by element Ruby: `.delete(e)` | Python: `.remove(e)`
+
+Finally you can remove elements by their name rather than their index. For example I can remove any element that is a 4 by doing:
+
+```ruby
+# Ruby
+array = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+
+array.delete(4) #=> 4
+array #=> [1, 2, 3, 5, 1, 2, 3, 5]
+```
+
+Though in Python it will simple find the first one and remove it, not all of them:
+
+```python
+# Python
+array = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+
+array.remove(4) #=>
+array #=> [1, 2, 3, 5, 1, 2, 3, 4, 5]
+```
+
+There is a fix though iI you want to remove multiple of the same element at the same time just like in Ruby. To do it just map it out:
+
+```python
+# Python
+array = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+
+array = [x for x in array if x != 4]
+array #=> [1, 2, 3, 5, 1, 2, 3, 5]
+
+# and you can do multiple arguments this way as well
+array = [x for x in array if x != 2 and x != 5]
+array #=> [1, 3, 1, 3]
+```
+
+# 23) Calls and Procs
+### Ruby: `.call` / `.proc` | Python: N/A, it's inherent
+---
+
+While Ruby can handle calls and procs aka callbacks, aka a function inside of another function, in Python you don't need to do any of that since it can handle it inherently.
+
+Let's quickly go through the complication in Ruby first to see how easily Python handles this. Say we were writing a function that did a few complicated things within it, but then wanted to easily change them or call on them again? For example, what if we wanted to multiply two numbers but have them squared first? We *could* do something like write it all out:
 
 ```ruby
 # Ruby
@@ -1884,13 +1869,8 @@ end
 
 multiply_squared(2, 3) #=> 2*2 * 3*3 = 4 * 9 = 36
 ```
-```javascript
-// Javascript
-function multiply_squared(x, y) { x*x * y*y }
 
-multiply_squared(2, 3) //=> 2*2 * 3*3 = 4 * 9 = 36
-```
-Great, but what if instead of squaring these I wanted to cube them? What if I wanted to have `x` equal another equation? Sure for cubing I could simply change the equation to `2*2*2 * 3*3*3` but that'd get messy especially if I wanted to add another one to the exponent, or I could change the equation to `2**3 * 3**3` and just simply change the exponent that way, but that'd get tedious and I also wouldn't be able to call that as its own function. For `x` as another equation that'd also get ugly as for example `multiply_squared(2, (32/8) + 4)`. `.call` / `.proc` in Ruby and `callbacks` in Javascript fix this.
+Great, but what if instead of squaring these I wanted to cube them? What if I wanted to have `x` equal another equation? Sure for cubing I could simply change the equation to `2*2*2 * 3*3*3` but that'd get messy especially if I wanted to add another one to the exponent, or I could change the equation to `2**3 * 3**3` and just simply change the exponent that way, but that'd get tedious and I also wouldn't be able to call that as its own function. For `x` as another equation that'd also get ugly as for example `multiply_squared(2, (32/8) + 4)`. `.call` / `.proc`.
 
 In Ruby, we can first make a `Proc` which is a function that can be called on in the future. For example:
 
@@ -1905,7 +1885,9 @@ say_hello.call #=> "hello"
 
 say_hello()
 ```
+
 A proc is an object that has its own set of variables. If you know about classes, then the `<Proc:0x007fbf7019b270@(irb):41>` looks very similar:
+
 ```ruby
 # Ruby
 class Dog
@@ -1920,7 +1902,9 @@ end
 dog = Dog.new("Lily", "Pit Mix")
 #=> <Dog:0x007fbf701290d0 @name="Lily", @breed="Pit Mix">
 ```
+
 So what can we do with Procs? Here's an example of what a basic function, and then a proc function does:
+
 ```ruby
 # Ruby
 def multi_basic(x, y)
@@ -1936,6 +1920,7 @@ end
 multi_proc(2, 3) #=> <Proc:0x007fbf701808d0@(irb):47>
 multi_proc(2, 3).call #=> 6
 ```
+
 Why is this so special? Our proc isn't simply the answer to `2*3`, it's an **object** that stores that answer, and we can call on it at any point or even do more with it. In the very simplest form we can create an object that simply can output the answer:
 
 ```ruby
@@ -1963,7 +1948,9 @@ multiply_by_thirty = multiply(30)
 multiply_by_thirty.call(5) #=> 150
 multiply_by_thirty.call(25) #=> 750
 ```
+
 If we wrote these same scripts out as functions within a function it would get pretty messy. Going back to what we did before:
+
 ```ruby
 # Ruby
 def multiply_squared(x, y)
@@ -1977,109 +1964,55 @@ multiply_squared(multiply_by_six.call(2), 2) #=> 12*12 * 2*2 = 144 * 4 = 576
 multiply_six_squared = Proc.new { |x,y| multiply_by_six.call(x)**2 * y**2 }
 multiply_six_squared.call(2, 2) #=> 576
 ```
-We have our object to call on, and can change it any way we want. Why did I take a long time to go through what these do? Because this is one of those times where Javascript makes things easier than Ruby and it's important to be able to visualize what goes on under the hood. Here's how a callback would work in Javascript; see if you can see the similarities:
+We have our object to call on, and can change it any way we want. Now in Python, here's how easy everything is:
 
-```javascript
-// Javascript
-var say_hello = function() { console.log("Hello") }
-say_hello() //=> "Hello"
+```python
+# Python
+def double(n): return n*2
 
-// The same in ES6 notation:
+def triple(n): return n*3
 
-var say_hello = () => { console.log("Hello") }
-say_hello() //=> "Hello"
+double(5) #=> 10
+triple(5) #=> 15
 
-// as a callback:
+# and the magic:
+def multi(n, type): return type(n)
 
-var say_hello_callback = function(callback) { callback }
-say_hello_callback(console.log("Hello")) //=> "Hello"
-
-// ES6
-var say_hello_callback = callback => { callback }
-say_hello_callback(console.log("Hello")) //=> "Hello"
-
-// extract "hello" as another callback
-
-function hello() { return "Hello" }
-say_hello_callback(console.log( hello() )) //=> "Hello"
+multi(10, double) #=> 20
 ```
-As you can see, Javascript handles our "proc" by just naming a function. Let's callback even further:
-```javascript
-// Javascript
-var say_hello_to_someone = function(name) { console.log(`Hello ${name}!`) }
-say_hello_to_someone("Mike") //=> "Hello Mike!"
 
-//ES6:
-var say_hello_to_someone = name => { console.log(`Hello ${name}!`) }
-say_hello_to_someone("Mike") //=> "Hello Mike!"
+As you can see, Python handles our "proc" by just naming a function with multiple arguments and then calling it. We don't need to do anything fancy. That being said let's get fancy:
 
-// extract "hello" again
+```python
+# Python
+def double(n): return n*2
 
-function hello() { return "Hello" }
-var say_hello_to_someone = name => { console.log(`${hello()} ${name}!`) }
-say_hello_to_someone("Mike") //=> "Hello Mike!"
+def triple(n): return n*3
 
-// and name
+def multi_with_order(n, type, name):
+  return "If we {} {} we'll get {}".format(name, n, type(n))
 
-function hello() { return "Hello" }
-function name() { return "Mike" }
-var say_hello_to_someone = () => { console.log(`${hello()} ${name()}!`) }
-say_hello_to_someone() //=> "Hello Mike!"
+multi_with_order(5, double, "double") #=> "If we double 5 we'll get 10"
+multi_with_order(5, triple, "triple") #=> "If we triple 5 we'll get 15"
 
-// with a callback
+# fanciness intensifies
 
-var say_hello_to_someone_callback = (callback) => { callback }
-say_hello_to_someone_callback(console.log(`${hello()} ${name()}!`))
+def square(n): return n**2
 
-// double callback!
+def multi_twice(n, type1, type2): return type1(type2(n))
 
-function greeting() { return "Hello" }
-function name() { return "Mike" }
-function log() { console.log(`${hello()} ${name()}!`) }
-var say_hello_to_someone_callback_callback(callback_2) = (callback) => { callback }
-say_hello_to_someone_callback_callback(log()) //=> "Hello Mike!"
-
-// another way with multiple inputs
-
-var say_hello_to_someone_input = (greeting, name) => { console.log(`${greeting} ${name}!`) }
-say_hello_to_someone_input("Hello", "Mike") //=> "Hello Mike!"
-say_hello_to_someone_input(greeting(), name()) //=> "Hello Mike!"
+multi_twice(5, double, double) #=> 20
+multi_twice(5, double, triple) #=> 30
+multi_twice(5, triple, triple) #=> 45
+multi_twice(5, triple, square) #=> 50
+multi_twice(5, square, triple) #=> 100
 ```
-We can even call our function and do things before we callback:
-```javascript
-// Javascript
-var lastly_say_hello_callback = callback => {
-  console.log("Loading greeting...")
-  callback
-}
-lastly_say_hello_callback(console.log("Hello"))
-//=> "Hello"
-//=> "Loading greeting..."
-```
-Oops our greeting callback loaded before our loading message because this is asynchronous. Let's add a `timeout` to our callback:
-```javascript
-// Javascript
-var lastly_say_hello_callback = callback => {
-  console.log("Loading greeting...")
-  setTimeout(callback, 1000)
-}
-lastly_say_hello_callback(()=>console.log("Hello"))
-//=> "Loading greeting..."
-// sleep for 1 second
-//=> "Hello"
-```
-And to be really cheeky, let's have some callbacks that also take in inputs:
-```javascript
-// Javascript
-function log(greeting, name) { console.log(`${greeting} ${name}!`) }
-function say_hello_to_someone_callback_inputs(callback) { callback(arguments[1], arguments[2]) }
-say_hello_to_someone_callback_inputs(log, "Hello", "Mike")
-```
+
 There's so much more you can do with this, try it out yourselves!
 
 ---
 
-So that covers some of the most important JS loops/iterations/methods. If there are any others you'd like added let me know!
+So that covers some of the most important Python loops/iterations/methods. If there are any others you'd like added let me know!
 
 Code on.
 
