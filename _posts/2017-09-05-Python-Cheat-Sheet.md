@@ -4,7 +4,7 @@ title:  "A Python Cheat Sheet"
 date:   2017-09-05 23:28:15 -0400
 categories: python, tutorial
 ---
-This is an abbreviated cheat sheet for Python. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/JS-through-Ruby/), which I highly recommend.
+This is an abbreviated cheat sheet for Python. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/Python-through-Ruby/), which I highly recommend.
 
 
 ES6  | Arrow Functions | Callbacks | while
