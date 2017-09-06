@@ -9,7 +9,7 @@ If you learned how to program in Ruby, you probably noticed there's a large amou
 
 I also have a [Python through Ruby](https://mikemerin.github.io/Python-through-Ruby/) post in the same fashion as this post if you're interested.
 
-**I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/JavaScript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
+**I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/Javascript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
 
 I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation.
 
