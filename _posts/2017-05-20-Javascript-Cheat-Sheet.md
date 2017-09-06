@@ -683,3 +683,30 @@ array #=> [1, 2, 3, 5, 1, 2, 3, 5]
 array = [x for x in array if x != 2 and x != 5]
 array #=> [1, 3, 1, 3]
 ```
+
+### callback / call/proc
+Inherent to Python
+
+```python
+def double(n): return n*2
+
+def triple(n): return n*3
+
+def multi(n, type): return type(n)
+
+multi(10, double) #=> 20
+
+def multi_with_order(n, type, name):
+  return "If we {} {} we'll get {}".format(name, n, type(n))
+
+multi_with_order(5, double, "double") #=> "If we double 5 we'll get 10"
+multi_with_order(5, triple, "triple") #=> "If we triple 5 we'll get 15"
+
+def multi_twice(n, type1, type2): return type1(type2(n))
+
+multi_twice(5, double, double) #=> 20
+multi_twice(5, double, triple) #=> 30
+multi_twice(5, triple, triple) #=> 45
+multi_twice(5, triple, square) #=> 50
+multi_twice(5, square, triple) #=> 100
+```
