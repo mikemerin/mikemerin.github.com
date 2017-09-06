@@ -8,10 +8,10 @@ This is an abbreviated cheat sheet for Javascript. If you want an detailed expla
 
 
 ES6  | Arrow Functions | Callbacks | while
- for | for..in | .forEach | .map
- .reduce | concat | .filter | .sort
- switch; case | .splice | .includes
- Object.keys() | Object.values() | .slice
+for | for..in | .forEach | .map
+.reduce | concat | .filter | .sort
+switch; case | .splice | .includes
+Object.keys() | Object.values() | .slice
 
 ### Type Conversions
 ```javascript
@@ -24,7 +24,7 @@ parseInt("10") //=> 10
 parseInt("10", 10) //=> 10
 
 // to float (decimal)
- parseFloat("10.5") //=> 10.5
+parseFloat("10.5") //=> 10.5
  ```
 
 ### ES6 Notation, Arrow Functions, and Implicit Returns
@@ -46,6 +46,7 @@ x => { return x * 2 }
 x => x * 2     // same here
 (x) => (x * 2) // same here
 ```
+
 ### Callbacks
 Lets you call functions inside of functions
 
@@ -89,8 +90,10 @@ array = []
 while ( x < 6 ) { array.push(x); x++ }
 array //=> [1,2,3,4,5]
 ```
+
 ### for / for..in
 Iterate over an array (or string) and perform code on each element
+
 ```javascript
 for ( initialization; condition (optional); expression ) { code block }
 for ( variable in object) { code block }
@@ -106,8 +109,10 @@ for (let i in array) { array2.push( array[i] ) }
 
 // array2 in both becomes [1,2,3,4,5]
 ```
+
 ### .forEach
 Iterate over an array (or string) and perform code on each element
+
 ```javascript
 array.forEach( function(callback) { code block } )
 
@@ -117,8 +122,10 @@ array.forEach( function(x) { array2.push(x) } )
 array.forEach( x => array2.push(x) )
 array.forEach( (x, i) => console.log(`The index is ${i}, the element is ${x}`) )
 ```
+
 ### .map
 iterates over each element, but also changes the output
+
 ```javascript
 array.map( function(callback) { code block } )
 
@@ -128,8 +135,10 @@ array.map(x => x * 2) //=> [2,4,6,8,10]
 array.map((x, i) => i) //=> [0,1,2,3,4]
 array.map((x, i) => x * i) //=> [0,2,6,12,20]
 ```
+
 ### .reduce
 Reduce each element in the array to a single value
+
 ```javascript
 array.reduce(callback, default value (optional) )
 
@@ -141,7 +150,6 @@ array.reduce( function(sum, x) { return sum + x }, 0 )
 array.reduce( (sum, x) => { return sum + x } )
 array.reduce( (sum, x) => { return sum + x }, 0 )
 
-
 const sum = (sum,x) => {return sum+x}
 const multi = (multi,x) => {return multi*x}
 
@@ -151,8 +159,10 @@ array.reduce(sum, 10) //=> 25
 array.reduce(multi) //=> 120
 array.reduce(multi, 2) //=> 240
 ```
+
 ### Spread operator
 Spreads out an array to call on all individual elements
+
 ```javascript
 a1 = [1,2,3]
 a2 = [4,5,6]
@@ -161,8 +171,10 @@ a2 = [4,5,6]
 [...a1,a2] //=> [1,2,3, [4,5,6] ]
 [...a1,...a2] //=> [1,2,3,4,5,6]
 ```
+
 ### .concat
 Turn one (or more) multi-dimensional array(s) into a single-dimensional array  
+
 ```javascript
 [].concat(*values_or_arrays)
 
@@ -172,8 +184,10 @@ array = [1, 2, [[3, 4], 5], [6, 7], 8, 9]
 [].concat(0, ...array) //=> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 [].concat(...[-1,0], ...array, "woo!") //=> [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "woo!"]
 ```
+
 ### Filter
 Filter the values you want to keep
+
 ```javascript
 array.filter(callback)
 
@@ -182,8 +196,10 @@ array.filter(callback)
 [1, 2, 3, null, 4, 5].filter(x => x % 2 === 0) //=> [2, 4, null]
 [1, 2, 3, null, 4, 5].filter(x => x % 2 === 1) //=> [1, 3, 5]
 ```
+
 ### Sort
 Sort an array, Object, or combination of them
+
 ```javascript
 var array_string = ["hey", "everyone", "how's", "it", "going?"]
 array_string.sort() //=> [ "everyone", "going?", "hey", "how's", "it" ]
@@ -221,8 +237,10 @@ Object.keys(object).sort( (a,b) => object[a] - object[b] ).map(x => `${x}: ${has
     // 'Queens:       2230545',
     // 'Brooklyn:     2504706' ]
 ```
+
 ### Switch; case
 Simplifying multiple `if/else if/else` statements
+
 ```javascript
 switch(value_or_expression) {
   case x: code_block
@@ -272,9 +290,11 @@ grades.map(grade => {
     default: return "That grade is impossible!"
   }
 }) //=> ["A", "B", "D", "A", "C", "F"]
+
 ```
 ### .splice
 Add or remove elements from an array/string
+
 ```javascript
 array.splice(index, how_many_positions_out_to_delete, add_element(s) )
 
@@ -294,8 +314,10 @@ array.splice(1, 0, "Everyone", "In", "The")
 //=> ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
 // start at index 1, delete nothing, then add "Everyone", "In", and "The" at index 1
 ```
+
 ### .includes
 Test if a something is included in an array
+
 ```javascript
 array.includes(element, index)
 
@@ -307,15 +329,19 @@ array.includes(7) //=> false
 array.includes("world", 4) //=> true
 array.includes(1, 3) //=> false
 ```
+
 ### Object.keys() / Object.values()
 Get all keys or values in a hash
+
 ```javascript
 Object.keys(pets) //=> ["dogs", "cats", "birds"]
 Object.values(pets) //=> [3, 2, 1]
+
 ```
 ### .slice
 Select element(s) from an array, from a start_index up until an end_index
 The start_index's default is 0, the end_index's default is the end of the array
+
 ```javascript
 array.slice(start_index, end_index)
 
