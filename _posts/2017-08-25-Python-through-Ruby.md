@@ -41,28 +41,28 @@ Link | Ruby | Python Equivalent | Description
 [9)](#9-looping) | while / until | while | loops while condition is true
 |||**iteration**
 [10)](#10-iterating-with-for) | for | for | iterate over each element, more used in Python
+ | .map | for..in | in-line iteration
 [11)](#11-getting-the-index) | .each.with_index | for & enumerate | same, but also get the index
-[12)](#12-iterating-with-forin) | .map | for..in | in-line iteration
 | .keys | for..in | get all keys in a hash
 | .values | for..in | get all values in a hash
 |||**callback-esque functions**
-[13)](#13-iterating-and-manipulating) | .map | map | iterate over each element, changes the output
-[14)](#14-creating-functions-with-lambda) | lambda | lambda | function called within a function
-[15)](#15-getting-the-index-with-map) | .map.with_index | map & enumerate | map, but also get the index
-[16)](#16-manipulating-arrays-with-reduce) | .reduce / .inject | reduce() | combines all elements via an operation
-[17)](#17-selecting-from-an-array) | .select | filter | remove `nil` or `None` values from an array
+[12)](#12-iterating-and-manipulating) | .map | map | iterate over each element, changes the output
+[13)](#13-creating-functions-with-lambda) | lambda | lambda | function called within a function
+[14)](#14-getting-the-index-with-map) | .map.with_index | map & enumerate | map, but also get the index
+[15)](#15-manipulating-arrays-with-reduce) | .reduce / .inject | reduce() | combines all elements via an operation
+[16)](#16-selecting-from-an-array) | .select | filter | remove `nil` or `None` values from an array
 | .compact | filter | remove `nil` or `None` values from an array
 |||**selecting methods**
-[18)](#18-slice-aka-accessing) | .slice | a[l:h:s] | select element(s) from array
-[19)](#19-duplicating-an-arraylist) | .dup | a[:] | duplicates an object rather than copies
+[17)](#17-slice-aka-accessing) | .slice | a[l:h:s] | select element(s) from array
+[18)](#18-duplicating-an-arraylist) | .dup | a[:] | duplicates an object rather than copies
 |||**manipulating methods**
-[20)](#20-sorting-a-collection) | .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
-[21)](#21-easier-ifelseetc) | case; each | if/elif or dict | shorthand multiple `if` statements
-[22)](#22-adding-to--removing-from-arrays) | .insert | .insert(idx, elem) | add element(s) from array/string
+[19)](#19-sorting-a-collection) | .sort / .sort_by | sorted(a, opt_arg) | sort an array or hash/Object
+[20)](#20-easier-ifelseetc) | case; each | if/elif or dict | shorthand multiple `if` statements
+[21)](#21-adding-to--removing-from-arrays) | .insert | .insert(idx, elem) | add element(s) from array/string
 | .delete_at | del a[idx:idx2] | remove element(s) from array/string
 | .delete(e) | .remove(e) | remove element(s) by element
 |||**extra functions**
-[23)](#23-calls-and-procs) | call/proc | N/A: inherent | function called within a function
+[22)](#22-calls-and-procs) | call/proc | N/A: inherent | function called within a function
 
 # 1) Names of data types
 ---
@@ -608,7 +608,7 @@ array #=> [1, 2, 3, 4, 5]
 
 While in this case our Python script looks a bit cleaner, this is by no means the cleanest way to do this type of operation. There are quite a few ways to shorten this, including a trick using `.reduce` (also known as `.inject` in Ruby only), but I'll cover that later on.
 
-# 10) Iterating with `for`
+# 10) Iterating with `for..in`
 ---
 While `for` isn't used much in Ruby (since `while`, `until`, or other iterations can do much more, are cleaner, and get the job done easier), it's very important in Python. We can use the `range` trick we learned before to make a cleaner 1-5 array, or modify it.
 
@@ -693,63 +693,7 @@ for l in s:
 s2 #=> "|h|e|y| |a|l|l"
 ```
 
-# 11) Getting the index
-### Ruby: `.each_with_index` | Python: `enumerate`
----
-
-Iterating with `for` is okay but sometimes we want to use the index along with the element. Ruby has the easy to use methods `.each_with_index` or `each.with_index` that lets you simply grab both in a block. Python's not too far off though you need to use `enumerate` in order to do it. It's a little less intuitive but it works nonetheless:
-
-```ruby
-# Ruby
-array = ["a","b","c","d","e"]
-array.each_with_index do |x, i|
-  puts "#{x} is at index #{i}"
-end
-
-''' result:
-a is at index 0
-b is at index 1
-c is at index 2
-d is at index 3
-e is at index 4
-'''
-```
-
-each with index equivalent
-```python
-# Python
-array = ["a","b","c","d","e"]
-for i, x in enumerate(array):
-  print x + " is at index " + str(i)
-
-''' result:
-a is at index 0
-b is at index 1
-c is at index 2
-d is at index 3
-e is at index 4
-'''
-```
-
-And last up can use the index in math:
-
-```ruby
-# Ruby
-array = []
-(1..5).each_with_index { |x, i| array << x*i }
-array #=> [0, 2, 6, 12, 20]
-```
-
-```python
-# Python
-array = []
-for i, x in enumerate(range(1,6)): array.append(i*x)
-array #=> [0, 2, 6, 12, 20]
-```
-
-# 12) Iterating with `for..in`
----
-`for` is useful, but we're sandwiching in our script between creating an empty array, pushing/appending to it, and then displaying it. It's better practice to do it all at once. Ruby can use `.map` to help, and we'll get to mapping in Python later, but for now we'll build off of the `for` method from before. After all `for` in Python is technically more useful and better practice overall, an Python mapping is more of a callback. Anyways here's how `for` works:
+`for..in` is useful, but we're sandwiching in our script between creating an empty array, pushing/appending to it, and then displaying it. It's better practice to do it all at once. Ruby can use `.map` to help, and we'll get to mapping in Python later, but for we'll simply surround our `for..in` script inside of hard brackets to create our array in one line. After all `for` in Python is technically more useful and better practice overall, an Python mapping is more of a callback. Anyways here's how our one line function works works:
 
 ```ruby
 # Ruby
@@ -785,7 +729,61 @@ Note that I just named `key` in there to make things clearer but the value can b
 [x*i for i, x in enumerate(range(1,6))] #=> [0, 2, 6, 12, 20]
 ```
 
-# 13) Iterating and manipulating
+# 11) Getting the index
+### Ruby: `.each_with_index` | Python: `enumerate`
+---
+
+Iterating with `for` is okay but sometimes we want to use the index along with the element. Ruby has the easy to use methods `.each_with_index` or `each.with_index` that lets you simply grab both in a block. Python's not too far off though you need to use `enumerate` in order to do it. It's a little less intuitive but it works nonetheless:
+
+```ruby
+# Ruby
+array = ["a","b","c","d","e"]
+array.each_with_index do |x, i|
+ puts "#{x} is at index #{i}"
+end
+
+''' result:
+a is at index 0
+b is at index 1
+c is at index 2
+d is at index 3
+e is at index 4
+'''
+```
+
+each with index equivalent
+```python
+# Python
+array = ["a","b","c","d","e"]
+for i, x in enumerate(array):
+ print x + " is at index " + str(i)
+
+''' result:
+a is at index 0
+b is at index 1
+c is at index 2
+d is at index 3
+e is at index 4
+'''
+```
+
+And last up can use the index in math:
+
+```ruby
+# Ruby
+array = []
+(1..5).each_with_index { |x, i| array << x*i }
+array #=> [0, 2, 6, 12, 20]
+```
+
+```python
+# Python
+array = []
+for i, x in enumerate(range(1,6)): array.append(i*x)
+array #=> [0, 2, 6, 12, 20]
+```
+
+# 12) Iterating and manipulating
 ### Ruby: `.map`, Python: `map()`
 ---
 In Ruby `.each` is incredibly useful, and does what both `for` and `for..in` does in Python, or what `.forEach` does in JavaScript. They're all great but there's a problem: what if we want to return a new array without having to perform the arduous task of creating a blank array and then appending it to that array, then having to set it up again each time? We saw in the Ruby example just above how map goes a step farther in modifying the output of what you put in. Let's do the same thing we did before in Python, but this time use map as well. You'll see why it's different:
@@ -833,7 +831,7 @@ end
 
 I'll get more into what an actual callback is in a second, but in Python `map` first takes in a function and then an array to iterate over. This is great, and is highly interchangeable as we can replace the function or the array at will, just like in the last Ruby example above. However what if we wanted to map just like the first part in the block?
 
-# 14) Creating functions with lambda
+# 13) Creating functions with lambda
 ---
 
 If you try to do something like Ruby's `(1..5).map { |x| x*x }` that has a function in the block, you'll get an error:
@@ -941,7 +939,7 @@ map(lambda x, y: x*y, array_a, array_b)
 #=> [2, 8, 18, 32, 50]
 ```
 
-# 15) Getting the index with map
+# 14) Getting the index with map
 ### Ruby: `.map.with_index` | Python: `map() & enumerate`
 
 Just like before when using `.each` in Ruby, it's very simple to get the index. Here's the difference between `.each`, it's `with_index` and `.map` and its `with_index`:
@@ -986,9 +984,9 @@ map(lambda (i, x): x*i, enumerate(array))
 
 Now this is a little bit of a false equivalency going from Ruby to Python as each isn't exactly the same as `for..in` since the output does in fact change. The key here though is to see how useful `enumerate` can be in obtaining an array's index. Also as you noticed we're still using lambda in our scripts. That'll be a common theme so keep it in mind.
 
-# 16) Manipulating arrays with `.reduce`
+# 15) Manipulating arrays with `reduce`
 ---
-Now let's go over what `.reduce` does (also known as `.inject` in Ruby) and add up all values in the array, starting with the shortcut then expanding out to see what's under the hood. Note that all of these will produce the correct answer of 15:
+Now let's go over what `reduce` does (also known as `.inject` in Ruby) and add up all values in the array, starting with the shortcut then expanding out to see what's under the hood. Note that all of these will produce the correct answer of 15:
 
 ```ruby
 # ruby
@@ -1073,7 +1071,7 @@ reduce(multi, array) #=> 120
 reduce(multi, array, 2) #=> 240
 ```
 
-# 17) Selecting from an array
+# 16) Selecting from an array
 ### Ruby: `select` | Python: `filter`
 ---
 Say you have an array but only want to use certain elements in it. Ruby has a `.select` to do this and Python has `filter`. They're pretty much the same thing in the end. Let's get any element in an array that's even by using the modulo script of `x % 2 == 0` to say "any value divided by 2 will give no remainder":
@@ -1131,7 +1129,7 @@ array = [1, 2, 3, None, 4, 5]
 filter( lambda x: x, array ) #=> [1, 2, 3, 4, 5]
 ```
 
-# 18) slice, aka accessing
+# 17) slice, aka accessing
 ---
 Slice in Ruby is a nice method that goes into an array (or string) and selects the element(s) of your choice. It's mimicked by basically using hard brackets `[]` after an array or string. Though Python doesn't have a slice method, its use of hard brackets actually goes much, much farther.
 
@@ -1225,7 +1223,7 @@ string[5:9] #=> "is a"
 string[::2] #=> "ti sasrn"
 ```
 
-# 19) Duplicating an Array/List
+# 18) Duplicating an Array/List
 ---
 You may have run into this problem before where you have an array and want to duplicate it. You may start off doing array2 = array, but there's an issue: if you change `array`, then `array2` will also change because you merely set it to equal the array object, not the array of numbers. Ruby has a quick fix by simply adding `.dup` to the array, and Python has a similar trick. Let's go through the problem so you can see how it will be fixed:
 
@@ -1274,7 +1272,7 @@ array_b #=> [1, 2, 3, 4, 5] (doesn't change)
 
 The `array[:]` operator says "select everything from this array" which means when we set our `array_b` object to it, we're taking in the elements of the array instead of the object that holds the array.
 
-# 20) Sorting a collection
+# 19) Sorting a collection
 ### Ruby: `.sort` | Python: `sorted()`
 
 Say you have an array/list of mixed up numbers or strings (or anything else), or a hash/dictionary with keys and values but want to sort them into an array/list, or a bunch of objects of a certain class. Ruby and Python both have native sorting methods that you can use, separate of course from scripts you can write for the many, many sorting types of varying efficiencies,
@@ -1529,7 +1527,7 @@ map(lambda x: "{} age {}".format(x.breed, x.age), sorted(class_animals, key=lamb
 
 There's even more you can do when you import in other methods, but this is just a small amount that you can do with the native sorting.
 
-# 21) Easier if/else/etc
+# 20) Easier if/else/etc
 ### Ruby: `Case; each` | Python: dictionary manipulation
 ---
 The thing about `if/else/elsif/else if` statements is that they can get very repetitive, especially when going through multiple conditions. Say we're watching West Wing and want to get a main character's White House title. We *could* do a series of if statements:
@@ -1755,7 +1753,7 @@ map(lambda x: grade(x), grades)
 #=> ["A", "B", "D", "Invalid", "A", "C", "F"]
 ```
 
-# 22) Adding to / removing from arrays
+# 21) Adding to / removing from arrays
 ---
 #### Adding with Ruby: `.insert` | Python: `insert(idx, elem)` / accessing
 
@@ -1773,7 +1771,7 @@ array.insert(1, "Everyone", "In", "The")
 #=> ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
 ```
 
-Puthon's insert method works the same way *but can only add* ***one*** *element at once*. There's another way to add multiple elements at once though by taking advantage of its slice aka accessing method. If you use brackets and a colon like `[x:x]` you can add as many elements as you want and it will flatten it automatically as it inserts it.
+Python's insert method works the same way *but can only add* ***one*** *element at once*. There's another way to add multiple elements at once though by taking advantage of its slice aka accessing method. If you use brackets and a colon like `[x:x]` you can add as many elements as you want and it will flatten it automatically as it inserts it.
 
 ```python
 # Python
@@ -1851,7 +1849,7 @@ array = [x for x in array if x != 2 and x != 5]
 array #=> [1, 3, 1, 3]
 ```
 
-# 23) Calls and Procs
+# 22) Calls and Procs
 ### Ruby: `.call` / `.proc` | Python: N/A, it's inherent
 ---
 
