@@ -26,7 +26,7 @@ Link | Ruby | JS Equivalent | Description
 | "10".to_f | parseFloat("10") | Converts to Float (decimal)
 |||**loops**
 [4)](#4-looping-with-while) | while / until | while | loops while condition is true
-||**iteration**
+|||**iteration**
 [5)](#5-using-for) | for | for / for..in | iterate over each element, more used in JS
 [6)](#6-iterating) | .each | .forEach | iterate over each element
 [7)](#7-getting-the-index) | .each.with_index | .forEach | same, but also get the index
