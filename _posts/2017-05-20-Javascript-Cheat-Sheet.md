@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "A Javascript Cheat Sheet"
+title:  "A JavaScript Cheat Sheet"
 date:   2017-05-20 22:46:38 -0400
 categories: javascript, tutorial
 ---
