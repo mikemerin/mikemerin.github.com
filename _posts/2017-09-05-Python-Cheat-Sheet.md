@@ -6,6 +6,7 @@ categories: python, tutorial
 ---
 This is an abbreviated cheat sheet for Python. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/Python-through-Ruby/), which I highly recommend.
 
+I also have a [JavaScript Cheat Sheet](https://mikemerin.github.io/Javascript-Cheat-Sheet/) in the same fashion as this one if you're interested.
 
 ES6  | Arrow Functions | Callbacks | while
 for | for..in | .forEach | .map

@@ -6,7 +6,7 @@ categories: python, tutorial
 ---
 This is an abbreviated cheat sheet for JavaScript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/JS-through-Ruby/), which I highly recommend.
 
-Note that this is a WIP, will finish Wednesday 9/6
+I also have a [Python Cheat Sheet](https://mikemerin.github.io/Python-Cheat-Sheet/) in the same fashion as this one if you're interested.
 
 interpolation | structure | type conversions
 len | ranges | pop | append
