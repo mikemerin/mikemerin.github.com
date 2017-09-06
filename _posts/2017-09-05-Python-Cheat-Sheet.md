@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "A JavaScript Cheat Sheet"
-date:   2017-05-20 22:46:38 -0400
-categories: javascript, tutorial
+title:  "A Python Cheat Sheet"
+date:   2017-09-05 23:28:15 -0400
+categories: python, tutorial
 ---
-This is an abbreviated cheat sheet for JavaScript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/JS-through-Ruby/), which I highly recommend.
+This is an abbreviated cheat sheet for Python. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that [here](https://mikemerin.github.io/JS-through-Ruby/), which I highly recommend.
 
 
 ES6  | Arrow Functions | Callbacks | while
@@ -51,6 +51,7 @@ x => x * 2     // same here
 Lets you call functions inside of functions
 
 ```javascript
+// Javascript
 var say_hello = function(callback) { callback }
 var say_hello = callback => { callback } // ES6 notation
 say_hello(console.log("Hello")) //=> "Hello"
