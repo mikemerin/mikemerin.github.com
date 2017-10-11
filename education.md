@@ -15,7 +15,7 @@ Blogs:
 
 [Python Cheat Sheet](https://mikemerin.github.io/Python-Cheat-Sheet/)
 
-[RegExp](https://mikemerin.github.io/RegExp/)
+[RegExp Part 1](https://mikemerin.github.io/RegExp-1/)
 
 Note that there are more blogs on my [main page](https://mikemerin.github.io) that you can learn from.
 
