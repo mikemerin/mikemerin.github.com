@@ -40,7 +40,7 @@ Link | Ruby | Python Equivalent | Description
 |||**loops**
 [9)](#9-looping) | while / until | while | loops while condition is true
 |||**iteration**
-[10)](#10-iterating-with-for) | for | for | iterate over each element, more used in Python
+[10)](#10-iterating-with-forin) | for | for | iterate over each element, more used in Python
  | .map | for..in | in-line iteration
 [11)](#11-getting-the-index) | .each.with_index | for & enumerate | same, but also get the index
 | .keys | for..in | get all keys in a hash
