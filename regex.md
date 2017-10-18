@@ -1,8 +1,8 @@
 ---
 layout: page
-title: Are You Smarter Than a 00110110 Grader
-subtitle: Dynamically Generated Question Generator for Coding Quizzes
-permalink: /areyousmarter/
+title: Regex Dictionary
+subtitle: Enter Regular Expressions across all words in the dictionary
+permalink: /regex/
 ---
 
 Blogs:
