@@ -14,6 +14,7 @@ Blogs:
 Application links:
 
 [Github Link](https://github.com/mikemerin/RegexDictionary)
+
 [Demo](https://regexdictionary.herokuapp.com/)
 
 # Regex Dictionary
