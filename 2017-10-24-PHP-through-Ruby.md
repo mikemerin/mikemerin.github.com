@@ -7,7 +7,7 @@ categories: PHP, ruby, tutorial
 ---
 If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. PHP sort of has these but require more labor to actually get working. These shortcuts are very noticeable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and PHP handle these shortcuts, iterations, and methods.
 
-I also have a [PHP through Ruby](https://mikemerin.github.io/PHP-through-Ruby/) post in the same fashion as this post if you're interested.
+I also have a [Javascript through Ruby](https://mikemerin.github.io/JS-through-Ruby/) and a [Python through Ruby](https://mikemerin.github.io/Python-through-Ruby/) post in the same fashion as this post if you're interested.
 
 **I'll be going into a lot of detail in this post, if you want an abbreviated JS-only cheat sheet you can find that [here](https://mikemerin.github.io/Javascript-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
 
