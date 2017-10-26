@@ -54,7 +54,7 @@ or the shorter
 We can generate many things this way: a migration, a model, a controller, etc., but we use `resource` in this case since it will create the model, controller, and the routes we need to connect to. We'll want our Artist to contain certain information like the artist's name, origin, and its genre. We'll also want the songs to have a name, artist_id (since we have an artist model to link it to), album name, and length. Here's how we'll generate our models:
 
 `rails g resource Artist name origin genre`
-`rails g resource Song name artist_id album_name length`
+`rails g resource Song name artist_id album length`
 
 Please note that all of these bits of info will default to a string, but if we wanted to we can make them into other data types like an integer for example by typing in `release_year:integer`, or a boolean `active:boolean`.
 
@@ -171,21 +171,84 @@ namespace :db do
 end
 ```
 
-Now in your terminal you can simply type in `rake db:reload` and it will first drop your database then do all the commands above for you!
-
+Namespace lets us say "type `db` first" then the task of `:reload` is what it acts on. Put together in your terminal you can simply type in `rake db:reload` and it will first drop your database then do all the commands above for you!
 
 # Controller setup, and RESTful routes
 
-Onto the `invoke  controller` and `create    app/controllers/artists_controller.rb` lines. As I mentioned before this is the logic to your API and allows us to do specific things
+Onto the `invoke  controller` and `create    app/controllers/artists_controller.rb` lines. Even though in our rails console we can manage our database by viewing any row(s), creating new rows, editing existing rows, or deleting rows, we won't be able to do this via our app or an external app connecting to it. This is where the 7 RESTful rounds come in, which allow you to see all entries (the index), make new entries and create them in the database, show specific entries, edit and update those entries, or delete them. The 7 routes are:
+
+route | explanation
+---|---
+index | display a list of all artists
+new | HTML form for creating a new artist
+create | create a new artist
+show | display a specific artist
+edit | return an HTML form for editing a artist
+update | update a specific artist
+destroy | delete a specific artist
+
+You can visit [this site](http://restfulrouting.com/#introduction) for an intro to RESTful routes, and I also made a [cheat sheet](https://docs.google.com/spreadsheets/d/1YWPb6BsZjMorn4XGMA5o7qGKvgYNLJTgtrbhoceZvkw/edit?usp=sharing) with controller actions, usage, SQL, and more.
+
+So how do we use these RESTful routes? As I mentioned before the controller is the logic to our API so we'll be running some specific and easy database commands
 
 
+ In it we'll be tapping into these routes.
+
+
+```ruby
+class ArtistsController < ApplicationController
+
+  def index
+    @artists = Artist.all
+    render json: @artists
+  end
+
+  def show
+    @artist = Artist.find_by(id: params[:id])
+    render json: @artist
+  end
+
+  private
+
+  def artist_params
+    params.permit(:name, :origin, :genre)
+  end
+
+end
+
+class SongsController < ApplicationController
+
+  def index
+    @songs = Song.all
+    render json: @songs
+  end
+
+  def show
+    @song = Song.find_by(id: params[:id])
+    render json: @song
+  end
+
+  private
+
+  def song_params
+    params.permit(:name, :artist_id, :album, :length)
+  end
+
+end
+```
+
+
+
+
+
+
+
+# Routes
 
 
      invoke  resource_route
       route    resources :songs
 
-
-# Routes
 
 
 # CORS
