@@ -141,20 +141,19 @@ Created database 'test_api_test'
 
 `rake db:migrate RAILS_ENV=development` (same thing, but migrates into the dev database)
 
-Now you can load up your Rails console by typing in `rails c` and see your database and models! Type in `Artist.all` or `Song.all` to see your tables (they're empty for now but they're there)
+Now you can load up your Rails console by typing in `rails c` and see your database and models! Type in `Artist` or `Song` to see your tables:
 
 ```ruby
-# Artist.all
-Artist Load (2.6ms)  SELECT  "artists".* FROM "artists" LIMIT $1  [["LIMIT", 11]]
-=> #<ActiveRecord::Relation []>
+# Artist
+Artist(id: integer, name: string, origin: string, genre: string, created_at: datetime, updated_at: datetime)
 
-
-# Song.all
-Song Load (2.7ms)  SELECT  "songs".* FROM "songs" LIMIT $1  [["LIMIT", 11]]
-=> #<ActiveRecord::Relation []>
+# Song
+Song(id: integer, name: string, artist_id: string, album: string, length: string, created_at: datetime, updated_at: datetime)
 ```
 
-It's a hassle to always type in these commands especially if you have to change tables, seed new data, etc., so here's a shortcut that allows you to type in one command. If you go into your `Rakefile` you can copy and paste this at the bottom:
+FYI it's our friend Active Record that's allowing us to simply type in Artist or Song to tap into the database.
+
+For the many rake commands above, it's a hassle to always type them in especially if you have to change tables, seed new data, etc., so here's a shortcut that allows you to type in one command. If you go into your `Rakefile` you can copy and paste this at the bottom:
 
 ```ruby
 namespace :db do
@@ -187,9 +186,50 @@ edit | return an HTML form for editing a artist
 update | update a specific artist
 destroy | delete a specific artist
 
-You can visit [this site](http://restfulrouting.com/#introduction) for an intro to RESTful routes, and I also made a [cheat sheet](https://docs.google.com/spreadsheets/d/1YWPb6BsZjMorn4XGMA5o7qGKvgYNLJTgtrbhoceZvkw/edit?usp=sharing) with controller actions, usage, SQL, and more.
+You can visit [this site](http://restfulrouting.com/#introduction) for an intro to RESTful routes, and I also made a [cheat sheet](https://docs.google.com/spreadsheets/d/1YWPb6BsZjMorn4XGMA5o7qGKvgYNLJTgtrbhoceZvkw/edit?usp=sharing) with controller actions, usage, SQL, and more. In fact let's add the SQL to the table above:
 
-So how do we use these RESTful routes? As I mentioned before the controller is the logic to our API so we'll be running some specific and easy database commands
+route | explanation | SQL
+---|---|---
+index | display a list of all artists | SELECT * FROM song
+new | HTML form for creating a new artist | N/A
+create | create a new artist | INSERT INTO song (column) VALUES (?)
+show | display a specific artist | SELECT * FROM song WHERE id = ?
+edit | return an HTML form for editing a artist | SELECT * FROM song WHERE id = ?
+update | update a specific artist | UPDATE song SET column = ? WHERE id = ?
+destroy | delete a specific artist | DELETE FROM song WHERE id = ?
+
+So how do we actually use these RESTful routes? As I mentioned before the controller is the logic to our API so we'll be running some specific and easy database commands, and once again we have our favorite recurring theme of this post: using Active Record to help us out. Open up your Rails console again, and just like before when we typed in Artist or Song to see the tables, we can type in `Artist.all` or `Song.all` to get a list of all songs (they're empty for now but they're there)
+
+```ruby
+# Artist.all
+Artist Load (2.6ms)  SELECT  "artists".* FROM "artists" LIMIT $1  [["LIMIT", 11]]
+=> #<ActiveRecord::Relation []>
+
+# Song.all
+Song Load (2.7ms)  SELECT  "songs".* FROM "songs" LIMIT $1  [["LIMIT", 11]]
+=> #<ActiveRecord::Relation []>
+```
+
+Notice something on the return? It's giving us the SQL that `Artist.all` points to, specifically `SELECT * FROM artists`. With that knowledge, let's add Active Record to the table above:
+
+route | AR | SQL
+---|---|---
+index | Song.all | SELECT * FROM song
+new | Song.new(params) | N/A
+create | a_song.save | INSERT INTO song (column) VALUES (?)
+show | Song.find(id) | SELECT * FROM song WHERE id = ?
+edit | Song.find(id) | SELECT * FROM song WHERE id = ?
+update | a_song.save / update | UPDATE song SET column = ? WHERE id = ?
+destroy | a_song.destroy / delete | DELETE FROM song WHERE id = ?
+
+`a_song` is an object that has a song's data. With your console still open let's try making a new entry!
+
+```ruby
+a_song = Song.new
+a_song #=> <Song id: nil, name: nil, artist_id: nil, album: nil, length: nil, created_at: nil, updated_at: nil>
+
+
+```
 
 
  In it we'll be tapping into these routes.
