@@ -576,7 +576,7 @@ end
 
 # Routes
 
-There's one very important thing that Rails did for you automatically when you generated your resource and that's the resources themselves. If you go into `config/routes.rb` you'll notice the following:
+There's one very important thing that Rails did for you automatically when you generated your resource and that's the resources themselves. This is the final piece of the generated pieces: `invoke  resource_route` and `route    resources :artists`. If you go into `config/routes.rb` you'll notice the following:
 
 ```ruby
 Rails.application.routes.draw do
@@ -585,23 +585,282 @@ Rails.application.routes.draw do
 end
 ```
 
-This is the final piece of the generated invokes and file creation/editing: `invoke  resource_route` and `route    resources :songs`.
+What this file does is allow us to use the 7 RESTful routes in our URL like we just did. Try deleting the `resources` lines and reloading http://localhost:3000/artists or http://localhost:3000/artists/1 and you'll get an error:
 
+`Routing Error
+No route matches [GET] "/artists"
 
+Routing Error
+No route matches [GET] "/artists/1"`
+
+These `resources` lines automatically redirect the URL to the appropriate controller RESTful action. Examples of what it looks like to have the **index** or **show** routes are:
+
+```ruby
+get '/artists', to:'artists#index'
+get '/artists/:id', to:'artists#show'
+```
+
+and the `resources` handle all 7 routes. In the case of our application we only want to route to the **index*** or **show** routes, and we can easily do that by tweaking our code:
+
+```ruby
+Rails.application.routes.draw do
+  resources :songs, only: [:index, :show]
+  resources :artists, only: [:index, :show]
+end
+```
+
+Now we limited our resources to only these two routes! We can use `exclude: [:new, :create, :etc]` as well if we wanted to.
 
 # CORS
 
-`Gemfile`
-`gem 'rack-cors'`
+At this point we have a finished API! We can pat ourselves on the backs but there's one major issue: external apps can't access the application at all. If we try we'll get an error:
 
-`/config/application.rb`
-`/config/initializers/`
+`Failed to load http://localhost:3000/artist: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'null' is therefore not allowed access.`
+
+This appears because Rails has a security feature to prevent external applications from accessing the database, which is very useful if someone say wants to access your **destroy** route and remove all entries in your database. Thankfully there's something called CORS that comes to the rescue and allows us to either bypass this security feature or set restrictions on it.
+
+Go into your `Gemfile` and on lines 25-26 you'll see the `Rack CORS` gem. As line 25 says:
+
+`Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible`
+
+First uncomment line 26's `gem 'rack-cors'`, save the file, then run `bundle install` in your terminal.
+
+After that open up `config/application.rb` to where your `module TestApi` is located. Copy and paste this over that module:
+
+```ruby
+module TestApi
+  class Application < Rails::Application
+    config.load_defaults 5.1
+
+    config.api_only = true
+    Rails.application.config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*',
+          headers: '*',
+          methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      end
+    end
+  end
+end
+```
+
+These two steps of putting `gem 'rack-cors'` in your `Gemfile` and adding the `Rack::Cors` config in your `config/application.rb` are the fix!
+
+A quick and **very important** note though: doing `origins '*'` is extremely risky as the `*` is a wildcard character meaning ANYONE can access your API now. For purposes of our test application that doesn't matter since we only have **index** and **show** as our routes, but if you have **edit** **update** or **destroy** routes then others can take advantage of it and easily mess with your API and database. In that case you can change the line to `origins 'http://www.your-site-here.com'` to only allow your specific external site to access the API. You can also (or alternatively) consense the `methods` line to `:methods => [:get]` to limit routes to only receive data.
+
+# Better practices
+
+### API versions
+
+Because APIs can sometimes change over time, it's important to have versions of your API. You can do the following to add this to your API in a simple three-step process:
+
+1) move your controllers into `app/controllers/api/V1/`
+
+2) change your controller classes to
+
+```ruby
+class Api::V1::ArtistsController < ApplicationController
+
+  def index
+    render json: Artist.all
+  end
+
+  def show
+    render json: Artist.find(params[:id])
+  end
+
+end
 
 
+class Api::V1::SongsController < ApplicationController
 
-Better practices:
+  def index
+    render json: Song.all
+  end
 
-`/api/V1`
+  def show
+    render json: Song.find(params[:id])
+  end
+
+end
+```
+
+3) change your `config/routes.rb` to
+
+```ruby
+Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+
+      resources :songs, only: [:index, :show]
+      resources :artists, only: [:index, :show]
+
+    end
+  end
+end
+```
+
+### Using @ in the controllers
+
+You'll notice in the tables:
+
+route | explanation | AR
+---|---|---
+index | display a list of all artists | Artist.all
+new | HTML form for creating a new artist | Artist.new(params)
+create | create a new artist | @artist.save
+show | display a specific artist | Artist.find(id)
+edit | return an HTML form for editing a artist | Artist.find(id)
+update | update a specific artist | @artist.save / update
+destroy | delete a specific artist |  @artist.destroy / delete
+
+there's `@artist`. This is a class object and it's more proper to create these in each of your RESTful routes, especially since you'll create the object once (useful for if you have to fire off SQL to do so) and then can work on it. If you're conditionally rendering HTML or JSON based on use for a website vs. just viewing the tables directly it will help even more. Here's an example of the 7 restful routes:
+
+```ruby
+class ArtistsController < ApplicationController
+
+  def index
+    @artists = Artist.all
+    render json: @artists
+  end
+
+  def new
+    @artist = Artist.new
+    render json: @artist
+  end
+
+  def create
+    @artist = Artist.new(name: params[:name], origin: params[:origin], genre: params[:genre])
+    # make sure it correctly saves, otherwise it will error
+    if @artist.save
+      render json: @artist
+    end
+  end
+
+  def show
+    @artist = Artist.find(params[:id])
+    render json: @artist
+  end
+
+  def edit
+    @artist = Artist.find(params[:id])
+    render json: @artist
+  end
+
+  def update
+    @artist = Artist.find(params[:id])
+    # make sure it correctly updates, otherwise it will error
+    if @artist.update(name: params[:name], origin: params[:origin], genre: params[:genre])
+      render json: @artist
+    end
+  end
+
+  def destroy
+    @artist = Artist.find(params[:id])
+    @artist.destroy
+    # redirect back to index once done
+    render json: Artist.all
+  end
+
+end
+```
+
+### Strong params
+
+If your API has writing capabilities (POST methods) like **create** or **update** you'll want to make sure the information being added to your database is correct. Strong params will prevent your database from updating unless the info is valid. Taking a look at the **create** route above:
+
+```ruby
+def create
+  @artist = Artist.new(name: params[:name], origin: params[:origin], genre: params[:genre])
+  # make sure it correctly saves, otherwise it will error
+  if @artist.save
+    render json: @artist
+  end
+end
+```
+
+the params are `:name, :origin, :genre` which we can simplify to `artist_params` which will be a method we'll create shortly:
+
+```ruby
+def create
+  @artist = Artist.new(artist_params)
+  # make sure it correctly saves, otherwise it will error
+  if @artist.save
+    render json: @artist
+  end
+end
+```
+
+That method will be added to the controller. We'll get all parameters using `params`, then require it to be from the `:artist` model, and permit the `:name, :origin, :genre` to be accepted and validated. Putting it all together we get:
+
+```ruby
+def artist_params
+  params.require(:artist).permit(:name, :origin, :genre)
+end
+```
+
+And finally since we don't want anyone other than the application itself to mess with this data we can make the method private by simply putting in the line `private` in our controller and inserting the `artist_params` below it:
+
+
+```ruby
+class ArtistsController < ApplicationController
+
+  def index
+    @artists = Artist.all
+    render json: @artists
+  end
+
+  def new
+    @artist = Artist.new
+    render json: @artist
+  end
+
+  def create
+    @artist = Artist.new(artist_params)
+    # make sure it correctly saves, otherwise it will error
+    if @artist.save
+      render json: @artist
+    end
+  end
+
+  def show
+    @artist = Artist.find(params[:id])
+    render json: @artist
+  end
+
+  def edit
+    @artist = Artist.find(params[:id])
+    render json: @artist
+  end
+
+  def update
+    @artist = Artist.find(params[:id])
+    # make sure it correctly updates, otherwise it will error
+    if @artist.update(artist_params)
+      render json: @artist
+    end
+  end
+
+  def destroy
+    @artist = Artist.find(params[:id])
+    @artist.destroy
+    # redirect back to index once done
+    render json: Artist.all
+  end
+
+  private
+
+  def artist_params
+    params.require(:artist).permit(:name, :origin, :genre)
+  end
+
+end
+```
+
+---
+
+There you have it, a working API! You can either add to this API by adding views and making it an application, or do what I do and make a separate application with JavaScript / React / etc. that can tap into this API. Try out the other relationship types between methods, or adding the other RESTful routes to your program. There's so much you can do so get to it!
 
 Code on.
 

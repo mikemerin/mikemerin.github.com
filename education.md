@@ -7,6 +7,8 @@ permalink: /education/
 
 Blogs:
 
+[Creating a Rails API and fixing CORS issues](https://mikemerin.github.io/Rails-API-cors/)
+
 [JavaScript through Ruby](https://mikemerin.github.io/JS-through-Ruby/)
 
 [JavaScript Cheat Sheet](https://mikemerin.github.io/Javascript-Cheat-Sheet/)
