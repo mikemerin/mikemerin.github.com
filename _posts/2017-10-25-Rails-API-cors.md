@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Creating a Rails API and fixing CORS issues"
+subtitle:  "Easy databases, easy back end"
 date:   2017-10-25 13:58:14 -0400
 categories: ruby, rails, API, CORS, cross-origin
 ---
