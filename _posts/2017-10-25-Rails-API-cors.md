@@ -5,9 +5,9 @@ date:   2017-10-25 13:58:14 -0400
 categories: ruby, rails, API, CORS, cross-origin
 ---
 
-I recently tried to recreate an API for my random question generator, this time letting the front end handle the question creation. I ran into the infamous CORS issue `No 'Access-Control-Allow-Origin' header is present on the requested resource.` I ran into this issue before and it took a litle while to find the answer to it again, so I figure I'd go through the simple steps of how to create a rails API from scratch and fix the issue as I go.
+I recently tried to recreate an API for one of my applications. I ran into the infamous CORS issue `No 'Access-Control-Allow-Origin' header is present on the requested resource.` It took a litle while to find the fix again so I figure I'd go through the simple steps of how to create a rails API from scratch and fix the issue as I go.
 
-If you're just interested in how to fix a CORS issue you can skip ahead to [here](https://mikemerin.github.io/Rails-API-cors#CORS).
+If you're just interested in how to fix a CORS issue you can skip ahead to [here](https://mikemerin.github.io/Rails-API-cors#cors).
 
 # Tools
 
