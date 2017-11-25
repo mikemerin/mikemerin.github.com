@@ -2,7 +2,7 @@
 layout: post
 title:  "Seeing PHP Through Ruby-Colored Glasses"
 subtitle: "A PHP Cheat Sheet"
-date:   2017-10-24 22:43:38 -0400
+date:   2017-11-24 22:43:38 -0400
 categories: PHP, ruby, tutorial
 ---
 If you learned how to program in Ruby, you probably noticed there's a large amount of shortcuts available to cut down on typing (while helping keep your code clean), as well as having a straightforward "English-like" syntax. PHP sort of has these but require more labor to actually get working. These shortcuts are very noticeable when you get into looping or iterating over objects, and if like me you learned Ruby first, you may not have known what those shortcuts actually do under the hood, so let's dive right in and compare how Ruby and PHP handle these shortcuts, iterations, and methods.
@@ -15,7 +15,7 @@ I'll assume you know how to iterate in Ruby already, but if not then look at my 
 
 We'll be going over these loops, iterations, and global methods:
 
-Link | Ruby | JS Equivalent | Description
+Link | Ruby | PHP Equivalent | Description
 ---|---|---|---
 |||**structure**
 [1)](#1-es6-notation) | N/A | Arrow Functions / Returns | ES2017 shorthands for cleaning your code
@@ -48,37 +48,19 @@ Link | Ruby | JS Equivalent | Description
 |||**more functions**
 [19)](#19-callbacks) | call/procs | callbacks | function called within a function
 
-# 1) ES6 Notation
-### Arrow Functions, Implicit Returns
+# 1) Variable Defining
 ---
-I'll be shortening my JS scripts with ES6 JS notation and/or *arrow functions*. This lets us turn our functions into cleaner looking arrow functions which do the same exact thing:
-```javascript
-// JavaScript
-array.forEach( function(x) { array2.push(x) } )
-array.forEach( (x) => { array2.push(x) } )
-
-array.forEach( function(x, y) { array2.push(x * y) } )
-array.forEach( (x, y) => { array2.push(x * y) } )
-```
-Also, when there's only one element (in this case "x"), we can remove the parentheses:
-```javascript
-array.forEach( x => { array2.push(x) } )
-```
-Now there's less characters cluttering up the space and it's easier to see what the function points to (literally). It's also a good thing to know about something called "implicit returns", which means the arrow function will call `return` automatically without you having to type it in! You can do this by not using `{}` after the arrrows (you can surround them in `()` if you want to do multi-line).
-
-These all do the same thing:
-```javascript
-// JavaScript-Cheat-Sheet
-function(x) { return x * 2 }
-(x) => { return x * 2 }
-x => { return x * 2 }
-(x) => x * 2   // without the {} this implicitly returns
-x => x * 2     // same here
-(x) => (x * 2) // same here
-```
+There's a simple but important difference between how the languages handle declaring of objects. In Ruby you can simply say `name = "Mike"` and there will now be an object `name` that outputs `"Mike"`, in JS you need to do `var name` or `let name`/`const name`, and in PHP you simply need to add a dollar sign `$name = "Mike"`.
 
 # 2) String Interpolation
 ---
+Here is a major difference between "adding" and manipulating strings. In Ruby we literally add it using the addition symbol `+` or `+=` to add it permanently. In PHP however we use a period `.`
+
+
+
+
+
+
 There are only two differences between Ruby and JavaScript's string interpolation: Ruby uses a pound `#` sign with the string wrapped in double quotes, while JS uses a dollar `$` with the string wrapped in back quotes.
 
 ```ruby
@@ -91,14 +73,19 @@ puts "#{name}, the #{age} year old #{animal}."
 #=> "Lily, the 8 year old dog."
 ```
 
-```javascript
-// JavaScript
-animal = "dog"
-name = "Lily"
-age = 8
+```php
+// PHP
+$animal = "dog";
+$name = "Lily";
+$age = 8;
 
-console.log(`${name}, the ${age} year old ${animal}.`)
+print $name . ' the ' . $age . ' year old ' . $animal . '.';
 //=> "Lily, the 8 year old dog."
+```
+
+```PHP
+// PHP
+print "$name the $age year old $dog.";
 ```
 
 This is easier than typing out this ugly looking mix of objects that work the exact same way in both languages:
