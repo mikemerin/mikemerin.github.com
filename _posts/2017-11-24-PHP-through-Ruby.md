@@ -83,7 +83,7 @@ print $name . ' the ' . $age . ' year old ' . $animal . '.';
 //=> "Lily, the 8 year old dog."
 ```
 
-```PHP
+```php
 // PHP
 print "$name the $age year old $dog.";
 ```
