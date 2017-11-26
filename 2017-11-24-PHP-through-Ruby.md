@@ -48,20 +48,53 @@ Link | Ruby | PHP Equivalent | Description
 |||**more functions**
 [19)](#19-callbacks) | call/procs | callbacks | function called within a function
 
-# 1) Variable Defining
+# 1) Variable Defining and Script Ending
 ---
 There's a simple but important difference between how the languages handle declaring of objects. In Ruby you can simply say `name = "Mike"` and there will now be an object `name` that outputs `"Mike"`, in JS you need to do `var name` or `let name`/`const name`, and in PHP you simply need to add a dollar sign `$name = "Mike"`.
 
+Also you'll notice that at the end of any PHP script you'll need a semi-colon `;` to submit your script. Ruby is a lazy language, just like JavaScript and you don't need to explicitly end a line for the program to know, but PHP does need it.
+
 # 2) String Interpolation
 ---
-Here is a major difference between "adding" and manipulating strings. In Ruby we literally add it using the addition symbol `+` or `+=` to add it permanently. In PHP however we use a period `.`
+Here is a minor but important difference between "adding" and manipulating strings. In Ruby we literally add it using the addition symbol `+` or `+=` to add it permanently. In PHP however we use a period `.` or `.=` to do this:
 
+```ruby
+# Ruby
+animal = "dog"
+name = "Lily"
+age = 8
 
+puts name + ", the " + age.to_s + " year old " + animal + "."
+#=> "Lily, the 8 year old dog."
+```
 
+```php
+// PHP
+$animal = "dog";
+$name = "Lily";
+$age = 8;
 
+print $name . ', the ' . $age . ' year old ' . $animal . '.';
+//=> "Lily, the 8 year old dog."
+```
 
+We can also update any strings in a similar fashion:
 
-There are only two differences between Ruby and JavaScript's string interpolation: Ruby uses a pound `#` sign with the string wrapped in double quotes, while JS uses a dollar `$` with the string wrapped in back quotes.
+```ruby
+# Ruby
+name += "ana" #=> "Lilyana"
+puts name + ", the " + age.to_s + " year old " + animal + "."
+#=> "Lilyana, the 8 year old dog."
+```
+
+```php
+// PHP
+name .= "ana" //=> "Lilyana"
+print $name . ', the ' . $age . ' year old ' . $animal . '.';
+//=> "Lilyana, the 8 year old dog."
+```
+
+The problem with this type of interpolation though is it's fairly ugly to look at and can be very confusing when going back and forth between objects like `name/$name` and strings (especially in Ruby's case with the number needing to be converted to a string first). Thankfully both languages have a simpler way to do this:
 
 ```ruby
 # Ruby
@@ -79,25 +112,14 @@ $animal = "dog";
 $name = "Lily";
 $age = 8;
 
-print $name . ' the ' . $age . ' year old ' . $animal . '.';
+print "{$name} the {$age} year old {$animal}.";
+// or
+print "$name the $age year old $animal.";
+
 //=> "Lily, the 8 year old dog."
 ```
 
-```php
-// PHP
-print "$name the $age year old $dog.";
-```
-
-This is easier than typing out this ugly looking mix of objects that work the exact same way in both languages:
-
-```ruby
-# Ruby
-puts name + ", the " + age.to_s + " year old " + animal + "."
-```
-```javascript
-// JavaScript
-console.log(name + ", the " + age + " year old " + animal + ".")
-```
+This is easier than typing out the ugly looking mix of objects from before. Quick note about the PHP script: you can see that both with and without the curly brackets `{}` work, but you'll need a bracket if you want to add something to an object like `{$name}ana` from before.
 
 # 3) Functions to Change Data Type
 ---
