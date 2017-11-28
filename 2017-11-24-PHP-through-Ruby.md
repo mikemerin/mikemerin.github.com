@@ -18,9 +18,13 @@ We'll be going over these loops, iterations, and global methods:
 Link | Ruby | PHP Equivalent | Description
 ---|---|---|---
 |||**structure**
-[1)](#1-variables-and-scripting) | not needed | `$obj`/ define, `;` | how to format PHP
-[2)](#2-string-interpolation) | `"#{obj}"` | `"${obj}" {$obj}" $obj"` | inserting objects into a string
+[1)](#1-objects-and-scripting) | not needed | `$obj`/ define, `;` | how to format PHP
+[2)](#2-variable-and-data-types) | various | less various | types of variables and more
 |||**functions**
+[3)](#3-string-interpolation) | `"#{obj}"` | `"${obj}" {$obj}" $obj"` | inserting objects into a string
+|||**functions**
+
+
 [3)](#3-functions-to-change-data-type) | n.to_s | n.toString() | Converts to string
 | "10".to_i | parseInt("10") | Converts to Integer
 | "10".to_f | parseFloat("10") | Converts to Float (decimal)
@@ -48,10 +52,14 @@ Link | Ruby | PHP Equivalent | Description
 |||**more functions**
 [19)](#19-callbacks) | call/procs | callbacks | function called within a function
 
-# 1) Variables and Scripting
+# 1) Objects and Scripting
 ---
 There's a simple but important difference between how the languages handle declaring of objects. In Ruby you can simply say `name = "Mike"` and there will now be an object `name` that outputs `"Mike"`, in JavaScript you need to do `var name` or `let name`/`const name`, and in PHP you simply need to add a dollar sign `$name = "Mike"`.
 
+Finally you'll notice that at the end of all the PHP scripts above there's a semi-colon `;`. This is needed in PHP to let the program know we're ready to submit that line. Ruby is a lazy language where a new line is implicitly known by the program to end that line, same with JavaScript where you *can* but don't need a semi-colon to explicitly end a line, however PHP does need it every time.
+
+# 2) Variable and Data Types
+---
 Ruby has a few unique types of variables to the language that you can declare:
 
 ```ruby
@@ -72,7 +80,7 @@ PHP is more limited in its variable types, though there is one addition that's s
 $variable = "normal variable";
 define(VARIABLE, "a constant variable that can't be changed after this point");
 
-print $variable
+print $variable;
 //=> normal variable
 print VARIABLE;
 //=> a constant variable that can't be changed
@@ -90,9 +98,91 @@ print VARIABLE;
 
 As you can see we can change around normal variables as much as we want, but once we define a constant variable it's there to stay.
 
-Finally you'll notice that at the end of all the PHP scripts above there's a semi-colon `;`. This is needed in PHP to let the program know we're ready to submit that line. Ruby is a lazy language where a new line is implicitly known by the program to end that line, same with JavaScript where you *can* but don't need a semi-colon to explicitly end a line, however PHP does need it every time.
+When looking at data types there are even less. While Ruby has:
 
-# 2) String Interpolation
+```ruby
+# Ruby
+array = ["one", "two", "three", "four"]
+hash = {"one" => 1, "two" => 2}
+```
+
+PHP combines these into just arrays:
+
+```php
+// PHP
+
+$array1 = ["one", "two", "three", "four"];
+$array2 = Array("one", "two", "three", "four");
+$hash = Array("one" => 1, "two" => 2);
+```
+
+Also there's a difference in how each language returns information. While Ruby can give information on the entire array or hash (also known as a dictionary), PHP's basic `echo` and `print` only gives information if you call on individual elements, but `print_r` gives you more:
+
+```ruby
+# Ruby
+array #=> ["one", "two", "three", "four"]
+array[1] #=> "two"
+
+hash #=> {"one" => 1, "two" => 2}
+hash["one"] #=> 1
+```
+
+```php
+// PHP
+
+print $array1; //=> Array
+print $array2; //=> Array
+print $hash; //=> Array
+
+print_r ($array1);
+//=> Array
+(
+    [0] => one
+    [1] => two
+    [2] => three
+    [3] => four
+)
+
+print_r ($array2);
+//=> Array
+(
+    [0] => one
+    [1] => two
+    [2] => three
+    [3] => four
+)
+
+print_r ($hash);
+//=> Array
+(
+    [one] => 1
+    [two] => 2
+)
+
+print $array1[1]; //=> "two"
+print $array2[1]; //=> "two"
+print $hash["one"]; //=> 1
+```
+
+Lastly there's something called a *variable variable* which has some funny properties. You can use two dollar signs to dynamically define a variable:
+
+```php
+// PHP
+
+$greeting = "hey";
+$$greeting = "everyone";
+
+print $greeting; //=> "hey"
+print $$greeting; //=> "everyone"
+
+// and the funny thing:
+
+print $hey; //=> "everyone"
+```
+
+See what happened there? `$greeting` outputs `"hey"`, and we can then call on that `"hey"` as a variable to output the next dollar sign's variable output. This way we can make dynamic variables and not have to re-define them over and over again. Also, we can keep adding dollar signs and make a variable variable variable, etc. etc. etc.
+
+# 3) String Interpolation
 ---
 Here is a minor but important difference between "adding" and manipulating strings. In Ruby we literally add it using the addition symbol `+` or `+=` to add it permanently. In PHP however we use a period `.` or `.=` to do this:
 
@@ -217,6 +307,12 @@ print "${name} the " . ({$age} + 1) . " year old ${animal}.";
 ```
 
 We have to encase the object manipulation in parentheses to make sure the string is printed correctly.
+
+
+
+
+
+
 
 # 3) Functions to Change Data Type
 ---
