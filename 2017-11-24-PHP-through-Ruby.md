@@ -18,8 +18,8 @@ We'll be going over these loops, iterations, and global methods:
 Link | Ruby | PHP Equivalent | Description
 ---|---|---|---
 |||**structure**
-[1)](#1-es6-notation) | N/A | Arrow Functions / Returns | ES2017 shorthands for cleaning your code
-[2)](#2-string-interpolation) | `"#{obj}"` | `"{}".format(obj)` / `"%s" % obj` | inserting objects into a string
+[1)](#1-variables-and-scripting) | not needed | `$obj`/ define, `;` | how to format PHP
+[2)](#2-string-interpolation) | `"#{obj}"` | `"${obj}" {$obj}" $obj"` | inserting objects into a string
 |||**functions**
 [3)](#3-functions-to-change-data-type) | n.to_s | n.toString() | Converts to string
 | "10".to_i | parseInt("10") | Converts to Integer
@@ -48,11 +48,49 @@ Link | Ruby | PHP Equivalent | Description
 |||**more functions**
 [19)](#19-callbacks) | call/procs | callbacks | function called within a function
 
-# 1) Variable Defining and Script Ending
+# 1) Variables and Scripting
 ---
-There's a simple but important difference between how the languages handle declaring of objects. In Ruby you can simply say `name = "Mike"` and there will now be an object `name` that outputs `"Mike"`, in JS you need to do `var name` or `let name`/`const name`, and in PHP you simply need to add a dollar sign `$name = "Mike"`.
+There's a simple but important difference between how the languages handle declaring of objects. In Ruby you can simply say `name = "Mike"` and there will now be an object `name` that outputs `"Mike"`, in JavaScript you need to do `var name` or `let name`/`const name`, and in PHP you simply need to add a dollar sign `$name = "Mike"`.
 
-Also you'll notice that at the end of any PHP script you'll need a semi-colon `;` to submit your script. Ruby is a lazy language, just like JavaScript and you don't need to explicitly end a line for the program to know, but PHP does need it.
+Ruby has a few unique types of variables to the language that you can declare:
+
+```ruby
+# Ruby
+
+variable = "normal variable"
+@variable = "instance variable"
+@@variable = "class variable"
+$variable = "global variable"
+VARIABLE = "constant"
+```
+
+PHP is more limited in its variable types, though there is one addition that's similar to JavaScript's `const` in that you can **never** change it once you define it:
+
+```php
+// PHP
+
+$variable = "normal variable";
+define(VARIABLE, "a constant variable that can't be changed after this point");
+
+print $variable
+//=> normal variable
+print VARIABLE;
+//=> a constant variable that can't be changed
+
+$variable = "changing it around";
+print $variable;
+//=> changing it around
+
+VARIABLE = "can't touch this";
+// Parse error: parse error in php shell code on line 1
+define(VARIABLE, "can't touch this");
+print VARIABLE;
+// a constant variable that can't be changed
+```
+
+As you can see we can change around normal variables as much as we want, but once we define a constant variable it's there to stay.
+
+Finally you'll notice that at the end of all the PHP scripts above there's a semi-colon `;`. This is needed in PHP to let the program know we're ready to submit that line. Ruby is a lazy language where a new line is implicitly known by the program to end that line, same with JavaScript where you *can* but don't need a semi-colon to explicitly end a line, however PHP does need it every time.
 
 # 2) String Interpolation
 ---
@@ -94,7 +132,7 @@ print $name . ', the ' . $age . ' year old ' . $animal . '.';
 //=> "Lilyana, the 8 year old dog."
 ```
 
-The problem with this type of interpolation though is it's fairly ugly to look at and can be very confusing when going back and forth between objects like `name/$name` and strings (especially in Ruby's case with the number needing to be converted to a string first). Thankfully both languages have a simpler way to do this:
+The problem with this type of interpolation though is it's fairly ugly to look at and can be very confusing when going back and forth between objects like `name/$name` and strings (especially in Ruby's case with the number needing to be converted to a string first). Thankfully both languages have a simpler way to do this, with Ruby using a pound sign `#` and PHP a dollar sign `$` (which is the same as JavaScript) followed by curly brackets `{}`:
 
 ```ruby
 # Ruby
@@ -112,14 +150,73 @@ $animal = "dog";
 $name = "Lily";
 $age = 8;
 
-print "{$name} the {$age} year old {$animal}.";
-// or
-print "$name the $age year old $animal.";
-
+print "${name} the ${age} year old ${animal}.";
 //=> "Lily, the 8 year old dog."
 ```
 
-This is easier than typing out the ugly looking mix of objects from before. Quick note about the PHP script: you can see that both with and without the curly brackets `{}` work, but you'll need a bracket if you want to add something to an object like `{$name}ana` from before.
+This is easier than typing out the ugly looking mix of objects from before. In addition, because PHP uses a dollar sign anyway for objects, the language can interpolate a few other ways:
+
+```php
+// PHP
+
+// the dollar sign inside the curly brackets
+print "{$name} the {$age} year old {$animal}.";
+
+// without curly brackets entirely
+print "$name the $age year old $animal.";
+
+// mix and match
+print "${name} the {$age} year old $animal.";
+```
+
+Quick note about the PHP script: even though you can call the object with or without the curly brackets `{}`, you'll need those brackets if you want to add something to an object like `{$name}ana` from before:
+
+```php
+// PHP
+$animal = "dog";
+$name = "Lily";
+$age = 8;
+
+// works
+print "${name}ana the ${age} year old ${animal}.";
+// or
+print "{$name}ana the ${age} year old ${animal}.";
+//=> "Lilyana, the 8 year old dog."
+
+// doesn't work
+print "${nameana} the ${age} year old ${animal}.";
+// or
+print "$nameana the ${age} year old ${animal}.";
+//=> " the 8 year old dog."
+```
+
+Finally as far as object manipulation during string interpolation, while in Ruby we can do it as easily as:
+
+```ruby
+# Ruby
+animal = "dog"
+name = "Lily"
+age = 8
+
+puts "#{name}, the #{age + 1} year old #{animal}."
+#=> "Lily, the 9 year old dog."
+```
+
+we unfortunately have to go back to the ugly concatenation way from before to get it working in PHP:
+
+```php
+// PHP
+$animal = "dog";
+$name = "Lily";
+$age = 8;
+
+print "${name} the " . ($age + 1) . " year old ${animal}.";
+// or
+print "${name} the " . ({$age} + 1) . " year old ${animal}.";
+// Lilyana the 9 year old dog.
+```
+
+We have to encase the object manipulation in parentheses to make sure the string is printed correctly.
 
 # 3) Functions to Change Data Type
 ---
