@@ -22,14 +22,10 @@ Link | Ruby | PHP Equivalent | Description
 [2)](#2-variable-and-data-types) | various | less various | types of variables and more
 |||**functions**
 [3)](#3-string-interpolation) | `"#{obj}"` | `"${obj}" {$obj}" $obj"` | inserting objects into a string
-|||**functions**
+[4)](#4-functions-to-change-data-type) | this.to_type | settype(this, "type") | Converts datatypes
 
-
-[3)](#3-functions-to-change-data-type) | n.to_s | n.toString() | Converts to string
-| "10".to_i | parseInt("10") | Converts to Integer
-| "10".to_f | parseFloat("10") | Converts to Float (decimal)
 |||**loops**
-[4)](#4-looping-with-while) | while / until | while | loops while condition is true
+[5)](#4-looping-with-while) | while / until | while | loops while condition is true
 |||**iteration**
 [5)](#5-using-for) | for | for / for..in | iterate over each element, more used in JS
 [6)](#6-iterating) | .each | .forEach | iterate over each element
@@ -308,57 +304,56 @@ print "${name} the " . ({$age} + 1) . " year old ${animal}.";
 
 We have to encase the object manipulation in parentheses to make sure the string is printed correctly.
 
-
-
-
-
-
-
-# 3) Functions to Change Data Type
+# 4) Functions to Change Data Type
 ---
-Both Ruby and JS have quite a few types of `.to_something` that can change the data types. This section will be short and sweet as it's fairly direct:
+Both Ruby and PHP have easy ways to convert data types. Ruby uses a `thing.to_type` and PHP uses `settype(thing, "type")`. Though this section will be short and sweet as it's fairly direct, there are two key differences between the two languages:
 
-Converting to strings:
+1) Ruby can convert both named variables as well as simple numbers/strings/floats/etc., however PHP can only change the type of named variables.
+
+2) While Ruby's `to_type` temporarily changes the variable's type in that moment you call on it, PHP's `settype` is **permanent**, so be careful if you convert a variable by mistake (aka don't try to change an array into an integer, which will permanently make it into the number 1).
 
 ```ruby
 # Ruby
+
+# Converting to strings
 150.to_s #=> "150"
-```
-```javascript
-// JavaScript
-n = 150
-n.toString() //=> "150"
-```
+150.to_s.class #=> String
 
-Converting to an integer:
-
-```ruby
-# Ruby
+# Converting to an integer
 "10".to_i #=> 10
-```
-```javascript
-// JavaScript
-parseInt("10") //=> 10
-// base 10
-parseInt("10", 10) //=> 10
-// to hexadecimal
-parseInt("E", 16) //=> 14
-```
+"10".to_i.class #=> Fixnum
 
-Converting to a float:
-
-```ruby
-# Ruby
+# Converting to a float
 "10".to_f #=> 10.0
 10.to_f #=> 10.0
-```
-```javascript
-// JavaScript
-parseFloat("10.5") //=> 10.5
-parseFloat(10.5) //=> 10.5
+"10".to_f.class #=> Float
 ```
 
-# 4) Looping With `while`
+```php
+// PHP
+
+$n = 150;
+print gettype($n); //=> integer
+
+settype($n, "string");
+print $n; //=> "150"
+print gettype($n); //=> string
+
+settype($n, "integer");
+print $n; //=> 150
+print gettype($n); //=> integer
+
+settype($n, "float");
+print $n; //=> 150 ()
+print gettype($n); //=> double
+```
+
+Wait double? Don't worry, in PHP **float**, **double**, and **real** are all the same data types (quick note for Python programmers, a double in this language isn't the same as a Python's double which is slightly different than a float).
+
+
+
+
+# 5) Looping With `while`
 ---
 Let's start off with the easiest example. These methods are almost identical in both Ruby and JavaScript, in fact the only thing that's different is the syntax (using `var` and `{}` ). Here's a quick example:
 
