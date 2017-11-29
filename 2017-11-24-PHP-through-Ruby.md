@@ -13,7 +13,7 @@ I also have a [Javascript through Ruby](https://mikemerin.github.io/JS-through-R
 
 I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation.
 
-We'll be going over these loops, iterations, and global methods:
+We'll be going over these basics, loops, iterations, and global methods:
 
 Link | Ruby | PHP Equivalent | Description
 ---|---|---|---
@@ -23,6 +23,14 @@ Link | Ruby | PHP Equivalent | Description
 |||**functions**
 [3)](#3-string-interpolation) | `"#{obj}"` | `"${obj}" {$obj}" $obj"` | inserting objects into a string
 [4)](#4-functions-to-change-data-type) | this.to_type | settype(this, "type") | Converts datatypes
+[5)](#5-length-of-an-object) | x.length | count() / strlen() | length of an object (arr, str, etc.)
+[6)](#6-ranges) | (1...5).to_a | range(1,5) | creates a ranged array (different)
+[7)](#7-pushappendpopshiftunshift) | push / `<<` | append | add onto the end of an array
+| pop(x) | pop(x) | remove from the end of the array (different)
+| unshift | a = [x] + a | add onto the beginning of an array
+| shift(x) | pop(0) | remove from the beginning of the array
+[8)](#8-testing-for-inclusion) | .include? | in | find if something is included
+
 
 |||**loops**
 [5)](#4-looping-with-while) | while / until | while | loops while condition is true
@@ -116,6 +124,7 @@ Also there's a difference in how each language returns information. While Ruby c
 
 ```ruby
 # Ruby
+
 array #=> ["one", "two", "three", "four"]
 array[1] #=> "two"
 
@@ -184,6 +193,7 @@ Here is a minor but important difference between "adding" and manipulating strin
 
 ```ruby
 # Ruby
+
 animal = "dog"
 name = "Lily"
 age = 8
@@ -194,6 +204,7 @@ puts name + ", the " + age.to_s + " year old " + animal + "."
 
 ```php
 // PHP
+
 $animal = "dog";
 $name = "Lily";
 $age = 8;
@@ -206,6 +217,7 @@ We can also update any strings in a similar fashion:
 
 ```ruby
 # Ruby
+
 name += "ana" #=> "Lilyana"
 puts name + ", the " + age.to_s + " year old " + animal + "."
 #=> "Lilyana, the 8 year old dog."
@@ -213,6 +225,7 @@ puts name + ", the " + age.to_s + " year old " + animal + "."
 
 ```php
 // PHP
+
 name .= "ana" //=> "Lilyana"
 print $name . ', the ' . $age . ' year old ' . $animal . '.';
 //=> "Lilyana, the 8 year old dog."
@@ -222,6 +235,7 @@ The problem with this type of interpolation though is it's fairly ugly to look a
 
 ```ruby
 # Ruby
+
 animal = "dog"
 name = "Lily"
 age = 8
@@ -232,6 +246,7 @@ puts "#{name}, the #{age} year old #{animal}."
 
 ```php
 // PHP
+
 $animal = "dog";
 $name = "Lily";
 $age = 8;
@@ -259,6 +274,7 @@ Quick note about the PHP script: even though you can call the object with or wit
 
 ```php
 // PHP
+
 $animal = "dog";
 $name = "Lily";
 $age = 8;
@@ -280,6 +296,7 @@ Finally as far as object manipulation during string interpolation, while in Ruby
 
 ```ruby
 # Ruby
+
 animal = "dog"
 name = "Lily"
 age = 8
@@ -292,6 +309,7 @@ we unfortunately have to go back to the ugly concatenation way from before to ge
 
 ```php
 // PHP
+
 $animal = "dog";
 $name = "Lily";
 $age = 8;
@@ -350,12 +368,219 @@ print gettype($n); //=> double
 
 Wait double? Don't worry, in PHP **float**, **double**, and **real** are all the same data types (quick note for Python programmers, a double in this language isn't the same as a Python's double which is slightly different than a float).
 
-
-
-
-# 5) Looping With `while`
+# 5) Length of an object
 ---
-Let's start off with the easiest example. These methods are almost identical in both Ruby and JavaScript, in fact the only thing that's different is the syntax (using `var` and `{}` ). Here's a quick example:
+You've probably noticed by now that Ruby has a lot more emphasis on calling functions on an object via `object.do_something` versus PHP calling objects inside a function via `do_something(object)`. This is the same for how we count the length on an object. In Ruby this can be done in multiple ways as a "one size fits all", though in PHP it's split up into different functions depending on if it's an array or a string:
+
+```ruby
+# Ruby
+
+[1, 2, 3, 4].size #=> 4
+[1, 2, 3, 4].length #=> 4
+[1, 2, 3, 4].count #=> 4
+"testing out a string".size #=> 20
+"testing out a string".length #=> 20
+```
+```php
+// PHP
+
+print count([1, 2, 3, 4]); //=> 4
+print strlen("testing out a string"); //=> 20
+```
+
+# 6) Ranges
+---
+Ranges are very important and thankfully both Ruby and PHP have easy ways to create them. They work differently in each language, and surprisingly PHP is slightly more versatile in what it can do. Nevertheless it's incredibly important to know how to use it in both languages.
+
+Ruby uses two periods `..` to denote a range. For example if you want to go from 1 to 5 you'd put `1..5`, or use three periods `...` to go from 1 *up until* 5 by doing `1...5`. Ranges must go from the lowest number to the highest number otherwise it won't work, though you can use negative numbers as long as the first one is smaller:
+
+```ruby
+# Ruby
+
+(1..5).to_a #=> [1, 2, 3, 4, 5]
+(1...5).to_a #=> [1, 2, 3, 4]
+(-5..-1).to_a #=> [-5, -4, -3, -2, -1]
+```
+
+Additionally in Ruby only you can also do ranges of letters:
+
+```ruby
+# Ruby
+
+("a".."e").to_a #=> ["a", "b", "c", "d", "e"]
+("M"..."Q").to_a #=> ["M", "N", "O", "P"]
+```
+
+Finally you can space out how many numbers/letters by using `.step` and it'll skip ahead by that many numbers/letters:
+
+```ruby
+# Ruby
+
+(1..10).step(3).to_a #=> [1, 4, 7, 10]
+("a".."i").step(2).to_a #=> ["a", "c", "e", "g", "i"]
+```
+
+Onto PHP. The `range` method takes in 2-3 arguments: if you put in two numbers it'll go from the first number up to the second number, and if you add a third number it will be the step.
+
+```php
+// PHP
+
+print_r (range(1, 5)); //=> [1, 2, 3, 4, 5]
+print_r (range(1, 10, 3)); //=> [1, 4, 7, 10]
+print_r (range(-5, 0)); //=> [-5, -4, -3, -2, -1, 0]
+
+print_r (range("a","e")); //=> ["a", "b", "c", "d", "e"]
+print_r (range("a","i",2)); //=> ["a", "c", "e", "g", "i"]
+```
+
+Here's something nifty though that PHP can only do: reverse steps. You don't need Just negate the step and you're good to go (note that the step can be either positive or negative and it will do the same thing).
+
+```php
+// PHP
+
+print_r (range(0, -5)); //=> [0, -1, -2, -3, -4]
+print_r (range(1, -10, 3)); //=> [1, -2, -5, -8]
+print_r (range(100, 20, 18)); //=> [100, 82, 64, 46, 28]
+
+print_r (range("e","a")); //=> ["e", "d", "c", "b", "a"]
+```
+
+
+
+# 7) Push/Append/Pop/Shift/Unshift
+---
+While Ruby and JS have the same push/pop/unshift/shift methods for modifying arrays, only Python's `.append` is the exact same as `.push`. Let's quickly go through them and how we can both directly and indirectly handle the same types of functions.
+
+#### Ruby: push / `<<` | Python: append
+
+Ruby's `push` or shovel `<<` operator works the same as Python's `append`, which adds element(s) onto the end of an array.
+
+```ruby
+# Ruby
+array = [1, 2, 3, 4]
+array.push(5) #=> [1, 2, 3, 4, 5]
+array.push(6, 7) #=> [1, 2, 3, 4, 5, 6, 7]
+array << 8 #=> [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+Unlike `push` though, Python's `append` is much more limited and works more like the shovel operator which can only handle a single argument.
+
+```python
+# Python
+array = [1, 2, 3, 4]
+array.append(5) #=> [1, 2, 3, 4, 5]
+array = array + [6, 7] #=> [1, 2, 3, 4, 5, 6, 7]
+```
+
+#### Ruby: unshift | Python: a = [x] + a
+
+There's no direct `unshift` in Python, so we have to manually add it together:
+
+```ruby
+# Ruby
+array = [1, 2, 3, 4]
+array.unshift(0) #=> [0, 1, 2, 3, 4]
+array.unshift(-2, -1) #=> [-2, -1, 0, 1, 2, 3, 4]
+```
+
+```python
+# Python
+array = [1, 2, 3, 4]
+array = [0] + array  #=> [0, 1, 2, 3, 4]
+array = [-2, -1] + array #=> [-2, -1, 0, 1, 2, 3, 4]
+```
+
+#### Ruby: pop/shift | Python: pop
+
+While Python doesn't have `shift`, it's `pop` method does both jobs here. Why? Pop works differently in Python than it does in Ruby. In both languages, these functions return the removed item(s), not the changed array. But how they remove them is what makes the difference.
+
+In Ruby, both shift and pop can either be called without taking in a number and it'll remove the first or last element respectively.
+
+Here's where the difference lies: in Ruby if you have it take in an argument it will remove x elements from the beginning or the end.
+
+```ruby
+# Ruby
+array = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
+array.pop #=> "eight"
+array #=> ["one", "two", "three", "four", "five", "six", "seven"]
+array.pop(2) #=> ["six", "seven"]
+array = ["one", "two", "three", "four", "five"]
+
+array.shift #=> "one"
+array #=> ["two", "three", "four", "five"]
+array.shift(2) #=> ["two", "three"]
+array #=> ["four", "five"]
+```
+
+In Python, if you take in an element it will remove the element at the **index** put in. That means to imitate `shift` we'll simply say "pop at index 0"
+
+```python
+# Python
+array = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
+array.pop() #=> "eight"
+array #=> ["one", "two", "three", "four", "five", "six", "seven"]
+array.pop(2) #=> "three"
+array #=> ["one", "two", "four", "five", "six", "seven"]
+
+array.pop(0) #=> "one"
+array #=> ["two", "four", "five", "six", "seven"]
+```
+
+However this operation is very slow when talking about Big O notation as operationally it's going through each bit of memory to shift the elements down by one. Instead we can create a new array from index 1 until the end:
+
+```python
+# Python
+array = [1, 2, 3, 4, 5]
+array = array[1:]
+array #=> [2, 3, 4, 5]
+```
+
+# 8) Testing for inclusion
+### Ruby: `include` | Python: `in`
+---
+We're about to see the word `in` much more in Python, so let's get used to using it. Ruby has a very useful function called `include?` which lets us test if something is included in an array or string.
+
+```ruby
+# Ruby
+[1, 2, 3, 4, 5].include?(5) #=> true
+[1, 2, 3, 4, 5].include?(7) #=> false
+"this is a string".include?("t") #=> true
+"this is a string".include?("is") #=> true
+"this is a string".include?("e") #=> false
+```
+
+Thankfully it's just as easy to do this in Python, the difference again is merely syntax:
+
+```python
+# Python
+5 in [1, 2, 3, 4, 5] #=> True
+7 in [1, 2, 3, 4, 5] #=> False
+"t" in "this is a string" #=> True
+"is" in "this is a string" #=> True
+"e" in "this is a string" #=> False
+```
+
+There's also a way to negate both of these scripts. Though Ruby doesn't have an `exclude?` function, we can simply put an exclamation point `!` in front of the script to negate it, and in Python we'll simply put `not`
+
+```Ruby
+# Ruby
+![1, 2, 3, 4, 5].include?(5) #=> false
+```
+
+```python
+# Python
+"t" not in "this is a string" #=> False
+```
+
+
+
+
+
+
+
+# 8) Looping With `while`
+---
+Let's start off with the easiest example. These methods are almost identical in both Ruby and PHP (if you know JavaScript it's virtually the same as in PHP), in fact the only thing that's different is the syntax. Here's a quick example:
 
 ```ruby
 # Ruby
@@ -368,15 +593,15 @@ end
 array #=> [1,2,3,4,5]
 ```
 
-```javascript
-// JavaScript
-var array = []
-var x = 1
-while (x < 6) {
-    array.push(x)
-    x += 1
+```php
+// PHP
+$array = [];
+$x = 1;
+while ($x < 6) {
+    $array.push(x);
+    x += 1;
 }
-array //=> [1,2,3,4,5]
+print $array; //=> [1,2,3,4,5]
 ```
 
 Let's do a side-by-side:
