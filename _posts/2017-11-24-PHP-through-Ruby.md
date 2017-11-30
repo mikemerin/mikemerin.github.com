@@ -13,23 +13,26 @@ I also have a [Javascript through Ruby](https://mikemerin.github.io/JS-through-R
 
 I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation.
 
+# PLEASE NOTE THIS POST IS A WORK IN PROGRESS AS WITH MY OTHER EDUCATION POSTS IT'S AS LONG AS A NOVEL. I HAVE NOTED THE VIP LINE BELOW
+
 We'll be going over these basics, loops, iterations, and global methods:
 
 Link | Ruby | PHP Equivalent | Description
 ---|---|---|---
 |||**structure**
 [1)](#1-objects-and-scripting) | not needed | `$obj`/ define, `;` | how to format PHP
-[2)](#2-variable-and-data-types) | various | less various | types of variables and more
+[2)](#2-outputs) | puts p print | print echo print_r | ways to output objects
+[3)](#3-variable-and-data-types) | various | less various | types of variables and more
 |||**functions**
-[3)](#3-string-interpolation) | `"#{obj}"` | `"${obj}" {$obj}" $obj"` | inserting objects into a string
-[4)](#4-functions-to-change-data-type) | this.to_type | settype(this, "type") | Converts datatypes
-[5)](#5-length-of-an-object) | x.length | count() / strlen() | length of an object (arr, str, etc.)
-[6)](#6-ranges) | (1...5).to_a | range(1,5) | creates a ranged array (different)
-[7)](#7-pushappendpopshiftunshift) | push / `<<` | append | add onto the end of an array
+[4)](#4-string-interpolation-and-manipulation) | `"#{obj}"` | `"${obj}" {$obj}" $obj"` | inserting objects into a string
+[5)](#5-functions-to-change-data-type) | this.to_type | settype(this, "type") | Converts datatypes
+[6)](#6-length-of-an-object) | x.length | count() / strlen() | length of an object (arr, str, etc.)
+[7)](#7-ranges) | (1...5).to_a | range(1,5) | creates a ranged array (different)
+[8)](#8-pushappendpopshiftunshift) | push / `<<` | append | add onto the end of an array
 | pop(x) | pop(x) | remove from the end of the array (different)
 | unshift | a = [x] + a | add onto the beginning of an array
 | shift(x) | pop(0) | remove from the beginning of the array
-[8)](#8-testing-for-inclusion) | .include? | in | find if something is included
+[9)](#9-testing-for-inclusion) | .include? | in | find if something is included
 
 
 |||**loops**
@@ -62,7 +65,135 @@ There's a simple but important difference between how the languages handle decla
 
 Finally you'll notice that at the end of all the PHP scripts above there's a semi-colon `;`. This is needed in PHP to let the program know we're ready to submit that line. Ruby is a lazy language where a new line is implicitly known by the program to end that line, same with JavaScript where you *can* but don't need a semi-colon to explicitly end a line, however PHP does need it every time.
 
-# 2) Variable and Data Types
+# 2) Outputs
+---
+Both languages have a few ways to output data. I'll explain the different data types in the next section, but a basic difference in how each language returns information is actually calling it vs. returning it. What I mean by that is depending on which shell you're in, if you define a variable `name/$name = "Mike"`, in Ruby if you type `name` you'll get back `Mike`, but in PHP if you type `$name` nothing will appear. This is just an implicit return that Ruby specifically does, but here's a rundown of the actual ways you can output information in each language:
+
+
+```ruby
+# Ruby
+
+string = "hello"
+array = ["one", "two", "three", "four"]
+hash = {"one" => 1, "two" => 2}
+
+# main output method, tries to put entries on separate lines
+puts string
+#=> hello
+puts array
+#=> one
+#=> two
+#=> three
+#=> four
+puts hash
+#=> {"one"=>1, "two"=>2}
+puts array[1]
+#=> two
+puts hash["one"]
+#=> 1
+
+# the method I usually use, helps with debugging as it helps give data type
+p string
+#=> "hello"
+p array
+#=> ["one", "two", "three", "four"]
+p hash
+#=> {"one"=>1, "two"=>2}
+p array[1]
+#=> "two"
+p hash["one"]
+#=> 1
+
+# lastly a less used one, keeps things on one line
+print string #=> hello
+print array #=> ["one", "two", "three", "four"]
+print hash #=> {"one"=>1, "two"=>2}
+print array[1] #=> two
+print hash["one"] #=> 1
+```
+
+```php
+// PHP
+
+$string = "hello";
+$array = ["one", "two", "three", "four"];
+$hash = ["one" => 1, "two" => 2];
+
+// main output methods, they do exactly the same thing, but has limitations for arrays
+// echo is slightly faster than print
+echo $string;
+print $string;
+//=> hello
+echo $array;
+print $array;
+//=> Array
+echo $hash;
+print $hash;
+//=> Array
+echo $array[1];
+print $array[1];
+//=> two
+echo $hash["one"];
+print $hash["one"];
+//=> 1
+
+
+// human-readable version, enables seeing all elements in an array
+print_r ($string);
+//=> hello
+print_r ($array);
+//=> Array
+// (
+//    [0] => one
+//    [1] => two
+//    [2] => three
+//    [3] => four
+// )
+print_r ($hash);
+//=> Array
+// (
+//    [one] => 1
+//    [two] => 2
+// )
+print_r ($array[1]);
+//=> two
+print_r ($hash["one"]);
+//=> 1
+
+// return the data type and value. helpful for also getting the length
+var_dump($string);
+//=> string(5) "hello"
+var_dump(5);
+//=> int(5)
+var_dump(5.5);
+//=> float(5.5)
+var_dump($array);
+//=> array(4) {
+//  [0]=>
+//  string(3) "one"
+//  [1]=>
+//  string(3) "two"
+//  [2]=>
+//  string(5) "three"
+//  [3]=>
+//  string(4) "four"
+// }
+var_dump($hash);
+//=> array(2) {
+//  ["one"]=>
+//  int(1)
+//  ["two"]=>
+//  int(2)
+// }
+var_dump($array[1]);
+//=> string(3) "two"
+var_dump($hash["one"]);
+//=> int(1)
+```
+
+Please note that in the rest of this post, instead of posting the multi-line array things like how `print_r` or `var_dump` outputs, to save space I'll instead just abbreviate it to a normal looking array like `["one", "two", "three", "four"]`.
+
+# 3) Variable and Data Types
 ---
 Ruby has a few unique types of variables to the language that you can declare:
 
@@ -120,56 +251,7 @@ $array2 = Array("one", "two", "three", "four");
 $hash = Array("one" => 1, "two" => 2);
 ```
 
-Also there's a difference in how each language returns information. While Ruby can give information on the entire array or hash (also known as a dictionary), PHP's basic `echo` and `print` only gives information if you call on individual elements, but `print_r` gives you more:
-
-```ruby
-# Ruby
-
-array #=> ["one", "two", "three", "four"]
-array[1] #=> "two"
-
-hash #=> {"one" => 1, "two" => 2}
-hash["one"] #=> 1
-```
-
-```php
-// PHP
-
-print $array1; //=> Array
-print $array2; //=> Array
-print $hash; //=> Array
-
-print_r ($array1);
-//=> Array
-(
-    [0] => one
-    [1] => two
-    [2] => three
-    [3] => four
-)
-
-print_r ($array2);
-//=> Array
-(
-    [0] => one
-    [1] => two
-    [2] => three
-    [3] => four
-)
-
-print_r ($hash);
-//=> Array
-(
-    [one] => 1
-    [two] => 2
-)
-
-print $array1[1]; //=> "two"
-print $array2[1]; //=> "two"
-print $hash["one"]; //=> 1
-```
-
-Lastly there's something called a *variable variable* which has some funny properties. You can use two dollar signs to dynamically define a variable:
+Lastly in PHP there's something called a *variable variable* which has some funny properties. You can use two dollar signs to dynamically define a variable:
 
 ```php
 // PHP
@@ -187,8 +269,10 @@ print $hey; //=> "everyone"
 
 See what happened there? `$greeting` outputs `"hey"`, and we can then call on that `"hey"` as a variable to output the next dollar sign's variable output. This way we can make dynamic variables and not have to re-define them over and over again. Also, we can keep adding dollar signs and make a variable variable variable, etc. etc. etc.
 
-# 3) String Interpolation
+# 4) String Interpolation and Manipulation
 ---
+### Interpolation
+
 Here is a minor but important difference between "adding" and manipulating strings. In Ruby we literally add it using the addition symbol `+` or `+=` to add it permanently. In PHP however we use a period `.` or `.=` to do this:
 
 ```ruby
@@ -292,7 +376,9 @@ print "$nameana the ${age} year old ${animal}.";
 //=> " the 8 year old dog."
 ```
 
-Finally as far as object manipulation during string interpolation, while in Ruby we can do it as easily as:
+### Manipulation
+
+As far as object manipulation goes for string interpolation, while in Ruby we can do it as easily as:
 
 ```ruby
 # Ruby
@@ -322,7 +408,24 @@ print "${name} the " . ({$age} + 1) . " year old ${animal}.";
 
 We have to encase the object manipulation in parentheses to make sure the string is printed correctly.
 
-# 4) Functions to Change Data Type
+Some other quick `str` functions to note:
+
+```php
+// PHP
+
+$string = "testing out a string";
+
+print strrev($string);
+//=> gnirts a tuo gnitset
+
+print strpos($string, "out");
+//=> 8
+
+print str_replace("a", "this", $string);
+//=> testing out this string
+```
+
+# 5) Functions to Change Data Type
 ---
 Both Ruby and PHP have easy ways to convert data types. Ruby uses a `thing.to_type` and PHP uses `settype(thing, "type")`. Though this section will be short and sweet as it's fairly direct, there are two key differences between the two languages:
 
@@ -368,7 +471,7 @@ print gettype($n); //=> double
 
 Wait double? Don't worry, in PHP **float**, **double**, and **real** are all the same data types (quick note for Python programmers, a double in this language isn't the same as a Python's double which is slightly different than a float).
 
-# 5) Length of an object
+# 6) Length of an object
 ---
 You've probably noticed by now that Ruby has a lot more emphasis on calling functions on an object via `object.do_something` versus PHP calling objects inside a function via `do_something(object)`. This is the same for how we count the length on an object. In Ruby this can be done in multiple ways as a "one size fits all", though in PHP it's split up into different functions depending on if it's an array or a string:
 
@@ -388,7 +491,18 @@ print count([1, 2, 3, 4]); //=> 4
 print strlen("testing out a string"); //=> 20
 ```
 
-# 6) Ranges
+In addition, PHP has a built-in function to help with counting words:
+
+```php
+// PHP
+
+print str_word_count("testing out a string");
+//=> 4
+```
+
+This is similar if in Ruby we did `string.split(" ").length`
+
+# 7) Ranges
 ---
 Ranges are very important and thankfully both Ruby and PHP have easy ways to create them. They work differently in each language, and surprisingly PHP is slightly more versatile in what it can do. Nevertheless it's incredibly important to know how to use it in both languages.
 
@@ -446,8 +560,11 @@ print_r (range("e","a")); //=> ["e", "d", "c", "b", "a"]
 ```
 
 
+# WIP LINE BELOW
+---
 
-# 7) Push/Append/Pop/Shift/Unshift
+
+# 8) Push/Append/Pop/Shift/Unshift
 ---
 While Ruby and JS have the same push/pop/unshift/shift methods for modifying arrays, only Python's `.append` is the exact same as `.push`. Let's quickly go through them and how we can both directly and indirectly handle the same types of functions.
 
