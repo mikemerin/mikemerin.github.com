@@ -9,11 +9,11 @@ If you learned how to program in Ruby, you probably noticed there's a large amou
 
 I also have a [Javascript through Ruby](https://mikemerin.github.io/JS-through-Ruby/) and a [Python through Ruby](https://mikemerin.github.io/Python-through-Ruby/) post in the same fashion as this post if you're interested.
 
-**I'll be going into a lot of detail in this post, if you want an abbreviated PHP-only cheat sheet you can find that [here](https://mikemerin.github.io/PHP-Cheat-Sheet/), though I would recommend going through this post if you want a better understanding of how everything works.**
+**I'll be going into a lot of detail in this post, if you want an abbreviated PHP-only cheat sheet you can find that [here](https://mikemerin.github.io/PHP-Cheat-Sheet/) (not up yet, will come when this post is completed), though I would recommend going through this post if you want a better understanding of how everything works.**
 
 I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation.
 
-A quick note before we begin regarding this post and formatting PHP: for each language's shell if you define a variable `name/$name = "Mike"`, if you're in Ruby typing `name` will get you back `Mike`, but if you're in PHP typing in `$name` will get you nothing. This is just an implicit return that Ruby specifically does, but for the purposes of this post if I perform a function I'll simply give what it returns rather than spending an extra line doing `print ___`. Also other output functions like `print_r` or `var_dump` when used with arrays gives a neat looking but space-wasting multi-line arrays, so I'll instead be abbreviating that output to a normal looking array.
+A quick note before we begin regarding this post and formatting PHP: firstly, in each language's shell if you define a variable `name/$name = "Mike"`, in Ruby if you type `name` you'll get back `Mike`, in PHP if you type `$name` you'll get back nothing. This is just an implicit return that Ruby specifically does, but for the purposes of this post if I perform a function I'll simply give what it returns rather than spending an extra line doing `print ___;`. Secondly, using arrays with output functions like `print_r` or `var_dump` puts a neat looking but space-wasting multi-line array on the screen, so I'll instead be abbreviating that output to a normal looking array.
 
 # PLEASE NOTE THIS POST IS A WORK IN PROGRESS AS WITH MY OTHER EDUCATION POSTS IT'S AS LONG AS A NOVEL. I HAVE NOTED THE VIP LINE BELOW
 
@@ -607,7 +607,7 @@ array_unshift($array, -2, -1); //=> [-2, -1, 0, 1, 2, 3, 4]
 
 #### Ruby: pop/shift | PHP: array_pop/array_shift
 
-I'll cover both of these functions at once since they do the same thing at different locations and have the same limitations in PHP. Calling `pop` removes element(s) from the end of an array (you pop it off), and `shift` removes element(s) from the beginning of an array (you shift everything down). Ruby can handle multiple elements at once but PHP can only do one at a time. If you wanted to do more you could use PHP's `array_slice` method which I'll cover shortly.
+I'll cover both of these functions at once since they do the same thing at different locations and have the same limitations in PHP. Calling `pop` removes element(s) from the end of an array (you pop it off), and `shift` removes element(s) from the beginning of an array (you shift everything down). Ruby can handle multiple elements at once but PHP can only do one at a time. If you wanted to do more you could use PHP's `array_slice` method which I'll cover next.
 
 ```ruby
 # Ruby
@@ -639,6 +639,10 @@ print_r ($array); //=> ["two", "three", "four", "five", "six", "seven"]
 
 
 # 9) Slicing
+---
+
+Again, PHP is a little limited in removing elements and can only do one at a time, however we can
+
 
 # 10) Merging
 ### Ruby: `.concat` | PHP: `array_merge`
