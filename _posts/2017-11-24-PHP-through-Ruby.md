@@ -22,7 +22,7 @@ Link | Ruby | PHP Equivalent | Description
 |||**structure**
 [1)](#1-objects-and-scripting) | not needed | `$obj`/ define, `;` | how to format PHP
 [2)](#2-outputs) | puts p print | print echo print_r | ways to output objects
-[3)](#3-variable-and-data-types) | various | less various | types of variables and more
+[3)](#3-variable-and-data-types) | str/num/etc, array/hash |  hash == array | types of variables and more
 |||**functions**
 [4)](#4-string-interpolation-and-manipulation) | `"#{obj}"` | `"${obj}" {$obj}" $obj"` | inserting objects into a string
 [5)](#5-functions-to-change-data-type) | this.to_type | settype(this, "type") | Converts datatypes
@@ -547,7 +547,7 @@ print_r (range("a","e")); //=> ["a", "b", "c", "d", "e"]
 print_r (range("a","i",2)); //=> ["a", "c", "e", "g", "i"]
 ```
 
-Here's something nifty though that PHP can only do: reverse steps. You don't need Just negate the step and you're good to go (note that the step can be either positive or negative and it will do the same thing).
+Here's something nifty though that PHP can only do: ranges in reverse without needing steps. If you tried to do `(0..-5)` or `(10..1)` in Ruby you'd get an error, but in PHP ranges this is valid! Another quick note that the step can be either positive or negative and it will still count the step correctly.
 
 ```php
 // PHP
