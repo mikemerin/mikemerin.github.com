@@ -13,6 +13,8 @@ I also have a [Javascript through Ruby](https://mikemerin.github.io/JS-through-R
 
 I'll assume you know how to iterate in Ruby already, but if not then look at my [first cryptography post](https://mikemerin.github.io/cryptography/) for a detailed explanation.
 
+A quick note before we begin regarding this post and formatting PHP: for each language's shell if you define a variable `name/$name = "Mike"`, if you're in Ruby typing `name` will get you back `Mike`, but if you're in PHP typing in `$name` will get you nothing. This is just an implicit return that Ruby specifically does, but for the purposes of this post if I perform a function I'll simply give what it returns rather than spending an extra line doing `print ___`. Also other output functions like `print_r` or `var_dump` when used with arrays gives a neat looking but space-wasting multi-line arrays, so I'll instead be abbreviating that output to a normal looking array.
+
 # PLEASE NOTE THIS POST IS A WORK IN PROGRESS AS WITH MY OTHER EDUCATION POSTS IT'S AS LONG AS A NOVEL. I HAVE NOTED THE VIP LINE BELOW
 
 We'll be going over these basics, loops, iterations, and global methods:
@@ -28,11 +30,13 @@ Link | Ruby | PHP Equivalent | Description
 [5)](#5-functions-to-change-data-type) | this.to_type | settype(this, "type") | Converts datatypes
 [6)](#6-length-of-an-object) | x.length | count() / strlen() | length of an object (arr, str, etc.)
 [7)](#7-ranges) | (1...5).to_a | range(1,5) | creates a ranged array (different)
-[8)](#8-pushappendpopshiftunshift) | push / `<<` | append | add onto the end of an array
-| pop(x) | pop(x) | remove from the end of the array (different)
-| unshift | a = [x] + a | add onto the beginning of an array
-| shift(x) | pop(0) | remove from the beginning of the array
-[9)](#9-testing-for-inclusion) | .include? | in | find if something is included
+[8)](#8-pushpopshiftunshift) | push / `<<` | array_push / `[]` | add onto the end of an array
+| pop(x) | array_pop(a) | remove from the end of the array
+| unshift | array_unshift | add onto the beginning of an array
+| shift(x) | array_shift(a) | remove from the beginning of the array
+[9)](#9-slicing) | .slice | slice | select element(s) from array
+[10)](#10-merging) | .concat | merge | combine two (or more in PHP) arrays
+[11)](#11-testing-for-inclusion) | .include? | in | find if something is included
 
 
 |||**loops**
@@ -52,7 +56,6 @@ Link | Ruby | PHP Equivalent | Description
 [15)](#15-adding-to--removing-from-arrays) | .insert | .splice | add element(s) from array/string
 | .delete_at / .slice! | .splice | remove element(s) from array/string
 |||**selecting methods**
-[16)](#16-testing-for-inclusion) | .include? | .includes | test if an element is included in an array/string
 [17)](#17-keys-and-values) | .keys | Object.keys() | get all keys in a hash
 | .values | Object.values() | get all values in a hash
 [18)](#18-slice) | .slice | .slice | select element from array (different in Ruby vs. JS)
@@ -67,8 +70,7 @@ Finally you'll notice that at the end of all the PHP scripts above there's a sem
 
 # 2) Outputs
 ---
-Both languages have a few ways to output data. I'll explain the different data types in the next section, but a basic difference in how each language returns information is actually calling it vs. returning it. What I mean by that is depending on which shell you're in, if you define a variable `name/$name = "Mike"`, in Ruby if you type `name` you'll get back `Mike`, but in PHP if you type `$name` nothing will appear. This is just an implicit return that Ruby specifically does, but here's a rundown of the actual ways you can output information in each language:
-
+Both languages have a few ways to output data. I'll explain the different data types in the next section, but a basic difference in how each language returns information is actually calling it vs. returning it. As I mentioned before, for each language's shell if you define a variable `name/$name = "Mike"`, if you're in Ruby typing `name` will get you back `Mike`, but if you're in PHP typing in `$name` will get you nothing. This is just an implicit return that Ruby specifically does, but here's a rundown of the actual ways you can output information in each language:
 
 ```ruby
 # Ruby
@@ -191,7 +193,7 @@ var_dump($hash["one"]);
 //=> int(1)
 ```
 
-Please note that in the rest of this post, instead of posting the multi-line array things like how `print_r` or `var_dump` outputs, to save space I'll instead just abbreviate it to a normal looking array like `["one", "two", "three", "four"]`.
+Again as I noted from before: Please note that in the rest of this post, instead of posting the multi-line array things like how `print_r` or `var_dump` outputs, to save space I'll instead just abbreviate it to a normal looking array like `["one", "two", "three", "four"]`.
 
 # 3) Variable and Data Types
 ---
@@ -559,39 +561,35 @@ print_r (range(100, 20, 18)); //=> [100, 82, 64, 46, 28]
 print_r (range("e","a")); //=> ["e", "d", "c", "b", "a"]
 ```
 
-
-# WIP LINE BELOW
+# 8) Push/Pop/Shift/Unshift
 ---
+While Ruby and JS have the same push/pop/unshift/shift functions for modifying arrays, in PHP you instead call `array_type` in different ways. Even though there are some limitations in PHP for shifting/popping, all the above functions are just as easy to do with some subtle differences.
 
+#### Ruby: push / `<<` | PHP: array_push / `[]`
 
-# 8) Push/Append/Pop/Shift/Unshift
----
-While Ruby and JS have the same push/pop/unshift/shift methods for modifying arrays, only Python's `.append` is the exact same as `.push`. Let's quickly go through them and how we can both directly and indirectly handle the same types of functions.
-
-#### Ruby: push / `<<` | Python: append
-
-Ruby's `push` or shovel `<<` operator works the same as Python's `append`, which adds element(s) onto the end of an array.
+Ruby's `push` or shovel `<<` operator works the same as PHP's `array_push`, which adds element(s) onto the end of an array. In addition you can do `array[]` to add a single element onto the array
 
 ```ruby
 # Ruby
+
 array = [1, 2, 3, 4]
 array.push(5) #=> [1, 2, 3, 4, 5]
 array.push(6, 7) #=> [1, 2, 3, 4, 5, 6, 7]
 array << 8 #=> [1, 2, 3, 4, 5, 6, 7, 8]
 ```
 
-Unlike `push` though, Python's `append` is much more limited and works more like the shovel operator which can only handle a single argument.
+```php
+// PHP
 
-```python
-# Python
-array = [1, 2, 3, 4]
-array.append(5) #=> [1, 2, 3, 4, 5]
-array = array + [6, 7] #=> [1, 2, 3, 4, 5, 6, 7]
+$array = [1, 2, 3, 4];
+array_push($array, 5); //=> [1, 2, 3, 4, 5]
+array_push($array, 6, 7); //=> [1, 2, 3, 4, 5, 6, 7]
+$array[] = 8;  //=> [1, 2, 3, 4, 5, 6, 7, 8]
 ```
 
-#### Ruby: unshift | Python: a = [x] + a
+#### Ruby: unshift | PHP: array_unshift
 
-There's no direct `unshift` in Python, so we have to manually add it together:
+These add element(s) onto the beginning of an array.
 
 ```ruby
 # Ruby
@@ -600,20 +598,16 @@ array.unshift(0) #=> [0, 1, 2, 3, 4]
 array.unshift(-2, -1) #=> [-2, -1, 0, 1, 2, 3, 4]
 ```
 
-```python
-# Python
-array = [1, 2, 3, 4]
-array = [0] + array  #=> [0, 1, 2, 3, 4]
-array = [-2, -1] + array #=> [-2, -1, 0, 1, 2, 3, 4]
+```php
+// PHP
+$array = [1, 2, 3, 4];
+array_unshift($array, 0); //=> [0, 1, 2, 3, 4]
+array_unshift($array, -2, -1); //=> [-2, -1, 0, 1, 2, 3, 4]
 ```
 
-#### Ruby: pop/shift | Python: pop
+#### Ruby: pop/shift | PHP: array_pop/array_shift
 
-While Python doesn't have `shift`, it's `pop` method does both jobs here. Why? Pop works differently in Python than it does in Ruby. In both languages, these functions return the removed item(s), not the changed array. But how they remove them is what makes the difference.
-
-In Ruby, both shift and pop can either be called without taking in a number and it'll remove the first or last element respectively.
-
-Here's where the difference lies: in Ruby if you have it take in an argument it will remove x elements from the beginning or the end.
+I'll cover both of these functions at once since they do the same thing at different locations and have the same limitations in PHP. Calling `pop` removes element(s) from the end of an array (you pop it off), and `shift` removes element(s) from the beginning of an array (you shift everything down). Ruby can handle multiple elements at once but PHP can only do one at a time. If you wanted to do more you could use PHP's `array_slice` method which I'll cover shortly.
 
 ```ruby
 # Ruby
@@ -629,30 +623,62 @@ array.shift(2) #=> ["two", "three"]
 array #=> ["four", "five"]
 ```
 
-In Python, if you take in an element it will remove the element at the **index** put in. That means to imitate `shift` we'll simply say "pop at index 0"
+```php
+// PHP
+$array = ["one", "two", "three", "four", "five", "six", "seven", "eight"];
+print array_pop($array); //=> "eight"
+print_r ($array); //=> ["one", "two", "three", "four", "five", "six", "seven"]
 
-```python
-# Python
-array = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
-array.pop() #=> "eight"
-array #=> ["one", "two", "three", "four", "five", "six", "seven"]
-array.pop(2) #=> "three"
-array #=> ["one", "two", "four", "five", "six", "seven"]
-
-array.pop(0) #=> "one"
-array #=> ["two", "four", "five", "six", "seven"]
+print array_shift($array); //=> "one"
+print_r ($array); //=> ["two", "three", "four", "five", "six", "seven"]
 ```
 
-However this operation is very slow when talking about Big O notation as operationally it's going through each bit of memory to shift the elements down by one. Instead we can create a new array from index 1 until the end:
+# WIP LINE BELOW
+---
 
-```python
-# Python
-array = [1, 2, 3, 4, 5]
-array = array[1:]
-array #=> [2, 3, 4, 5]
+
+
+# 9) Slicing
+
+# 10) Merging
+### Ruby: `.concat` | PHP: `array_merge`
+---
+
+, and the `array_merge` function lets you do even more.
+
+Another way you can add anything to an array and flatten it in the process is by using `array_merge`. You can do a pseudo array_push or array_unshift this way, and even better you can merge as many arrays together as you want!
+
+```php
+// PHP
+
+$array = [1, 2];
+$array = array_merge($array, [3]);
+//=> [1, 2, 3]
+$array = array_merge($array, [4, 5]);
+//=> [1, 2, 3, 4, 5]
+$array = array_merge($array, array(6, 7));
+//=> [1, 2, 3, 4, 5, 6, 7]
+$array = array_merge([0], $array);
+//=> [0, 1, 2, 3, 4, 5, 6, 7]
+
+$array = [1, 2, 3];
+$array = array_merge($array, $array);
+//=> [1, 2, 3, 1, 2, 3]
+
+$array = [1, 2, 3];
+$array = array_merge($array, $array, $array);
+//=> [1, 2, 3, 1, 2, 3, 1, 2, 3]
 ```
 
-# 8) Testing for inclusion
+
+
+
+
+
+
+
+
+# 9) Testing for inclusion
 ### Ruby: `include` | Python: `in`
 ---
 We're about to see the word `in` much more in Python, so let's get used to using it. Ruby has a very useful function called `include?` which lets us test if something is included in an array or string.
