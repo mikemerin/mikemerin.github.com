@@ -34,7 +34,7 @@ Link | Ruby | PHP Equivalent | Description
 | pop(x) | array_pop(a) | remove from the end of the array
 | unshift | array_unshift | add onto the beginning of an array
 | shift(x) | array_shift(a) | remove from the beginning of the array
-[9)](#9-slicing) | .slice | slice | select element(s) from array
+[9)](#9-slicing) | .slice | slice / substr | select element(s) from array/string
 [10)](#10-merging) | .concat | merge | combine two (or more in PHP) arrays
 [11)](#11-testing-for-inclusion) | .include? | in | find if something is included
 
@@ -633,19 +633,125 @@ print array_shift($array); //=> "one"
 print_r ($array); //=> ["two", "three", "four", "five", "six", "seven"]
 ```
 
+# 9) Slicing
+### Ruby: `.slice` | PHP: `slice()` / `substr()`
+---
+While popping and shifting can let you modify an array from the end and beginning, there's an even more powerful function that can let you the above and then some. Slice is a *non-destructive* method (doesn't change the array after you call it) that lets you pick and choose what parts of an array (or even a string) you'd like to return. This is especially even more useful in PHP since its pop/shift functions can only do one element at a time, and `slice` can tackle any number of elements.
+
+There are three differences between the two languages' slices:
+
+The first: if slice takes in only one argument, Ruby will use that as the **index number** you'd like to return (it acts just like if you're doing array[n]), while PHP will use that as the **low index number** to start returning from until the end of the array. Note that this first number can be negative and that index number will count from the end of the array:
+
+```ruby
+# Ruby
+
+array = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
+
+array[1] # same as
+array.slice(1)
+#=> "two"
+array.slice(-3)
+#=> "six"
+```
+
+```php
+// PHP
+
+$array = ["one", "two", "three", "four", "five", "six", "seven", "eight"];
+print_r (array_slice($array, 1));
+//=> ["two", "three", "four", "five", "six", "seven", "eight"]
+print_r (array_slice($array, -3));
+//=> ["six", "seven", "eight"]
+
+```
+
+However if you put two arguments in, both languages will use the first as the low index number and the second will be how many elements to count out from.
+
+```ruby
+# Ruby
+
+array = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
+
+array[0, 7] # same as
+array.slice(0, 7)
+#=> ["one", "two", "three", "four", "five", "six", "seven"]
+array.slice(2, 2)
+#=> ["three", "four"]
+```
+
+```php
+// PHP
+
+$array = ["one", "two", "three", "four", "five", "six", "seven", "eight"];
+print_r (array_slice($array, 0, 7));
+//=> ["one", "two", "three", "four", "five", "six", "seven"]
+print_r (array_slice($array, 2, 2));
+//=> ["three", "four"]
+```
+
+The second: in PHP we can add a third optional argument of `true` if we want to return the actual index of the returned values:
+
+```php
+// PHP
+
+print_r (array_slice($array, 2, 2));
+//=> Array
+// (
+//    [0] => three
+//    [1] => four
+// )
+print_r (array_slice($array, 2, 2, true));
+//=> Array
+// (
+//    [2] => three
+//    [3] => four
+// )
+```
+
+The third: if we wanted to use this for strings, Ruby's slice can just be used the exact same way:
+
+```ruby
+# Ruby
+
+string = "string"
+
+string[1] # same as
+string.slice(1)
+#=> "t"
+string.slice(-3)
+#=> "i"
+string.slice(0,4)
+#=> "stri"
+string.slice(2,2)
+#=> "ri"
+```
+
+While in PHP we'd instead need to use `substr`. The good news though is it's a carbon copy of PHP's slice function so just use it the same way:
+
+```php
+// PHP
+
+$string = "string";
+
+print substr($string, 1);
+//=> "tring"
+print substr($string, -3);
+//=> "ing"
+print substr($string, 0, 4);
+//=> "stri"
+print substr($string, 2, 2);
+//=> "ri"
+```
+
+
 # WIP LINE BELOW
 ---
 
 
 
-# 9) Slicing
----
-
-Again, PHP is a little limited in removing elements and can only do one at a time, however we can
-
 
 # 10) Merging
-### Ruby: `.concat` | PHP: `array_merge`
+### Ruby: `+` / `.concat` | PHP: `array_merge`
 ---
 
 , and the `array_merge` function lets you do even more.
