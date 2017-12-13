@@ -36,7 +36,8 @@ Link | Ruby | PHP Equivalent | Description
 | shift(x) | array_shift(a) | remove from the beginning of the array
 [9)](#9-slicing) | .slice | slice / substr | select element(s) from array/string
 [10)](#10-merging) | .concat | merge | combine two (or more in PHP) arrays
-[11)](#11-testing-for-inclusion) | .include? | in | find if something is included
+[11)](#11-splitting) | split | explode | combine two (or more in PHP) arrays
+[12)](#12-testing-for-inclusion) | .include? | in | find if something is included
 
 
 |||**loops**
@@ -743,13 +744,6 @@ print substr($string, 2, 2);
 //=> "ri"
 ```
 
-
-# WIP LINE BELOW
----
-
-
-
-
 # 10) Merging
 ### Ruby: `+` / `.concat` | PHP: `array_merge`
 ---
@@ -781,14 +775,20 @@ $array = array_merge($array, $array, $array);
 ```
 
 
+# 11) Splitting
+---
 
 
 
 
 
+# WIP LINE BELOW
+---
 
 
-# 9) Testing for inclusion
+
+
+# 12) Testing for inclusion
 ### Ruby: `include` | Python: `in`
 ---
 We're about to see the word `in` much more in Python, so let's get used to using it. Ruby has a very useful function called `include?` which lets us test if something is included in an array or string.
