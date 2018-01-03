@@ -17,6 +17,8 @@ Blogs:
 
 [Python Cheat Sheet](https://mikemerin.github.io/Python-Cheat-Sheet/)
 
+[Object Oriented Programming in 4 Languages](https://mikemerin.github.io/Objected-Oriented-Languages/)
+
 [RegExp Part 1](https://mikemerin.github.io/RegExp-1/)
 
 [RegExp Part 2](https://mikemerin.github.io/RegExp-2/)
