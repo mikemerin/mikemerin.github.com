@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "Object Orientation in Four Languages"
-subtitle: "OO 101"
+title:  "Object Oriented Programming in Four Languages"
+subtitle: "OOP 101"
 date:   2018-01-02 20:16:25 -0400
-categories: Ruby, JavaScript, Python, PHP, tutorial
+categories: Ruby, JavaScript, Python, PHP, Object Oriented Programming, OOP, tutorial
 ---
 Object Oriented Programing, or OOP is an incredibly important tool that all developers should know. If you know one language and are trying to learn another one, learning Functional Programming of methods, iterations, and basic structures may be easier to learn (shameless plug for my [educational posts](https://mikemerin.github.io/education) on learning them), but the nuances of OOP are slightly more advanced and may be harder to grasp, especially if it's your first language.
 
