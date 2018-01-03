@@ -2,7 +2,7 @@
 layout: post
 title:  "Object Orientation in Four Languages"
 subtitle: "OO 101"
-date:   2017-12-11 22:06:15 -0400
+date:   2018-01-02 20:16:25 -0400
 categories: Ruby, JavaScript, Python, PHP, tutorial
 ---
 Object Oriented Programing, or OOP is an incredibly important tool that all developers should know. If you know one language and are trying to learn another one, learning Functional Programming of methods, iterations, and basic structures may be easier to learn (shameless plug for my [educational posts](https://mikemerin.github.io/education) on learning them), but the nuances of OOP are slightly more advanced and may be harder to grasp, especially if it's your first language.
@@ -187,12 +187,61 @@ $my_dog->info(); //=> Lily, the 9 year old Pitbull.
 # Breakdown
 ---
 
-### Initializing / Constructing
+### Private/Public Attributes/Functions
 
-Whenever you create a new class, anything inside this pre-defined function will
+Just quickly before we continue to clarify what you may see in this post (or educational posts on other sites), in Ruby and PHP there are ways to make sure users can or can't directly change an object's attributes, or can prevent someone from using a function. JS/Python unfortunately are unable to do this natively and without writing custom functions. Here's how to enable/disable attributes or stop public use of functions in Ruby/PHP.
 
 ```ruby
 # Ruby
+
+# Attribute default: nothing is accessible.
+
+# enable both getting/setting
+attr_accessor :name, :breed, :age
+# enable only getting
+attr_reader :name, :breed, :age
+# enable only setting
+attr_writer :name, :breed, :age
+
+# constructor and functions go here
+
+private
+
+def nope
+  puts "You can't access this, only I can!"
+end
+```
+
+```php
+// PHP
+
+// Default: anything is accessible.
+
+private $name;
+private $breed;
+private $age;
+
+// note in PHP there is also protected.
+// this allows inherited/parent classes to use $age below, nothing else
+
+private $name;
+private $breed;
+protected $age;
+
+// constructor goes here
+
+private function nope() {
+  echo "You can't access this, only I can!"
+}
+```
+
+### Initializing / Constructing
+
+Whenever you create a new class, anything inside this pre-defined function will start alongside it. Here we can let our new class take in arguments and make it start doing anything we'd like. In our example we're going to turn the name, breed, and age into class variables, letting us use these variables anywhere in our class object.
+
+```ruby
+# Ruby
+
 def initialize(name, breed, age)
   @name = name
   @breed = breed
@@ -200,21 +249,163 @@ def initialize(name, breed, age)
 end
 ```
 
-JavaScript
-Python
-PHP
+```javascript
+// Javascript
 
+constructor(name, breed, age) {
+    this.name = name
+    this.breed = breed
+    this.age = age
+}
+```
 
+```python
+# Python
 
+def __init__(self, name, breed, age):
+    self.name = name
+    self.breed = breed
+    self.age = age
+```
 
-# Inheritance
+```php
+// PHP
+
+function __construct($name, $breed, $age) {
+  $this->name = $name;
+  $this->breed = $breed;
+  $this->age = $age;
+}
+```
+
+Whether it's `@ruby`, `this.javascript`, `self.python`, or `$this->php`, we can now use the initial arguments anywhere inside our class.
+
+### Functions
+
+I won't get into class functions in this post (ones where you can do `Dog.do_this`), but normal functions act on the object itself. Just like typing in an attribute of `my_dog.name` can get your Dog object's name, typing in a function of `my_dog.info()` can perform a certain task.
+
+Note that in Ruby the `()` are optional if there are no arguments, and JavaScript is the only one below that doesn't have `def/function` before the function.
+
+```ruby
+# Ruby
+
+def birthday
+  @age += 1
+  puts "Happy birthday #{@name}! You're now #{@age} years old."
+end
+
+def greet(message)
+  puts "#{message} #{@name}!"
+end
+```
+
+```javascript
+// Javascript
+
+birthday() {
+  this.age++
+  console.log(`"Happy birthday ${this.name}! You're now ${this.age} years old."`)
+}
+
+greet(message) {
+  console.log(`${message} ${this.name}!`)
+}
+```
+
+```python
+# Python
+
+def birthday(self):
+  self.age += 1
+  print("Happy birthday {}! You're now {} years old.").format(self.name, self.age)
+def greet(self, message):
+  print("{} {}!").format(message, self.name)
+```
+
+```php
+// PHP
+
+function birthday() {
+  $this->age++;
+  echo "Happy birthday {$this->name}! You're now {$this->age} years old.";
+}
+
+function greet($message) {
+  echo "{$message} {$this->name}!";
+}
+```
+
+### Object Initialization / Construction
+
+Now that you've made a new class, it's time to actually create the objects that belong to them. Our initializers/constructors have a name, breed, and age, so we'll need to use those when we initialize/construct our object.
+
+```ruby
+# Ruby
+
+my_dog = Dog.new("Lily", "Pit Mix", 8)
+puts my_dog #=> #<Dog:0x007f8c3d05d630>
+```
+
+```javascript
+// Javascript
+
+my_dog = new Dog("Lily", "Pit Mix", 8)
+console.log(my_dog) //=> Dog { name: 'Lily', breed: 'Pit Mix', age: 8 }
+```
+
+```python
+# Python
+
+my_dog = Dog("Lily", "Pit Mix", 8)
+print(my_dog) #=> <__main__.Dog instance at 0x10fe525f0>
+```
+
+```php
+// PHP
+
+$my_dog = new Dog("Lily", "Pit Mix", 8);
+print_r($my_dog);
+//=> Dog Object
+// (
+//     [name] => Lily
+//     [breed] => Pit Mix
+//     [age] => 8
+// )
+```
+
+### Using Our Created Object
+
+All of the languages can now call the attributes and functions in the same exact way. In Ruby/JavaScript/Python you can type in `my_dog.whatever`, and PHP just uses `->` instead of the `.` which looks like: `$my_dog->whatever`.
+
+```ruby
+# Ruby, JavaScript, and Python
+
+puts / console.log / print my_dog.name #=> Lily
+my_dog.info() #=> Lily, the 8 year old Pit Mix.
+
+my_dog.birthday() #=> Happy birthday Lily! You're now 9 years old.
+my_dog.greet("Hello") #=> "Hello Lily!"
+
+my_dog.breed = "Pitbull"
+my_dog.info() #=> Lily, the 9 year old Pitbull.
+```
+
+```php
+// PHP
+
+echo $my_dog->name; //=> Lily
+echo $my_dog->info(); //=> Lily, the 8 year old Pit Mix.
+
+$my_dog->birthday(); //=> Happy birthday Lily! You're now 9 years old.
+$my_dog->greet("Hello"); //=> "Hello Lily!"
+
+$my_dog->breed = "Pitbull";
+$my_dog->info(); //=> Lily, the 9 year old Pitbull.
+```
+
 ---
 
-
-
----
-
-Hopefully this will let you program much cleaner (and reusable) code.
+Those are the basics. Hopefully this will let you program much cleaner (and reusable) code. I'll cover class functions, class variables, inheritence, and more in the next post!
 
 Code on.
 

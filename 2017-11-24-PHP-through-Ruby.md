@@ -748,7 +748,9 @@ print substr($string, 2, 2);
 ### Ruby: `+` / `.concat` | PHP: `array_merge`
 ---
 
-, and the `array_merge` function lets you do even more.
+Back to building onto arrays, while pushing and shifting allows you to
+
+ and the `array_merge` function lets you do even more.
 
 Another way you can add anything to an array and flatten it in the process is by using `array_merge`. You can do a pseudo array_push or array_unshift this way, and even better you can merge as many arrays together as you want!
 
@@ -773,7 +775,6 @@ $array = [1, 2, 3];
 $array = array_merge($array, $array, $array);
 //=> [1, 2, 3, 1, 2, 3, 1, 2, 3]
 ```
-
 
 # 11) Splitting
 ---
