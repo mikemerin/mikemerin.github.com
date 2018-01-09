@@ -68,3 +68,45 @@ DROP TABLE table_name;
 Code on.
 
 Mike Merin
+
+
+
+
+CREATE TABLE animals (
+  name TEXT,
+  age INTEGER
+  animal_type TEXT
+);
+
+.tables
+.schema
+
+DROP TABLE animals;
+
+CREATE TABLE animals (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER,
+    animal_type TEXT
+);
+
+.schema
+
+ALTER TABLE animals
+ADD COLUMN breed TEXT;
+
+.schema
+
+
+
+
+
+INSERT INTO animals
+(name, age, animal_type, breed)
+VALUES ("Lira", 15, "Cat", "Chartreux");
+
+INSERT INTO animals
+(name, age, animal_type, breed)
+VALUES ("Lily", 9, "Dog", "Pit Mix");
+
+SELECT * FROM testing;
