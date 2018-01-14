@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "The Ease of ChartJS"
-subtitle: "WeatherCraft blog part 4: showing off that data"
+subtitle: "WeatherCraft blog part 3: showing off that data"
 date:   2017-07-24 20:28:08 -0400
 categories: ruby, rails, SQL, activerecord, big data, chartjs, react
 ---
@@ -16,8 +16,6 @@ http://www.chartjs.org/samples/latest/charts/area/line-boundaries.html
 
 # Overview
 ---
-Note that I skipped part 3 which will talk about the data itself. I wanted to tackle this one first though, part 3 will come after this one.
-
 In [part 2](https://mikemerin.github.io/WeatherCraft-blog-2/) of this series of posts I talked about how to get my routes set up to work for not just one data point but all of those surrounding it. I'm working with weather data and for the purposes of this post I'll be covering the daily data. Just to quickly go recap what I'm working with, here's what my schema/table looks like for my Rails API:
 
 ```ruby
@@ -374,7 +372,7 @@ And it will output my graph accordingly!
 
 ---
 
-That's it for now. You can view my project to see how this looks visually and the many, many other things I do with my data and graphs. Part 5 will cover algorithms for trend lines to add some more depth to these charts.
+That's it for now. You can view my project to see how this looks visually and the many, many other things I do with my data and graphs.
 
 Code on.
 

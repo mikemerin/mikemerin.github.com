@@ -373,7 +373,7 @@ But even though this is a single query instead of 10-11 separate ones, this actu
 
 ---
 
-So we covered our Rakefile/database in part 1, our API/routes in this part 2, part 3 will involve JavaScript/React and our front end.
+So we covered our Rakefile/database in part 1, our API/routes in this part 2, part 3 will involve showing off this data.
 
 
 Code on.

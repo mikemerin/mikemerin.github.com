@@ -11,7 +11,7 @@ Blogs:
 
 [WeatherCraft Blog part 2](https://mikemerin.github.io/WeatherCraft-blog-2/)
 
-[WeatherCraft Blog part 4](https://mikemerin.github.io/WeatherCraft-blog-4/)
+[WeatherCraft Blog part 3](https://mikemerin.github.io/WeatherCraft-blog-3/)
 
 Github links:
 

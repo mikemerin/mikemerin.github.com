@@ -59,6 +59,9 @@ CREATE TABLE table_name (
 DROP TABLE table_name;
 -- Add columns to a table
 
+INSERT INTO table2 (column_name, column_name2)
+SELECT (column_name, column_name2) from table
+
 
 
 
@@ -69,7 +72,7 @@ Code on.
 
 Mike Merin
 
-
+<!--
 
 
 CREATE TABLE animals (
@@ -109,4 +112,4 @@ INSERT INTO animals
 (name, age, animal_type, breed)
 VALUES ("Lily", 9, "Dog", "Pit Mix");
 
-SELECT * FROM testing;
+SELECT * FROM testing; -->
