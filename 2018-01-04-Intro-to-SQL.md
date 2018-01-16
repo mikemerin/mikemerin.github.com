@@ -32,6 +32,8 @@ CREATE TABLE animals (
 );
 ```
 
+Note: certain programs may prevent you from deleting data and therefore some of the DROP / TRUNCATE commands here may not may not work, and in some cases it may prevent you from adding multiple columns at once to a table. I will list similar alternate methods in those cases if they're available.
+
 ```sql
 -- General
 
@@ -49,20 +51,49 @@ DROP DATABASE database_name;
 
 -- Tables
 
--- Create a table along with its columns
+--- Create a table along with its columns
 CREATE TABLE table_name (
   column_name DATA_TYPE -- (TEXT, INTEGER, etc)
   column_name2 DATA_TYPE2
   etc
 )
--- Delete a table
+--- Delete a table
 DROP TABLE table_name;
--- Add columns to a table
 
-INSERT INTO table2 (column_name, column_name2)
-SELECT (column_name, column_name2) from table
+--- Rename a table
+ALTER TABLE table_name
+RENAME TO table_name2;
 
+--- Remove all data in a table
+TRUNCATE TABLE table_name;
 
+-- Columns
+
+--- Add a column to a table
+ALTER TABLE table_name
+ADD column_name DATA_TYPE;
+
+--- Remove a column from a table (note, doesn't work with certain programs)
+ALTER TABLE table_name
+DROP column_name;
+
+--- If your program can't perform column drops,
+--- here's an alternate solution of copying to another table
+
+CREATE TABLE table_name2
+INSERT INTO table_name2 (column_name, column_name2, ...)
+SELECT (column_name, column_name2, ...)
+FROM table_name;
+
+--- Rename a column
+ALTER TABLE table_name
+RENAME column_name TO column_name2;
+
+-- Modifying data
+
+--- Add rows of data into your table
+INSERT INTO table_name (column_name, column_name2, ...)
+VALUES (value, value2, ...);
 
 
 ```
@@ -113,3 +144,14 @@ INSERT INTO animals
 VALUES ("Lily", 9, "Dog", "Pit Mix");
 
 SELECT * FROM testing; -->
+
+
+-- Welcome to the SQL code-along!
+-- I have included the first command from my post below.
+-- Use the "Execute" button above to run the commands.
+
+CREATE TABLE animals;
+
+
+.tables
+.schema
