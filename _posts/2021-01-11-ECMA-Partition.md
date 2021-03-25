@@ -4,6 +4,7 @@ title:  "Creating a New ECMAScript Function - Partition"
 subtitle: "Works for Ruby? Works Here Too"
 date:   2021-01-11 14:45:59 -0400
 categories: ECMAScript, JS, Partition
+excerpt: Ruby has some fun functions that help out greatly with array manipulation. Why can't JS share in the fun?
 ---
 Before I started programming in JavaScript my first language was Ruby, with some of my favorite parts bring its functions that allowed simple modification of arrays. Overall many of these exist in JavaScript, but the ones that are missing are:
 
