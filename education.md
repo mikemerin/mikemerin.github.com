@@ -5,23 +5,25 @@ subtitle: Learn different programming languages and more
 permalink: /education/
 ---
 
-Blogs:
-
-[Creating a Rails API and fixing CORS issues](https://mikemerin.github.io/Rails-API-cors/)
-
-[JavaScript through Ruby](https://mikemerin.github.io/JS-through-Ruby/)
-
-[JavaScript Cheat Sheet](https://mikemerin.github.io/Javascript-Cheat-Sheet/)
-
-[Python through Ruby](https://mikemerin.github.io/Python-through-Ruby/)
-
-[Python Cheat Sheet](https://mikemerin.github.io/Python-Cheat-Sheet/)
+### General
 
 [Object Oriented Programming in 4 Languages](https://mikemerin.github.io/Objected-Oriented-Languages/)
 
-[RegExp Part 1](https://mikemerin.github.io/RegExp-1/)
+### Ruby / Rails
 
-[RegExp Part 2](https://mikemerin.github.io/RegExp-2/)
+[Creating a Rails API and fixing CORS issues](https://mikemerin.github.io/Rails-API-cors/)
+
+### Javascript
+
+[JavaScript through Ruby](https://mikemerin.github.io/JS-through-Ruby/) | [JavaScript Cheat Sheet](https://mikemerin.github.io/Javascript-Cheat-Sheet/)
+
+### Python
+
+[Python through Ruby](https://mikemerin.github.io/Python-through-Ruby/) | [Python Cheat Sheet](https://mikemerin.github.io/Python-Cheat-Sheet/)
+
+### Regex
+
+[Part 1](https://mikemerin.github.io/RegExp-1/) | [Part 2](https://mikemerin.github.io/RegExp-2/)
 
 Note that there are more blogs on my [main page](https://mikemerin.github.io) that you can learn from.
 
