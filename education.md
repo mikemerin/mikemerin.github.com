@@ -32,7 +32,7 @@ permalink: /education/
 
 ### SQL
 
-[Ambiguous SQL Column Names](https://mikemerin.github.io/Ambiguous-SQL-Column-Names/)
+* [Ambiguous SQL Column Names](https://mikemerin.github.io/Ambiguous-SQL-Column-Names/)
 
 Note that there are more blogs on my [main page](https://mikemerin.github.io) that you can learn from.
 

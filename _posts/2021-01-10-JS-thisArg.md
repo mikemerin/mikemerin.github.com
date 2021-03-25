@@ -6,7 +6,7 @@ date:   2021-01-01 21:53:54 -0400
 categories: ECMAScript, JS, thisArg
 ---
 In the official docs for methods like [filter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) and [forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach), you may have noticed `thisArg` making an appearance:
-
+<!-- more-->
 ```js
 let newArray = arr.filter(callback(currentValue[, index[, array]]) {
   // return element for newArray, if true
