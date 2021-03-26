@@ -8,7 +8,9 @@ categories: git, bash, tutorial
 (no need for a "one weird trick" type of line here, this actually works)
 
 Have too many local branches that need to be pruned? Don't want to `git branch -D` for **EVERY. SINGLE. ONE.** while making sure you have the branch name exactly right each time?
+
 <!-- more-->
+
 Type in the following and you'll be one and done, leaving just the `master` branch!
 
 ```bash
