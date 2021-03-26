@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ambiguous SQL Column Names – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="When working with column names in multiple SQL tables, if multiple tables have the same field name then you will have to reference that table name to avoid an error, specifically the error ambiguous column name.
+
+" />
+    <meta property="og:description" content="When working with column names in multiple SQL tables, if multiple tables have the same field name then you will have to reference that table name to avoid an error, specifically the error ambiguous column name.
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="Ambiguous SQL Column Names" />
+    <meta property="twitter:title" content="Ambiguous SQL Column Names" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Ambiguous SQL Column Names</h1>
+  <h3>Too many Mikes? Be More Specific</h3>
+
+  <div class="entry">
+    <p>When working with column names in multiple SQL tables, if multiple tables have the same field name then you will have to reference that table name to avoid an error, specifically the error <strong>ambiguous column name</strong>.</p>
+
+<p>A working example here is: <strong>table_name.column_name</strong></p>
+
+<p>Otherwise if the name is unique to that table, you don’t need to do that and can just do <strong>column_name</strong></p>
+
+<p>Use <a href="http://sqlfiddle.com/">http://sqlfiddle.com/</a> to try out the following examples!</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">dog</span> <span class="p">(</span><span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">breed</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">));</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">person</span> <span class="p">(</span><span class="n">name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">age</span> <span class="nb">int</span><span class="p">,</span> <span class="n">pet_name</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">));</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">dog</span> <span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'Lily'</span><span class="p">,</span> <span class="s1">'Pitbull'</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Charlie'</span><span class="p">,</span> <span class="s1">'Cavachon'</span><span class="p">);</span>
+
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">person</span> <span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'Mike'</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="s1">'Lily'</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Trevor'</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="s1">'Charlie'</span><span class="p">);</span>
+
+<span class="cm">/* test 1: using table names for all columns */</span>
+<span class="k">SELECT</span> <span class="n">dog</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dog</span><span class="p">.</span><span class="n">breed</span><span class="p">,</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">person</span><span class="p">.</span><span class="n">age</span>
+<span class="k">FROM</span> <span class="n">dog</span>
+<span class="k">JOIN</span> <span class="n">person</span> <span class="k">ON</span> <span class="n">dog</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="n">pet_name</span><span class="p">;</span>
+
+<span class="cm">/* test 2: not using table names for the unique columns */</span>
+<span class="k">SELECT</span> <span class="n">dog</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">,</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span>
+<span class="k">FROM</span> <span class="n">dog</span>
+<span class="k">JOIN</span> <span class="n">person</span> <span class="k">ON</span> <span class="n">dog</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">person</span><span class="p">.</span><span class="n">pet_name</span><span class="p">;</span>
+
+<span class="cm">/* test 3: same, but also works with the join! */</span>
+<span class="k">SELECT</span> <span class="n">dog</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">,</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span>
+<span class="k">FROM</span> <span class="n">dog</span>
+<span class="k">JOIN</span> <span class="n">person</span> <span class="k">ON</span> <span class="n">dog</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">pet_name</span><span class="p">;</span>
+
+<span class="cm">/* test 4: however we can't do it with name since it exists in both tables  */</span>
+<span class="k">SELECT</span> <span class="n">dog</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">,</span> <span class="n">person</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span>
+<span class="k">FROM</span> <span class="n">dog</span>
+<span class="k">JOIN</span> <span class="n">person</span> <span class="k">ON</span> <span class="n">name</span> <span class="o">=</span> <span class="n">pet_name</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Code On.</p>
+
+<p>-Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on March  2, 2021
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

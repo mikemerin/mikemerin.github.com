@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Git Tip of the Day – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="(no need for a “one weird trick” type of line here, this actually works). Have too many local branches that need to be pruned? Don’t want to git branch -D for EVERY. SINGLE. ONE. while making sure you have the branch name exactly right each time?
+
+" />
+    <meta property="og:description" content="(no need for a “one weird trick” type of line here, this actually works). Have too many local branches that need to be pruned? Don’t want to git branch -D for EVERY. SINGLE. ONE. while making sure you have the branch name exactly right each time?
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="Git Tip of the Day" />
+    <meta property="twitter:title" content="Git Tip of the Day" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Git Tip of the Day</h1>
+  <h3>a quick little prune</h3>
+
+  <div class="entry">
+    <p>(no need for a “one weird trick” type of line here, this actually works). Have too many local branches that need to be pruned? Don’t want to <code class="language-plaintext highlighter-rouge">git branch -D</code> for <strong>EVERY. SINGLE. ONE.</strong> while making sure you have the branch name exactly right each time?</p>
+
+<p>Type in the following and you’ll be one and done, leaving just the <code class="language-plaintext highlighter-rouge">master</code> branch!</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git branch | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">"master"</span> | xargs git branch <span class="nt">-D</span>
+</code></pre></div></div>
+
+<p>It will take less time than it took to make this blog post.</p>
+
+<p>Code on.</p>
+
+<p>-Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on March 24, 2021
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

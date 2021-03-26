@@ -9,7 +9,7 @@ Integer types are nothing new; with SQL there's tiny/small/int/big (1/2/4/8 byte
 
 * Signed = positive OR negative values
 * Unsigned = positive values ONLY
-<!--more-->
+
 This appears in other languages as well (I remember SQL's `Unsigned INTEGER in column imported as numeric` which now makes more sense), in Rust this looks like:
 
 isize - any signed integer | usize - any unsigned integer

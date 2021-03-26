@@ -70,10 +70,12 @@ p {
 
 a {
   color: $blue;
-  text-decoration: none;
-	cursor: pointer;
+  cursor: pointer;
   &:hover, &:active {
     color: $blue;
+  }
+  &:not(.showLink) {
+    text-decoration: none;
   }
 }
 
@@ -137,6 +139,10 @@ td, th {
 .date {
   font-style: italic;
   color: $gray;
+  &.small {
+    margin-top: 0;
+    font-size: 60%;
+  }
 }
 
 // Specify the color of the selection
@@ -231,7 +237,6 @@ td, th {
 
 nav {
   float: right;
-  margin-top: 23px; // @TODO: Vertically middle align
   font-family: $helveticaNeue;
   font-size: 18px;
 

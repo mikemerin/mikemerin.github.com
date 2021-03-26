@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Object Oriented Programming in Four Languages – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="Object Oriented Programing, or OOP is an incredibly important tool that all developers should know. If you know one language and are trying to learn another one, learning Functional Programming of methods, iterations, and basic structures may be easier to learn (shameless plug for my educational posts on learning them), but the nuances of OOP are slightly more advanced and may be harder to grasp, especially if it’s your first language.
+
+" />
+    <meta property="og:description" content="Object Oriented Programing, or OOP is an incredibly important tool that all developers should know. If you know one language and are trying to learn another one, learning Functional Programming of methods, iterations, and basic structures may be easier to learn (shameless plug for my educational posts on learning them), but the nuances of OOP are slightly more advanced and may be harder to grasp, especially if it’s your first language.
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="Object Oriented Programming in Four Languages" />
+    <meta property="twitter:title" content="Object Oriented Programming in Four Languages" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Object Oriented Programming in Four Languages</h1>
+  <h3>OOP 101</h3>
+
+  <div class="entry">
+    <p>Object Oriented Programing, or OOP is an incredibly important tool that all developers should know. If you know one language and are trying to learn another one, learning Functional Programming of methods, iterations, and basic structures may be easier to learn (shameless plug for my <a href="https://mikemerin.github.io/education">educational posts</a> on learning them), but the nuances of OOP are slightly more advanced and may be harder to grasp, especially if it’s your first language.</p>
+
+<p>Typically when you learn about programming you do so through Functional Programming, e.g. making functions, statements, variables, etc. that can be used at any time in any place inside of your program, interacting freely with one another. However as your program grows, creating more and more functions and variables that are roaming freely throughout your program can cause errors. The possibility of overwriting one another, having bad and erroneous interactions, or most importantly not being able to change as your program grows, limits what you can do with Functional Programming.</p>
+
+<p>In OOP however, we take all of these basic concepts and instead store them <strong>inside</strong> of objects. We can let our objects hold whatever information we want to use at any time. This keeps our code much cleaner, lets customize functions statements and variables in one object without affecting any other, and allows us to share or inherit that information as we choose.</p>
+
+<p>This post will go through Ruby, JavaScript, Python, and PHP, showing the basic similarities between each of the languages to get your feet on the ground. I’ll first give a full example from each language including how to initiate the class, create a class function, and modify attributes, then I’ll go piece by piece to explain what they actually do.</p>
+
+<p>Note that I won’t be talking about basic syntax here, aka Ruby’s <code class="language-plaintext highlighter-rouge">def/end</code> vs. JavaScript/PHP’s <code class="language-plaintext highlighter-rouge">{}</code> vs. Python’s <code class="language-plaintext highlighter-rouge">: + whitespace</code> vs. PHP’s <code class="language-plaintext highlighter-rouge">$variables;</code> etc. Please use my <a href="https://mikemerin.github.io/education/">educational posts</a> to learn the basics of each language and their functionalities as a primer for this post.</p>
+
+<h1 id="overview">Overview</h1>
+<hr />
+<p>I find that the best way to figure out how to do OOP is to actually see the working product. That way I can backwards engineer each part to learn what they do.</p>
+
+<p>Say I wanted to create a Dog object <code class="language-plaintext highlighter-rouge">my_dog</code>. This Dog object would have three attributes: a name, a breed, and an age, and I can either access or change those attributes manually or make them private to be unchangeable. I’d want to give it an <code class="language-plaintext highlighter-rouge">info()</code> function that can tell me information about the specific Dog object, a <code class="language-plaintext highlighter-rouge">birthday()</code> function to increase the age by one and wish the dog a happy birthday, and finally a <code class="language-plaintext highlighter-rouge">greet(message)</code> function to greet the Dog object with a message.</p>
+
+<p>Here’s how we’d create this Dog object in Ruby, JavaScript, Python, and PHP, and how we’d interact with it after we create it:</p>
+
+<h3 id="ruby">Ruby</h3>
+<hr />
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">class</span> <span class="nc">Dog</span>
+
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:breed</span><span class="p">,</span> <span class="ss">:age</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
+    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+    <span class="vi">@breed</span> <span class="o">=</span> <span class="n">breed</span>
+    <span class="vi">@age</span> <span class="o">=</span> <span class="n">age</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">info</span>
+    <span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">, the </span><span class="si">#{</span><span class="vi">@age</span><span class="si">}</span><span class="s2"> year old </span><span class="si">#{</span><span class="vi">@breed</span><span class="si">}</span><span class="s2">."</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">birthday</span>
+    <span class="vi">@age</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="nb">puts</span> <span class="s2">"Happy birthday </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">! You're now </span><span class="si">#{</span><span class="vi">@age</span><span class="si">}</span><span class="s2"> years old."</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">!"</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+
+<span class="n">my_dog</span> <span class="o">=</span> <span class="no">Dog</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Lily"</span><span class="p">,</span> <span class="s2">"Pit Mix"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">my_dog</span> <span class="c1">#=&gt; #&lt;Dog:0x007f8c3d05d630&gt;</span>
+<span class="nb">puts</span> <span class="n">my_dog</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; Lily</span>
+
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">info</span> <span class="c1">#=&gt; Lily, the 8 year old Pit Mix.</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">birthday</span> <span class="c1">#=&gt; Happy birthday Lily! You're now 9 years old.</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">greet</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">)</span> <span class="c1">#=&gt; "Hello Lily!"</span>
+
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">breed</span> <span class="o">=</span> <span class="s2">"Pitbull"</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">info</span> <span class="c1">#=&gt; Lily, the 9 year old Pitbull.</span>
+</code></pre></div></div>
+
+<h3 id="javascript">JavaScript</h3>
+<hr />
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">class</span> <span class="nx">Dog</span> <span class="p">{</span>
+
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">breed</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">breed</span> <span class="o">=</span> <span class="nx">breed</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span>
+  <span class="p">}</span>
+
+  <span class="nx">info</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">, the </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="p">}</span><span class="s2"> year old </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">breed</span><span class="p">}</span><span class="s2">.`</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="nx">birthday</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="o">++</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`"Happy birthday </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">! You're now </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="p">}</span><span class="s2"> years old."`</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="nx">greet</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">message</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">!`</span><span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="nx">my_dog</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Dog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Lily</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Pit Mix</span><span class="dl">"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">my_dog</span><span class="p">)</span> <span class="c1">//=&gt; Dog { name: 'Lily', breed: 'Pit Mix', age: 8 }</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">my_dog</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="c1">//=&gt; Lily</span>
+
+<span class="nx">my_dog</span><span class="p">.</span><span class="nx">info</span> <span class="c1">//=&gt; [Function: info]</span>
+<span class="nx">my_dog</span><span class="p">.</span><span class="nx">info</span><span class="p">()</span> <span class="p">)</span> <span class="c1">//=&gt; Lily, the 8 year old Pit Mix.</span>
+<span class="nx">my_dog</span><span class="p">.</span><span class="nx">birthday</span><span class="p">()</span> <span class="c1">//=&gt; Happy birthday Lily! You're now 9 years old.</span>
+<span class="nx">my_dog</span><span class="p">.</span><span class="nx">greet</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; "Hello Lily!"</span>
+
+<span class="nx">my_dog</span><span class="p">.</span><span class="nx">breed</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Pitbull</span><span class="dl">"</span>
+<span class="nx">my_dog</span><span class="p">.</span><span class="nx">info</span><span class="p">()</span> <span class="c1">//=&gt; Lily, the 9 year old Pitbull.</span>
+</code></pre></div></div>
+
+<h3 id="python">Python</h3>
+<hr />
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">breed</span> <span class="o">=</span> <span class="n">breed</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+  <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{}, the {} year old {}."</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">age</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">breed</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">birthday</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">age</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Happy birthday {}! You're now {} years old."</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">age</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{} {}!"</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="n">my_dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s">"Lily"</span><span class="p">,</span> <span class="s">"Pit Mix"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">my_dog</span><span class="p">)</span> <span class="c1">#=&gt; &lt;__main__.Dog instance at 0x10fe525f0&gt;
+</span><span class="k">print</span><span class="p">(</span><span class="n">my_dog</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="c1">#=&gt; Lily
+</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="n">info</span> <span class="c1">#=&gt; &lt;bound method Dog.info of &lt;__main__.Dog instance at 0x10fe525f0&gt;&gt;
+</span><span class="n">my_dog</span><span class="p">.</span><span class="n">info</span><span class="p">()</span> <span class="c1">#=&gt; Lily, the 8 year old Pit Mix.
+</span><span class="n">my_dog</span><span class="p">.</span><span class="n">birthday</span><span class="p">()</span> <span class="c1">#=&gt; Happy birthday Lily! You're now 9 years old.
+</span><span class="n">my_dog</span><span class="p">.</span><span class="n">greet</span><span class="p">(</span><span class="s">"Hello"</span><span class="p">)</span> <span class="c1">#=&gt; "Hello Lily!"
+</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="n">breed</span> <span class="o">=</span> <span class="s">"Pitbull"</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="n">info</span><span class="p">()</span> <span class="c1">#=&gt; Lily, the 9 year old Pitbull.
+</span></code></pre></div></div>
+
+<h3 id="php">PHP</h3>
+<hr />
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">class</span> <span class="nc">Dog</span> <span class="p">{</span>
+
+  <span class="k">function</span> <span class="n">__construct</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$breed</span><span class="p">,</span> <span class="nv">$age</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">breed</span> <span class="o">=</span> <span class="nv">$breed</span><span class="p">;</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">age</span> <span class="o">=</span> <span class="nv">$age</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">function</span> <span class="n">info</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">name</span><span class="si">}</span><span class="s2">, the </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">age</span><span class="si">}</span><span class="s2"> year old </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">breed</span><span class="si">}</span><span class="s2">."</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">function</span> <span class="n">birthday</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">age</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s2">"Happy birthday </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">name</span><span class="si">}</span><span class="s2">! You're now </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">age</span><span class="si">}</span><span class="s2"> years old."</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">function</span> <span class="n">greet</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$message</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">name</span><span class="si">}</span><span class="s2">!"</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="nv">$my_dog</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Dog</span><span class="p">(</span><span class="s2">"Lily"</span><span class="p">,</span> <span class="s2">"Pit Mix"</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$my_dog</span><span class="p">);</span>
+<span class="c1">//=&gt; Dog Object</span>
+<span class="c1">// (</span>
+<span class="c1">//     [name] =&gt; Lily</span>
+<span class="c1">//     [breed] =&gt; Pit Mix</span>
+<span class="c1">//     [age] =&gt; 8</span>
+<span class="c1">// )</span>
+<span class="k">echo</span> <span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span> <span class="c1">//=&gt; Lily</span>
+
+<span class="k">echo</span> <span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="nf">info</span><span class="p">();</span> <span class="c1">//=&gt; Lily, the 8 year old Pit Mix.</span>
+<span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="nf">birthday</span><span class="p">();</span> <span class="c1">//=&gt; Happy birthday Lily! You're now 9 years old.</span>
+<span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="nf">greet</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">);</span> <span class="c1">//=&gt; "Hello Lily!"</span>
+
+<span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="n">breed</span> <span class="o">=</span> <span class="s2">"Pitbull"</span><span class="p">;</span>
+<span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="nf">info</span><span class="p">();</span> <span class="c1">//=&gt; Lily, the 9 year old Pitbull.</span>
+</code></pre></div></div>
+
+<h1 id="breakdown">Breakdown</h1>
+<hr />
+
+<h3 id="privatepublic-attributesfunctions">Private/Public Attributes/Functions</h3>
+
+<p>Just quickly before we continue to clarify what you may see in this post (or educational posts on other sites), in Ruby and PHP there are ways to make sure users can or can’t directly change an object’s attributes, or can prevent someone from using a function. JS/Python unfortunately are unable to do this natively and without writing custom functions. Here’s how to enable/disable attributes or stop public use of functions in Ruby/PHP.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ruby</span>
+
+<span class="c1"># Attribute default: nothing is accessible.</span>
+
+<span class="c1"># enable both getting/setting</span>
+<span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:breed</span><span class="p">,</span> <span class="ss">:age</span>
+<span class="c1"># enable only getting</span>
+<span class="nb">attr_reader</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:breed</span><span class="p">,</span> <span class="ss">:age</span>
+<span class="c1"># enable only setting</span>
+<span class="nb">attr_writer</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:breed</span><span class="p">,</span> <span class="ss">:age</span>
+
+<span class="c1"># constructor and functions go here</span>
+
+<span class="kp">private</span>
+
+<span class="k">def</span> <span class="nf">nope</span>
+  <span class="nb">puts</span> <span class="s2">"You can't access this, only I can!"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// PHP</span>
+
+<span class="c1">// Default: anything is accessible.</span>
+
+<span class="k">private</span> <span class="nv">$name</span><span class="p">;</span>
+<span class="k">private</span> <span class="nv">$breed</span><span class="p">;</span>
+<span class="k">private</span> <span class="nv">$age</span><span class="p">;</span>
+
+<span class="c1">// note in PHP there is also protected.</span>
+<span class="c1">// this allows inherited/parent classes to use $age below, nothing else</span>
+
+<span class="k">private</span> <span class="nv">$name</span><span class="p">;</span>
+<span class="k">private</span> <span class="nv">$breed</span><span class="p">;</span>
+<span class="k">protected</span> <span class="nv">$age</span><span class="p">;</span>
+
+<span class="c1">// constructor goes here</span>
+
+<span class="k">private</span> <span class="k">function</span> <span class="n">nope</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">echo</span> <span class="s2">"You can't access this, only I can!"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="initializing--constructing">Initializing / Constructing</h3>
+
+<p>Whenever you create a new class, anything inside this pre-defined function will start alongside it. Here we can let our new class take in arguments and make it start doing anything we’d like. In our example we’re going to turn the name, breed, and age into class variables, letting us use these variables anywhere in our class object.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ruby</span>
+
+<span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
+  <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+  <span class="vi">@breed</span> <span class="o">=</span> <span class="n">breed</span>
+  <span class="vi">@age</span> <span class="o">=</span> <span class="n">age</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Javascript</span>
+
+<span class="kd">constructor</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">breed</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">breed</span> <span class="o">=</span> <span class="nx">breed</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">age</span> <span class="o">=</span> <span class="nx">age</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Python
+</span>
+<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">breed</span> <span class="o">=</span> <span class="n">breed</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+</code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// PHP</span>
+
+<span class="k">function</span> <span class="n">__construct</span><span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$breed</span><span class="p">,</span> <span class="nv">$age</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">=</span> <span class="nv">$name</span><span class="p">;</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">breed</span> <span class="o">=</span> <span class="nv">$breed</span><span class="p">;</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">age</span> <span class="o">=</span> <span class="nv">$age</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Whether it’s <code class="language-plaintext highlighter-rouge">@ruby</code>, <code class="language-plaintext highlighter-rouge">this.javascript</code>, <code class="language-plaintext highlighter-rouge">self.python</code>, or <code class="language-plaintext highlighter-rouge">$this-&gt;php</code>, we can now use the initial arguments anywhere inside our class.</p>
+
+<h3 id="functions">Functions</h3>
+
+<p>I won’t get into class functions in this post (ones where you can do <code class="language-plaintext highlighter-rouge">Dog.do_this</code>), but normal functions act on the object itself. Just like typing in an attribute of <code class="language-plaintext highlighter-rouge">my_dog.name</code> can get your Dog object’s name, typing in a function of <code class="language-plaintext highlighter-rouge">my_dog.info()</code> can perform a certain task.</p>
+
+<p>Note that in Ruby the <code class="language-plaintext highlighter-rouge">()</code> are optional if there are no arguments, and JavaScript is the only one below that doesn’t have <code class="language-plaintext highlighter-rouge">def/function</code> before the function.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ruby</span>
+
+<span class="k">def</span> <span class="nf">birthday</span>
+  <span class="vi">@age</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="nb">puts</span> <span class="s2">"Happy birthday </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">! You're now </span><span class="si">#{</span><span class="vi">@age</span><span class="si">}</span><span class="s2"> years old."</span>
+<span class="k">end</span>
+
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@name</span><span class="si">}</span><span class="s2">!"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Javascript</span>
+
+<span class="nx">birthday</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="o">++</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`"Happy birthday </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">! You're now </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">age</span><span class="p">}</span><span class="s2"> years old."`</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nx">greet</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">message</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">!`</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Python
+</span>
+<span class="k">def</span> <span class="nf">birthday</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="bp">self</span><span class="p">.</span><span class="n">age</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"Happy birthday {}! You're now {} years old."</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">age</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"{} {}!"</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// PHP</span>
+
+<span class="k">function</span> <span class="n">birthday</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">age</span><span class="o">++</span><span class="p">;</span>
+  <span class="k">echo</span> <span class="s2">"Happy birthday </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">name</span><span class="si">}</span><span class="s2">! You're now </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">age</span><span class="si">}</span><span class="s2"> years old."</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="n">greet</span><span class="p">(</span><span class="nv">$message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">echo</span> <span class="s2">"</span><span class="si">{</span><span class="nv">$message</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="n">name</span><span class="si">}</span><span class="s2">!"</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="object-initialization--construction">Object Initialization / Construction</h3>
+
+<p>Now that you’ve made a new class, it’s time to actually create the objects that belong to them. Our initializers/constructors have a name, breed, and age, so we’ll need to use those when we initialize/construct our object.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ruby</span>
+
+<span class="n">my_dog</span> <span class="o">=</span> <span class="no">Dog</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Lily"</span><span class="p">,</span> <span class="s2">"Pit Mix"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nb">puts</span> <span class="n">my_dog</span> <span class="c1">#=&gt; #&lt;Dog:0x007f8c3d05d630&gt;</span>
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Javascript</span>
+
+<span class="nx">my_dog</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Dog</span><span class="p">(</span><span class="dl">"</span><span class="s2">Lily</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Pit Mix</span><span class="dl">"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">my_dog</span><span class="p">)</span> <span class="c1">//=&gt; Dog { name: 'Lily', breed: 'Pit Mix', age: 8 }</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Python
+</span>
+<span class="n">my_dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s">"Lily"</span><span class="p">,</span> <span class="s">"Pit Mix"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">my_dog</span><span class="p">)</span> <span class="c1">#=&gt; &lt;__main__.Dog instance at 0x10fe525f0&gt;
+</span></code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// PHP</span>
+
+<span class="nv">$my_dog</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Dog</span><span class="p">(</span><span class="s2">"Lily"</span><span class="p">,</span> <span class="s2">"Pit Mix"</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+<span class="nb">print_r</span><span class="p">(</span><span class="nv">$my_dog</span><span class="p">);</span>
+<span class="c1">//=&gt; Dog Object</span>
+<span class="c1">// (</span>
+<span class="c1">//     [name] =&gt; Lily</span>
+<span class="c1">//     [breed] =&gt; Pit Mix</span>
+<span class="c1">//     [age] =&gt; 8</span>
+<span class="c1">// )</span>
+</code></pre></div></div>
+
+<h3 id="using-our-created-object">Using Our Created Object</h3>
+
+<p>All of the languages can now call the attributes and functions in the same exact way. In Ruby/JavaScript/Python you can type in <code class="language-plaintext highlighter-rouge">my_dog.whatever</code>, and PHP just uses <code class="language-plaintext highlighter-rouge">-&gt;</code> instead of the <code class="language-plaintext highlighter-rouge">.</code> which looks like: <code class="language-plaintext highlighter-rouge">$my_dog-&gt;whatever</code>.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ruby, JavaScript, and Python</span>
+
+<span class="nb">puts</span> <span class="o">/</span> <span class="n">console</span><span class="p">.</span><span class="nf">log</span> <span class="o">/</span> <span class="nb">print</span> <span class="n">my_dog</span><span class="p">.</span><span class="nf">name</span> <span class="c1">#=&gt; Lily</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">info</span><span class="p">()</span> <span class="c1">#=&gt; Lily, the 8 year old Pit Mix.</span>
+
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">birthday</span><span class="p">()</span> <span class="c1">#=&gt; Happy birthday Lily! You're now 9 years old.</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">greet</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">)</span> <span class="c1">#=&gt; "Hello Lily!"</span>
+
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">breed</span> <span class="o">=</span> <span class="s2">"Pitbull"</span>
+<span class="n">my_dog</span><span class="p">.</span><span class="nf">info</span><span class="p">()</span> <span class="c1">#=&gt; Lily, the 9 year old Pitbull.</span>
+</code></pre></div></div>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// PHP</span>
+
+<span class="k">echo</span> <span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span> <span class="c1">//=&gt; Lily</span>
+<span class="k">echo</span> <span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="nf">info</span><span class="p">();</span> <span class="c1">//=&gt; Lily, the 8 year old Pit Mix.</span>
+
+<span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="nf">birthday</span><span class="p">();</span> <span class="c1">//=&gt; Happy birthday Lily! You're now 9 years old.</span>
+<span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="nf">greet</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">);</span> <span class="c1">//=&gt; "Hello Lily!"</span>
+
+<span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="n">breed</span> <span class="o">=</span> <span class="s2">"Pitbull"</span><span class="p">;</span>
+<span class="nv">$my_dog</span><span class="o">-&gt;</span><span class="nf">info</span><span class="p">();</span> <span class="c1">//=&gt; Lily, the 9 year old Pitbull.</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>Those are the basics. Hopefully this will let you program much cleaner (and reusable) code. I’ll cover class functions, class variables, inheritence, and more in the next post!</p>
+
+<p>Code on.</p>
+
+<p>Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on January  2, 2018
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

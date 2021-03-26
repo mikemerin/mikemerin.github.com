@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Intro to SQL – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="If you want to store information that’s clean and structured then you probably want to use a database. If you want to access that information then you need to use SQL. There are plenty of SQL cheat sheets out there, however I find when you’re learning SQL it’s better to see it in action and code along.
+
+" />
+    <meta property="og:description" content="If you want to store information that’s clean and structured then you probably want to use a database. If you want to access that information then you need to use SQL. There are plenty of SQL cheat sheets out there, however I find when you’re learning SQL it’s better to see it in action and code along.
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="Intro to SQL" />
+    <meta property="twitter:title" content="Intro to SQL" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Intro to SQL</h1>
+  <h3>SQL 101</h3>
+
+  <div class="entry">
+    <p>If you want to store information that’s clean and structured then you probably want to use a database. If you want to access that information then you need to use SQL. There are plenty of SQL cheat sheets out there, however I find when you’re learning SQL it’s better to see it in action and code along.</p>
+
+<p>As you go through this post, use my setup in this <a href="http://tpcg.io/zkrK2w">coding playground</a> to code along!</p>
+
+<h1 id="tables--schema">Tables / Schema</h1>
+<hr />
+
+<p>Fortunately in the coding playground our database was already created for us. However if you ever needed to create a database on your own it’s as easy as typing in the following command:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">database_name</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Let’s actually store some data. If you’ve seen my <a href="https://mikemerin.github.io/education/">educational</a> posts, including the <a href="https://mikemerin.github.io/Python-through-Ruby/#19-sorting-a-collection">Python through Ruby</a> one you’ll know I like to reference some of either my pets or other family ones. Let’s continue that trend here!</p>
+
+<p>In order to store our data we need to make a <code class="language-plaintext highlighter-rouge">table</code> that has different <code class="language-plaintext highlighter-rouge">columns</code>, which put together is known as a <code class="language-plaintext highlighter-rouge">schema</code>.</p>
+
+<p>I want to make a table with the title of Animals.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">animals</span> <span class="p">(</span>
+  <span class="n">name</span> <span class="nb">TEXT</span><span class="p">,</span>
+  <span class="n">breed</span> <span class="nb">TEXT</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<p>Note: certain programs may prevent you from deleting data and therefore some of the DROP / TRUNCATE commands here may not may not work, and in some cases it may prevent you from adding multiple columns at once to a table. I will list similar alternate methods in those cases if they’re available.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- General</span>
+
+<span class="c1">--- See current tables (M)</span>
+<span class="p">.</span><span class="n">tables</span>
+<span class="c1">--- See current tables with their schemas</span>
+<span class="p">.</span><span class="k">schema</span>
+
+<span class="c1">-- Databases</span>
+
+<span class="c1">--- Create a database</span>
+<span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">database_name</span><span class="p">;</span>
+<span class="c1">--- Delete a database</span>
+<span class="k">DROP</span> <span class="k">DATABASE</span> <span class="n">database_name</span><span class="p">;</span>
+
+<span class="c1">-- Tables</span>
+
+<span class="c1">--- Create a table along with its columns</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">table_name</span> <span class="p">(</span>
+  <span class="k">column_name</span> <span class="n">DATA_TYPE</span> <span class="c1">-- (TEXT, INTEGER, etc)</span>
+  <span class="n">column_name2</span> <span class="n">DATA_TYPE2</span>
+  <span class="n">etc</span>
+<span class="p">)</span>
+<span class="c1">--- Delete a table</span>
+<span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">table_name</span><span class="p">;</span>
+
+<span class="c1">--- Rename a table</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="k">table_name</span>
+<span class="k">RENAME</span> <span class="k">TO</span> <span class="n">table_name2</span><span class="p">;</span>
+
+<span class="c1">--- Remove all data in a table</span>
+<span class="k">TRUNCATE</span> <span class="k">TABLE</span> <span class="k">table_name</span><span class="p">;</span>
+
+<span class="c1">-- Columns</span>
+
+<span class="c1">--- Add a column to a table</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="k">table_name</span>
+<span class="k">ADD</span> <span class="k">column_name</span> <span class="n">DATA_TYPE</span><span class="p">;</span>
+
+<span class="c1">--- Remove a column from a table (note, doesn't work with certain programs)</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="k">table_name</span>
+<span class="k">DROP</span> <span class="k">column_name</span><span class="p">;</span>
+
+<span class="c1">--- If your program can't perform column drops,</span>
+<span class="c1">--- here's an alternate solution of copying to another table</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">table_name2</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">table_name2</span> <span class="p">(</span><span class="k">column_name</span><span class="p">,</span> <span class="n">column_name2</span><span class="p">,</span> <span class="p">...)</span>
+<span class="k">SELECT</span> <span class="p">(</span><span class="k">column_name</span><span class="p">,</span> <span class="n">column_name2</span><span class="p">,</span> <span class="p">...)</span>
+<span class="k">FROM</span> <span class="k">table_name</span><span class="p">;</span>
+
+<span class="c1">--- Rename a column</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="k">table_name</span>
+<span class="k">RENAME</span> <span class="k">column_name</span> <span class="k">TO</span> <span class="n">column_name2</span><span class="p">;</span>
+
+<span class="c1">-- Modifying data</span>
+
+<span class="c1">--- Add rows of data into your table</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="k">table_name</span> <span class="p">(</span><span class="k">column_name</span><span class="p">,</span> <span class="n">column_name2</span><span class="p">,</span> <span class="p">...)</span>
+<span class="k">VALUES</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="p">...);</span>
+
+
+</code></pre></div></div>
+<hr />
+
+<p>Code on.</p>
+
+<p>Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on December 30, 2018
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

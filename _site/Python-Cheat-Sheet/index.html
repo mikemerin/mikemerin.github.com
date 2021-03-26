@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A Python Cheat Sheet – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="This is an abbreviated cheat sheet for Python. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that here, which I highly recommend.
+
+" />
+    <meta property="og:description" content="This is an abbreviated cheat sheet for Python. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that here, which I highly recommend.
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="A Python Cheat Sheet" />
+    <meta property="twitter:title" content="A Python Cheat Sheet" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>A Python Cheat Sheet</h1>
+  <h3></h3>
+
+  <div class="entry">
+    <p>This is an abbreviated cheat sheet for Python. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that <a href="https://mikemerin.github.io/Python-through-Ruby/">here</a>, which I highly recommend.</p>
+
+<p>I also have a <a href="https://mikemerin.github.io/Javascript-Cheat-Sheet/">JavaScript Cheat Sheet</a> in the same fashion as this one if you’re interested.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>interpolation</td>
+      <td>structure</td>
+      <td>type conversions</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>len</td>
+      <td>ranges</td>
+      <td>pop</td>
+      <td>append</td>
+    </tr>
+    <tr>
+      <td>in</td>
+      <td>while</td>
+      <td>for..in</td>
+      <td>keys/values</td>
+    </tr>
+    <tr>
+      <td>enumerate</td>
+      <td>map</td>
+      <td>lambda</td>
+      <td>reduce</td>
+    </tr>
+    <tr>
+      <td>filter</td>
+      <td>a[]</td>
+      <td>sorted</td>
+      <td>insert</td>
+    </tr>
+    <tr>
+      <td>del</td>
+      <td>remove</td>
+      <td>callbacks</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="string-interpolation">String Interpolation</h3>
+<p>Easily bring objects into a string.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">animal</span> <span class="o">=</span> <span class="s">"dog"</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s">"Lily"</span>
+<span class="n">age</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="c1"># Type 1
+</span><span class="k">print</span><span class="p">(</span><span class="s">"{}, the {} year old {}"</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">animal</span><span class="p">)</span>
+<span class="c1">#=&gt; "Lily, the 8 year old dog."
+</span><span class="k">print</span><span class="p">(</span><span class="s">"My {2} {0} is {1} years old. {0} is a very sweet {2}."</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">animal</span><span class="p">)</span>
+<span class="c1">#=&gt; My dog Lily is 8 years old. Lily is a very sweet dog.
+</span><span class="k">print</span><span class="p">(</span><span class="s">"My {2} {0} is {1:d} years old. {0} is a very {desc} {2}."</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">animal</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s">"silly"</span><span class="p">)</span>
+<span class="c1">#=&gt; My dog Lily is 8 years old. Lily is a very silly dog.
+</span>
+<span class="c1"># Type 2
+</span><span class="k">print</span> <span class="s">"%s, the %d year old %s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">animal</span><span class="p">)</span>
+<span class="c1">#=&gt; "Lily, the 8 year old dog."
+</span>
+<span class="c1"># ways to interpolate with type 2
+</span><span class="o">%</span><span class="n">s</span> <span class="c1"># string, or any type of object that can interpolate as a string instead
+</span><span class="o">%</span><span class="n">d</span> <span class="c1"># integer / digit
+</span> <span class="k">print</span><span class="p">(</span><span class="s">"%d"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="c1">#=&gt; 60
+</span><span class="o">%</span><span class="n">f</span> <span class="c1"># float
+</span> <span class="k">print</span><span class="p">(</span><span class="s">"%f"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="c1">#=&gt; 60.000000
+</span><span class="o">%</span><span class="p">.</span><span class="o">&lt;</span><span class="n">number</span><span class="o">&gt;</span><span class="n">f</span> <span class="c1"># float out to x digits
+</span> <span class="k">print</span><span class="p">(</span><span class="s">"%.9f"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="c1">#=&gt; 60.000000000
+</span><span class="o">%</span><span class="n">e</span> <span class="c1"># float formatted to exponential
+</span> <span class="k">print</span><span class="p">(</span><span class="s">"%e"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="c1">#=&gt; 6.000000e+01
+</span><span class="o">%</span><span class="n">g</span> <span class="c1"># ingeter formatted to exponential if more than 4 zeroes
+</span> <span class="k">print</span><span class="p">(</span><span class="s">"%g"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="c1">#=&gt; 60
+</span> <span class="k">print</span><span class="p">(</span><span class="s">"%g"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">600000000</span> <span class="c1">#=&gt; 60e+08
+</span><span class="o">%</span><span class="n">x</span> <span class="c1"># number formatted to hexadecimal
+</span> <span class="k">print</span><span class="p">(</span><span class="s">"%x"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="c1">#=&gt; 3c
+</span><span class="o">%</span><span class="n">o</span> <span class="c1"># number formatted to octal
+</span> <span class="k">print</span><span class="p">(</span><span class="s">"%o"</span><span class="p">)</span> <span class="o">%</span> <span class="mi">60</span> <span class="c1">#=&gt; 74
+</span>
+<span class="c1"># example to use in similar fashion with type 1
+</span><span class="k">print</span><span class="p">(</span><span class="s">"{0:.5g}"</span><span class="p">).</span><span class="nb">format</span><span class="p">(</span><span class="mi">1384356</span><span class="p">)</span> <span class="c1">#=&gt; 1.3844e+06
+</span></code></pre></div></div>
+
+<h3 id="structure">Structure</h3>
+<p>Whitespace is important, tab after a colon <code class="language-plaintext highlighter-rouge">:</code> to continue, unindent to move on</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">:</span>
+  <span class="k">print</span> <span class="s">"x is smaller than y"</span>
+  <span class="k">print</span> <span class="s">"{} - {} = {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="n">x</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+  <span class="k">print</span> <span class="s">"x is larger than y"</span>
+  <span class="k">print</span> <span class="s">"{} - {} = {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="p">(</span><span class="s">"small"</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="k">else</span> <span class="s">"large"</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Animal</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">animal_type</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">animal_type</span> <span class="o">=</span> <span class="n">animal_type</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+  <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">"%s, the %d year old %s"</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">age</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">animal_type</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Car</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">make</span> <span class="o">=</span> <span class="n">make</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">year</span> <span class="o">=</span> <span class="n">year</span>
+  <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">"The car is a %d %s %s"</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">make</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">model</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="type-conversions">Type Conversions</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">str</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span> <span class="c1">#=&gt; "150"
+</span><span class="nb">int</span><span class="p">(</span><span class="s">"10"</span><span class="p">)</span> <span class="c1">#=&gt; 10
+</span><span class="nb">float</span><span class="p">(</span><span class="s">"10"</span><span class="p">)</span> <span class="c1">#=&gt; 10.0
+</span><span class="nb">float</span><span class="p">(</span><span class="mf">10.5</span><span class="p">)</span> <span class="c1">#=&gt; 10.5
+</span></code></pre></div></div>
+
+<h3 id="length-of-an-object">Length of an Object</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">len</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span> <span class="c1">#=&gt; 4
+</span><span class="nb">len</span><span class="p">(</span><span class="s">"testing out a string"</span><span class="p">)</span> <span class="c1">#=&gt; 20
+</span><span class="nb">len</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s">"one"</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s">"two"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">"three"</span><span class="p">})</span> <span class="c1">#=&gt; 3
+</span></code></pre></div></div>
+
+<h3 id="ranges">Ranges</h3>
+<p>Create arrays from a range of numbers</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1">#=&gt; go from 0 to x
+</span><span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1">#=&gt; go from x up until y
+</span><span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="c1">#=&gt; z is the step, how many in between each number
+</span>
+<span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt; [0, 1, 2, 3]
+</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4]
+</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">#=&gt; [1, 4, 7] (notice 10's not there, again it's 1 up until 10, not including)
+</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#=&gt; [-5, -4, -3, -2, -1]
+</span>
+<span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#=&gt; [0, -1, -2, -3, -4]
+</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="c1">#=&gt; [1, -2, -5, -8]
+</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">18</span><span class="p">)</span> <span class="c1">#=&gt; [100, 82, 64, 46, 28]
+</span></code></pre></div></div>
+
+<h3 id="pushappendpopshiftunshift">Push/Append/Pop/Shift/Unshift</h3>
+<p>Add/remove from beginning/end of an array</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># add to end
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+</span><span class="n">array</span> <span class="o">=</span> <span class="n">array</span> <span class="o">+</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5, 6, 7]
+</span>
+<span class="c1"># add to beginning
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">array</span>  <span class="c1">#=&gt; [0, 1, 2, 3, 4]
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">array</span> <span class="c1">#=&gt; [-2, -1, 0, 1, 2, 3, 4]
+</span>
+<span class="c1"># remove from end
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s">"one"</span><span class="p">,</span> <span class="s">"two"</span><span class="p">,</span> <span class="s">"three"</span><span class="p">,</span> <span class="s">"four"</span><span class="p">,</span> <span class="s">"five"</span><span class="p">,</span> <span class="s">"six"</span><span class="p">,</span> <span class="s">"seven"</span><span class="p">,</span> <span class="s">"eight"</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1">#=&gt; "eight"
+</span><span class="n">array</span> <span class="c1">#=&gt; ["one", "two", "three", "four", "five", "six", "seven"]
+</span><span class="n">array</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; "three"
+</span><span class="n">array</span> <span class="c1">#=&gt; ["one", "two", "four", "five", "six", "seven"]
+</span><span class="n">array</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#=&gt; "one"
+</span><span class="n">array</span> <span class="c1">#=&gt; ["two", "four", "five", "six", "seven"]
+</span>
+<span class="c1"># remove from beginning
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">array</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">array</span> <span class="c1">#=&gt; [2, 3, 4, 5]
+</span></code></pre></div></div>
+
+<h3 id="in">in</h3>
+<p>Test for inclusion</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">5</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="c1">#=&gt; True
+</span><span class="mi">7</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="c1">#=&gt; False
+</span><span class="s">"t"</span> <span class="ow">in</span> <span class="s">"this is a string"</span> <span class="c1">#=&gt; True
+</span><span class="s">"is"</span> <span class="ow">in</span> <span class="s">"this is a string"</span> <span class="c1">#=&gt; True
+</span><span class="s">"e"</span> <span class="ow">in</span> <span class="s">"this is a string"</span> <span class="c1">#=&gt; False
+</span><span class="s">"t"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s">"this is a string"</span> <span class="c1">#=&gt; False
+</span></code></pre></div></div>
+
+<h3 id="while">while</h3>
+<p>Loop until condition is met</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span>
+  <span class="n">array</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">array</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">:</span> <span class="n">a</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">array</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+</span></code></pre></div></div>
+
+<h3 id="for">for</h3>
+<p>Iterate through a range or array</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">array2</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">):</span>
+  <span class="n">array</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="n">array2</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+<span class="c1"># or: for x in range(1,6): array.append(x); array2.append(x * x)
+</span>
+<span class="n">array</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+</span><span class="n">array2</span> <span class="c1">#=&gt; [1, 4, 9, 16, 25]
+</span>
+<span class="n">array2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span>
+<span class="n">array3</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">array2</span><span class="p">:</span>
+  <span class="n">array3</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">+</span> <span class="n">array3</span>
+
+<span class="n">array3</span> <span class="c1">#=&gt; [25, 16, 9, 4, 1]
+</span>
+<span class="n">s</span> <span class="o">=</span> <span class="s">"hey all"</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="s">""</span>
+<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+  <span class="n">s2</span> <span class="o">+=</span> <span class="s">"|"</span> <span class="o">+</span> <span class="n">s2</span>
+
+<span class="n">s2</span> <span class="c1">#=&gt; "|h|e|y| |a|l|l"
+</span></code></pre></div></div>
+
+<p>One line <code class="language-plaintext highlighter-rouge">for..in</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span> <span class="c1">#=&gt; [1, 4, 9, 16, 25]
+</span></code></pre></div></div>
+
+<h3 id="keys-and-values">Keys and Values</h3>
+<p>Using <code class="language-plaintext highlighter-rouge">for..in</code> to get a dictionary’s info</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s">"one"</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s">"two"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">"three"</span><span class="p">}</span>
+
+<span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">d</span><span class="p">]</span> <span class="c1">#=&gt; [1, 2, 3]
+</span><span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">d</span><span class="p">]</span> <span class="c1">#=&gt; ["one", "two", "three"]
+</span></code></pre></div></div>
+
+<h3 id="enumerate">enumerate</h3>
+<p>Iterate, but also get the index</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span><span class="s">"b"</span><span class="p">,</span><span class="s">"c"</span><span class="p">,</span><span class="s">"d"</span><span class="p">,</span><span class="s">"e"</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+  <span class="k">print</span> <span class="n">x</span> <span class="o">+</span> <span class="s">" is at index "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="s">''' result:
+a is at index 0
+b is at index 1
+c is at index 2
+d is at index 3
+e is at index 4
+'''</span>
+
+<span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)):</span> <span class="n">array</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span class="n">array</span> <span class="c1">#=&gt; [0, 2, 6, 12, 20]
+</span></code></pre></div></div>
+
+<h3 id="map">map()</h3>
+<p>Iterate and manipulate</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Python
+</span><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+<span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="mi">2</span>
+
+<span class="c1"># calling that function with one element
+</span><span class="n">square</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; 25
+</span><span class="n">double</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; 10
+</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+
+<span class="c1"># using map to call that function over every element in an array
+</span><span class="nb">map</span><span class="p">(</span><span class="n">square</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; [1, 4, 9, 16, 25]
+</span><span class="nb">map</span><span class="p">(</span><span class="n">double</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; [2, 4, 6, 8, 10]
+</span></code></pre></div></div>
+
+<h3 id="lambda">lambda</h3>
+<p>Functions that can be called in multiple ways, can be used as a pseudo callback</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Python
+</span><span class="n">lam</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+<span class="n">lam</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; 25
+</span>
+<span class="n">marco</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="s">"polo"</span>
+<span class="n">marco</span> <span class="c1">#=&gt; &lt;function &lt;lambda&gt; at 0x10221d668&gt;
+</span><span class="n">marco</span><span class="p">()</span> <span class="c1">#=&gt; "polo"
+</span>
+<span class="n">square</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+<span class="n">square</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; 25
+</span>
+<span class="n">function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+<span class="n">function</span><span class="p">(</span><span class="s">"hey"</span><span class="p">)</span> <span class="c1">#=&gt; "hey"
+</span>
+<span class="n">exponential</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="n">y</span>
+<span class="n">exponential</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt; 81
+</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; [1, 4, 9, 16, 25]
+</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="mi">5</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; [6, 7, 8, 9, 10]
+</span>
+<span class="n">array_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">array_b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>
+
+<span class="c1"># handles multiple arrays if they're the same length, acting on the same index
+</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">],</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="c1">#=&gt; [[1, 2], [2, 4], [3, 6], [4, 8], [5, 10]]
+</span>
+<span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="n">array_a</span><span class="p">,</span> <span class="n">array_b</span><span class="p">)</span>
+<span class="c1">#=&gt; [2, 8, 18, 32, 50]
+</span></code></pre></div></div>
+
+<h3 id="map-and-enumerate">map() and enumerate</h3>
+<p>Map but also get the index</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">array</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+<span class="c1">#=&gt; [1, 4, 9, 16, 25]
+</span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">array</span><span class="p">):</span> <span class="n">x</span><span class="o">*</span><span class="n">i</span>
+<span class="c1">#=&gt; [0, 2, 6, 12, 20]
+</span>
+<span class="c1"># or
+</span>
+<span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">array</span><span class="p">]</span>
+<span class="c1">#=&gt; [1, 4, 9, 16, 25]
+</span><span class="p">[</span><span class="n">x</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">array</span><span class="p">)]</span>
+<span class="c1">#=&gt; [0, 2, 6, 12, 20]
+</span>
+<span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span>
+<span class="c1">#=&gt; [1, 4, 9, 16, 25]
+</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="n">x</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">array</span><span class="p">))</span>
+<span class="c1">#=&gt; [0, 2, 6, 12, 20]
+</span></code></pre></div></div>
+
+<h3 id="reduce">reduce</h3>
+<p>Manipulate an array down to one value</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">reduce</span><span class="p">(</span><span class="s">"script"</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="s">"starting value (optional)"</span><span class="p">)</span>
+
+<span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">sum</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; 15
+</span><span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">sum</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">#=&gt; 15
+</span><span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">sum</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">#=&gt; 25
+</span>
+<span class="c1"># store function
+</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="nb">sum</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">s</span> <span class="o">+</span> <span class="n">x</span>
+<span class="n">multi</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">m</span> <span class="p">,</span><span class="n">x</span><span class="p">:</span> <span class="n">m</span> <span class="o">*</span> <span class="n">x</span>
+
+<span class="nb">reduce</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; 15
+</span><span class="nb">reduce</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">#=&gt; 25
+</span>
+<span class="nb">reduce</span><span class="p">(</span><span class="n">multi</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; 120
+</span><span class="nb">reduce</span><span class="p">(</span><span class="n">multi</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">#=&gt; 240
+</span></code></pre></div></div>
+
+<h3 id="filter">filter</h3>
+<p>Select from an array / filter out what doesn’t pass as True</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; [2, 4]
+</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="ow">not</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; [1, 3, 5]
+</span>
+<span class="k">def</span> <span class="nf">even</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="nb">filter</span><span class="p">(</span><span class="n">even</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="c1">#=&gt; [2, 4]
+</span>
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="nb">filter</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="n">array</span> <span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+</span></code></pre></div></div>
+
+<h3 id="slice-aka-accessing">slice aka accessing</h3>
+<p>Select the element(s) of your choice</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span> <span class="s">"b"</span> <span class="p">,</span><span class="s">"c"</span> <span class="p">,</span><span class="s">"d"</span> <span class="p">,</span><span class="s">"e"</span><span class="p">]</span>
+
+<span class="c1"># one value just gives the index, negatives work the same
+</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#=&gt; "a"
+</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#=&gt; "e"
+</span>
+<span class="c1"># two values, first value up until (but not including) the second
+</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#=&gt; ["a"]
+</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#=&gt; ["a", "b"]
+</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="c1">#=&gt; ["b", "c', "d"]
+</span>
+<span class="c1"># three values, third is the step
+</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#=&gt; ["b", "d"]
+</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#=&gt; ["a", "c", "e"]
+</span>
+<span class="c1"># go from index until the end of the array
+</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1">#=&gt; ["b" ,"c" ,"d" ,"e"]
+</span>
+<span class="c1"># go up until index 3
+</span><span class="n">a</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="c1">#=&gt; ["a", "b", "c"]
+</span>
+<span class="c1"># both work with negatives as well
+</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="c1">#=&gt; ["d", "e"]
+</span><span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#=&gt; ["a", "b", "c"]
+</span>
+<span class="c1"># go through the whole array, step of 2
+# aka, no low, no high, only step
+</span><span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#=&gt; ["a", "c", "e"]
+</span>
+<span class="c1"># do the same, but start at index 1, no end index
+</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#=&gt; ["b", "d"]
+</span>
+<span class="c1"># and the same, but end at an index, no start index
+</span><span class="n">a</span><span class="p">[:</span><span class="mi">3</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#=&gt; ["a", "c"]
+</span>
+<span class="n">string</span> <span class="o">=</span> <span class="s">"this is a string"</span>
+<span class="n">string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#=&gt; "t"
+</span><span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1">#=&gt; "his is a string"
+</span><span class="n">string</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span> <span class="c1">#=&gt; "this is"
+</span><span class="n">string</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span> <span class="c1">#=&gt; "string"
+</span><span class="n">string</span><span class="p">[:</span><span class="o">-</span><span class="mi">7</span><span class="p">]</span> <span class="c1">#=&gt; "this is a"
+</span><span class="n">string</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span> <span class="c1">#=&gt; "is a"
+</span><span class="n">string</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="c1">#=&gt; "ti sasrn"
+</span></code></pre></div></div>
+
+<h3 id="duplicating-an-object">Duplicating an object</h3>
+<p>Copy an object’s information, not the object itself</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># problem
+</span><span class="n">array_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">array_b</span> <span class="o">=</span> <span class="n">array_a</span>
+<span class="n">array_b</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+</span><span class="n">array_a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">array_a</span> <span class="c1">#=&gt; [1, 2, 9, 4, 5]
+</span><span class="n">array_b</span> <span class="c1">#=&gt; [1, 2, 9, 4, 5] (changed)
+</span>
+<span class="c1"># the fix
+</span><span class="n">array_a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">array_b</span> <span class="o">=</span> <span class="n">array_a</span><span class="p">[:]</span>
+<span class="n">array_b</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+</span><span class="n">array_a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">array_a</span> <span class="c1">#=&gt; [1, 2, 9, 4, 5]
+</span><span class="n">array_b</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5] (doesn't change)
+</span></code></pre></div></div>
+
+<h3 id="sorted">sorted()</h3>
+<p>Sort a collection</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">array_strings</span> <span class="o">=</span> <span class="p">[</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"everyone"</span><span class="p">,</span> <span class="s">"how"</span><span class="p">,</span> <span class="s">"are"</span><span class="p">,</span> <span class="s">"you?"</span><span class="p">]</span>
+<span class="n">hashes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s">"one"</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s">"two"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">"three"</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s">"four"</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s">"five"</span><span class="p">}</span>
+<span class="n">array_hash</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span><span class="s">"borough"</span><span class="p">:</span> <span class="s">'Manhattan'</span><span class="p">,</span> <span class="s">"population"</span><span class="p">:</span> <span class="mi">1585874</span><span class="p">},</span>
+               <span class="p">{</span><span class="s">"borough"</span><span class="p">:</span> <span class="s">'Brooklyn'</span><span class="p">,</span> <span class="s">"population"</span><span class="p">:</span> <span class="mi">2504706</span><span class="p">},</span>
+               <span class="p">{</span><span class="s">"borough"</span><span class="p">:</span> <span class="s">'Queens'</span><span class="p">,</span> <span class="s">"population"</span><span class="p">:</span> <span class="mi">2230545</span><span class="p">},</span>
+               <span class="p">{</span><span class="s">"borough"</span><span class="p">:</span> <span class="s">'Bronx'</span><span class="p">,</span> <span class="s">"population"</span><span class="p">:</span> <span class="mi">1385107</span><span class="p">},</span>
+               <span class="p">{</span><span class="s">"borough"</span><span class="p">:</span> <span class="s">'Staten_Island'</span><span class="p">,</span> <span class="s">"population"</span><span class="p">:</span> <span class="mi">486730</span><span class="p">}</span> <span class="p">]</span>
+<span class="n">animals</span> <span class="o">=</span> <span class="p">{</span><span class="s">"Lily"</span><span class="p">:</span>  <span class="p">{</span> <span class="s">"animal_type"</span><span class="p">:</span> <span class="s">"dog"</span><span class="p">,</span>
+                    <span class="s">"age"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+                    <span class="s">"breed"</span><span class="p">:</span> <span class="s">"pit mix"</span><span class="p">},</span>
+           <span class="s">"Rhana"</span><span class="p">:</span> <span class="p">{</span> <span class="s">"animal_type"</span><span class="p">:</span> <span class="s">"horse"</span><span class="p">,</span>
+                    <span class="s">"age"</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span>
+                    <span class="s">"breed"</span><span class="p">:</span> <span class="s">"Norwegian Fjord"</span><span class="p">},</span>
+           <span class="s">"Lira"</span><span class="p">:</span>  <span class="p">{</span> <span class="s">"animal_type"</span><span class="p">:</span> <span class="s">"cat"</span><span class="p">,</span>
+                    <span class="s">"age"</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                    <span class="s">"breed"</span><span class="p">:</span> <span class="s">"chartreux"</span><span class="p">},</span>
+           <span class="s">"Sasha"</span><span class="p">:</span> <span class="p">{</span> <span class="s">"animal_type"</span><span class="p">:</span> <span class="s">"dog"</span><span class="p">,</span>
+                    <span class="s">"age"</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+                    <span class="s">"breed"</span><span class="p">:</span> <span class="s">"corgi"</span><span class="p">}</span>
+           <span class="p">}</span>
+
+
+<span class="nb">sorted</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 6, 7, 8, 9, 10]
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="c1">#=&gt; [10, 9, 8, 7, 6, 4, 3, 2, 1]
+</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">array_strings</span><span class="p">)</span>
+<span class="c1">#=&gt; ['are', 'everyone', 'hello', 'how', 'you?']
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">array_strings</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
+<span class="c1">#=&gt; ['how', 'are', 'you?', 'hello', 'everyone']
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">array_strings</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1">#=&gt; ['everyone', 'hello', 'you?', 'how', 'are']
+</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">hashes</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]
+# also get the values
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">hashes</span><span class="p">.</span><span class="n">items</span><span class="p">())</span>
+<span class="c1">#=&gt; [(1, 'one'), (2, 'two'), (3, 'three'), (4, 'four'), (5, 'five')]
+# sort by value, both give the same answer
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">hashes</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">hashes</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="n">value</span><span class="p">)</span>
+<span class="c1">#=&gt; [(5, 'five'), (4, 'four'), (1, 'one'), (3, 'three'), (2, 'two')]
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">hashes</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+<span class="c1">#=&gt; [(1, 'one'), (2, 'two'), (4, 'four'), (5, 'five'), (3, 'three')]
+# sort multiple ways
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">hashes</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">value</span><span class="p">))</span>
+<span class="c1">#=&gt; [(1, 'one'), (2, 'two'), (5, 'five'), (4, 'four'), (3, 'three')]
+</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">array_hash</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s">"borough"</span><span class="p">])</span>
+<span class="c1">#=&gt; [{:borough=&gt;"Bronx",         :population=&gt;1385107},
+</span>  <span class="c1"># {:borough=&gt;"Brooklyn",      :population=&gt;2504706},
+</span>  <span class="c1"># {:borough=&gt;"Manhattan",     :population=&gt;1585874},
+</span>  <span class="c1"># {:borough=&gt;"Queens",        :population=&gt;2230545},
+</span>  <span class="c1"># {:borough=&gt;"Staten_Island", :population=&gt;486730}]
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">array_hash</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s">"population"</span><span class="p">])</span>
+<span class="c1">#=&gt; [{:borough=&gt;"Staten_Island", :population=&gt;486730},
+</span>  <span class="c1"># {:borough=&gt;"Bronx",         :population=&gt;1385107},
+</span>  <span class="c1"># {:borough=&gt;"Manhattan",     :population=&gt;1585874},
+</span>  <span class="c1"># {:borough=&gt;"Queens",        :population=&gt;2230545},
+</span>  <span class="c1"># {:borough=&gt;"Brooklyn",      :population=&gt;2504706}]
+</span>
+<span class="c1"># also get the values
+</span><span class="nb">sorted</span><span class="p">(</span><span class="n">animals</span><span class="p">.</span><span class="n">items</span><span class="p">())</span>
+<span class="c1">#=&gt; [('Lily', {'age': 8, 'breed': 'pit mix', 'animal_type': 'dog'}),
+</span>  <span class="c1"># ('Lira', {'age': 15, 'breed': 'chartreux', 'animal_type': 'cat'}),
+</span>  <span class="c1"># ('Rhana', {'age': 28, 'breed': 'Norwegian Fjord', 'animal_type': 'horse'}),
+</span>  <span class="c1"># ('Sasha', {'age': 11, 'breed': 'corgi', 'animal_type': 'dog'})]
+</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">animals</span><span class="p">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="n">value</span><span class="p">[</span><span class="s">"age"</span><span class="p">])</span>
+<span class="c1">#=&gt; [[:Lily, {:animal_type=&gt;"dog", :age=&gt;8, :breed=&gt;"pit mix"}],
+</span> <span class="c1"># [:Sasha, {:animal_type=&gt;"dog", :age=&gt;11, :breed=&gt;"corgi"}],
+</span> <span class="c1"># [:Lira,  {:animal_type=&gt;"cat", :age=&gt;15, :breed=&gt;"chartreux"}],
+</span> <span class="c1"># [:Rhana, {:animal_type=&gt;"horse", :age=&gt;28, :breed=&gt;"Norwegian Fjord"}]]
+</span></code></pre></div></div>
+
+<p>Object Oriented sorting:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">animal_type</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">breed</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">animal_type</span> <span class="o">=</span> <span class="n">animal_type</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">breed</span> <span class="o">=</span> <span class="n">breed</span>
+
+
+<span class="n">lily</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s">"dog"</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s">"Pit Mix"</span><span class="p">)</span>
+<span class="n">rhana</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s">"horse"</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s">"Norwegian Fjord"</span><span class="p">)</span>
+<span class="n">lira</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s">"cat"</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="s">"Chartreux"</span><span class="p">)</span>
+<span class="n">sasha</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s">"dog"</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="s">"Corgi"</span><span class="p">)</span>
+
+<span class="n">class_animals</span> <span class="o">=</span> <span class="p">[</span> <span class="n">lily</span><span class="p">,</span> <span class="n">rhana</span><span class="p">,</span> <span class="n">lira</span><span class="p">,</span> <span class="n">sasha</span> <span class="p">]</span>
+
+<span class="nb">sorted</span><span class="p">(</span><span class="n">class_animals</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">breed</span><span class="p">)</span>
+<span class="c1">#=&gt; [&lt;lira instance"&gt;, &lt;sasha instance&gt;, &lt;rhana instance&gt;, &lt;lily instance&gt;]
+# let's just map it to the breed and age so it's easier to see
+</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">"{} age {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">breed</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">age</span><span class="p">),</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">class_animals</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">breed</span><span class="p">))</span>
+<span class="c1">#=&gt; ['Chartreux age 15', 'Corgi age 11', 'Norwegian Fjord age 28', 'Pit Mix age 8']
+</span>
+<span class="nb">sorted</span><span class="p">(</span><span class="n">class_animals</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">age</span><span class="p">)</span>
+<span class="c1">#=&gt; [&lt;lily instance"&gt;, &lt;sasha instance&gt;, &lt;lira instance&gt;, &lt;rhana instance&gt;]
+</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">"{} age {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">breed</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">age</span><span class="p">),</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">class_animals</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">age</span><span class="p">))</span>
+<span class="c1">#=&gt; ['Pit Mix age 8', 'Corgi age 11', 'Chartreux age 15', 'Norwegian Fjord age 28']
+</span>
+<span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">"{} age {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">breed</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">age</span><span class="p">),</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">class_animals</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">age</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="c1">#=&gt; ['Norwegian Fjord age 28', 'Chartreux age 15', 'Corgi age 11', 'Pit Mix age 8']
+</span></code></pre></div></div>
+
+<h3 id="dictionary-manipulation">dictionary manipulation</h3>
+<p>Easier if/else/etc, a <code class="language-plaintext highlighter-rouge">case; each</code> or <code class="language-plaintext highlighter-rouge">switch: case</code> alternative</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># old
+</span><span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"CJ"</span><span class="p">:</span> <span class="k">return</span> <span class="s">"Press Secretary"</span>
+  <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Donna"</span><span class="p">:</span> <span class="k">return</span> <span class="s">"Assistant to the DCoS"</span>
+  <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Abbey"</span><span class="p">:</span> <span class="k">return</span> <span class="s">"First Lady"</span>
+  <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Jed"</span><span class="p">:</span> <span class="k">return</span> <span class="s">"President"</span>
+  <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Josh"</span><span class="p">:</span> <span class="k">return</span> <span class="s">"Deputy Chief of Staff"</span>
+  <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Sam"</span><span class="p">:</span> <span class="k">return</span> <span class="s">"Deputy Communications Director"</span>
+  <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s">"Toby"</span><span class="p">:</span> <span class="k">return</span> <span class="s">"Communications Director"</span>
+  <span class="k">else</span><span class="p">:</span> <span class="s">"Name Not Found"</span>
+
+<span class="c1"># new
+</span><span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="s">"CJ"</span><span class="p">:</span> <span class="s">"Press Secretary"</span><span class="p">,</span>
+    <span class="s">"Donna"</span><span class="p">:</span> <span class="s">"Assistant to the DCoS"</span><span class="p">,</span>
+    <span class="s">"Abbey"</span><span class="p">:</span> <span class="s">"First Lady"</span><span class="p">,</span>
+    <span class="s">"Jed"</span><span class="p">:</span> <span class="s">"President"</span><span class="p">,</span>
+    <span class="s">"Josh"</span><span class="p">:</span> <span class="s">"Deputy Chief of Staff"</span><span class="p">,</span>
+    <span class="s">"Sam"</span><span class="p">:</span> <span class="s">"Deputy Communications Director"</span><span class="p">,</span>
+    <span class="s">"Toby"</span><span class="p">:</span> <span class="s">"Communications Director"</span>
+  <span class="p">}.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">"Name Not Found"</span><span class="p">)</span>
+
+<span class="n">title</span><span class="p">(</span><span class="s">"CJ"</span><span class="p">)</span> <span class="c1">#=&gt; "Press Secretary"
+</span><span class="n">title</span><span class="p">(</span><span class="s">"Josh"</span><span class="p">)</span> <span class="c1">#=&gt; "Deputy Chief of Staff"
+</span><span class="n">title</span><span class="p">(</span><span class="s">"Josh 'Lemon' Lyman"</span><span class="p">)</span> <span class="c1">#=&gt; "Name Not Found"
+</span>
+<span class="c1"># quickly explaining .get
+</span><span class="n">hashes</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s">"one"</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s">"two"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s">"three"</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s">"four"</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s">"five"</span><span class="p">}</span>
+<span class="n">hashes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#=&gt; "one"
+</span>
+<span class="c1"># getting an error if not found
+</span><span class="n">hashes</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="c1">#=&gt; Traceback (most recent call last):  File "&lt;stdin&gt;", line 1, in &lt;module&gt;; KeyError: 7
+</span>
+<span class="c1"># fix by using .get instead
+</span><span class="n">hashes</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#=&gt; "one"
+</span><span class="n">hashes</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1">#=&gt; nothing returned
+</span>
+<span class="c1"># output a message if not found
+</span><span class="n">hashes</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">"Number not found"</span><span class="p">)</span> <span class="c1">#=&gt; "one"
+</span><span class="n">hashes</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s">"Number not found"</span><span class="p">)</span> <span class="c1">#=&gt; "Number not found"
+</span></code></pre></div></div>
+
+<p>Using for ranges,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grades</span> <span class="o">=</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">83</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">102</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">60</span><span class="p">]</span>
+
+<span class="c1"># old
+</span><span class="k">def</span> <span class="nf">grade</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="mi">101</span><span class="p">):</span> <span class="k">return</span> <span class="s">"A"</span>
+  <span class="k">elif</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span><span class="mi">90</span><span class="p">):</span> <span class="k">return</span> <span class="s">"B"</span>
+  <span class="k">elif</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span><span class="mi">80</span><span class="p">):</span> <span class="k">return</span> <span class="s">"C"</span>
+  <span class="k">elif</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span><span class="mi">70</span><span class="p">):</span> <span class="k">return</span> <span class="s">"D"</span>
+  <span class="k">elif</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">65</span><span class="p">):</span> <span class="k">return</span> <span class="s">"F"</span>
+  <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="s">"Invalid"</span>
+
+<span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">grade</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">grades</span><span class="p">)</span>
+<span class="c1">#=&gt; ["A", "B", "D", "Invalid", "A", "C", "F"]
+</span>
+<span class="c1"># new
+</span><span class="k">def</span> <span class="nf">grade</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+  <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+      <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"A"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">101</span><span class="p">)]</span> <span class="o">+</span>
+      <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"B"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">)]</span> <span class="o">+</span>
+      <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"C"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">)]</span> <span class="o">+</span>
+      <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"D"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="mi">70</span><span class="p">)]</span> <span class="o">+</span>
+      <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"F"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">65</span><span class="p">)]</span>
+      <span class="p">).</span><span class="n">get</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="s">"Invalid"</span><span class="p">)</span>
+
+<span class="c1"># or create the dictionary first, which is faster for multiple calls
+</span>
+<span class="n">letters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"A"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="mi">101</span><span class="p">)]</span> <span class="o">+</span>
+    <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"B"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">)]</span> <span class="o">+</span>
+    <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"C"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">)]</span> <span class="o">+</span>
+    <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"D"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="mi">70</span><span class="p">)]</span> <span class="o">+</span>
+    <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="s">"F"</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">65</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grade</span><span class="p">(</span><span class="n">number</span><span class="p">):</span> <span class="k">return</span> <span class="n">letters</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="s">"Invalid"</span><span class="p">)</span>
+
+<span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">grade</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">grades</span><span class="p">)</span>
+<span class="c1">#=&gt; ["A", "B", "D", "Invalid", "A", "C", "F"]
+</span></code></pre></div></div>
+
+<h3 id="insertidx-elem--accessing-axx">insert(idx, elem) / accessing (a[x:x])</h3>
+<p>Add to an array</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Hello"</span><span class="p">,</span> <span class="s">"World"</span><span class="p">,</span> <span class="s">"How"</span><span class="p">,</span> <span class="s">"Are"</span><span class="p">,</span> <span class="s">"You?"</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">"!"</span><span class="p">)</span> <span class="c1">#=&gt; ["Hello", "World", "!", "How", "Are", "You?"]
+</span>
+<span class="c1"># add multiple at once
+</span><span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Everyone"</span><span class="p">,</span> <span class="s">"In"</span><span class="p">,</span> <span class="s">"The"</span><span class="p">]</span>
+<span class="c1">#=&gt; ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]
+</span></code></pre></div></div>
+
+<h3 id="del-aidxidx2--removee--forinif">del a[idx:idx2] / .remove(e) / for..in..if</h3>
+<p>Remove from an array</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Hello"</span><span class="p">,</span> <span class="s">"Everyone"</span><span class="p">,</span> <span class="s">"In"</span><span class="p">,</span> <span class="s">"The"</span><span class="p">,</span> <span class="s">"World"</span><span class="p">,</span> <span class="s">"!"</span><span class="p">,</span> <span class="s">"How"</span><span class="p">,</span> <span class="s">"Are"</span><span class="p">,</span> <span class="s">"You?"</span><span class="p">]</span>
+
+<span class="k">del</span> <span class="n">array</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">array</span> <span class="c1">#=&gt; ["Hello", "Everyone", "In", "The", "World", "How", "Are", "You?"]
+</span>
+<span class="k">del</span> <span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">array</span> <span class="c1">#=&gt; ["Everyone", "In", "The", "World", "How", "Are", "You?"]
+</span>
+<span class="k">del</span> <span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">array</span> <span class="c1">#=&gt; ["Everyone", "How", "Are", "You?"]
+</span>
+<span class="c1"># remove one element at a time
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">array</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt;
+</span><span class="n">array</span> <span class="c1">#=&gt; [1, 2, 3, 5, 1, 2, 3, 4, 5]
+</span>
+<span class="c1"># remove all at once
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">array</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">array</span> <span class="c1">#=&gt; [1, 2, 3, 5, 1, 2, 3, 5]
+</span>
+<span class="c1"># and you can do multiple arguments this way as well
+</span><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">array</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">!=</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">array</span> <span class="c1">#=&gt; [1, 3, 1, 3]
+</span></code></pre></div></div>
+
+<h3 id="callback--callproc">callback / call/proc</h3>
+<p>Inherent to Python</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span><span class="o">*</span><span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="k">return</span> <span class="n">n</span><span class="o">*</span><span class="mi">3</span>
+
+<span class="k">def</span> <span class="nf">multi</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span> <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">multi</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">double</span><span class="p">)</span> <span class="c1">#=&gt; 20
+</span>
+<span class="k">def</span> <span class="nf">multi_with_order</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+  <span class="k">return</span> <span class="s">"If we {} {} we'll get {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+<span class="n">multi_with_order</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="s">"double"</span><span class="p">)</span> <span class="c1">#=&gt; "If we double 5 we'll get 10"
+</span><span class="n">multi_with_order</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">triple</span><span class="p">,</span> <span class="s">"triple"</span><span class="p">)</span> <span class="c1">#=&gt; "If we triple 5 we'll get 15"
+</span>
+<span class="k">def</span> <span class="nf">multi_twice</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">type1</span><span class="p">,</span> <span class="n">type2</span><span class="p">):</span> <span class="k">return</span> <span class="n">type1</span><span class="p">(</span><span class="n">type2</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+<span class="n">multi_twice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">double</span><span class="p">)</span> <span class="c1">#=&gt; 20
+</span><span class="n">multi_twice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">double</span><span class="p">,</span> <span class="n">triple</span><span class="p">)</span> <span class="c1">#=&gt; 30
+</span><span class="n">multi_twice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">triple</span><span class="p">,</span> <span class="n">triple</span><span class="p">)</span> <span class="c1">#=&gt; 45
+</span><span class="n">multi_twice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">triple</span><span class="p">,</span> <span class="n">square</span><span class="p">)</span> <span class="c1">#=&gt; 50
+</span><span class="n">multi_twice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">square</span><span class="p">,</span> <span class="n">triple</span><span class="p">)</span> <span class="c1">#=&gt; 100
+</span></code></pre></div></div>
+
+  </div>
+
+  <div class="date">
+    Written on September  5, 2017
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

@@ -6,4 +6,4 @@ I'm a meteorologist, teacher, and full stack web developer.
 
 Feel free to contact me with any questions!
 
-[MikeMerinWeather@gmail.com](mailto:mikemerinweather@gmail.com)
+[Mike.D.Merin@gmail.com](mailto:Mike.D.Merin@gmail.com)

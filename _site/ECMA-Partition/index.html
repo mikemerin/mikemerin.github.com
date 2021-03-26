@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Creating a New ECMAScript Function - Partition – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="Ruby has some fun functions that help out greatly with array manipulation. Why can’t JS share in the fun?
+
+" />
+    <meta property="og:description" content="Ruby has some fun functions that help out greatly with array manipulation. Why can’t JS share in the fun?
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="Creating a New ECMAScript Function - Partition" />
+    <meta property="twitter:title" content="Creating a New ECMAScript Function - Partition" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Creating a New ECMAScript Function - Partition</h1>
+  <h3>Works for Ruby? Works Here Too</h3>
+
+  <div class="entry">
+    <p>Ruby has some fun functions that help out greatly with array manipulation. Why can’t JS share in the fun?</p>
+
+<p>Before I started programming in JavaScript my first language was Ruby, with some of my favorite parts bring its functions that allowed simple modification of arrays. Overall many of these exist in JavaScript, but the ones that are missing are:</p>
+
+<ul>
+  <li>
+    <p>Partition - works like filter, but instead of returning one array of [true] values, returns two arrays of [[true], [false]]</p>
+
+    <blockquote>
+      <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">example: </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">].</span><span class="nf">partition</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">}</span> <span class="c1"># [[2], [1, 3]]</span>
+</code></pre></div>      </div>
+    </blockquote>
+  </li>
+  <li>
+    <p>Combination - given a number N, returns groups of N elements in an array in the order they appear</p>
+
+    <blockquote>
+      <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">example: </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">].</span><span class="nf">combination</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nf">to_a</span> <span class="c1"># [[1, 2], [1, 3], [2, 3]]</span>
+</code></pre></div>      </div>
+    </blockquote>
+  </li>
+  <li>
+    <p>Permutation - similar to combination, but groups in any order, backwards or forwards</p>
+    <blockquote>
+      <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="ss">example: </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">].</span><span class="nf">permutation</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="nf">to_a</span> <span class="c1"># [[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]</span>
+</code></pre></div>      </div>
+    </blockquote>
+  </li>
+</ul>
+
+<p>So I decided to try and add them to the language! After finding the <a href="https://github.com/tc39/ecma262/">ecma262 github</a> to start contributing, I got to work.</p>
+
+<hr />
+
+<details><summary>For my first draft I copied the existing "filter" code, which is as follows </summary>
+
+```js
+if (!Array.prototype.filter){
+    Array.prototype.filter = function(func, thisArg) {
+        'use strict';
+        if ( ! ((typeof func === 'function') &amp;&amp; this) )
+            throw new TypeError();
+
+        var len = this.length &gt;&gt;&gt; 0,
+            res = new Array(len), // preallocate array
+            t = this, c = 0, i = -1;
+
+        var kValue;
+        if (thisArg === undefined){
+        while (++i !== len){
+            // checks to see if the key was set
+            if (i in this){
+            kValue = t[i]; // in case t is changed in callback
+            if (func(t[i], i, t)){
+                res[c++] = kValue;
+            }
+            }
+        }
+        }
+        else{
+        while (++i !== len){
+            // checks to see if the key was set
+            if (i in this){
+            kValue = t[i];
+            if (func.call(thisArg, t[i], i, t)){
+                res[c++] = kValue;
+            }
+            }
+        }
+        }
+
+        res.length = c; // shrink down array to proper size
+        return res;
+    };
+}
+```
+</details>
+
+<p><br /></p>
+
+<details><summary>Now first off, the original code seemed like it could be cut down as it had some repeated code in it</summary>
+
+```js
+if (!Array.prototype.partition){
+    Array.prototype.filters = function(func, thisArg) {
+        'use strict';
+        if ( ! ((typeof func === 'function') &amp;&amp; this) )
+            throw new TypeError();
+
+        var len = this.length &gt;&gt;&gt; 0,
+            res = new Array(len), // preallocate array
+            t = this, c = 0, i = -1;
+
+        var kValue;
+        while (++i !== len){
+            // checks to see if the key was set
+            if (i in this){
+                kValue = t[i]; // in case t is changed in callback
+                if (
+                    (thisArg === undefined &amp;&amp; func(t[i], i, t)) ||
+                    func.call(thisArg, t[i], i, t)
+                ) {
+                    res[c++] = kValue;
+                }
+            }
+        }
+
+        res.length = c; // shrink down array to proper size
+        return res;
+    };
+}
+```
+
+</details>
+
+<p><br /></p>
+
+<details><summary>With that changed I was ready to work on the new method! In my first runthrough, I modified the code to see if it could  also return the false values just like Ruby</summary>
+
+```js
+if (!Array.prototype.partition){
+    Array.prototype.partition = function(func, thisArg) {
+        'use strict';
+        if ( ! ((typeof func === 'function') &amp;&amp; this) )
+            throw new TypeError();
+
+        var len = this.length &gt;&gt;&gt; 0,
+            resTrue = new Array(len), // preallocate True array
+            resFalse = new Array(len), // preallocate False array
+            t = this, cT = 0, cF = 0, i = -1;
+
+        var kValue;
+        while (++i !== len){
+            // checks to see if the key was set
+            if (i in this){
+                kValue = t[i]; // in case t is changed in callback
+                if (
+                    (thisArg === undefined &amp;&amp; func(t[i], i, t)) ||
+                    func.call(thisArg, t[i], i, t)
+                ) {
+                    resTrue[cT++] = kValue;
+                } else {
+                    resFalse[cF++] = kValue;
+                }
+            }
+        }
+
+        resTrue.length = cT; // shrink down array to proper size
+        resFalse.length = cF; // shrink down array to proper size
+        return [resTrue, resFalse];
+    };
+}
+```
+</details>
+
+<p><br /></p>
+
+<p>And it works! This example gives the following results:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+<span class="kd">const</span> <span class="nx">output</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">partition</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// [[2, 4], [1, 3, 5]];</span>
+<span class="nx">output</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="c1">// [2, 4]</span>
+<span class="nx">output</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="c1">// [1, 3, 5]</span>
+
+<span class="c1">// and using thisArg</span>
+<span class="kd">const</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="p">{</span> <span class="na">even</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">odd</span><span class="p">:</span> <span class="mi">1</span> <span class="p">};</span>
+<span class="nx">arr</span><span class="p">.</span><span class="nx">partition</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">even</span> <span class="p">},</span> <span class="nx">myObject</span><span class="p">);</span> <span class="c1">// [[2, 4], [1, 3, 5]];</span>
+<span class="nx">arr</span><span class="p">.</span><span class="nx">partition</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">odd</span> <span class="p">},</span> <span class="nx">myObject</span><span class="p">);</span> <span class="c1">// [[1, 3, 5], [2, 4]];</span>
+</code></pre></div></div>
+
+<details><summary>Now this obviously wasn't the cleanest code, so on my second runthrough I did the following</summary>
+
+```js
+if (!Array.prototype.partition){
+    Array.prototype.partition = function(func, thisArg) {
+        'use strict';
+        if ( ! ((typeof func === 'function') &amp;&amp; this) )
+            throw new TypeError();
+
+        var len = this.length &gt;&gt;&gt; 0,
+            res = [new Array(len), new Array(len)], // preallocate True and False arrays
+            t = this, c = [0, 0], i = -1;
+
+        var kValue;
+        while (++i !== len){
+            // checks to see if the key was set
+            if (i in this){
+                kValue = t[i]; // in case t is changed in callback
+                const pos = (thisArg === undefined &amp;&amp; func(t[i], i, t)) || func.call(thisArg, t[i], i, t) ? 0 : 1;
+                res[pos][c[pos]++] = kValue;
+            }
+        }
+
+        res[0].length = c[0]; // shrink down array to proper size
+        res[1].length = c[1]; // shrink down array to proper size
+        return res;
+    };
+}
+```
+</details>
+
+<p><br /></p>
+
+<p>That seems much cleaner now, and still works! Off to see if this will go far in the process :)</p>
+
+<p>Code On.</p>
+
+<p>-Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on January 11, 2021
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

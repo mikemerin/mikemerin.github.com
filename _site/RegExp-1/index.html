@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>'you can master'.test(/regexp/) => true (part 1) – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="The first time you see a regular expression it may merely look like a jumble of random characters, including what may look like a slash and backslash roller coaster /\/. Learning regular expressions (aka RegExp or Regex) can also feel like a roller coaster, so let’s break it down to make it as easy as possible to master.
+
+" />
+    <meta property="og:description" content="The first time you see a regular expression it may merely look like a jumble of random characters, including what may look like a slash and backslash roller coaster /\/. Learning regular expressions (aka RegExp or Regex) can also feel like a roller coaster, so let’s break it down to make it as easy as possible to master.
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="'you can master'.test(/regexp/) => true (part 1)" />
+    <meta property="twitter:title" content="'you can master'.test(/regexp/) => true (part 1)" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>'you can master'.test(/regexp/) => true (part 1)</h1>
+  <h3>shortcuts to searching</h3>
+
+  <div class="entry">
+    <p>The first time you see a regular expression it may merely look like a jumble of random characters, including what may look like a slash and backslash roller coaster <code class="language-plaintext highlighter-rouge">/\/</code>. Learning regular expressions (aka RegExp or Regex) can also feel like a roller coaster, so let’s break it down to make it as easy as possible to master.</p>
+
+<p>This isn’t merely a regex cheat sheet; there are plenty of those on the internet already and it’s not always the best way to learn something from scratch. This is a step-by-step breakdown of what the many parts of regex can do, and includes scripts that show what the regex does the hood and how it simplifies the process entirely. This way if you have absolutely no experience with regex you can learn it through examples and explanations, and even if you know regex it’ll help solidify that knowledge.</p>
+
+<p>What inspired this post was a <a href="https://www.codewars.com/kata/regex-password-validation">question on Code Wars</a> about using regular expressions to validate a strong password. I’ll go piece by piece to solve that in <a href="https://mikemerin.github.io/RegExp-2/">part 2</a>, but along with this post and the next one, in covering each piece we’ll learn many different techniques!</p>
+
+<p>If you’re experienced with regex then you can simply go through the quiz at the end of the post to make sure you know the techniques used in this post before heading to <a href="https://mikemerin.github.io/RegExp-2/">part 2</a>.</p>
+
+<h1 id="languages">Languages</h1>
+<hr />
+<p>RegExp works virtually identically between many languages like Ruby, JavaScript, etc. While there’s in-depth differences between how Python, PHP, Java, Perl, etc. handle certain regex functions, I won’t be getting into that in this post.</p>
+
+<p>With that out of the way let’s quickly look at how Ruby and JavaScript can handle a simple query. For example: <code class="language-plaintext highlighter-rouge">/s/</code> means “find the letter <code class="language-plaintext highlighter-rouge">s</code>”. I’ll explain the query a bit more in depth later, but for now let’s just quickly see how to invoke this in different languages:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="no">Regexp</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"s"</span><span class="p">)</span> <span class="c1">#=&gt; /s/</span>
+
+<span class="s2">"strings"</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="sr">/s/</span><span class="p">)</span> <span class="c1">#=&gt; &lt;MatchData "s"&gt;</span>
+<span class="sr">/s/</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="s2">"strings"</span><span class="p">)</span> <span class="c1">#=&gt; &lt;MatchData "s"&gt;</span>
+<span class="s2">"strings"</span><span class="p">[</span><span class="sr">/s/</span><span class="p">]</span> <span class="c1">#=&gt; "s"</span>
+
+<span class="s2">"strings"</span><span class="p">.</span><span class="nf">scan</span><span class="p">(</span><span class="sr">/s/</span><span class="p">)</span> <span class="c1">#=&gt; ["s", "s"]</span>
+
+<span class="c1"># getting the index</span>
+<span class="sr">/s/</span> <span class="o">=~</span> <span class="s2">"strings"</span> <span class="c1">#=&gt; 0</span>
+<span class="sr">/r/</span> <span class="o">=~</span> <span class="s2">"strings"</span> <span class="c1">#=&gt; 2</span>
+<span class="s2">"strings"</span> <span class="o">=~</span> <span class="sr">/s/</span> <span class="c1">#=&gt; 0</span>
+<span class="s2">"strings"</span> <span class="o">=~</span> <span class="sr">/r/</span> <span class="c1">#=&gt; 2</span>
+
+<span class="s2">"string"</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sr">/i/</span><span class="p">)</span> <span class="c1">#=&gt; ["str, "ng"]</span>
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// JavaScript</span>
+<span class="nb">RegExp</span><span class="p">(</span><span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; /s/</span>
+
+<span class="o">/</span><span class="nx">s</span><span class="o">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
+
+<span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/s/</span><span class="p">)</span> <span class="c1">//=&gt; ["s", index: 0, input: "strings"]</span>
+<span class="o">/</span><span class="nx">s</span><span class="o">/</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; ["s", index: 0, input: "strings"]</span>
+
+<span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/s/g</span><span class="p">)</span> <span class="c1">//=&gt; ["s", "s"]</span>
+
+<span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/r/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">//=&gt; "r"</span>
+<span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/r/</span><span class="p">).</span><span class="nx">index</span> <span class="c1">//=&gt; 0</span>
+
+<span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/i/</span><span class="p">)</span> <span class="c1">//=&gt; ["str, "ng"]</span>
+</code></pre></div></div>
+
+<p>As you can see the syntax is nearly identical, and the actual RegExp syntax will be the mostly the same for both languages (again with the exception of more advanced in-depth techniques). With that said, I’ll be using JS’s “match” method throughout this post since as you can see above: it works the same way as Ruby’s and gets almost the same amount of information, but JS natively outputs more information without having to invoke any additional methods.</p>
+
+<p>Also a side-note, JavaScript has the worst regex engine out of all the major languages, which means if you can master it in JS, you’ll be that much better when using it in other languages!</p>
+
+<h1 id="basic-searches">Basic Searches</h1>
+<hr />
+<h3 id="types-of-characters">Types of characters</h3>
+
+<p>There are a few types of characters you can search by. The normal alphanumeric characters can just be put in (a, b, c, 1, 2, 3, etc.).</p>
+
+<p>However there are certain characters called “literal characters” that perform certain regex actions. Because of this, you must escape these characters to perform a search on them, just like if you’re using “quotes” you have to escape to use a backslash in order to say it (“" will give you an error since you’re escaping the second “ rather than saying a string of . You’d have to do “\” to do it).</p>
+
+<p>These characters are: <code class="language-plaintext highlighter-rouge">[\^$.|?*+(){}</code></p>
+
+<p>In order to search for them you’ll need to escape the same way: put a backslash <code class="language-plaintext highlighter-rouge">\</code> before it.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">hello?</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/hello</span><span class="se">?</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hello?', index: 0, input: 'hello?' ]</span>
+<span class="dl">"</span><span class="s2">^.^</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\^\.\^</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '^.^', index: 0, input: '^.^' ]</span>
+</code></pre></div></div>
+
+<h3 id="match-anything-inside">Match anything inside</h3>
+
+<p>Let’s cover what the above regex above did by looking up a specific character.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/s/</span><span class="p">)</span> <span class="c1">//=&gt; ["s", index: 0, input: "strings"]</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">/s/</code> is our regular expression, denoted by the two slashes and what’s inside of it. <code class="language-plaintext highlighter-rouge">/Anything surrounded by these slashes/</code> is what will be interpreted, in this case the letter “s”. The regex <code class="language-plaintext highlighter-rouge">/s/</code> is saying: “go through this string and if you find the letter <code class="language-plaintext highlighter-rouge">s</code> return it, otherwise return <code class="language-plaintext highlighter-rouge">null</code>” (or some other falsey value in other languages, aka <code class="language-plaintext highlighter-rouge">nil</code> in Ruby). Here’s the literal example in both Ruby and JavaScript:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ruby</span>
+<span class="n">found</span> <span class="o">=</span> <span class="kp">nil</span>
+<span class="s2">"strings"</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">""</span><span class="p">).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">found</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span> <span class="k">break</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">"s"</span> <span class="p">}</span>
+<span class="nb">puts</span> <span class="n">found</span>
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// JavaScript</span>
+<span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="kc">null</span>
+<span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">""</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">y</span><span class="dl">"</span><span class="p">)</span>
+    <span class="p">{</span> <span class="nx">found</span> <span class="o">=</span> <span class="nx">x</span> <span class="p">}</span>
+  <span class="k">return</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">y</span><span class="dl">"</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">found</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">.some</code> is basically <code class="language-plaintext highlighter-rouge">.forEach</code> (<code class="language-plaintext highlighter-rouge">.each</code> in Ruby) that breaks after an answer is found. When I reference these from now on I’ll just simply say <code class="language-plaintext highlighter-rouge">if ___ console.log(result)</code> as shorthand.</p>
+
+<p>As you can see, the regex script <code class="language-plaintext highlighter-rouge">"string".match(/s/)</code> does all of these, plus also takes in the index, the initial string, and much more.</p>
+
+<p>Some more examples:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/i/</span><span class="p">)</span> <span class="c1">//=&gt; ["t", index: 3, input: "strings"]</span>
+<span class="dl">"</span><span class="s2">555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/2/</span><span class="p">)</span> <span class="c1">//=&gt; [ '2', index: 5, input: '555-1212' ]</span>
+</code></pre></div></div>
+
+<p>If we want to search for words instead of just characters, just put that inside the slashes:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">hello everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/hello/</span><span class="p">)</span>
+<span class="c1">// [ 'hello', index: 0, input: 'hello everyone' ]</span>
+
+<span class="dl">"</span><span class="s2">hello everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/eve/</span><span class="p">)</span>
+<span class="c1">// [ 'eve', index: 6, input: 'hello everyone' ]</span>
+
+<span class="dl">"</span><span class="s2">hello everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/hello everyone/</span><span class="p">)</span>
+<span class="c1">// [ 'hello everyone', index: 0, input: 'hello everyone' ]</span>
+
+<span class="dl">"</span><span class="s2">hello everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/o e/</span><span class="p">)</span>
+<span class="c1">// [ 'o e', index: 4, input: 'hello everyone' ]</span>
+
+<span class="c1">// /eve/ aka:</span>
+
+<span class="kd">var</span> <span class="nx">search</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">eve</span><span class="dl">"</span><span class="p">,</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">hello everyone</span><span class="dl">"</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">search</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">i</span><span class="o">+</span><span class="nx">search</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">search</span> <span class="o">===</span> <span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="nx">search</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">search</span><span class="p">)</span>
+    <span class="k">break</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We use a for loop here because we need to strictly use the indexes and not the individual characters. Once again though you can see how easy it is to use regex to do all of this for you!</p>
+
+<h3 id="match-any-one-of-these-characters">Match any one of these characters</h3>
+
+<p>Matching one character is fine, but what if we wanted to find the first vowel in a string? We’d say “find the letter <code class="language-plaintext highlighter-rouge">a</code> or <code class="language-plaintext highlighter-rouge">e</code> or <code class="language-plaintext highlighter-rouge">i</code> etc.”. If we enclose characters in <code class="language-plaintext highlighter-rouge">[hard brackets]</code> it will return whichever of those characters that’s found first:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'e', index: 1, input: 'hey' ]</span>
+
+<span class="dl">"</span><span class="s2">hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/h</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">y/</span><span class="p">)</span>
+<span class="c1">// [ 'hey', index: 0, input: 'hey' ]</span>
+
+<span class="dl">"</span><span class="s2">rhythm</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// null</span>
+
+<span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">regex</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'r', index: 2, input: 'string' ]</span>
+
+<span class="dl">"</span><span class="s2">find</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">any of these characters in these brackets</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'i', index: 1, input: 'find' ]</span>
+
+<span class="c1">// [aeiou] aka:</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">u</span><span class="dl">"</span> <span class="p">)</span>
+  <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>A fun group of words that only change by one vowel are blander, blender, blinder, blonder, and blunder. We can put our knowledge of hard brackets to use:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">The food tasted blander</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/bl</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">nder/</span><span class="p">)</span>
+<span class="c1">// [ 'blander', index: 16, input: 'The food tasted blander' ]</span>
+<span class="dl">"</span><span class="s2">Put the food in the blender</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/bl</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">nder/</span><span class="p">)</span>
+<span class="c1">// [ 'blender', index: 20, input: 'Put the food in the blender' ]</span>
+<span class="dl">"</span><span class="s2">His eyes were blinder</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/bl</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">nder/</span><span class="p">)</span>
+<span class="c1">// [ 'blinder', index: 14, input: 'His eyes were blinder' ]</span>
+<span class="dl">"</span><span class="s2">Their hair was blonder</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/bl</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">nder/</span><span class="p">)</span>
+<span class="c1">// [ 'blonder', index: 15, input: 'Their hair was blonder' ]</span>
+<span class="dl">"</span><span class="s2">I made a blunder</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/bl</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">nder/</span><span class="p">)</span>
+<span class="c1">// [ 'blunder', index: 9, input: 'I made a blunder' ]</span>
+</code></pre></div></div>
+
+<p>You can also match any character by searching for <code class="language-plaintext highlighter-rouge">.</code> (it only ignores line breaks)</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/./</span><span class="p">)</span>
+<span class="c1">// [ 'h', index: 0, input: 'hey' ]</span>
+
+<span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/./</span><span class="p">)</span>
+<span class="c1">// [ 's', index: 0, input: 'string' ]</span>
+
+<span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/str.ng/</span><span class="p">)</span>
+<span class="c1">// [ 'string', index: 0, input: 'string' ]</span>
+
+<span class="dl">"</span><span class="s2">strong</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/str.ng/</span><span class="p">)</span>
+<span class="c1">// [ 'strong', index: 0, input: 'strong' ]</span>
+
+<span class="dl">"</span><span class="s2">str@ng</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/str.ng/</span><span class="p">)</span>
+<span class="c1">// [ 'str@ng', index: 0, input: 'str@ng' ]</span>
+
+<span class="dl">"</span><span class="se">\n</span><span class="s2">these</span><span class="se">\n</span><span class="s2">are</span><span class="se">\n</span><span class="s2">new</span><span class="se">\n</span><span class="s2">lines</span><span class="se">\n</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/./</span><span class="p">)</span>
+<span class="c1">// [ 't', index: 1, input: '\nthese\nare\nnew\nlines\n' ]</span>
+
+<span class="c1">// aka</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">!==</span> <span class="dl">"</span><span class="se">\n</span><span class="dl">"</span> <span class="p">?</span> <span class="nx">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">:</span> <span class="nx">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span> <span class="c1">// repeating if 2-3 is \n, etc. etc. etc.</span>
+</code></pre></div></div>
+
+<h3 id="match-any-one-of-these-words-or-groups-of-characters">Match any one of these words or groups of characters</h3>
+
+<p>Matching between words works a bit different than matching letters. We’ll need to use the <code class="language-plaintext highlighter-rouge">or</code> operator <code class="language-plaintext highlighter-rouge">|</code>. Let’s say we want to find if a string contains the words hello, hey, or hi:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">RBG has green in it</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">red|green|blue</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'green', 'green', index: 0, input: 'RBG has green in it' ]</span>
+
+<span class="dl">"</span><span class="s2">hello everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/hello|hey|hi/</span><span class="p">)</span>
+<span class="c1">// [ 'hello', index: 0, input: 'hello everyone' ]</span>
+
+<span class="dl">"</span><span class="s2">hey everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/hello|hey|hi/</span><span class="p">)</span>
+<span class="c1">// [ 'hey', index: 0, input: 'hey everyone' ]</span>
+
+<span class="dl">"</span><span class="s2">hi everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/hello|hey|hi/</span><span class="p">)</span>
+<span class="c1">// [ 'hi', index: 0, input: 'hi everyone' ]</span>
+
+<span class="dl">"</span><span class="s2">sup everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/hello|hey|hi/</span><span class="p">)</span>
+<span class="c1">// null</span>
+
+<span class="dl">"</span><span class="s2">heyo everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/hello|hey|hi/</span><span class="p">)</span>
+<span class="c1">// [ 'hey', index: 0, input: 'heyo everyone' ]</span>
+
+<span class="c1">// aka</span>
+
+<span class="kd">var</span> <span class="nx">search</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">hey</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">hi</span><span class="dl">"</span><span class="p">],</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">hello everyone</span><span class="dl">"</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">search</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">word</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">word</span> <span class="o">===</span> <span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">i</span> <span class="o">+</span> <span class="nx">word</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">word</span><span class="p">)</span>      
+    <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Just like with regular work searching, it also matches the partial words like “heyo” including “hey”.</p>
+
+<h3 id="match-a-group-of-characters-part-2">Match a group of characters part 2</h3>
+
+<p>We can take searching for individual characters or groups of characters one step further. Let’s try some of the above examples but also encase them in parentheses:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">strings</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">s</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 's', 's', index: 0, input: 'strings' ]</span>
+
+<span class="dl">"</span><span class="s2">hello everyone</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">hello</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hello', 'hello', index: 0, input: 'hello everyone' ]</span>
+
+<span class="dl">"</span><span class="s2">hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">([</span><span class="sr">aeiou</span><span class="se">])</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'e', 'e', index: 1, input: 'hey' ]</span>
+
+<span class="dl">"</span><span class="s2">hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'h', 'h', index: 0, input: 'hey' ]</span>
+
+<span class="dl">"</span><span class="s2">strong</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">str.ng</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'strong', 'strong', index: 0, input: 'strong' ]</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">)</span>
+  <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>As you can see, there’s a new element added into our result array. The second ‘s’, ‘hello’, etc. returned is the word that was found in the parentheses. We can do this for multiple parentheses in a single regex script:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">hello</span><span class="se">)</span><span class="sr"> </span><span class="se">(</span><span class="sr">world</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hello world', 'hello', 'world', index: 0, input: 'hello world' ]</span>
+
+<span class="c1">// aka, just including the search, not the for/each for ease of reading</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">world</span><span class="dl">"</span><span class="p">]</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="dl">"</span><span class="s2"> </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+  <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">([</span><span class="nx">x</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> <span class="p">}</span>
+
+<span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">s</span><span class="se">)(</span><span class="sr">t</span><span class="se">)(</span><span class="sr">ring</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'string', 's', 't', 'ring', index: 0, input: 'string' ]</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">ring</span><span class="dl">"</span><span class="p">]</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">x</span> <span class="o">===</span> <span class="nx">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nx">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nx">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+  <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">([</span><span class="nx">x</span><span class="p">,</span> <span class="nx">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>This way anything found in the resulting array after the first element (which is what’s matched) will be what you find in the parenthesis(es). This becomes a highly important thing to know as you can call on the specific search term after you’re done:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">hello</span><span class="se">)</span><span class="sr"> </span><span class="se">(</span><span class="sr">world</span><span class="se">)</span><span class="sr">/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1">//=&gt; "hello world"</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">hello</span><span class="se">)</span><span class="sr"> </span><span class="se">(</span><span class="sr">world</span><span class="se">)</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="c1">//=&gt; "hello"</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">hello</span><span class="se">)</span><span class="sr"> </span><span class="se">(</span><span class="sr">world</span><span class="se">)</span><span class="sr">/</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="c1">//=&gt; "world"</span>
+</code></pre></div></div>
+
+<p>as well as even more things you can do that I’ll get into shortly.</p>
+
+<h3 id="match-a-range">Match a range</h3>
+
+<p>What if we want to match a lowercase letter? An uppercase letter? A range of numbers or letters? Regex makes that easy as well. We can use the <code class="language-plaintext highlighter-rouge">[hard brackets]</code> which again will return whichever of those characters that’s found first:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">Hey123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-z</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'e', index: 1, input: 'Hey123' ]</span>
+
+<span class="dl">"</span><span class="s2">Hey123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">A-Z</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'H', index: 0, input: 'Hey123' ]</span>
+
+<span class="dl">"</span><span class="s2">Hey123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">0-9</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1', index: 3, input: 'Hey123' ]</span>
+
+<span class="c1">// any letter of any case, or any alphanumeric character</span>
+
+<span class="dl">"</span><span class="s2">123Hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-zA-Z</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// 'H', index: 3, input: '123Hey' ]</span>
+
+<span class="dl">"</span><span class="s2">@#^$&amp; Hey 123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-zA-Z0-9</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'H', index: 5, input: '@#^$&amp;Hey123' ]</span>
+
+<span class="c1">// any range works</span>
+
+<span class="dl">"</span><span class="s2">Hey123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">m-z</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'y', index: 2, input: 'Hey123' ]</span>
+
+<span class="dl">"</span><span class="s2">Hey123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">2-5</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '2', index: 4, input: 'Hey123' ]</span>
+</code></pre></div></div>
+
+<p>You can also do multi-digit ranges, but I’ll cover that later as it’s more advanced.</p>
+
+<h3 id="negating">Negating</h3>
+
+<p>What if you want to find the first <strong>non</strong> vowel? It’d be pretty tedious to do <code class="language-plaintext highlighter-rouge">[bcdfghjk...]</code> for every single consonant. Thankfully if you’re using [hard brackets], you can simply start with the carrot <code class="language-plaintext highlighter-rouge">^</code> and it’ll say “anything except these characters”:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">Hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[^</span><span class="sr">H</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'e', index: 1, input: 'Hello123' ]</span>
+
+<span class="dl">"</span><span class="s2">Hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[^</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'H', index: 0, input: 'Hello123' ]</span>
+
+<span class="dl">"</span><span class="s2">Hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[^</span><span class="sr">A-Z</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'e', index: 1, input: 'Hello123' ]</span>
+
+<span class="dl">"</span><span class="s2">Hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[^</span><span class="sr">a-zA-Z</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1', index: 5, input: 'Hello123' ]</span>
+</code></pre></div></div>
+
+<h3 id="character-groups">Character Groups</h3>
+
+<p>Lastly in the basics section, it’s fairly annoying to always have to use a range if you want a digit, an alphanumeric character, etc. There’s only three major letters you need to know: <code class="language-plaintext highlighter-rouge">w</code>, <code class="language-plaintext highlighter-rouge">d</code> and <code class="language-plaintext highlighter-rouge">s</code> which stand for word, digit and space (more specifically whitespace). You use those letters by putting a backslash in front of it:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">\w</code> finds any word character aka <code class="language-plaintext highlighter-rouge">[a-zA-Z0-9]</code> along with underscores <code class="language-plaintext highlighter-rouge">_</code> and ASCII/unicode letters (depending on the language).</li>
+  <li><code class="language-plaintext highlighter-rouge">\d</code> finds any digit aka <code class="language-plaintext highlighter-rouge">[0-9]</code></li>
+  <li><code class="language-plaintext highlighter-rouge">\s</code> finds any whitespace character like a space, newline, tab, etc.</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">@#^$&amp; Hey 123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'H', index: 6, input: '@#^$&amp; Hey 123' ]</span>
+
+<span class="dl">"</span><span class="s2">@#^$&amp; Hey 123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1', index: 10, input: '@#^$&amp; Hey 123' ]</span>
+
+<span class="dl">"</span><span class="s2">@#^$&amp; Hey 123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\s</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ ' ', index: 5, input: '@#^$&amp; Hey 123' ]</span>
+</code></pre></div></div>
+
+<p>Negating these expressions is just as easy: just capitalize the letter! If you want to find the first non-word character use <code class="language-plaintext highlighter-rouge">\W</code>, the first non-digit <code class="language-plaintext highlighter-rouge">\D</code>, and the first non-whitespace character <code class="language-plaintext highlighter-rouge">\S</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">123 Hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\W</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ ' ', index: 3, input: '123 Hey' ]</span>
+
+<span class="dl">"</span><span class="s2">123 Hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\D</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ ' ', index: 3, input: '123 Hey' ]</span>
+
+<span class="dl">"</span><span class="s2">123Hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\D</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'H', index: 3, input: '123Hey' ]</span>
+
+<span class="dl">"</span><span class="s2">123 Hey</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\S</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1', index: 0, input: '123 Hey' ]</span>
+</code></pre></div></div>
+
+<h1 id="quantity">Quantity</h1>
+<hr />
+
+<p>There are a few quantity-type modifiers we can use in combination with what we already know. First up: what if instead of individual letters or digits we wanted to get whole words or numbers? Simply add a plus sign <code class="language-plaintext highlighter-rouge">+</code> after whatever character or group you’d like to search for more of and it will keep searching until it either reaches the end of the string or something that doesn’t match:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Word characters / words</span>
+
+<span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'h', index: 0, input: 'hello' ]</span>
+
+<span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ 'hello', index: 0, input: 'hello' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ 'hello', index: 0, input: 'hello world' ]</span>
+<span class="c1">// the space is the first non-word character, so it stops</span>
+
+<span class="c1">// Digits / numbers</span>
+
+<span class="dl">"</span><span class="s2">there are 100 centimeters in a meter</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1', index: 10, input: 'there are 100 centimeters in a meter' ]</span>
+
+<span class="dl">"</span><span class="s2">there are 100 centimeters in a meter</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ '100', index: 10, input: 'there are 100 centimeters in a meter' ]</span>
+
+<span class="dl">"</span><span class="s2">there are 100 centimeters in a meter</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\D</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 't', index: 0, input: 'there are 100 centimeters in a meter' ]</span>
+
+<span class="dl">"</span><span class="s2">there are 100 centimeters in a meter</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\D</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ 'there are ', index: 0, input: 'there are 100 centimeters in a meter' ]</span>
+<span class="c1">// spaces are non-digits, so it goes until it finds an actual digit</span>
+
+<span class="c1">// Whitespace / non whitespace</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\s</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ ' ', index: 5, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\S</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'h', index: 0, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\S</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ 'hello', index: 0, input: 'hello world' ]</span>
+
+<span class="c1">// aka for "hello world".match(/\w+/)</span>
+
+<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="dl">""</span><span class="p">,</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span>
+<span class="nx">string</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">""</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="nx">x</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">/</span><span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span> <span class="nx">result</span> <span class="o">+=</span> <span class="nx">x</span> <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">x</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">/</span><span class="p">)</span> <span class="o">===</span> <span class="kc">null</span>
+<span class="p">})</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We can even combine these or use the <code class="language-plaintext highlighter-rouge">+</code> modifier on specific letters or words:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">+</span><span class="se">\s\w</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ 'hello world', index: 0, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(\w</span><span class="sr">+</span><span class="se">)(\s)(\w</span><span class="sr">+</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hello world', 'hello', ' ', 'world', index: 0, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/.+/</span><span class="p">)</span>
+<span class="c1">// [ 'hello world', index: 0, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/l+/</span><span class="p">)</span>
+<span class="c1">// [ 'll', index: 2, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/el+/</span><span class="p">)</span>
+<span class="c1">// [ 'ell', index: 1, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">l</span><span class="se">)</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ 'll', 'l', index: 2, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">banana</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">na</span><span class="se">)</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ 'nana', 'na', index: 2, input: 'banana' ]</span>
+
+<span class="c1">// aka for /l+/</span>
+
+<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="dl">""</span><span class="p">,</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span>
+<span class="nx">string</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">""</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="nx">x</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/l/</span><span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span> <span class="nx">result</span> <span class="o">+=</span> <span class="nx">x</span> <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">x</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/l/</span><span class="p">)</span> <span class="o">===</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">result</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="p">})</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The plus sign is just one quantity-type modifier which says “find one or more”. There’s also the asterisk <code class="language-plaintext highlighter-rouge">*</code> modifier that says “find zero or more”, which is a fancy way of saying “if you don’t find this, then just move on”:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">*/</span><span class="p">)</span>
+<span class="c1">// [ '', index: 0, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(\d)</span><span class="sr">*/</span><span class="p">)</span>
+<span class="c1">// [ '', undefined, index: 0, input: 'hello world' ]</span>
+</code></pre></div></div>
+
+<p>Even though it didn’t find a digit, it didn’t give us null, and if we encase it in parentheses it’ll give us undefined back. This is useful for when we try to search for say, if a specific character follows the letter “w” in a string, but if it doesn’t then we still want to know if the letter “w” is even in the string:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// find if the letter(s) o appears right after</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/wo*/</span><span class="p">)</span>
+<span class="c1">// [ 'wo', index: 6, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello woooorld</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/wo*/</span><span class="p">)</span>
+<span class="c1">// [ 'woooo', index: 6, input: 'hello woooorld' ]</span>
+
+<span class="c1">// find any character(s) after the w</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/w.*/</span><span class="p">)</span>
+<span class="c1">// [ 'world', index: 6, input: 'hello world' ]</span>
+
+<span class="c1">// and the letter r, which isn't right after</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/wr*/</span><span class="p">)</span>
+<span class="c1">// [ 'w', index: 6, input: 'hello world' ]</span>
+</code></pre></div></div>
+
+<p>And finally one of the most useful thing is asking for a specific number of characters or groups, or a range. We use {curly brackets} for this, using one number <code class="language-plaintext highlighter-rouge">{n}</code> to ask for a specific number, add a comma if you want to do at least that number <code class="language-plaintext highlighter-rouge">{n,}</code>, and add another number for the range <code class="language-plaintext highlighter-rouge">{n,n2}</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// match one</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/l/</span><span class="p">)</span>
+<span class="c1">// same as</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/l</span><span class="se">{1}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'l', index: 2, input: 'hello world' ]</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/l</span><span class="se">{2}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'll', index: 2, input: 'hello world' ]</span>
+
+<span class="c1">// match more than one</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/l+/</span><span class="p">)</span>
+<span class="c1">// same as</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/l</span><span class="se">{1,}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'll', index: 2, input: 'hello world' ]</span>
+
+<span class="c1">// match more than zero</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/wr*/</span><span class="p">)</span>
+<span class="c1">// same as</span>
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/wr</span><span class="se">{0,}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'w', index: 6, input: 'hello world' ]</span>
+
+<span class="c1">// more than x</span>
+<span class="dl">"</span><span class="s2">http://www.github.com</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/w</span><span class="se">{2,}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'www', index: 7, input: 'http://www.github.com' ]</span>
+
+<span class="dl">"</span><span class="s2">http://www.github.com</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w{5,}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'github', index: 11, input: 'http://www.github.com' ]</span>
+
+<span class="dl">"</span><span class="s2">http://www.github.com</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\W{2,}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '://', index: 4, input: 'http://www.github.com' ]</span>
+
+<span class="c1">// range</span>
+
+<span class="dl">"</span><span class="s2">http://www.github.com</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/w</span><span class="se">{3,5}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'www', index: 7, input: 'http://www.github.com' ]</span>
+
+<span class="dl">"</span><span class="s2">http://www.github.com</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/w</span><span class="se">{2,5}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'www', index: 7, input: 'http://www.github.com' ]</span>
+
+<span class="dl">"</span><span class="s2">http://www.github.com</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w{5,7}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'github', index: 11, input: 'http://www.github.com' ]</span>
+
+<span class="c1">// aka for "hello world".match(/l{2}/)</span>
+
+<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="dl">"</span><span class="s2">hello world</span><span class="dl">"</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">""</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="nx">letter</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">letter</span> <span class="o">==</span> <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span> <span class="p">?</span> <span class="nx">count</span><span class="o">++</span> <span class="p">:</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">return</span> <span class="nx">count</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="p">})</span> <span class="o">==</span> <span class="kc">true</span> <span class="p">?</span> <span class="dl">"</span><span class="s2">ll</span><span class="dl">"</span> <span class="p">:</span> <span class="kc">false</span>
+<span class="c1">//=&gt; "ll"</span>
+</code></pre></div></div>
+
+<p>In summary for quantity:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 1 or more</span>
+<span class="dl">"</span><span class="s2">hellooooooo</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/o+/</span><span class="p">)</span>
+<span class="c1">// [ 'ooooooo', index: 4, input: 'hellooooooo' ]</span>
+
+<span class="c1">// 0 or more</span>
+<span class="dl">"</span><span class="s2">hellooooooo</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-z</span><span class="se">]</span><span class="sr">*/</span><span class="p">)</span>
+<span class="c1">// [ 'hellooooooo', index: 0, input: 'hellooooooo' ]</span>
+
+<span class="c1">// specific numbers</span>
+<span class="dl">"</span><span class="s2">hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-z</span><span class="se">]{3}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hel', index: 0, input: 'hello123' ]</span>
+
+<span class="dl">"</span><span class="s2">hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-z</span><span class="se">]{5}[</span><span class="sr">0-9</span><span class="se">]{3}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hello123', index: 0, input: 'hello123' ]</span>
+
+<span class="c1">// specific numbers or more</span>
+<span class="dl">"</span><span class="s2">hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-z</span><span class="se">]{3,}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hello', index: 0, input: 'hello123' ]</span>
+
+<span class="c1">// specific range of numbers</span>
+<span class="dl">"</span><span class="s2">hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-z</span><span class="se">]{3,4}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hell', index: 0, input: 'hello123' ]</span>
+<span class="dl">"</span><span class="s2">hello123</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">a-z</span><span class="se">]{0,7}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'hello', index: 0, input: 'hello123' ]</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="quiz-part-1">Quiz Part 1</h1>
+<h3 id="putting-the-basics-into-practice">Putting the basics into practice</h3>
+
+<p>If it wasn’t already obvious, all of these methods are very useful for performing specific searches. Let’s go through some vowel examples to really hammer down what you’ve learned so far.</p>
+
+<p>Try answering these questions first before looking at the answers! I’ll give the formats of what you may have to search by, then if you need hints I’ll list the steps you’d need to do, then finally the answer.</p>
+
+<hr />
+
+<h3 id="short-questions">Short questions:</h3>
+
+<p>Easy:</p>
+
+<p>Split up the word “string” by a vowel.
+“Split up each word in this sentence by a vowel”</p>
+
+<p>Medium:</p>
+
+<p>How would you test if the word “queue” had four vowels in a row?
+“Find the first vowel in this sentence followed by the letters j, k, l, or m”
+Find the first two letters in the word “education” that don’t contain the letters a through m”
+“Find the first letter in this sentence that appears after two consecutive vowels”</p>
+
+<p>Hard:</p>
+
+<p>“Find the first word in this sentence that has a ‘c’ in it”
+“Find the first word in this sentence that has a vowel followed by the letters j, k, l, or m”</p>
+
+<h3 id="short-answers">Short answers:</h3>
+
+<p>Easy:</p>
+
+<p><strong>Split up the word “string” by a vowel.</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">string</span><span class="dl">"</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span> <span class="c1">//=&gt; [ "str", "ng" ]</span>
+
+<span class="c1">// aka</span>
+
+<span class="kd">var</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">string</span><span class="dl">"</span>
+<span class="p">[</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">u</span><span class="dl">"</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span>
+	<span class="nx">string</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">x</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="dl">"</span><span class="s2"> </span><span class="dl">"</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="nx">string</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="s2"> </span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; [ "str", "ng" ]</span>
+</code></pre></div></div>
+
+<p><strong>“Split up each word in this sentence by a vowel”</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">sentence</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Split up each word in this sentence by a vowel</span><span class="dl">"</span>
+<span class="nx">sentence</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">"</span><span class="s2"> </span><span class="dl">"</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">l</span> <span class="o">=&gt;</span> <span class="nx">l</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]</span><span class="sr">/</span><span class="p">))</span>
+<span class="c1">// [ [ 'Spl', 't' ], [ '', 'p' ], [ '', '', 'ch' ], [ 'w', 'rd' ], [ '', 'n' ], [ 'th', 's' ], [ 's', 'nt', 'nc', '' ], [ 'by' ], [ '', '' ], [ 'v', 'w', 'l' ] ]</span>
+</code></pre></div></div>
+
+<p>Same as before, except we’ll do it for each letter. There’s an easier way we’ll do this later on.</p>
+
+<h4 id="medium">Medium:</h4>
+
+<p><strong>How would you test if the word “queue” had four vowels in a row?</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">queue</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]{4}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'ueue', index: 1, input: 'queue' ]</span>
+
+<span class="o">!!</span><span class="p">(</span><span class="dl">"</span><span class="s2">queue</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]{4}</span><span class="sr">/</span><span class="p">))</span>
+<span class="c1">// or the easier</span>
+<span class="o">&gt;</span> <span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]{4}</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="dl">"</span><span class="s2">queue</span><span class="dl">"</span><span class="p">)</span>
+<span class="c1">// true</span>
+
+<span class="c1">// aka</span>
+
+<span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="nx">letters</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">u</span><span class="dl">"</span><span class="p">],</span> <span class="nx">string</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">queue</span><span class="dl">"</span>
+
+<span class="nx">string</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="dl">""</span><span class="p">).</span><span class="nx">some</span><span class="p">(</span><span class="nx">letter</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">letters</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">letter</span><span class="p">)</span> <span class="p">?</span> <span class="nx">count</span><span class="o">++</span> <span class="p">:</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">return</span> <span class="nx">count</span> <span class="o">==</span> <span class="nx">number</span>
+<span class="p">})</span>
+<span class="nx">count</span> <span class="c1">//=&gt; true</span>
+</code></pre></div></div>
+
+<p><strong>“Find the first vowel in this sentence followed by the letters j, k, l, or m”</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">sentence</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Find the first vowel in this sentence followed by the letters j, k, l, or m</span><span class="dl">"</span>
+<span class="nx">sentence</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">([</span><span class="sr">aeiou</span><span class="se">])[</span><span class="sr">j-m</span><span class="se">]</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'el', 'e', index: 53, input: 'Find the first letter in this sentence that has a vowel followed by the letters j, k, l, or m' ]</span>
+<span class="nx">sentence</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">([</span><span class="sr">aeiou</span><span class="se">])[</span><span class="sr">j-m</span><span class="se">]</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">// 'e'</span>
+</code></pre></div></div>
+
+<p><strong>Find the first two letters in the word “education” that don’t contain the letters a through m”</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">education</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[^</span><span class="sr">a-m</span><span class="se">]{2}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'on', index: 7, input: 'education' ]</span>
+<span class="dl">"</span><span class="s2">education</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[^</span><span class="sr">a-m</span><span class="se">]{2}</span><span class="sr">/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">// 'on'</span>
+</code></pre></div></div>
+
+<p><strong>“Find the first letter in this sentence that appears after two consecutive vowels”</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">sentence</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Find the first letter in this sentence that appears after two consecutive vowels</span><span class="dl">"</span>
+<span class="nx">sentence</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]{2}(\w)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'ear', 'r', index: 47, input: 'Find the first letter in this sentence that appears after two consecutive vowels' ]</span>
+<span class="nx">sentence</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">]{2}(\w)</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">// 'r'</span>
+</code></pre></div></div>
+
+<p>We first search for two consecutive letters using <code class="language-plaintext highlighter-rouge">[aeiou]{2}</code>, then the parentheses <code class="language-plaintext highlighter-rouge">()</code> to capture a word character <code class="language-plaintext highlighter-rouge">\w</code> that appears after it. The letters ‘ear’ are at index 47 in the word “appears”.</p>
+
+<p>Hard:</p>
+
+<p><strong>Find the first sequence of at least 6 characters that are either non-vowels or the sequence of letters ‘er’, followed by either non-uppercase characters, uppercase letters between C and F, or lowercase vowels</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">characters</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">ThisLONGsequenceOfMANY(aka72(QuiteAbit))Characters!?!?(SeriouslyWhereIsTheBreak?)</span><span class="dl">"</span>
+<span class="nx">characters</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(([^</span><span class="sr">aeiouAEIOU</span><span class="se">]</span><span class="sr">|er</span><span class="se">)([^</span><span class="sr">A-Z</span><span class="se">]</span><span class="sr">|</span><span class="se">[</span><span class="sr">C-F</span><span class="se">]</span><span class="sr">|</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">])){6,}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ 'bit))Characters!?!?', '!?', '!', '?', index: 35, input: 'ThisLONGsequenceOfMANY(aka72(QuiteAbit))Characters!?!?(SeriouslyWhereIsTheBreak?)' ]</span>
+<span class="nx">characters</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(([^</span><span class="sr">aeiouAEIOU</span><span class="se">]</span><span class="sr">|er</span><span class="se">)([^</span><span class="sr">A-Z</span><span class="se">]</span><span class="sr">|</span><span class="se">[</span><span class="sr">C-F</span><span class="se">]</span><span class="sr">|</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">])){6,}</span><span class="sr">/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">// 'bit))Characters!?!?'</span>
+</code></pre></div></div>
+
+<p>This is pretty much a combination of the many things we learned all at once.</p>
+
+<p>The first clause <code class="language-plaintext highlighter-rouge">([^aeiouAEIOU]|er)</code> - non-vowels (not the same as consonants since it will also include non-word characters) are <code class="language-plaintext highlighter-rouge">[^aeiouAEIOU]</code> which says not <code class="language-plaintext highlighter-rouge">^</code> any of these letters, then the sequence <code class="language-plaintext highlighter-rouge">er</code>, and both of these are wrapped in parentheses and separated by the ‘or’ <code class="language-plaintext highlighter-rouge">|</code> pipe to choose either one of these.</p>
+
+<p>The second clause <code class="language-plaintext highlighter-rouge">([^A-Z]|[C-F]|[aeiou])</code> - non-uppercase characters (not the same as lowercase since it will also include non-letters) are <code class="language-plaintext highlighter-rouge">[^A-Z]</code> which says not <code class="language-plaintext highlighter-rouge">^</code> in the <code class="language-plaintext highlighter-rouge">A-Z</code> range, then the range <code class="language-plaintext highlighter-rouge">[C-F]</code>, and finally lowercase vowels <code class="language-plaintext highlighter-rouge">[aeiou]</code>, with all of these wrapped in parentheses and separated by the ‘or’ <code class="language-plaintext highlighter-rouge">|</code> pipe to choose any one of them.</p>
+
+<p>Finally both of these clauses are wrapped in additional parentheses with at least 6 <code class="language-plaintext highlighter-rouge">{6,}</code> on the end so it applies to both clauses as a whole.</p>
+
+<p><strong>“Find the first word in this sentence that has a ‘c’ in it”</strong></p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">Find the first word in this sentence that has a 'c' in it</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">*c</span><span class="se">\w</span><span class="sr">*/</span><span class="p">)</span>
+<span class="c1">// [ ' sentence ', 'sentence', index: 27, input: 'Find the first word in this sentence that has a \'c\' in it' ]</span>
+<span class="dl">"</span><span class="s2">Find the first word in this sentence that has a 'c' in it</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">*c</span><span class="se">\w</span><span class="sr">*/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">// 'sentence'</span>
+</code></pre></div></div>
+
+<p>We have our “c” in the exact middle of our script. On both sides we have <code class="language-plaintext highlighter-rouge">\w*</code> which says “look for at least 0 word characters” which means we can either start with a ‘c’ (0 word characters before), end with a ‘c’ (same but after), or be somewhere in the middle (at least one word character on both sides).</p>
+
+<p>“Find a word in this sentence that has a vowel followed by the letters j, k, l, or m”</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">sentence</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Find a word in this sentence that has a vowel followed by the  letters p, q, r, s, or t</span><span class="dl">"</span>
+<span class="nx">sentence</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\w</span><span class="sr">*</span><span class="se">[</span><span class="sr">aeiou</span><span class="se">][</span><span class="sr">p-t</span><span class="se">]\w</span><span class="sr">*/</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Same as the above question, but using vowels and a range.</p>
+
+<h3 id="long-questions">Long questions:</h3>
+
+<p>These are the multi-part questions and will require a bit more thinking.</p>
+
+<p><strong>1) Find the area code of a person’s phone number</strong></p>
+
+<p>Possible formats:</p>
+
+<p><strong>Easy</strong></p>
+<ul>
+  <li>800-555-1212</li>
+  <li>(800)-555-1212</li>
+  <li>8005551212
+<strong>Medium</strong>
+add country code:</li>
+  <li>1-800-555-1212</li>
+  <li>1-(800)-555-1212</li>
+  <li>18005551212
+<strong>Hard</strong></li>
+  <li>make all dash examples work with the same script
+<strong>Extreme</strong></li>
+  <li>note: you won’t be able to do this unless you know about a few advanced techniques, so don’t try this yet</li>
+  <li>make all examples work with the same script</li>
+  <li>I’ll leave this one to you!</li>
+</ul>
+
+<p>Step by step:</p>
+
+<p><strong>Easy</strong></p>
+<ul>
+  <li>find the first group of numbers (not just digits)</li>
+  <li>or the better, limit to 3 digits
+<strong>Medium</strong></li>
+  <li>search for non-digits first before you find three digits</li>
+  <li>also search for a single digit first (country code)</li>
+  <li>if having trouble, remember the operator to help search for at least <em>x</em> digits
+<strong>Hard</strong></li>
+  <li>the main difference now is if there’s a country code or not, how can we test that?
+<strong>Extreme</strong></li>
+  <li>use lookaheads, anchors, and conditionals (the <code class="language-plaintext highlighter-rouge">?</code> is very important)</li>
+</ul>
+
+<p>Easy answer:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// partial answer (only works for first two)</span>
+
+<span class="dl">"</span><span class="s2">800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ '800', index: 0, input: '800-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">+/</span><span class="p">)</span>
+<span class="c1">// [ '800', index: 1, input: '(800)-555-1212' ]</span>
+
+<span class="dl">"</span><span class="s2">800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">+/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d</span><span class="sr">+/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">// '800'</span>
+
+<span class="c1">// or the better which works for all three examples</span>
+
+<span class="dl">"</span><span class="s2">800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{3}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '800', index: 0, input: '800-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{3}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '800', index: 1, input: '(800)-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">8005551212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{3}</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '800', index: 1, input: '8005551212' ]</span>
+
+<span class="dl">"</span><span class="s2">800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{3}</span><span class="sr">/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{3}</span><span class="sr">/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">8005551212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{3}</span><span class="sr">/</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">// '800'</span>
+</code></pre></div></div>
+
+<p>For the first partial answer, because there are parentheses <code class="language-plaintext highlighter-rouge">()</code> and/or a dash <code class="language-plaintext highlighter-rouge">-</code> we can simply search until you run out of numbers using <code class="language-plaintext highlighter-rouge">\d+</code>, however this doesn’t work if it’s just a string of 10 numbers.</p>
+
+<p>In our full answer we fix this by finding the first three numbers using <code class="language-plaintext highlighter-rouge">\d{3}</code>.</p>
+
+<p>Medium answer:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// partial answer (only works for first two)</span>
+
+<span class="dl">"</span><span class="s2">1-800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\D</span><span class="sr">+</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '-800', '800', index: 0, input: '1-800-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">1-(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\D</span><span class="sr">+</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '-(800', '800', index: 0, input: '1-(800)-555-1212' ]</span>
+
+<span class="dl">"</span><span class="s2">1-800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\D</span><span class="sr">+</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">1-(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\D</span><span class="sr">+</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">// '800'</span>
+
+<span class="c1">// or the better which works for all three examples</span>
+
+
+<span class="dl">"</span><span class="s2">1-800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1-800', '800', index: 0, input: '1-800-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">1-(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1-(800', '800', index: 0, input: '1-(800)-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">18005551212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1800', '800', index: 0, input: '18005551212' ]</span>
+
+<span class="dl">"</span><span class="s2">1-800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">1-(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">18005551212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">// '800'</span>
+</code></pre></div></div>
+
+<p>For the first partial answer, just like before since there are parentheses <code class="language-plaintext highlighter-rouge">()</code> and/or a dash <code class="language-plaintext highlighter-rouge">-</code> we can simply search for at least one non-digit using <code class="language-plaintext highlighter-rouge">\D+</code> and then the first three numbers using <code class="language-plaintext highlighter-rouge">\d{3}</code>. However this doesn’t work if there aren’t any symbols, and just changing the <code class="language-plaintext highlighter-rouge">\D+</code> to <code class="language-plaintext highlighter-rouge">\D*</code> to make it “at least 0” doesn’t work either as it will just start at the first digit “1”.</p>
+
+<p>In our full answer we fix this by not only changing to <code class="language-plaintext highlighter-rouge">\D*</code>, but first searching for that first number using <code class="language-plaintext highlighter-rouge">\d</code>. This way we’ll always include the first 1 in our answer with <code class="language-plaintext highlighter-rouge">\d</code>, then search for non digits if they exist using <code class="language-plaintext highlighter-rouge">\D*</code>, and then the prior <code class="language-plaintext highlighter-rouge">\d{3}</code> as usual.</p>
+
+<p>Hard answer:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="dl">"</span><span class="s2">800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{0,1}\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '800', '800', index: 0, input: '800-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{0,1}\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '(800', '800', index: 0, input: '(800)-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">1-800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{0,1}\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1-800', '800', index: 0, input: '1-800-555-1212' ]</span>
+<span class="dl">"</span><span class="s2">1-(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{0,1}\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '1-(800', '800', index: 0, input: '1-(800)-555-1212' ]</span>
+
+<span class="dl">"</span><span class="s2">800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{0,1}\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{0,1}\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">1-800-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{0,1}\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="dl">"</span><span class="s2">1-(800)-555-1212</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\d{0,1}\D</span><span class="sr">*</span><span class="se">(\d{3})</span><span class="sr">/</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">// '800'</span>
+</code></pre></div></div>
+
+<p>Instead of the prior answer which was simply <code class="language-plaintext highlighter-rouge">\d</code>, we can force our script to only look for if there’s up to one number by changing that to <code class="language-plaintext highlighter-rouge">\d{0,1}</code>. That way if there’s a country code it will then look for the non-digits, however if there’s no country code it will ignore any amount of digits over 1 since it’s out of the <code class="language-plaintext highlighter-rouge">{0,1}</code> range. After that it will look for the non-digits as normal, then our area code.</p>
+
+<p><strong>2) Find the username of a github user from the URL</strong></p>
+
+<p>Possible formats:</p>
+
+<p><strong>Easy</strong></p>
+<ul>
+  <li>github.com/mikemerin</li>
+  <li>www.github.com/mikemerin</li>
+  <li>http://github.com/mikemerin</li>
+  <li>http://www.github.com/mikemerin
+<strong>Medium</strong></li>
+  <li>http://github.com/mikemerin/WeatherCraft
+<strong>Hard</strong></li>
+  <li>http://github.com/mikemerin/WeatherCraft/tree/master/src</li>
+  <li>make it work for all examples with the same script</li>
+</ul>
+
+<p>Step by step:</p>
+
+<p><strong>Easy</strong></p>
+<ul>
+  <li>search for the .com/</li>
+  <li>search for what’s after that</li>
+  <li>output that second search
+<strong>Medium</strong></li>
+  <li>search up until you hit another backslash</li>
+  <li>output after the .com/ and before the second backslash
+<strong>Hard</strong></li>
+  <li>deal with multiple backslashes, making sure it matches the next one</li>
+  <li>make your answer work for all the prior examples as well</li>
+</ul>
+
+<p>Easy answer:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// search for the .com/</span>
+<span class="dl">"</span><span class="s2">http://www.github.com/mikemerin</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '.com/', '.com/', index: 17, input: 'http://www.github.com/mikemerin' ]</span>
+
+<span class="c1">// search for what's after that</span>
+<span class="dl">"</span><span class="s2">http://www.github.com/mikemerin</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)(</span><span class="sr">.+</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '.com/mikemerin', '.com/', 'mikemerin', index: 17, input: 'http://www.github.com/mikemerin' ]</span>
+
+<span class="c1">// output that second search</span>
+<span class="dl">"</span><span class="s2">http://www.github.com/mikemerin</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)(</span><span class="sr">.+</span><span class="se">)</span><span class="sr">/</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1">// 'mikemerin'</span>
+</code></pre></div></div>
+
+<p>The elements returned are in order: search result, 1st parenthesis value, 2nd parenthesis value, so return the 2nd and that’s your answer.</p>
+
+<p>Medium answer:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// search up until you hit another backslash</span>
+<span class="dl">"</span><span class="s2">http://github.com/mikemerin/WeatherCraft</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)(</span><span class="sr">.+</span><span class="se">)(\/)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '.com/mikemerin/', '.com/', 'mikemerin', '/', index: 13, input: 'http://github.com/mikemerin/WeatherCraft' ]</span>
+<span class="dl">"</span><span class="s2">http://github.com/mikemerin/WeatherCraft</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)(</span><span class="sr">.+</span><span class="se">)(\/)</span><span class="sr">/</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1">// 'mikemerin'</span>
+</code></pre></div></div>
+
+<p>If there’s more to the URL like a repo, or settings, etc., you can add an additional search query like another backslash <code class="language-plaintext highlighter-rouge">/</code> and it’ll separate itself from the second result as a third result.</p>
+
+<p>Hard answer:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// issue to fix for - not working with basic URLs without post-username characters:</span>
+<span class="dl">"</span><span class="s2">http://github.com/mikemerin</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)(</span><span class="sr">.+</span><span class="se">)(\/)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// null</span>
+
+<span class="c1">// search up until you hit another backslash,</span>
+<span class="c1">// BUT: search for all characters that AREN'T a backslash</span>
+<span class="dl">"</span><span class="s2">http://github.com/mikemerin/WeatherCraft</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)([^\/]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '.com/mikemerin', '.com/', 'mikemerin', index: 13, input: 'http://github.com/mikemerin/WeatherCraft' ]</span>
+
+<span class="c1">// also fixed the prior issue</span>
+<span class="dl">"</span><span class="s2">http://github.com/mikemerin</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)([^\/]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '.com/mikemerin', '.com/', 'mikemerin', index: 13, input: 'http://github.com/mikemerin' ]</span>
+
+<span class="c1">// also deals with multiple backslashes, making sure it matches the next one</span>
+<span class="dl">"</span><span class="s2">http://github.com/mikemerin/WeatherCraft/tree/master/src</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)([^\/]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">)</span>
+<span class="c1">// [ '.com/mikemerin', '.com/', 'mikemerin', index: 13, input: 'http://github.com/mikemerin/WeatherCraft/tree/master/src' ]</span>
+
+<span class="c1">// output that second search</span>
+<span class="dl">"</span><span class="s2">http://github.com/mikemerin/WeatherCraft/tree/master/src</span><span class="dl">"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(</span><span class="sr">.com</span><span class="se">\/)([^\/]</span><span class="sr">*</span><span class="se">)</span><span class="sr">/</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1">// 'mikemerin'</span>
+</code></pre></div></div>
+
+<p>The magic here is our <code class="language-plaintext highlighter-rouge">([^\/]*)</code>. Breaking it down: everything’s surrounded by <code class="language-plaintext highlighter-rouge">(parentheses)</code> which outputs what’s inside. We then have <code class="language-plaintext highlighter-rouge">[hard brackets]</code> which allows us to search for a specific character or characters. Inside the hard brackets we start with a carrot <code class="language-plaintext highlighter-rouge">^</code> which says “search for anything that’s NOT in these hard brackets”. The <code class="language-plaintext highlighter-rouge">\/</code> is our backslash search. Together the <code class="language-plaintext highlighter-rouge">[^\/]</code> says “search for all characters that aren’t a backslash”. Finally the asterisk <code class="language-plaintext highlighter-rouge">*</code> after this says “find as many of these characters as possible but if you don’t find any that’s fine, still output all the non-backslash characters.”</p>
+
+<hr />
+
+<p>That’s the end of part 1, in <a href="https://mikemerin.github.io/RegExp-2/">part 2</a> we’ll cover even more techniques and advanced things you can do with Regex.</p>
+
+<p>Code on.</p>
+
+<p>-Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on September 23, 2017
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

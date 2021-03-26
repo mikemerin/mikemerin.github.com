@@ -23,6 +23,7 @@
     <meta property="twitter:title" content="Using ActiveRecord and SQL for Big Data" />
     
 
+
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -40,15 +41,23 @@
           <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
 
           <div class="site-info">
-            <h1 class="site-name"><a href="/">Learning Code with Mike Merin</a></h1>
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
             <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
           </div>
 
-          <nav>
-            
-            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
-            <a href="/about">About</a>
-          </nav>
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
         </header>
       </div>
     </div>
@@ -196,13 +205,13 @@
   </tbody>
 </table>
 
-<p>That’s already quite a few columns, and I don’t need to use all of them. When I generated my <code class="highlighter-rouge">station</code> model I used a Rails generator:</p>
+<p>That’s already quite a few columns, and I don’t need to use all of them. When I generated my <code class="language-plaintext highlighter-rouge">station</code> model I used a Rails generator:</p>
 
-<p><code class="highlighter-rouge">rails g resource station wban name callsign state location latitude longitude groundHeight stationHeight</code></p>
+<p><code class="language-plaintext highlighter-rouge">rails g resource station wban name callsign state location latitude longitude groundHeight stationHeight</code></p>
 
-<p>Which created a <code class="highlighter-rouge">/db/migrate/[20170626211645]_create_stations.rb</code> file that looked like</p>
+<p>Which created a <code class="language-plaintext highlighter-rouge">/db/migrate/[20170626211645]_create_stations.rb</code> file that looked like</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CreateStations</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mi">5</span><span class="o">.</span><span class="mi">1</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CreateStations</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">5.1</span><span class="p">]</span>
   <span class="k">def</span> <span class="nf">change</span>
     <span class="n">create_table</span> <span class="ss">:stations</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
       <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:wban</span>
@@ -219,12 +228,11 @@
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And I made my stations_controller, which controls the RESTful conventions. Here’s just the create and strong params used:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">StationsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">StationsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">create</span>
     <span class="vi">@station</span> <span class="o">=</span> <span class="no">Station</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">station_params</span><span class="p">)</span>
@@ -247,17 +255,15 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Finally to prevent duplicate data I added this to my Station model:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Station</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Station</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
   <span class="n">validates</span> <span class="ss">:wban</span><span class="p">,</span> <span class="ss">presence: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">uniqueness: </span><span class="kp">true</span>
 <span class="k">end</span>
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So with that in mind I went to creating the scraper!</p>
 
@@ -265,40 +271,37 @@
 
 <p>I figured I could tap into the RESTful routes script and create a new database row using the create method:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create</span>
-  <span class="n">station</span> <span class="o">=</span> <span class="no">Station</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">wban: </span><span class="s2">"94728"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"NEW YORK"</span><span class="p">,</span> <span class="ss">callsign: </span><span class="s2">"NYC"</span><span class="p">,</span> <span class="p">.</span><span class="nf">.</span><span class="o">.</span> <span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create</span>
+  <span class="n">station</span> <span class="o">=</span> <span class="no">Station</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">wban: </span><span class="s2">"94728"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"NEW YORK"</span><span class="p">,</span> <span class="ss">callsign: </span><span class="s2">"NYC"</span><span class="p">,</span> <span class="o">...</span> <span class="p">)</span>
   <span class="n">station</span><span class="p">.</span><span class="nf">save</span>
 <span class="k">end</span>
 
 <span class="c1"># or simply</span>
 
 <span class="k">def</span> <span class="nf">create</span>
-  <span class="no">Station</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">wban: </span><span class="s2">"94728"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"NEW YORK"</span><span class="p">,</span> <span class="ss">callsign: </span><span class="s2">"NYC"</span><span class="p">,</span> <span class="p">.</span><span class="nf">.</span><span class="o">.</span> <span class="p">)</span>
+  <span class="no">Station</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">wban: </span><span class="s2">"94728"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"NEW YORK"</span><span class="p">,</span> <span class="ss">callsign: </span><span class="s2">"NYC"</span><span class="p">,</span> <span class="o">...</span> <span class="p">)</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>If you’re in a rails console you can create a new database entry this way if you have the correct parameters, and then test it out by calling on our <code class="highlighter-rouge">Station</code> table</p>
+<p>If you’re in a rails console you can create a new database entry this way if you have the correct parameters, and then test it out by calling on our <code class="language-plaintext highlighter-rouge">Station</code> table</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Station</span><span class="p">.</span><span class="nf">all</span><span class="p">.</span><span class="nf">count</span> <span class="c1">#=&gt; 0</span>
-<span class="no">Station</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">wban: </span><span class="s2">"94728"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"NEW YORK"</span><span class="p">,</span> <span class="ss">callsign: </span><span class="s2">"NYC"</span><span class="p">,</span> <span class="p">.</span><span class="nf">.</span><span class="o">.</span> <span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Station</span><span class="p">.</span><span class="nf">all</span><span class="p">.</span><span class="nf">count</span> <span class="c1">#=&gt; 0</span>
+<span class="no">Station</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">wban: </span><span class="s2">"94728"</span><span class="p">,</span> <span class="ss">name: </span><span class="s2">"NEW YORK"</span><span class="p">,</span> <span class="ss">callsign: </span><span class="s2">"NYC"</span><span class="p">,</span> <span class="o">...</span> <span class="p">)</span>
 <span class="no">Station</span><span class="p">.</span><span class="nf">all</span><span class="p">.</span><span class="nf">count</span> <span class="c1">#=&gt; 1</span>
 <span class="no">Station</span><span class="p">.</span><span class="nf">first</span> <span class="c1">#=&gt; &lt;Station id: 1, wban: "94728", name: "NEW YORK", callsign: "NYC", ... &gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So looking at the data above, how can we call on it? First we need the file path. You can either get the URL path, or like me if you downloaded the text file, you can get the file path by dragging the physical file into your terminal. To use that file we type in:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">file</span> <span class="o">=</span> <span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">file</span> <span class="o">=</span> <span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span>
 <span class="no">File</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="c1">#=&gt; &lt;Enumerator: File:foreach("/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt")&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>Now that it’s an enumerator we can start pulling information from it!</p>
 
 <p>I know I listed the data above as a table, but from a raw data standpoint it looks like this:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>WBAN|WMO|CallSign|ClimateDivisionCode|ClimateDivisionStateCode|ClimateDivisionStationCode|Name|State|Location|Latitude|Longitude|GroundHeight|StationHeight|Barometer|TimeZone
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>WBAN|WMO|CallSign|ClimateDivisionCode|ClimateDivisionStateCode|ClimateDivisionStationCode|Name|State|Location|Latitude|Longitude|GroundHeight|StationHeight|Barometer|TimeZone
 14732|72503|LGA|04|30|5811|NEW YORK|NY|LA GUARDIA AIRPORT|40.7792|-73.88|11|31|39|-5
 23234|72494|SFO|04|04|7769|SAN FRANCISCO|CA|SAN FRANCISCO INTERNATIONAL AIRPORT|37.6197|-122.3647|8|18|89|-8
 93738|72403|IAD|04|44|8903|WASHINGTON|VA|WASHINGTON DULLES INTERNATIONAL AP|38.9349|-77.4473|290|323|309|-5
@@ -306,12 +309,11 @@
 94789|74486|JFK|04|30|5803|NEW YORK|NY|JOHN F KENNEDY INTERNATIONAL AIRPORT|40.6386|-73.7622|11|22|32|-5
 94823|72520|PIT|09|36|6993|PITTSBURGH|PA|PITTSBURGH INTERNATIONAL AIRPORT|40.4846|-80.2144|1203|1203|1175|-5
 94846|72530|ORD|02|11|1549|CHICAGO|IL|CHICAGO O’HARE INTERNATIONAL AIRPORT|41.995|-87.9336|662|674|658|-6
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>While from a human standpoint we’d call this ugly, this is what we call in the coding business: perfect. The data is cleanly separated by a pipe <code class="highlighter-rouge">\</code> which will make separating out the data a breeze. Sometimes they’re unfortunately separated by commonly used punctuation like a comma or a dash, in that case you’d have to use regular expressions to prevent errors (like <code class="highlighter-rouge">(^|,)</code> if data is separated by commas and there are commas in the actual column data). We can split up a row’s data by using <code class="highlighter-rouge">split("|")</code>. If we used our enumerator for iteration we’d get:</p>
+<p>While from a human standpoint we’d call this ugly, this is what we call in the coding business: perfect. The data is cleanly separated by a pipe <code class="language-plaintext highlighter-rouge">\</code> which will make separating out the data a breeze. Sometimes they’re unfortunately separated by commonly used punctuation like a comma or a dash, in that case you’d have to use regular expressions to prevent errors (like <code class="language-plaintext highlighter-rouge">(^|,)</code> if data is separated by commas and there are commas in the actual column data). We can split up a row’s data by using <code class="language-plaintext highlighter-rouge">split("|")</code>. If we used our enumerator for iteration we’d get:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">file</span> <span class="o">=</span> <span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">file</span> <span class="o">=</span> <span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span>
 <span class="no">File</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
 
   <span class="n">split_row</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)</span>
@@ -319,33 +321,29 @@
   <span class="n">split_row</span> <span class="c1">#=&gt; next   ["14732", "72503", "LGA", "04", "30", "5811", "NEW YORK", "NY", ... ]</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>Now that we have our columns neatly split up, we can assign them to their variables:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">wban</span> <span class="o">=</span> <span class="n">split_row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">wban</span> <span class="o">=</span> <span class="n">split_row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">wmo</span> <span class="o">=</span> <span class="n">split_row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">callsign</span> <span class="o">=</span> <span class="n">split_row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="n">climateDivisionCode</span> <span class="o">=</span> <span class="n">split_row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
-</code></pre>
-</div>
+<span class="o">...</span>
+</code></pre></div></div>
 
 <p>That’ll get tiring real fast, so let’s just use mass assignment instead:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">wban</span><span class="p">,</span> <span class="n">wmo</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="n">climateDivisionCode</span><span class="p">,</span> <span class="p">.</span><span class="nf">.</span><span class="p">.</span> <span class="nf">=</span> <span class="n">split_row</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">wban</span><span class="p">,</span> <span class="n">wmo</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="n">climateDivisionCode</span><span class="p">,</span> <span class="o">...</span> <span class="o">=</span> <span class="n">split_row</span>
+</code></pre></div></div>
 
 <p>And finally we’ll create a Station from those variables using the RESTful script from before, assigning only the values we want to take from it:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Station</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">wban: </span><span class="n">wban</span><span class="p">,</span> <span class="ss">callsign: </span><span class="n">callsign</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">,</span> <span class="ss">state: </span><span class="n">state</span><span class="p">,</span> <span class="p">.</span><span class="nf">.</span><span class="o">.</span> <span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Station</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">wban: </span><span class="n">wban</span><span class="p">,</span> <span class="ss">callsign: </span><span class="n">callsign</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">,</span> <span class="ss">state: </span><span class="n">state</span><span class="p">,</span> <span class="o">...</span> <span class="p">)</span>
+</code></pre></div></div>
 
 <p>Bringing it all together:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">file</span> <span class="o">=</span> <span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">file</span> <span class="o">=</span> <span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span>
 <span class="no">File</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
 
   <span class="n">split_row</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)</span>
@@ -353,12 +351,11 @@
   <span class="no">Station</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">wban: </span><span class="n">wban</span><span class="p">,</span> <span class="ss">callsign: </span><span class="n">callsign</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">,</span> <span class="ss">state: </span><span class="n">state</span><span class="p">,</span> <span class="ss">location: </span><span class="n">location</span><span class="p">,</span> <span class="ss">latitude: </span><span class="n">latitude</span><span class="p">,</span> <span class="ss">longitude: </span><span class="n">longitude</span><span class="p">,</span> <span class="ss">groundHeight: </span><span class="n">groundHeight</span><span class="p">,</span> <span class="ss">stationHeight: </span><span class="n">stationHeight</span><span class="p">)</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>However the first line is the header (<code class="highlighter-rouge">WBAN|WMO|CallSign</code>) and we don’t want that added into the database. We’ll just add a line that says “ignore the first line”</p>
+<p>However the first line is the header (<code class="language-plaintext highlighter-rouge">WBAN|WMO|CallSign</code>) and we don’t want that added into the database. We’ll just add a line that says “ignore the first line”</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">file</span> <span class="o">=</span> <span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">file</span> <span class="o">=</span> <span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span>
 <span class="no">File</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
 
   <span class="k">if</span> <span class="n">row</span> <span class="o">!=</span> <span class="no">File</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="n">file</span><span class="p">).</span><span class="nf">first</span>
@@ -367,19 +364,18 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Voila, a scraper that works!</p>
 
 <h1 id="phase-2---rakefile-and-benchmarks">Phase 2 - Rakefile and Benchmarks</h1>
 <hr />
 
-<p>Although the scraper works it’s still a hassle to have to either open up the rails console and paste it in, or put it in our normal files to call on, so why don’t we use a <code class="highlighter-rouge">rake</code> command that will do it for us? After all we have <code class="highlighter-rouge">rake db:drop</code> to drop tables, <code class="highlighter-rouge">rake db:migrate</code> to migrate our tables, and so on, let’s just make something called <code class="highlighter-rouge">rake data:scrape_stations</code> that will let us do it just as easily!</p>
+<p>Although the scraper works it’s still a hassle to have to either open up the rails console and paste it in, or put it in our normal files to call on, so why don’t we use a <code class="language-plaintext highlighter-rouge">rake</code> command that will do it for us? After all we have <code class="language-plaintext highlighter-rouge">rake db:drop</code> to drop tables, <code class="language-plaintext highlighter-rouge">rake db:migrate</code> to migrate our tables, and so on, let’s just make something called <code class="language-plaintext highlighter-rouge">rake data:scrape_stations</code> that will let us do it just as easily!</p>
 
-<p>Let’s first make our script into a method called <code class="highlighter-rouge">scrape_stations</code>, which will let us use the script easily as well as call from different files:</p>
+<p>Let’s first make our script into a method called <code class="language-plaintext highlighter-rouge">scrape_stations</code>, which will let us use the script easily as well as call from different files:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
   <span class="no">File</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
 
@@ -395,12 +391,11 @@
 
 <span class="n">scrape_stations</span><span class="p">(</span><span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt"</span><span class="p">)</span>
 <span class="n">scrape_stations</span><span class="p">(</span><span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/200705station.txt"</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Then in our <code class="highlighter-rouge">Rakefile</code> we’ll add the following</p>
+<p>Then in our <code class="language-plaintext highlighter-rouge">Rakefile</code> we’ll add the following</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">namespace</span> <span class="ss">:data</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">namespace</span> <span class="ss">:data</span> <span class="k">do</span>
 
   <span class="n">desc</span> <span class="s2">"scrape stations"</span>
   <span class="n">task</span> <span class="ss">:scrape_stations</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
@@ -408,12 +403,11 @@
     <span class="n">scrape_stations</span><span class="p">(</span><span class="s2">"/Users/flatironschool/Downloads/QCLCD_Gathered/200705station.txt"</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Now we can call <code class="highlighter-rouge">rake data:scrape_stations</code> in the terminal and it will perform our scraping method! Let’s take it one step further though and add some timestamps to our code so we can see how long it will take for us to perform our tasks using <code class="highlighter-rouge">Time.now</code> to log the time:</p>
+<p>Now we can call <code class="language-plaintext highlighter-rouge">rake data:scrape_stations</code> in the terminal and it will perform our scraping method! Let’s take it one step further though and add some timestamps to our code so we can see how long it will take for us to perform our tasks using <code class="language-plaintext highlighter-rouge">Time.now</code> to log the time:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
   <span class="no">File</span><span class="p">.</span><span class="nf">foreach</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
     <span class="k">unless</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"|"</span>
@@ -443,17 +437,15 @@
     <span class="nb">puts</span> <span class="s2">"There are now </span><span class="si">#{</span><span class="no">Station</span><span class="p">.</span><span class="nf">all</span><span class="p">.</span><span class="nf">count</span><span class="si">}</span><span class="s2"> stations."</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>This will output:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>Migration starting at 2017-06-28 22:56:58 -0400
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Migration starting at 2017-06-28 22:56:58 <span class="nt">-0400</span>
 
-Migration ended at 2017-06-28 22:57:26 -0400 and took 0.4614648833333333 minutes 27.687893 seconds<span class="o">)</span>.
+Migration ended at 2017-06-28 22:57:26 <span class="nt">-0400</span> and took 0.4614648833333333 minutes 27.687893 seconds<span class="o">)</span><span class="nb">.</span>
 There are now 2837 stations.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Not bad, but we can go even further. After all we only see the start and end times, not actually seeing the progress in between. Let’s modify our method to:</p>
 
@@ -463,7 +455,7 @@ There are now 2837 stations.
   <li>output a notification for every 500 entries, including the time</li>
 </ol>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
   <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="nb">puts</span> <span class="s2">"</span><span class="se">\n</span><span class="si">#{</span><span class="n">file</span><span class="si">}</span><span class="s2"> migration starting at </span><span class="si">#{</span><span class="n">t</span><span class="si">}</span><span class="s2">"</span>
@@ -504,49 +496,46 @@ There are now 2837 stations.
     <span class="nb">puts</span> <span class="s2">"There are now </span><span class="si">#{</span><span class="no">Station</span><span class="p">.</span><span class="nf">all</span><span class="p">.</span><span class="nf">count</span><span class="si">}</span><span class="s2"> stations."</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>This now outputs much more information and also makes the process of scraping not as boring as we can see some movement on the screen every once in a while.</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt migration starting at 2017-06-28 23:02:48 -0400
----------
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt migration starting at 2017-06-28 23:02:48 <span class="nt">-0400</span>
+<span class="nt">---------</span>
 3.771182 s: 500 entries added
 7.477357 s: 1000 entries added
 11.520816 s: 1500 entries added
 15.643081 s: 2000 entries added
 19.623183 s: 2500 entries added
----------
+<span class="nt">---------</span>
 2559 total entries added.
 
-/Users/flatironschool/Downloads/QCLCD_Gathered/200705station.txt migration starting at 2017-06-28 23:02:48 -0400
----------
+/Users/flatironschool/Downloads/QCLCD_Gathered/200705station.txt migration starting at 2017-06-28 23:02:48 <span class="nt">-0400</span>
+<span class="nt">---------</span>
 21.234295 s: 500 entries added
 22.577552 s: 1000 entries added
 24.129251 s: 1500 entries added
 25.467219 s: 2000 entries added
----------
+<span class="nt">---------</span>
 2280 total entries added.
 
-Migration ended at 2017-06-28 23:03:15 -0400 and took 0.44117138333333333 minutes 26.470283 seconds<span class="o">)</span>.
+Migration ended at 2017-06-28 23:03:15 <span class="nt">-0400</span> and took 0.44117138333333333 minutes 26.470283 seconds<span class="o">)</span><span class="nb">.</span>
 There are now 2837 stations.
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>By the way the reason why you see 2,559 stations and then 2,280 stations added from the different files but only 2,837 total stations in the end added is because of the validation I have in my model of <code class="highlighter-rouge">validates :wban, presence: true, uniqueness: true</code> which prevents duplicate stations from being added, looking at the <code class="highlighter-rouge">wban</code> column to make sure. We’ll come back to this later.</p>
+<p>By the way the reason why you see 2,559 stations and then 2,280 stations added from the different files but only 2,837 total stations in the end added is because of the validation I have in my model of <code class="language-plaintext highlighter-rouge">validates :wban, presence: true, uniqueness: true</code> which prevents duplicate stations from being added, looking at the <code class="language-plaintext highlighter-rouge">wban</code> column to make sure. We’ll come back to this later.</p>
 
 <h1 id="phase-3---bulk-creation">Phase 3 - Bulk Creation</h1>
 
-<p>As I said initially, this is one of the smallest of the files I worked with, and it’s still taking 26 seconds to populate our database. Why? Well each time we do <code class="highlighter-rouge">Station.create</code> it fires off a SQL query of:</p>
+<p>As I said initially, this is one of the smallest of the files I worked with, and it’s still taking 26 seconds to populate our database. Why? Well each time we do <code class="language-plaintext highlighter-rouge">Station.create</code> it fires off a SQL query of:</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="p">...)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="p">...)</span>
-</code></pre>
-</div>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="p">...)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre></div></div>
 
 <p>In the small scale it may only take around .01 seconds every time we send that query from our API to the database, but when we’re dealing with 2,837 different rows that adds up quite a bit. Just imagine what happens when I move to my file with 77,000 rows. I did, and I tried it out (it took 12 minutes). So I went to try and find a way to limit the SQL calls.</p>
 
-<p>After a while of tinkering around, I tried to add all the columns as a hash into an array and then do a single <code class="highlighter-rouge">Station.create(array)</code> from there:</p>
+<p>After a while of tinkering around, I tried to add all the columns as a hash into an array and then do a single <code class="language-plaintext highlighter-rouge">Station.create(array)</code> from there:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
   <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
@@ -574,10 +563,9 @@ There are now 2837 stations.
   <span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="n">count</span><span class="si">}</span><span class="s2"> total entries added."</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>But unfortunately that didn’t work because the program would still look at each individual hash in our <code class="highlighter-rouge">Station.create</code> and fire off SQL for each one.</p>
+<p>But unfortunately that didn’t work because the program would still look at each individual hash in our <code class="language-plaintext highlighter-rouge">Station.create</code> and fire off SQL for each one.</p>
 
 <p>Fair warning, this is the point in where hours passed by trying to find a way to directly fire off SQL from my Rails script. I’ll save you the time though of the many lines of code in the rails console I tried out, scripts within my Rakefile, and all different tunnels of the internet and stackoverflow and cut to how I finally found the answer.</p>
 
@@ -585,17 +573,16 @@ There are now 2837 stations.
 
 <p>Using SQL in a program like Postgres or SQLite isn’t too bad at its core. We can ideally insert a new entry into our database the way I said before:</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="p">...)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="p">...)</span>
-</code></pre>
-</div>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="p">...)</span> <span class="k">VALUES</span> <span class="p">(</span><span class="o">?</span><span class="p">,</span> <span class="o">?</span><span class="p">,</span> <span class="p">...)</span>
+</code></pre></div></div>
 
 <p>BUT I kept getting this error:</p>
 
-<p><code class="highlighter-rouge">ActiveRecord::NotNullViolation: SQLite3::ConstraintException: NOT NULL constraint failed:</code></p>
+<p><code class="language-plaintext highlighter-rouge">ActiveRecord::NotNullViolation: SQLite3::ConstraintException: NOT NULL constraint failed:</code></p>
 
 <p>This plagued me for a while since my stations table had a lot of other things going on, including four has_many / belongs_to relationships, full RESTful routes, and more. The answer to this though lied in my schema, specifically these two lines:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">create_table</span> <span class="s2">"stations"</span><span class="p">,</span> <span class="ss">force: :cascade</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">create_table</span> <span class="s2">"stations"</span><span class="p">,</span> <span class="ss">force: :cascade</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
   <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="s2">"wban"</span>
   <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="s2">"name"</span>
   <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="s2">"callsign"</span>
@@ -608,41 +595,37 @@ There are now 2837 stations.
   <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="s2">"created_at"</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span> <span class="c1"># &lt;----</span>
   <span class="n">t</span><span class="p">.</span><span class="nf">datetime</span> <span class="s2">"updated_at"</span><span class="p">,</span> <span class="ss">null: </span><span class="kp">false</span> <span class="c1"># &lt;----</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Those <code class="highlighter-rouge">null: false</code> columns were created as timestamps, and I wasn’t including them in my manual SQL script because ActiveRecord usually does that for us. SO, I needed to modify my <code class="highlighter-rouge">INSERT INTO</code> script to include <code class="highlighter-rouge">created_at, updated_at</code> in the column names and have a time added as their values. That was problem 1. Just kidding in my journey that was problem 14 at this point.</p>
+<p>Those <code class="language-plaintext highlighter-rouge">null: false</code> columns were created as timestamps, and I wasn’t including them in my manual SQL script because ActiveRecord usually does that for us. SO, I needed to modify my <code class="language-plaintext highlighter-rouge">INSERT INTO</code> script to include <code class="language-plaintext highlighter-rouge">created_at, updated_at</code> in the column names and have a time added as their values. That was problem 1. Just kidding in my journey that was problem 14 at this point.</p>
 
-<p>In order to get this script to fire in my program I needed to use something called <code class="highlighter-rouge">ActiveRecord::Base.connection.execute(sql)</code> to fire off a custom SQL command. The final product needed to look like this:</p>
+<p>In order to get this script to fire in my program I needed to use something called <code class="language-plaintext highlighter-rouge">ActiveRecord::Base.connection.execute(sql)</code> to fire off a custom SQL command. The final product needed to look like this:</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="k">state</span><span class="p">,</span> <span class="k">location</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">groundHeight</span><span class="p">,</span> <span class="n">stationHeight</span><span class="p">,</span> <span class="n">created_at</span><span class="p">,</span> <span class="n">updated_at</span><span class="p">)</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="k">state</span><span class="p">,</span> <span class="k">location</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">groundHeight</span><span class="p">,</span> <span class="n">stationHeight</span><span class="p">,</span> <span class="n">created_at</span><span class="p">,</span> <span class="n">updated_at</span><span class="p">)</span>
 <span class="k">VALUES</span> <span class="p">(</span> <span class="nv">"14732"</span><span class="p">,</span> <span class="nv">"72503"</span><span class="p">,</span> <span class="nv">"LGA"</span><span class="p">,</span> <span class="nv">"04"</span><span class="p">,</span> <span class="nv">"30"</span><span class="p">,</span> <span class="nv">"5811"</span><span class="p">,</span> <span class="nv">"NEW YORK"</span><span class="p">,</span> <span class="nv">"NY"</span><span class="p">,</span> <span class="nv">"LA GUARDIA AIRPORT"</span><span class="p">,</span> <span class="nv">"40.7792"</span><span class="p">,</span> <span class="nv">"-73.88"</span><span class="p">,</span> <span class="nv">"11"</span><span class="p">,</span> <span class="nv">"31"</span><span class="p">,</span> <span class="nv">"39"</span><span class="p">,</span> <span class="nv">"-5"</span><span class="p">,</span> <span class="nv">"Time"</span><span class="p">,</span> <span class="nv">"Time"</span> <span class="p">)</span>
 
 <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="k">state</span><span class="p">,</span> <span class="k">location</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">groundHeight</span><span class="p">,</span> <span class="n">stationHeight</span><span class="p">,</span> <span class="n">created_at</span><span class="p">,</span> <span class="n">updated_at</span><span class="p">)</span>
 <span class="k">VALUES</span> <span class="p">(</span> <span class="nv">"98486"</span><span class="p">,</span> <span class="nv">"72530"</span><span class="p">,</span> <span class="nv">"ORD"</span><span class="p">,</span> <span class="nv">"02"</span><span class="p">,</span> <span class="nv">"11"</span><span class="p">,</span> <span class="nv">"1549"</span><span class="p">,</span> <span class="nv">"CHICAGO"</span><span class="p">,</span> <span class="nv">"IL"</span><span class="p">,</span> <span class="nv">"CHICAGO O'HARE INTERNATIONAL AIRPORT"</span><span class="p">,</span> <span class="p">...</span> <span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Except that these are individual SQL that fire off, so with the same header we can separate multiple values by a comma:</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="k">state</span><span class="p">,</span> <span class="k">location</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">groundHeight</span><span class="p">,</span> <span class="n">stationHeight</span><span class="p">,</span> <span class="n">created_at</span><span class="p">,</span> <span class="n">updated_at</span><span class="p">)</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">stations</span> <span class="p">(</span><span class="n">wban</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">callsign</span><span class="p">,</span> <span class="k">state</span><span class="p">,</span> <span class="k">location</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">groundHeight</span><span class="p">,</span> <span class="n">stationHeight</span><span class="p">,</span> <span class="n">created_at</span><span class="p">,</span> <span class="n">updated_at</span><span class="p">)</span>
 <span class="k">VALUES</span>
     <span class="p">(</span> <span class="nv">"14732"</span><span class="p">,</span> <span class="nv">"72503"</span><span class="p">,</span> <span class="nv">"LGA"</span><span class="p">,</span> <span class="nv">"04"</span><span class="p">,</span> <span class="nv">"30"</span><span class="p">,</span> <span class="nv">"5811"</span><span class="p">,</span> <span class="nv">"NEW YORK"</span><span class="p">,</span> <span class="nv">"NY"</span><span class="p">,</span> <span class="nv">"LA GUARDIA AIRPORT"</span><span class="p">,</span> <span class="nv">"40.7792"</span><span class="p">,</span> <span class="nv">"-73.88"</span><span class="p">,</span> <span class="nv">"11"</span><span class="p">,</span> <span class="nv">"31"</span><span class="p">,</span> <span class="nv">"39"</span><span class="p">,</span> <span class="nv">"-5"</span><span class="p">,</span> <span class="nv">"Time"</span><span class="p">,</span> <span class="nv">"Time"</span> <span class="p">),</span>
     <span class="p">(</span> <span class="nv">"98486"</span><span class="p">,</span> <span class="nv">"72530"</span><span class="p">,</span> <span class="nv">"ORD"</span><span class="p">,</span> <span class="nv">"02"</span><span class="p">,</span> <span class="nv">"11"</span><span class="p">,</span> <span class="nv">"1549"</span><span class="p">,</span> <span class="nv">"CHICAGO"</span><span class="p">,</span> <span class="nv">"IL"</span><span class="p">,</span> <span class="nv">"CHICAGO O'HARE INTERNATIONAL AIRPORT"</span><span class="p">,</span> <span class="nv">"41.995"</span><span class="p">,</span> <span class="nv">"-87.9336"</span><span class="p">,</span> <span class="nv">"662"</span><span class="p">,</span> <span class="nv">"674"</span><span class="p">,</span> <span class="nv">"658"</span><span class="p">,</span> <span class="nv">"-6"</span><span class="p">,</span> <span class="nv">"Time"</span><span class="p">,</span> <span class="nv">"Time"</span> <span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Which fires off just once. Perfect! To get this added dynamically added we can make an array, and each row push in a string that looks the same as what’s above, then join them together by a comma:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">sql</span> <span class="o">=</span> <span class="s2">"INSERT INTO stations (wban, name, ...) VALUES "</span> <span class="o">+</span> <span class="n">array</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">", "</span><span class="p">)</span>
 <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>To actually do this we’ll change this in our existing code:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">&lt;&lt;</span> <span class="p">{</span> <span class="ss">wban: </span><span class="n">wban</span><span class="p">,</span> <span class="ss">callsign: </span><span class="n">callsign</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">,</span> <span class="ss">state: </span><span class="n">state</span><span class="p">,</span> <span class="ss">location: </span><span class="n">location</span><span class="p">,</span> <span class="ss">latitude: </span><span class="n">latitude</span><span class="p">,</span> <span class="ss">longitude: </span><span class="n">longitude</span><span class="p">,</span> <span class="ss">groundHeight: </span><span class="n">groundHeight</span><span class="p">,</span> <span class="ss">stationHeight: </span><span class="n">stationHeight</span> <span class="p">}</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">&lt;&lt;</span> <span class="p">{</span> <span class="ss">wban: </span><span class="n">wban</span><span class="p">,</span> <span class="ss">callsign: </span><span class="n">callsign</span><span class="p">,</span> <span class="ss">name: </span><span class="nb">name</span><span class="p">,</span> <span class="ss">state: </span><span class="n">state</span><span class="p">,</span> <span class="ss">location: </span><span class="n">location</span><span class="p">,</span> <span class="ss">latitude: </span><span class="n">latitude</span><span class="p">,</span> <span class="ss">longitude: </span><span class="n">longitude</span><span class="p">,</span> <span class="ss">groundHeight: </span><span class="n">groundHeight</span><span class="p">,</span> <span class="ss">stationHeight: </span><span class="n">stationHeight</span> <span class="p">}</span>
 
 <span class="c1"># to a string</span>
 
@@ -656,12 +639,11 @@ There are now 2837 stations.
 
 <span class="n">sql</span> <span class="o">=</span> <span class="s2">"INSERT INTO stations (wban, name, callsign, state, location, latitude, longitude, groundHeight, stationHeight, created_at, updated_at) VALUES "</span> <span class="o">+</span> <span class="n">array</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s2">", "</span><span class="p">)</span>
 <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Which put together looks like:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
   <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
@@ -690,50 +672,45 @@ There are now 2837 stations.
   <span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="n">count</span><span class="si">}</span><span class="s2"> total entries added."</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now we have a script that gathers all of the rows for us then fires off a <strong>single</strong> SQL query which should cut down majorly on time! I’d run the benchmark test to see how long it would take, but there’s a major problem that will prevent this script from even running in the first place in certain commonly occurring conditions…</p>
 
 <h1 id="phase-5---sanitizing-our-data">Phase 5 - Sanitizing Our Data</h1>
 
-<p>This is a major problem that <code class="highlighter-rouge">ActiveRecord</code> took care of for us with <strong>strong params</strong>, which was our <code class="highlighter-rouge">params.require(:station).permit(:wban, :callsign, ...)</code> line in our controller. What does sanitizing that mean?</p>
+<p>This is a major problem that <code class="language-plaintext highlighter-rouge">ActiveRecord</code> took care of for us with <strong>strong params</strong>, which was our <code class="language-plaintext highlighter-rouge">params.require(:station).permit(:wban, :callsign, ...)</code> line in our controller. What does sanitizing that mean?</p>
 
 <p><img src="https://imgs.xkcd.com/comics/exploits_of_a_mom.png" alt="XKCD 237" /></p>
 
 <p>Let’s take a look at our string and the Chicago airport line:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="s2">"('</span><span class="si">#{</span><span class="n">wban</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">callsign</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">state</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">location</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">latitude</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">longitude</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">groundHeight</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">stationHeight</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="si">}</span><span class="s2">')"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"('</span><span class="si">#{</span><span class="n">wban</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">callsign</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">state</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">location</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">latitude</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">longitude</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">groundHeight</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="n">stationHeight</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="si">}</span><span class="s2">', '</span><span class="si">#{</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="si">}</span><span class="s2">')"</span>
 <span class="c1"># becomes</span>
 <span class="s2">"('98486', '72530', 'ORD', '02', '11', '1549', 'CHICAGO', 'IL', 'CHICAGO O'HARE INTERNATIONAL AIRPORT', '41.995', '-87.9336', '662', '674', '658', '-6', '2017-06-29 00:20:32 -0400', '2017-06-29 00:20:32 -0400')"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>See the problem? If there is a quotation mark <code class="highlighter-rouge">'</code>/<code class="highlighter-rouge">"</code> somewhere, or a colon <code class="highlighter-rouge">:</code> it will break our string, or if there is something malicious by mistake like <code class="highlighter-rouge">DROP TABLE stations</code> somewhere like in the XKCD comic above it would ruin everything. We can’t simply change our outer bounds to a single quote <code class="highlighter-rouge">'</code> instead of double <code class="highlighter-rouge">"</code> because we then can’t interpolate <code class="highlighter-rouge">#{objects}</code>. Rails and ActiveRecord uses strong params to do this, and the answer to our problems is <code class="highlighter-rouge">ActiveRecord::Base.connection.quote('string')</code> that will do this for us! (in older versions this was known as <code class="highlighter-rouge">ActiveRecord::Base:sanitize('string')</code>)</p>
+<p>See the problem? If there is a quotation mark <code class="language-plaintext highlighter-rouge">'</code>/<code class="language-plaintext highlighter-rouge">"</code> somewhere, or a colon <code class="language-plaintext highlighter-rouge">:</code> it will break our string, or if there is something malicious by mistake like <code class="language-plaintext highlighter-rouge">DROP TABLE stations</code> somewhere like in the XKCD comic above it would ruin everything. We can’t simply change our outer bounds to a single quote <code class="language-plaintext highlighter-rouge">'</code> instead of double <code class="language-plaintext highlighter-rouge">"</code> because we then can’t interpolate <code class="language-plaintext highlighter-rouge">#{objects}</code>. Rails and ActiveRecord uses strong params to do this, and the answer to our problems is <code class="language-plaintext highlighter-rouge">ActiveRecord::Base.connection.quote('string')</code> that will do this for us! (in older versions this was known as <code class="language-plaintext highlighter-rouge">ActiveRecord::Base:sanitize('string')</code>)</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">string</span> <span class="o">=</span> <span class="s2">"Hey what's up? It's </span><span class="si">#{</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="si">}</span><span class="s2">"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">string</span> <span class="o">=</span> <span class="s2">"Hey what's up? It's </span><span class="si">#{</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="si">}</span><span class="s2">"</span>
 <span class="n">string</span> <span class="c1">#=&gt; "Hey what's up? It's 2017-06-29 09:01:36 -0400"</span>
 <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">quote</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
 <span class="c1">#=&gt; "'Hey what''s up? It''s 2017-06-29 09:02:23 -0400'"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>See how it takes care of the quotes for us? This makes sure we never break our string, and in turn never run something that’s sitting in the broken part of the string (and break our program in the process). We can’t simply sanitize the entire string before we insert it into our array by doing <code class="highlighter-rouge">array &lt;&lt; ActiveRecord::Base.connection.quote("(#{wban}, #{callsign}, #{name}, ...)</code> as it wouldn’t apply to the interpolated objects. We <em>can</em> however sanitize each column in the row before we do our mass assignment:</p>
+<p>See how it takes care of the quotes for us? This makes sure we never break our string, and in turn never run something that’s sitting in the broken part of the string (and break our program in the process). We can’t simply sanitize the entire string before we insert it into our array by doing <code class="language-plaintext highlighter-rouge">array &lt;&lt; ActiveRecord::Base.connection.quote("(#{wban}, #{callsign}, #{name}, ...)</code> as it wouldn’t apply to the interpolated objects. We <em>can</em> however sanitize each column in the row before we do our mass assignment:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">split_row</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">split_row</span> <span class="o">=</span> <span class="n">row</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)</span>
 <span class="n">split_row</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">quote</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Now each column’s values including ones like “O’HARE” will be able to work. Also we should also sanitize each row’s <code class="highlighter-rouge">time</code> that inserts into our <code class="highlighter-rouge">created_at</code> and <code class="highlighter-rouge">updated_at</code> columns so those colons don’t cause a problem:</p>
+<p>Now each column’s values including ones like “O’HARE” will be able to work. Also we should also sanitize each row’s <code class="language-plaintext highlighter-rouge">time</code> that inserts into our <code class="language-plaintext highlighter-rouge">created_at</code> and <code class="language-plaintext highlighter-rouge">updated_at</code> columns so those colons don’t cause a problem:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">time</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">quote</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">time</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">quote</span><span class="p">(</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>Putting this all together:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">scrape_stations</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
   <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="n">array</span> <span class="o">=</span> <span class="p">[]</span>
@@ -764,40 +741,37 @@ There are now 2837 stations.
   <span class="nb">puts</span> <span class="s2">"</span><span class="si">#{</span><span class="n">count</span><span class="si">}</span><span class="s2"> total entries added."</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>Now for the moment of truth: how much faster are we populating our database? We were previously at:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code> Migration ended at 2017-06-28 23:03:15 -0400 and took 0.44117138333333333 minutes 26.470283 seconds<span class="o">)</span>.
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Migration ended at 2017-06-28 23:03:15 <span class="nt">-0400</span> and took 0.44117138333333333 minutes 26.470283 seconds<span class="o">)</span><span class="nb">.</span>
  There are now 2837 stations.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Running our new program we’re at:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt migration starting at 2017-06-29 00:54:31 -0400
----------
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/Users/flatironschool/Downloads/QCLCD_Gathered/201706station.txt migration starting at 2017-06-29 00:54:31 <span class="nt">-0400</span>
+<span class="nt">---------</span>
 0.211752 s: 500 entries added
 0.283182 s: 1000 entries added
 0.371189 s: 1500 entries added
 0.442112 s: 2000 entries added
 0.509279 s: 2500 entries added
----------
+<span class="nt">---------</span>
 2559 total entries added.
 
-/Users/flatironschool/Downloads/QCLCD_Gathered/200705station.txt migration starting at 2017-06-29 00:54:31 -0400
----------
+/Users/flatironschool/Downloads/QCLCD_Gathered/200705station.txt migration starting at 2017-06-29 00:54:31 <span class="nt">-0400</span>
+<span class="nt">---------</span>
 0.678407 s: 500 entries added
 0.749073 s: 1000 entries added
 0.81953 s: 1500 entries added
 0.898837 s: 2000 entries added
----------
+<span class="nt">---------</span>
 2280 total entries added.
 
-Migration ended at 2017-06-29 00:54:32 -0400 and took 0.016682166666666668 minutes 1.00093 seconds<span class="o">)</span>.
+Migration ended at 2017-06-29 00:54:32 <span class="nt">-0400</span> and took 0.016682166666666668 minutes 1.00093 seconds<span class="o">)</span><span class="nb">.</span>
 There are now 2837 stations.
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>We went from 26 seconds to just <strong>one</strong> second! That’s a 26 times increase and that’s only with 2837 stations.</p>
 
@@ -859,26 +833,6 @@ There are now 2837 stations.
 
 </article>
 
-    </div>
-
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-          
-<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
-
-
-<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
-
-<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
-
-
-<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
-
-
-
-        </footer>
-      </div>
     </div>
 
     

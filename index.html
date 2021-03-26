@@ -10,10 +10,13 @@ layout: default
       {% for post in site.posts %}
         <article class="post">
 
-          <h2><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h2>
+          <h2>
+            <a class="showLink" href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+            <span class="date small"><i>{{ post.date | date: "%B %e, %Y" }}</i></span>
+          </h2>
 
           <div class="entry">
-            {{ post.excerpt | truncatewords:50 }} - <i>{{ page.date | date: "%B %e, %Y" }}</i>
+            {{ post.excerpt | truncatewords:50 }}
           </div>
 
           <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
@@ -34,14 +37,12 @@ layout: default
       <h3>WeatherCraft</h3>
       Weather, climate, trends,
       anywhere in the USA
-      <img src="http://i.imgur.com/APiZxP0.png"/>
     </a>
     <a href="{{ site.baseurl }}/regex" class="read-more">
       <h3>Regex Dictionary</h3>
       Enter Regular Expressions
       across all words
       in the dictionary
-      <img src="https://imgur.com/AZKTrX9.png"/>
     </a>
     <a href="{{ site.baseurl }}/cryptography" class="read-more">
       <h3>Cryptography</h3>
@@ -54,7 +55,6 @@ layout: default
       Dynamically Generated
       Question Generator
       For Coding Quizzes
-      <img src="http://imgur.com/BuDU8z9.png"/>
     </a>
   </div>
   <br style="clear:both;"/>

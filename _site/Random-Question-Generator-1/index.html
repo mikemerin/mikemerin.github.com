@@ -23,6 +23,7 @@
     <meta property="twitter:title" content="Anatomy of a Dynamically Generated Quiz Part 1" />
     
 
+
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -40,15 +41,23 @@
           <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
 
           <div class="site-info">
-            <h1 class="site-name"><a href="/">Learning Code with Mike Merin</a></h1>
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
             <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
           </div>
 
-          <nav>
-            
-            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
-            <a href="/about">About</a>
-          </nav>
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
         </header>
       </div>
     </div>
@@ -113,49 +122,44 @@
 <h1 id="array-generation">Array Generation</h1>
 <hr />
 <p>Dynamically creating arrays would automatically increase the questions asked as it would apply to every single method on the list above, and any new ones added to it. I could easily create an array from 1-6, 2-7, 3-8, and 4-9. They’d look like:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>Great that’s 4 possibilities right off the bat. To actually choose one of these randomly though without having to actually save them I dynamically generated them by choosing a random number from 1-4, then creating an incrementing array with 6 elements:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>
 <span class="c1"># start array at this number</span>
 <span class="n">array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>
 <span class="c1"># create a 6-element incrementing array</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p><strong><em>possible questions = 4</em></strong></p>
 
-<p>Now that we had our arrays, we could do some really fun stuff with them. How about half of the time we reverse the arrays? Using the <code class="highlighter-rouge">.sample</code> method along with a ternary operator I randomly (50/50) chose true or false to reverse the array or not:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="n">array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="n">array</span>
-</code></pre>
-</div>
+<p>Now that we had our arrays, we could do some really fun stuff with them. How about half of the time we reverse the arrays? Using the <code class="language-plaintext highlighter-rouge">.sample</code> method along with a ternary operator I randomly (50/50) chose true or false to reverse the array or not:</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="n">array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="n">array</span>
+</code></pre></div></div>
 <p><strong><em>possible questions = 8</em></strong></p>
 
 <p>It may not seem like much, but multiplying the possibilities by 8 right off the bat means any other changes we do will already have a large start.</p>
 
 <h1 id="comparisons">Comparisons</h1>
 <hr />
-<p>The first 6 methods on the list use one of 6 comparisons like less than <code class="highlighter-rouge">&lt;</code>, greater than or equal to <code class="highlighter-rouge">&gt;=</code>, or not equal to <code class="highlighter-rouge">!=</code>. I decided not to choose equal or not equal since if I used multiple choice I’d sometimes generate the same answers, which obviously would be a problem. I put all the comparisons in an array then chose one at random.</p>
+<p>The first 6 methods on the list use one of 6 comparisons like less than <code class="language-plaintext highlighter-rouge">&lt;</code>, greater than or equal to <code class="language-plaintext highlighter-rouge">&gt;=</code>, or not equal to <code class="language-plaintext highlighter-rouge">!=</code>. I decided not to choose equal or not equal since if I used multiple choice I’d sometimes generate the same answers, which obviously would be a problem. I put all the comparisons in an array then chose one at random.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"&lt;"</span><span class="p">,</span><span class="s2">"&gt;"</span><span class="p">,</span><span class="s2">"&gt;="</span><span class="p">,</span><span class="s2">"&lt;="</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"&lt;"</span><span class="p">,</span><span class="s2">"&gt;"</span><span class="p">,</span><span class="s2">"&gt;="</span><span class="p">,</span><span class="s2">"&lt;="</span><span class="p">]</span>
 <span class="n">comparison_selection</span> <span class="o">=</span> <span class="n">comparisons</span><span class="p">.</span><span class="nf">sample</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p><strong><em>possible questions = 32</em></strong></p>
 
-<p>I’ll be changing the comparison script further down the line, but wait a second, if I’m calling a comparison on an array, I’ll need a number as well. After all if I have an array of numbers between 1 and 6 and I want a number less than <code class="highlighter-rouge">x</code>, what’s <code class="highlighter-rouge">x</code>? Well I’ll just choose one of the six numbers in the array!</p>
+<p>I’ll be changing the comparison script further down the line, but wait a second, if I’m calling a comparison on an array, I’ll need a number as well. After all if I have an array of numbers between 1 and 6 and I want a number less than <code class="language-plaintext highlighter-rouge">x</code>, what’s <code class="language-plaintext highlighter-rouge">x</code>? Well I’ll just choose one of the six numbers in the array!</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array_selection</span> <span class="o">=</span> <span class="n">array</span><span class="p">.</span><span class="nf">sample</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array_selection</span> <span class="o">=</span> <span class="n">array</span><span class="p">.</span><span class="nf">sample</span>
+</code></pre></div></div>
 <p><strong><em>possible questions = 192</em></strong></p>
 
 <p>Just like that we have almost 200 different combinations <em>JUST</em> from making different arrays and comparisons! See, if we didn’t start out with that number 8 before we’d only be at 24 by this point. Putting this to the test we have:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>
 <span class="c1"># 4</span>
 <span class="n">array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>
 <span class="c1"># [4, 5, 6, 7, 8, 9]</span>
@@ -166,28 +170,25 @@
 <span class="n">comparisons</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"&lt;"</span><span class="p">,</span><span class="s2">"&gt;"</span><span class="p">,</span><span class="s2">"&gt;="</span><span class="p">,</span><span class="s2">"&lt;="</span><span class="p">]</span>
 <span class="n">comparison_selection</span> <span class="o">=</span> <span class="n">comparisons</span><span class="p">.</span><span class="nf">sample</span>
 <span class="c1"># &lt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>If we were using select, we’d get:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">method</span> <span class="o">=</span> <span class="s2">"select"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">method</span> <span class="o">=</span> <span class="s2">"select"</span>
 <span class="n">array</span><span class="p">.</span><span class="nf">method</span><span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="n">comparison_selection</span> <span class="n">array_selection</span><span class="p">}</span>
 <span class="c1"># this becomes</span>
 <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">].</span><span class="nf">select</span><span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>Obviously the above wouldn’t actually work when inputted into Ruby, so let’s write something that does, if only to get something showing up.</p>
 
 <h1 id="creating-a-question-and-its-answer">Creating a Question and Its Answer</h1>
 <hr />
 <p>What’s the answer to the above question? I’ll say it shortly so you have a change to guess, however it begs the question: how do I make all of this into workable code to even ask the question? The short and easy answer is “turn it all into a string and output it.” To do that we can do something that’s a bit messy but it’ll serve our purposes just fine:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="s2">"</span><span class="si">#{</span><span class="n">array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="nb">method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison_selection</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">array_selection</span><span class="si">}</span><span class="s2"> }"</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"</span><span class="si">#{</span><span class="n">array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="nb">method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison_selection</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">array_selection</span><span class="si">}</span><span class="s2"> }"</span>
 <span class="c1"># which becomes</span>
 <span class="s2">"[4, 5, 6, 7, 8, 9].select{ |x| x &lt; 6 }"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>The good thing about this is, our “method” object can be changed to reject, find, detect, keep_if, or delete_if at a moment’s notice!</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">method</span> <span class="o">=</span> <span class="n">find</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">method</span> <span class="o">=</span> <span class="n">find</span>
 <span class="s2">"</span><span class="si">#{</span><span class="n">array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="nb">method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison_selection</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">array_selection</span><span class="si">}</span><span class="s2"> }"</span>
 <span class="c1">#=&gt;</span>
 <span class="s2">"[4, 5, 6, 7, 8, 9].find{ |x| x &lt; 6 }"</span>
@@ -195,33 +196,31 @@
 <span class="nb">method</span> <span class="o">=</span> <span class="n">delete_if</span>
 <span class="c1">#=&gt;</span>
 <span class="s2">"[4, 5, 6, 7, 8, 9].delete_if { |x| x &lt; 6 }"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>And so on for each of those 6 types. So with 8 arrays, 6 methods, 4 comparison selections, and 6 array selections we now have:</p>
 
 <p><strong><em>possible questions = 1,152</em></strong></p>
 
-<p>What’s cool about this as well is even though this is a string, we can get the answer by using <code class="highlighter-rouge">eval</code>!</p>
+<p>What’s cool about this as well is even though this is a string, we can get the answer by using <code class="language-plaintext highlighter-rouge">eval</code>!</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">eval</span><span class="p">(</span><span class="s2">"[4, 5, 6, 7, 8, 9].select { |x| x &lt; 6 }"</span><span class="p">)</span> <span class="c1">#=&gt; [4, 5]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">eval</span><span class="p">(</span><span class="s2">"[4, 5, 6, 7, 8, 9].select { |x| x &lt; 6 }"</span><span class="p">)</span> <span class="c1">#=&gt; [4, 5]</span>
 <span class="nb">eval</span><span class="p">(</span><span class="s2">"[4, 5, 6, 7, 8, 9].find { |x| x &lt; 6 }"</span><span class="p">)</span> <span class="c1">#=&gt; 5</span>
 <span class="nb">eval</span><span class="p">(</span><span class="s2">"[4, 5, 6, 7, 8, 9].delete_if { |x| x &lt; 6 }"</span><span class="p">)</span> <span class="c1">#=&gt; [6, 7, 8, 9]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Not bad, but of course we can go even farther. We’re hard-coding our question but there’s some extreme limitations, including the fact that after we ask a question it only exists printed out and the program will never remember it, and therefore we can’t use it again down the line. Also there’s 5 more methods to go through, and of course these are just the questions without any answers. Actually before we continue, since we have a lot of methods and there are plenty more to come, let’s organize them.</p>
 
 <h1 id="object-orientation">Object Orientation</h1>
 <hr />
-<p>It makes perfect sense to make this program object oriented, as we can then make each question an object, set its attributes like array, method, etc., and then call a quiz type on it. If that question is storing all that information then we can expand it even further to even more types of quizzes or call other methods on it. Let’s put everything into a class named <code class="highlighter-rouge">Question</code>. I’m also going to do a few more things, and I’ll explain it as I go along</p>
+<p>It makes perfect sense to make this program object oriented, as we can then make each question an object, set its attributes like array, method, etc., and then call a quiz type on it. If that question is storing all that information then we can expand it even further to even more types of quizzes or call other methods on it. Let’s put everything into a class named <code class="language-plaintext highlighter-rouge">Question</code>. I’m also going to do a few more things, and I’ll explain it as I go along</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
 
   <span class="c1"># name those four above attributes</span>
   <span class="c1"># I only want to be able to manually directly change the method</span>
   <span class="c1"># the rest I want read, but only changed through our instance methods</span>
-  <span class="kp">attr_accessor</span> <span class="ss">:method</span>
-  <span class="kp">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:method</span>
+  <span class="nb">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span>
 
   <span class="c1"># we'll start with a chosen method</span>
   <span class="c1"># since the four comparison types don't change, we'll also start with them</span>
@@ -232,7 +231,7 @@
 
   <span class="c1"># put all array creation scripts into one method</span>
   <span class="k">def</span> <span class="nf">createArray</span>
-    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>                            <span class="c1"># start array at this number</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>                            <span class="c1"># start array at this number</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>       <span class="c1"># create a 6-element incrementing array</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="vi">@array</span> <span class="c1"># 50/50 chance reversing array</span>
     <span class="vi">@array_selection</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">sample</span>                <span class="c1"># select one of those elements</span>
@@ -243,11 +242,10 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
-<p>Now we can create a question by doing <code class="highlighter-rouge">new_question = Question.new("reject")</code> and the <code class="highlighter-rouge">new_question</code> object will have all this information stored in it waiting to be used! Let’s try that out and see what happens:</p>
+</code></pre></div></div>
+<p>Now we can create a question by doing <code class="language-plaintext highlighter-rouge">new_question = Question.new("reject")</code> and the <code class="language-plaintext highlighter-rouge">new_question</code> object will have all this information stored in it waiting to be used! Let’s try that out and see what happens:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">new_question</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"reject"</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_question</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"reject"</span><span class="p">)</span>
 <span class="c1">#=&gt; &lt;Question:0x007f9ddd926f08 @method="reject", @comparisons=["&lt;", "&gt;", "&gt;=", "&lt;="]&gt;</span>
 <span class="c1"># initializes with @method of "reject and the @comparisons, nothing else"</span>
 
@@ -262,25 +260,23 @@
 <span class="c1"># &lt;Question:0x007f9ddd926f08 @method="reject", @comparisons=["&lt;", "&gt;", "&gt;=", "&lt;="],</span>
 <span class="c1"># @array=[2, 3, 4, 5, 6, 7], @array_selection=3 @comparison_selection="&lt;"&gt;</span>
 <span class="c1"># and now a comparison</span>
-</code></pre>
-</div>
-<p>This info is now all stored in the <code class="highlighter-rouge">new_question</code> object and can be called at any time, and if we really wanted to we could run the <code class="highlighter-rouge">.createArray</code> and <code class="highlighter-rouge">.chooseComparison</code> instance methods on it again to make it into a new question. This would get tedious though so let’s create a new method that does this for us, and then let’s bring it together by putting it into a string just like before:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">createQuestion</span>
+</code></pre></div></div>
+<p>This info is now all stored in the <code class="language-plaintext highlighter-rouge">new_question</code> object and can be called at any time, and if we really wanted to we could run the <code class="language-plaintext highlighter-rouge">.createArray</code> and <code class="language-plaintext highlighter-rouge">.chooseComparison</code> instance methods on it again to make it into a new question. This would get tedious though so let’s create a new method that does this for us, and then let’s bring it together by putting it into a string just like before:</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">createQuestion</span>
   <span class="n">createArray</span><span class="p">;</span> <span class="n">chooseComparison</span>
   <span class="vi">@question</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="vi">@comparison_selection</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-<p>Now we can just use <code class="highlighter-rouge">new_question.createQuestion</code> and it’ll do the above for us. You can see that using object oriented code makes it incredibly easy to add methods to our class and have them be accessible from the start.</p>
+</code></pre></div></div>
+<p>Now we can just use <code class="language-plaintext highlighter-rouge">new_question.createQuestion</code> and it’ll do the above for us. You can see that using object oriented code makes it incredibly easy to add methods to our class and have them be accessible from the start.</p>
 
 <h1 id="creating-answers">Creating Answers</h1>
 <hr />
-<p>Even though I have the framework for creating a question, I need to make sure there are multiple answers. This is where we’re going to REALLY step it up. Our code which has 1,152 possibilities. We can use the prior <code class="highlighter-rouge">eval(string)</code> trick to create an answer, so let’s also add that to our prior code:</p>
+<p>Even though I have the framework for creating a question, I need to make sure there are multiple answers. This is where we’re going to REALLY step it up. Our code which has 1,152 possibilities. We can use the prior <code class="language-plaintext highlighter-rouge">eval(string)</code> trick to create an answer, so let’s also add that to our prior code:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
 
-  <span class="kp">attr_accessor</span> <span class="ss">:method</span>
-  <span class="kp">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:method</span>
+  <span class="nb">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span>
 
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">method</span><span class="p">)</span>
     <span class="vi">@method</span> <span class="o">=</span> <span class="nb">method</span>
@@ -288,7 +284,7 @@
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">createArray</span>
-    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="vi">@array</span>
     <span class="vi">@array_selection</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">sample</span>
@@ -318,65 +314,58 @@
 <span class="c1">#    @question="[9, 8, 7, 6, 5, 4].select { |x| x &gt;= 6 }"&gt;</span>
 
 <span class="n">question</span><span class="p">.</span><span class="nf">createAnswer</span> <span class="c1">#=&gt; @answer=[9, 8, 7, 6]</span>
-</code></pre>
-</div>
-<p>Our object now has a question and answer, and notice I have still have them as <code class="highlighter-rouge">attr_reader</code> not <code class="highlighter-rouge">attr_accessor</code> as I don’t want them to be able to be manually changed, only read.</p>
+</code></pre></div></div>
+<p>Our object now has a question and answer, and notice I have still have them as <code class="language-plaintext highlighter-rouge">attr_reader</code> not <code class="language-plaintext highlighter-rouge">attr_accessor</code> as I don’t want them to be able to be manually changed, only read.</p>
 
 <p>We also need to prepare for needing a wrong answer for true/false or 3 wrong answers for multiple choice.</p>
 
-<p>Let’s tackle how we can get four answers for multiple choice, and two answers for true/false (I’ll explain why in a bit). Since we need 4 answers for multiple choice, I looked at what also had 4 things to choose from: our comparisons. Since we selected one with <code class="highlighter-rouge">@comparison_selection</code> why not use the others to generate wrong answers?</p>
+<p>Let’s tackle how we can get four answers for multiple choice, and two answers for true/false (I’ll explain why in a bit). Since we need 4 answers for multiple choice, I looked at what also had 4 things to choose from: our comparisons. Since we selected one with <code class="language-plaintext highlighter-rouge">@comparison_selection</code> why not use the others to generate wrong answers?</p>
 
-<p>If I made a <code class="highlighter-rouge">@mc_answers</code> array to call on, I could populate it by iterating over the <code class="highlighter-rouge">@comparisons</code> array and push each answer into it, then shuffle up the choices to give us one of 24 combinations. Basically:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>  <span class="vi">@choices</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x &lt; </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span>
+<p>If I made a <code class="language-plaintext highlighter-rouge">@mc_answers</code> array to call on, I could populate it by iterating over the <code class="language-plaintext highlighter-rouge">@comparisons</code> array and push each answer into it, then shuffle up the choices to give us one of 24 combinations. Basically:</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="vi">@choices</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x &lt; </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span>
   <span class="vi">@choices</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x &gt; </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span>
   <span class="vi">@choices</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x &gt;= </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span>
   <span class="vi">@choices</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x &lt;= </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span>
   <span class="vi">@choices</span><span class="p">.</span><span class="nf">shuffle!</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 <p>Or more simply:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vi">@mc_answers</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@mc_answers</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="vi">@comparisons</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span>
     <span class="vi">@mc_answers</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span>
 <span class="k">end</span>
 <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">shuffle!</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And we can make this even shorter by doing:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vi">@mc_answers</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@mc_answers</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="vi">@comparisons</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span> <span class="vi">@mc_answers</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span> <span class="p">}</span>
 <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">shuffle!</span>
-</code></pre>
-</div>
-<p>And even shorter by using <code class="highlighter-rouge">.map</code>:</p>
+</code></pre></div></div>
+<p>And even shorter by using <code class="language-plaintext highlighter-rouge">.map</code>:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vi">@mc_answers</span> <span class="o">=</span> <span class="vi">@comparisons</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span> <span class="p">}</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@mc_answers</span> <span class="o">=</span> <span class="vi">@comparisons</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span> <span class="p">}</span>
 <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">shuffle!</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>While we’re working our the comparisons, let’s redo our <code class="highlighter-rouge">chooseComparison</code> method. Right now it just picks a random comparison using <code class="highlighter-rouge">@comparison.sample</code>, but we need to think about how we’ll do true/false. It’d be useless if we only gave users a right answer every time as they’d just click true and move on, so we’ll also need to give them a wrong answer as well half of the time. If we simply choose a second comparison we’d require a check to make sure it’s not the same random sample as before (like using <code class="highlighter-rouge">.include?</code>) but that would add more lines of code and make it messier. Instead we can simply choose the first comparison as the correct one and the second one as the wrong one! We’ll also shuffle our comparisons first to make sure it’s not the same every time.</p>
+<p>While we’re working our the comparisons, let’s redo our <code class="language-plaintext highlighter-rouge">chooseComparison</code> method. Right now it just picks a random comparison using <code class="language-plaintext highlighter-rouge">@comparison.sample</code>, but we need to think about how we’ll do true/false. It’d be useless if we only gave users a right answer every time as they’d just click true and move on, so we’ll also need to give them a wrong answer as well half of the time. If we simply choose a second comparison we’d require a check to make sure it’s not the same random sample as before (like using <code class="language-plaintext highlighter-rouge">.include?</code>) but that would add more lines of code and make it messier. Instead we can simply choose the first comparison as the correct one and the second one as the wrong one! We’ll also shuffle our comparisons first to make sure it’s not the same every time.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">chooseComparison</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">chooseComparison</span>
     <span class="vi">@comparison_selection</span> <span class="o">=</span> <span class="vi">@comparisons</span><span class="p">.</span><span class="nf">shuffle!</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># select correct comparison</span>
     <span class="vi">@comparison_rejection</span> <span class="o">=</span> <span class="vi">@comparisons</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>          <span class="c1"># select wrong comparison</span>
 <span class="k">end</span>
-</code></pre>
-</div>
-<p>Yes I’m being cheeky here and using the method names <code class="highlighter-rouge">select</code> and <code class="highlighter-rouge">reject</code> as my naming scheme instead of right/wrong. Now that we have a <code class="highlighter-rouge">@comparison_rejection</code> we can use that to make a false answer:</p>
+</code></pre></div></div>
+<p>Yes I’m being cheeky here and using the method names <code class="language-plaintext highlighter-rouge">select</code> and <code class="language-plaintext highlighter-rouge">reject</code> as my naming scheme instead of right/wrong. Now that we have a <code class="language-plaintext highlighter-rouge">@comparison_rejection</code> we can use that to make a false answer:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vi">@false_answer</span> <span class="o">=</span> <span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="vi">@comparison_rejection</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@false_answer</span> <span class="o">=</span> <span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="vi">@comparison_rejection</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span>
+</code></pre></div></div>
 
-<p>We’ll organize it by adding id to our <code class="highlighter-rouge">createAnswer</code> instance method. I’m also going to make a method called <code class="highlighter-rouge">generateQuestion</code> which will run these methods for us. With that, how does our code look now put together?</p>
+<p>We’ll organize it by adding id to our <code class="language-plaintext highlighter-rouge">createAnswer</code> instance method. I’m also going to make a method called <code class="language-plaintext highlighter-rouge">generateQuestion</code> which will run these methods for us. With that, how does our code look now put together?</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
 
-  <span class="kp">attr_accessor</span> <span class="ss">:method</span>
-  <span class="kp">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:comparison_rejection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:method</span>
+  <span class="nb">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:comparison_rejection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span>
 
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">method</span><span class="p">)</span>
     <span class="vi">@method</span> <span class="o">=</span> <span class="nb">method</span>
@@ -384,7 +373,7 @@
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">createArray</span>
-    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="vi">@array</span>
     <span class="vi">@array_selection</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">sample</span>
@@ -420,14 +409,13 @@
 <span class="c1">#   @question="[1, 2, 3, 4, 5, 6].select { |x| x &gt; 3 }",</span>
 <span class="c1">#   @answer=[4, 5, 6], @comparison_rejection="&gt;", @wrong_answer=[4, 5, 6],</span>
 <span class="c1">#   @mc_answers=[[3, 4, 5, 6], [4, 5, 6], [1, 2, 3], [1, 2]]&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<h1 id="find-and-detect"><code class="highlighter-rouge">.find</code> and <code class="highlighter-rouge">.detect</code></h1>
+<h1 id="find-and-detect"><code class="language-plaintext highlighter-rouge">.find</code> and <code class="language-plaintext highlighter-rouge">.detect</code></h1>
 <hr />
-<p>Now we have a LOT of information stored in our question object, and this works great for select/reject, however there’s a problem if we try to use <code class="highlighter-rouge">.find</code> or <code class="highlighter-rouge">.detect</code> (which by the way are the same thing), and another major problem if we try to use <code class="highlighter-rouge">.keep_if</code> or <code class="highlighter-rouge">.delete_if</code>. Here’s a problem that will happen with the former:</p>
+<p>Now we have a LOT of information stored in our question object, and this works great for select/reject, however there’s a problem if we try to use <code class="language-plaintext highlighter-rouge">.find</code> or <code class="language-plaintext highlighter-rouge">.detect</code> (which by the way are the same thing), and another major problem if we try to use <code class="language-plaintext highlighter-rouge">.keep_if</code> or <code class="language-plaintext highlighter-rouge">.delete_if</code>. Here’s a problem that will happen with the former:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">question</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"find"</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">question</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"find"</span><span class="p">)</span>
 <span class="n">question</span><span class="p">.</span><span class="nf">generateQuestion</span>
 <span class="c1">#=&gt; &lt;Question:0x007f9ddd8f5778 @method="find", @array=[2, 3, 4, 5, 6, 7],</span>
 <span class="c1">#   @comparisons=["&lt;", "&gt;", "&gt;=", "&lt;="],</span>
@@ -435,28 +423,25 @@
 <span class="c1">#   @question="[2, 3, 4, 5, 6, 7].find { |x| x &lt;= 4 }",</span>
 <span class="c1">#   @answer=2, @comparison_rejection="&gt;", @wrong_answer=5,</span>
 <span class="c1">#   @mc_answers=[2, 5, 4, 2]&gt;</span>
-</code></pre>
-</div>
-<p>See the issue? Look at the <code class="highlighter-rouge">@mc_answers</code>. Here’s the issue we tried to avoid before when we were talking about comparison selection: we have two answers that are the same. Why? <code class="highlighter-rouge">.find</code> and <code class="highlighter-rouge">.detect</code> will find the first number that’s valid, so going through all the comparisons:</p>
+</code></pre></div></div>
+<p>See the issue? Look at the <code class="language-plaintext highlighter-rouge">@mc_answers</code>. Here’s the issue we tried to avoid before when we were talking about comparison selection: we have two answers that are the same. Why? <code class="language-plaintext highlighter-rouge">.find</code> and <code class="language-plaintext highlighter-rouge">.detect</code> will find the first number that’s valid, so going through all the comparisons:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="s2">"&lt;"</span><span class="p">,</span> <span class="s2">"&gt;"</span><span class="p">,</span> <span class="s2">"&gt;="</span><span class="p">,</span> <span class="s2">"&lt;="</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="s2">"&lt;"</span><span class="p">,</span> <span class="s2">"&gt;"</span><span class="p">,</span> <span class="s2">"&gt;="</span><span class="p">,</span> <span class="s2">"&lt;="</span><span class="p">]</span>
 <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">].</span><span class="nf">find</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="p">}</span> <span class="c1">#=&gt; 2</span>
 <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">].</span><span class="nf">find</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">4</span> <span class="p">}</span> <span class="c1">#=&gt; 5</span>
 <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">].</span><span class="nf">find</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">4</span> <span class="p">}</span> <span class="c1">#=&gt; 4</span>
 <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">].</span><span class="nf">find</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">4</span> <span class="p">}</span> <span class="c1">#=&gt; 2</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>No matter what array or selection we’ll always get duplicate answers. The fix is a simple one, and it goes back to what we wanted to avoid: validation. There’s a few ways to do this but I’ll use <code class="highlighter-rouge">delete</code>. Basically, I want to run this if there’s only 3 unique answers and I want that 4th one to also be unique. Since <code class="highlighter-rouge">find</code>/<code class="highlighter-rouge">detect</code> finds a single number and then <code class="highlighter-rouge">nil</code> in specific cases like:</p>
+<p>No matter what array or selection we’ll always get duplicate answers. The fix is a simple one, and it goes back to what we wanted to avoid: validation. There’s a few ways to do this but I’ll use <code class="language-plaintext highlighter-rouge">delete</code>. Basically, I want to run this if there’s only 3 unique answers and I want that 4th one to also be unique. Since <code class="language-plaintext highlighter-rouge">find</code>/<code class="language-plaintext highlighter-rouge">detect</code> finds a single number and then <code class="language-plaintext highlighter-rouge">nil</code> in specific cases like:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">].</span><span class="nf">find</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="p">}</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">].</span><span class="nf">find</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">7</span> <span class="p">}</span>
 <span class="c1"># no numbers are greater than 7, so it will return nil</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>We will need to create a dummy array starting with <code class="highlighter-rouge">nil</code> and then the normal array. After that we’ll choose one of them at random that isn’t a number we have already:</p>
+<p>We will need to create a dummy array starting with <code class="language-plaintext highlighter-rouge">nil</code> and then the normal array. After that we’ll choose one of them at random that isn’t a number we have already:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># check if there are only three unique answers</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># check if there are only three unique answers</span>
 <span class="k">if</span> <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">uniq</span><span class="p">.</span><span class="nf">size</span> <span class="o">==</span> <span class="mi">3</span>
   <span class="c1"># create a dummy array that duplicates the array, start with nil, then shuffle it</span>
   <span class="vi">@dummy_array</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">dup</span><span class="p">.</span><span class="nf">unshift</span><span class="p">(</span><span class="kp">nil</span><span class="p">).</span><span class="nf">shuffle</span>
@@ -467,12 +452,11 @@
   <span class="c1"># shuffle them around so the wrong answer isn't always at the end</span>
   <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">shuffle!</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Great we have 4 answers again! If you’re wondering, I can also use <code class="highlighter-rouge">.include?</code> here:</p>
+<p>Great we have 4 answers again! If you’re wondering, I can also use <code class="language-plaintext highlighter-rouge">.include?</code> here:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">uniq</span><span class="p">.</span><span class="nf">size</span> <span class="o">==</span> <span class="mi">3</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">uniq</span><span class="p">.</span><span class="nf">size</span> <span class="o">==</span> <span class="mi">3</span>
   <span class="c1"># create a dummy array that duplicates the array, start with nil, then shuffle it</span>
   <span class="vi">@dummy_array</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">dup</span><span class="p">.</span><span class="nf">unshift</span><span class="p">(</span><span class="kp">nil</span><span class="p">).</span><span class="nf">shuffle</span>
   <span class="c1"># go through each element in the dummy array</span>
@@ -486,32 +470,30 @@
   <span class="c1"># shuffle them around so the wrong answer isn't always at the end</span>
   <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">shuffle!</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>But not only is <code class="highlighter-rouge">.delete</code> cleaner, I’ll also be able to modify it easier to work with other possible duplicate answers down the line rather than just single numbers. I’m going to do one more thing here and that’s using <code class="highlighter-rouge">.uniq</code> when we populate our <code class="highlighter-rouge">@mc_answers</code> so it’s permanent and we don’t need to call it twice afterward:</p>
+<p>But not only is <code class="language-plaintext highlighter-rouge">.delete</code> cleaner, I’ll also be able to modify it easier to work with other possible duplicate answers down the line rather than just single numbers. I’m going to do one more thing here and that’s using <code class="language-plaintext highlighter-rouge">.uniq</code> when we populate our <code class="language-plaintext highlighter-rouge">@mc_answers</code> so it’s permanent and we don’t need to call it twice afterward:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vi">@mc_answers</span> <span class="o">=</span> <span class="vi">@comparisons</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span> <span class="p">}.</span><span class="nf">uniq</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@mc_answers</span> <span class="o">=</span> <span class="vi">@comparisons</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span> <span class="p">}.</span><span class="nf">uniq</span>
 <span class="c1"># this lets us simply say</span>
 <span class="k">if</span> <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">size</span> <span class="o">==</span> <span class="mi">3</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>We still have one more problem though, and that’s our <code class="highlighter-rouge">@comparison_rejection</code> which has a 1 in 3 chance to choose a rejected comparison with the same answer. So, let’s remove that entirely and choose a wrong answer from our <code class="highlighter-rouge">@mc_answers</code>! I was originally going to say to take it from our dummy array since:</p>
+<p>We still have one more problem though, and that’s our <code class="language-plaintext highlighter-rouge">@comparison_rejection</code> which has a 1 in 3 chance to choose a rejected comparison with the same answer. So, let’s remove that entirely and choose a wrong answer from our <code class="language-plaintext highlighter-rouge">@mc_answers</code>! I was originally going to say to take it from our dummy array since:</p>
 
 <p>1) all answers were shuffled
 2) all answers are wrong
-3) we can just choose the first one as the wrong answer by doing <code class="highlighter-rouge">@wrong_answer = @dummy_array[0]</code>.</p>
+3) we can just choose the first one as the wrong answer by doing <code class="language-plaintext highlighter-rouge">@wrong_answer = @dummy_array[0]</code>.</p>
 
 <p>HOWEVER, if we want this to work for all methods let’s think of it this way:</p>
 
-<p>1) we can’t do the above because our <code class="highlighter-rouge">@dummy_array</code> has single numbers, doesn’t work for <code class="highlighter-rouge">.select</code>/<code class="highlighter-rouge">.reject</code>
+<p>1) we can’t do the above because our <code class="language-plaintext highlighter-rouge">@dummy_array</code> has single numbers, doesn’t work for <code class="language-plaintext highlighter-rouge">.select</code>/<code class="language-plaintext highlighter-rouge">.reject</code>
 2) we already did the hard work of making three wrong answers so:
-3) we can modify our previous <code class="highlighter-rouge">createAnswers</code> method and pick the first wrong one we populate</p>
+3) we can modify our previous <code class="language-plaintext highlighter-rouge">createAnswers</code> method and pick the first wrong one we populate</p>
 
-<p>Let’s do that modifying. It looks like this with our <code class="highlighter-rouge">@dummy_array</code> script:</p>
+<p>Let’s do that modifying. It looks like this with our <code class="language-plaintext highlighter-rouge">@dummy_array</code> script:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">createAnswers</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">createAnswers</span>
   <span class="vi">@answer</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="vi">@question</span><span class="p">)</span>
   <span class="vi">@wrong_answer</span> <span class="o">=</span> <span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="vi">@comparison_rejection</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span>
   <span class="vi">@mc_answers</span> <span class="o">=</span> <span class="vi">@comparisons</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span> <span class="p">}.</span><span class="nf">uniq</span>
@@ -522,12 +504,11 @@
   <span class="k">end</span>
   <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">shuffle!</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Since the first comparison is always correct and answers 2-4 added after it are always wrong, let’s set our <code class="highlighter-rouge">@wrong_answer</code> to be the second one, THEN we’ll shuffle them:</p>
+<p>Since the first comparison is always correct and answers 2-4 added after it are always wrong, let’s set our <code class="language-plaintext highlighter-rouge">@wrong_answer</code> to be the second one, THEN we’ll shuffle them:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">createAnswers</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">createAnswers</span>
   <span class="vi">@answer</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="vi">@question</span><span class="p">)</span>
   <span class="c1"># remove the old @wrong_answer</span>
   <span class="c1"># @wrong_answer = eval "#{@array}.#{@method} { |x| x #{@comparison_rejection} #{@array_selection} }"</span>
@@ -541,15 +522,14 @@
   <span class="vi">@wrong_answer</span> <span class="o">=</span> <span class="vi">@mc_answers</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
   <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">shuffle!</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>We can now entirely get rid of the <code class="highlighter-rouge">@comparison_rejection</code>! So with all that done let’s see what we have:</p>
+<p>We can now entirely get rid of the <code class="language-plaintext highlighter-rouge">@comparison_rejection</code>! So with all that done let’s see what we have:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
 
-  <span class="kp">attr_accessor</span> <span class="ss">:method</span>
-  <span class="kp">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span><span class="p">,</span> <span class="ss">:dummy_array</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:method</span>
+  <span class="nb">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span><span class="p">,</span> <span class="ss">:dummy_array</span>
 
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">method</span><span class="p">)</span>
     <span class="vi">@method</span> <span class="o">=</span> <span class="nb">method</span>
@@ -557,7 +537,7 @@
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">createArray</span>
-    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="vi">@array</span>
     <span class="vi">@array_selection</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">sample</span>
@@ -588,15 +568,14 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Our <code class="highlighter-rouge">createAnswers</code> method is messy though, so let’s split it up by removing that check for four answers answers:</p>
+<p>Our <code class="language-plaintext highlighter-rouge">createAnswers</code> method is messy though, so let’s split it up by removing that check for four answers answers:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
 
-  <span class="kp">attr_accessor</span> <span class="ss">:method</span>
-  <span class="kp">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span><span class="p">,</span> <span class="ss">:dummy_array</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:method</span>
+  <span class="nb">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span><span class="p">,</span> <span class="ss">:dummy_array</span>
 
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">method</span><span class="p">)</span>
     <span class="vi">@method</span> <span class="o">=</span> <span class="nb">method</span>
@@ -604,7 +583,7 @@
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">createArray</span>
-    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="vi">@array</span>
     <span class="vi">@array_selection</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">sample</span>
@@ -654,10 +633,9 @@
 <span class="c1">#   @array=[7, 6, 5, 4, 3, 2], @array_selection=2, @comparison_selection="&gt;",</span>
 <span class="c1">#   @question="[7, 6, 5, 4, 3, 2].detect { |x| x &gt; 2 }", @answer=7,</span>
 <span class="c1">#   @mc_answers=[nil, 7, 2, 3], @wrong_answer=2, @dummy_array=[3, 4, 6, 5]&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Great it works for both questions now! We have our initialize and generating methods, and 5 fairly short instance methods they work off of. You may be wondering why I went through the whole <code class="highlighter-rouge">@comparison_rejection</code> part before removing it, well that’s what happens when you start writing a program; sometimes the ideas you start off with will change as you write your program, so I wanted to show some insight into the process and why things had to change.</p>
+<p>Great it works for both questions now! We have our initialize and generating methods, and 5 fairly short instance methods they work off of. You may be wondering why I went through the whole <code class="language-plaintext highlighter-rouge">@comparison_rejection</code> part before removing it, well that’s what happens when you start writing a program; sometimes the ideas you start off with will change as you write your program, so I wanted to show some insight into the process and why things had to change.</p>
 
 <p>By the way, now that we can either do true or false (two possibilities), our multiple choice answers can be shuffled into 1 of 24 configurations, or we can ask them to enter the right answer, those 27 ways of asking a question brings up all the way up to:</p>
 
@@ -666,11 +644,11 @@
 <p>Work in Progress is below, I will update this over the next few days.
 ***</p>
 
-<h1 id="keep_if-and-delete_if"><code class="highlighter-rouge">.keep_if</code> and <code class="highlighter-rouge">.delete_if</code></h1>
+<h1 id="keep_if-and-delete_if"><code class="language-plaintext highlighter-rouge">.keep_if</code> and <code class="language-plaintext highlighter-rouge">.delete_if</code></h1>
 <hr />
 
-<p>Lastly in this post we’ll cover the latter two problem methods mentioned before. These are the exact same things as <code class="highlighter-rouge">.select</code>/<code class="highlighter-rouge">.reject</code> respectively, however they’re <strong>destructive methods</strong>, meaning that after we call them, they’ll permanently alter the array, not just the output. So before all the edits above to make <code class="highlighter-rouge">.find</code> and <code class="highlighter-rouge">.detect</code> work, if we ran our program we’d get:</p>
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">question_keep</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"keep_if"</span><span class="p">)</span>
+<p>Lastly in this post we’ll cover the latter two problem methods mentioned before. These are the exact same things as <code class="language-plaintext highlighter-rouge">.select</code>/<code class="language-plaintext highlighter-rouge">.reject</code> respectively, however they’re <strong>destructive methods</strong>, meaning that after we call them, they’ll permanently alter the array, not just the output. So before all the edits above to make <code class="language-plaintext highlighter-rouge">.find</code> and <code class="language-plaintext highlighter-rouge">.detect</code> work, if we ran our program we’d get:</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">question_keep</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"keep_if"</span><span class="p">)</span>
 <span class="n">question_keep</span><span class="p">.</span><span class="nf">generateQuestion</span>
 <span class="c1">#=&gt; &lt;Question:0x007f9dde01e400 @method="keep_if", @array=[],</span>
 <span class="c1">#   @comparisons=["&lt;", "&gt;", "&gt;=", "&lt;="],</span>
@@ -678,49 +656,44 @@
 <span class="c1">#   @question="[9, 8, 7, 6, 5, 4].keep_if { |x| x &lt;= 8 }",</span>
 <span class="c1">#   @answer=[8, 7, 6, 5, 4], @comparison_rejection="&gt;",</span>
 <span class="c1">#   @mc_answers=[[], [], [], []],  @wrong_answer=[]&gt;</span>
-</code></pre>
-</div>
-<p>Even though we got our correct answer, you’ll notice that there’s nothing in our <code class="highlighter-rouge">@mc_answers</code> or <code class="highlighter-rouge">@wrong_answer</code> because whenever we run the destructive method, the array we try to call it on has already been changed once before by that same method. If you look at the <code class="highlighter-rouge">@array</code>, there’s nothing there! We started off with <code class="highlighter-rouge">@question="[9, 8, 7, 6, 5, 4].keep_if { |x| x &lt;= 8 }"</code>, which shows an array of <code class="highlighter-rouge">[9, 8, 7, 6, 5, 4]</code>, however running <code class="highlighter-rouge">.keep_if</code> with say, <code class="highlighter-rouge">&gt;</code> and then <code class="highlighter-rouge">&lt;</code> would keep numbers greater than a selected_number, and then try to keep numbers less than a selected_number which don’t exist any more, leaving us with an empty array.</p>
+</code></pre></div></div>
+<p>Even though we got our correct answer, you’ll notice that there’s nothing in our <code class="language-plaintext highlighter-rouge">@mc_answers</code> or <code class="language-plaintext highlighter-rouge">@wrong_answer</code> because whenever we run the destructive method, the array we try to call it on has already been changed once before by that same method. If you look at the <code class="language-plaintext highlighter-rouge">@array</code>, there’s nothing there! We started off with <code class="language-plaintext highlighter-rouge">@question="[9, 8, 7, 6, 5, 4].keep_if { |x| x &lt;= 8 }"</code>, which shows an array of <code class="language-plaintext highlighter-rouge">[9, 8, 7, 6, 5, 4]</code>, however running <code class="language-plaintext highlighter-rouge">.keep_if</code> with say, <code class="language-plaintext highlighter-rouge">&gt;</code> and then <code class="language-plaintext highlighter-rouge">&lt;</code> would keep numbers greater than a selected_number, and then try to keep numbers less than a selected_number which don’t exist any more, leaving us with an empty array.</p>
 
-<p>HOWEVER, in writing this blog post I changed things around for our <code class="highlighter-rouge">.find</code> and <code class="highlighter-rouge">.detect</code> methods, and now if we ran our program we’ll get:</p>
+<p>HOWEVER, in writing this blog post I changed things around for our <code class="language-plaintext highlighter-rouge">.find</code> and <code class="language-plaintext highlighter-rouge">.detect</code> methods, and now if we ran our program we’ll get:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">question_keep</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"keep_if"</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">question_keep</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"keep_if"</span><span class="p">)</span>
 <span class="n">question_keep</span><span class="p">.</span><span class="nf">generateQuestion</span>
 <span class="c1">#=&gt; &lt;Question:0x007f9dde15d348 @method="keep_if", @comparisons=["&lt;=", "&gt;", "&gt;=", "&lt;"],</span>
 <span class="c1">#   @array=[6, 5, 4, 3, 2, 1], @array_selection=1, @comparison_selection="&lt;=",</span>
 <span class="c1">#   @question="[6, 5, 4, 3, 2, 1].keep_if { |x| x &lt;= 1 }", @answer=[1],</span>
 <span class="c1">#   @mc_answers=[[6, 5, 4, 3, 2, 1], [6, 5, 4, 3, 2], [1], []],  @wrong_answer=[6, 5, 4, 3, 2]&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Which is the correct answers to everything. Why? Well I’m ashamed to say this took me a while to figure out, but it all has to do with this line:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="vi">@comparisons</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span> <span class="vi">@mc_answers</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span> <span class="p">}</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@comparisons</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">comparison</span><span class="o">|</span> <span class="vi">@mc_answers</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">eval</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="vi">@method</span><span class="si">}</span><span class="s2"> { |x| x </span><span class="si">#{</span><span class="n">comparison</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="vi">@array_selection</span><span class="si">}</span><span class="s2"> }"</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
 
-<p>Before we were evaluating directly against the original <code class="highlighter-rouge">@array</code>, meaning that the attribute itself would be changed each time. However what we’re doing instead now is turning <code class="highlighter-rouge">@array</code> into a string, then just running that string each time. What do I mean by that?</p>
+<p>Before we were evaluating directly against the original <code class="language-plaintext highlighter-rouge">@array</code>, meaning that the attribute itself would be changed each time. However what we’re doing instead now is turning <code class="language-plaintext highlighter-rouge">@array</code> into a string, then just running that string each time. What do I mean by that?</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># old way:</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># old way:</span>
 <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 <span class="n">answer</span> <span class="o">=</span> <span class="n">array</span><span class="p">.</span><span class="nf">keep_if</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="p">}</span>
 
 <span class="n">answer</span> <span class="c1">#=&gt; [4, 5, 6]</span>
 <span class="n">array</span> <span class="c1">#=&gt; [4, 5, 6]</span>
-</code></pre>
-</div>
-<p>We got our answer, BUT the original array has changed as a result of the destructive <code class="highlighter-rouge">.keep_if</code> method.</p>
+</code></pre></div></div>
+<p>We got our answer, BUT the original array has changed as a result of the destructive <code class="language-plaintext highlighter-rouge">.keep_if</code> method.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># new way</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># new way</span>
 <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 <span class="n">answer</span> <span class="o">=</span> <span class="nb">eval</span> <span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="n">array</span><span class="si">}</span><span class="s2">.keep_if { |x| x &gt; 3 }"</span><span class="p">)</span>
 
 <span class="n">answer</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5, 6]</span>
 <span class="n">array</span> <span class="c1">#=&gt; [4, 5, 6]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>We first turn the array (and the rest of the script) into a string of <code class="highlighter-rouge">"[1, 2, 3, 4, 5, 6].keep_if { |x| x &gt; 3 }"</code> and then evaluate that string using <code class="highlighter-rouge">eval</code> as if it were real. We never actually call the method on the <code class="highlighter-rouge">array</code> directly, that way we can create as many strings as we need and never have to change our attributes.</p>
+<p>We first turn the array (and the rest of the script) into a string of <code class="language-plaintext highlighter-rouge">"[1, 2, 3, 4, 5, 6].keep_if { |x| x &gt; 3 }"</code> and then evaluate that string using <code class="language-plaintext highlighter-rouge">eval</code> as if it were real. We never actually call the method on the <code class="language-plaintext highlighter-rouge">array</code> directly, that way we can create as many strings as we need and never have to change our attributes.</p>
 
 <hr />
 
@@ -740,26 +713,6 @@
 
 </article>
 
-    </div>
-
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-          
-<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
-
-
-<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
-
-<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
-
-
-<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
-
-
-
-        </footer>
-      </div>
     </div>
 
     

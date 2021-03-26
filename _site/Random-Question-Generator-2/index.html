@@ -25,6 +25,7 @@
     <meta property="twitter:title" content="Anatomy of a Dynamically Generated Quiz Part 2" />
     
 
+
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -42,15 +43,23 @@
           <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
 
           <div class="site-info">
-            <h1 class="site-name"><a href="/">Learning Code with Mike Merin</a></h1>
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
             <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
           </div>
 
-          <nav>
-            
-            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
-            <a href="/about">About</a>
-          </nav>
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
         </header>
       </div>
     </div>
@@ -86,16 +95,16 @@
       <li>Enter the Right Answer: 1 way</li>
     </ul>
   </li>
-  <li><code class="highlighter-rouge">.select</code>, <code class="highlighter-rouge">.reject</code>, <code class="highlighter-rouge">.find</code>, <code class="highlighter-rouge">.detect</code>, <code class="highlighter-rouge">.keep_if</code>, <code class="highlighter-rouge">delete_if</code>: 192 configurations each</li>
+  <li><code class="language-plaintext highlighter-rouge">.select</code>, <code class="language-plaintext highlighter-rouge">.reject</code>, <code class="language-plaintext highlighter-rouge">.find</code>, <code class="language-plaintext highlighter-rouge">.detect</code>, <code class="language-plaintext highlighter-rouge">.keep_if</code>, <code class="language-plaintext highlighter-rouge">delete_if</code>: 192 configurations each</li>
   <li>6 * 192 * 27 = 31,104</li>
 </ul>
 
 <p>Our code currently looks like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
 
-  <span class="kp">attr_accessor</span> <span class="ss">:method</span>
-  <span class="kp">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span><span class="p">,</span> <span class="ss">:dummy_array</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:method</span>
+  <span class="nb">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span><span class="p">,</span> <span class="ss">:dummy_array</span>
 
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">method</span><span class="p">)</span>
     <span class="vi">@method</span> <span class="o">=</span> <span class="nb">method</span>
@@ -103,7 +112,7 @@
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">createArray</span>
-    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="vi">@array</span>
     <span class="vi">@array_selection</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">sample</span>
@@ -138,12 +147,11 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Which can be called like this and then contain the following information:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">q</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"select"</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">q</span> <span class="o">=</span> <span class="no">Question</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"select"</span><span class="p">)</span>
 <span class="n">q</span><span class="p">.</span><span class="nf">generateQuestion</span>
 <span class="n">q</span>
 <span class="c1">#=&gt; &lt;Question:0x007f9ddd97f680 @method="select", @comparisons=["&gt;", "&lt;=", "&gt;=", "&lt;"],</span>
@@ -157,18 +165,17 @@
 <span class="c1">#   @array=[7, 6, 5, 4, 3, 2], @array_selection=2, @comparison_selection="&gt;",</span>
 <span class="c1">#   @question="[7, 6, 5, 4, 3, 2].detect { |x| x &gt; 2 }", @answer=7,</span>
 <span class="c1">#   @mc_answers=[nil, 7, 2, 3], @wrong_answer=2, @dummy_array=[3, 4, 6, 5]&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>When I made this generator originally, I had each method as its own class that inherited the <code class="highlighter-rouge">Question</code> class so it didn’t get messy. We have gone as far as we can using the above <code class="highlighter-rouge">Question</code> class because the next 5 methods: pop, shift, push, unshift, and insert, do not use comparisons. Therefore we’re going to start splitting apart our program.</p>
+<p>When I made this generator originally, I had each method as its own class that inherited the <code class="language-plaintext highlighter-rouge">Question</code> class so it didn’t get messy. We have gone as far as we can using the above <code class="language-plaintext highlighter-rouge">Question</code> class because the next 5 methods: pop, shift, push, unshift, and insert, do not use comparisons. Therefore we’re going to start splitting apart our program.</p>
 
 <h1 id="quick-refactoring-and-class-inheritence">Quick refactoring and class inheritence</h1>
 <hr />
 <p>Class inheritence just means that if I have a class, I can inherit things from another one. Here’s an example:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Animal</span>
 
-  <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:breed</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:breed</span>
 
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">breed</span><span class="p">)</span>
     <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
@@ -180,12 +187,11 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>The <code class="highlighter-rouge">Animal</code> class initializes with a name and a breed, nothing else. I can inherit these properties and then make my own after:</p>
+<p>The <code class="language-plaintext highlighter-rouge">Animal</code> class initializes with a name and a breed, nothing else. I can inherit these properties and then make my own after:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">Animal</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Dog</span> <span class="o">&lt;</span> <span class="no">Animal</span>
 
   <span class="k">def</span> <span class="nf">bark</span>
     <span class="nb">puts</span> <span class="s2">"Woof!"</span>
@@ -200,12 +206,11 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Here’s how the information is shared between them:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">animal</span> <span class="o">=</span> <span class="no">Animal</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Mike"</span><span class="p">,</span> <span class="s2">"Human"</span><span class="p">)</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">animal</span> <span class="o">=</span> <span class="no">Animal</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Mike"</span><span class="p">,</span> <span class="s2">"Human"</span><span class="p">)</span>
 <span class="c1">#=&gt; &lt;Animal:0x007fe4c006d220 @name="animal", @breed="general"&gt;</span>
 <span class="n">a</span><span class="p">.</span><span class="nf">snore</span> <span class="c1">#=&gt; zzzzz</span>
 <span class="n">a</span><span class="p">.</span><span class="nf">bark</span> <span class="c1">#=&gt; NoMethodError: undefined method `bark'</span>
@@ -222,15 +227,14 @@
 <span class="n">a</span><span class="p">.</span><span class="nf">snore</span> <span class="c1">#=&gt; zzzzz</span>
 <span class="n">a</span><span class="p">.</span><span class="nf">bark</span> <span class="c1">#=&gt; NoMethodError: undefined method `bark'</span>
 <span class="n">a</span><span class="p">.</span><span class="nf">purr</span> <span class="c1">#=&gt; Meow!</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As you can see, both the cat and dog inherit snoring, but only the dog can bark and only the cat can meow. We can use this to our advantage and only keep certain</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Question</span>
 
-  <span class="kp">attr_accessor</span> <span class="ss">:method</span>
-  <span class="kp">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span><span class="p">,</span> <span class="ss">:dummy_array</span>
+  <span class="nb">attr_accessor</span> <span class="ss">:method</span>
+  <span class="nb">attr_reader</span> <span class="ss">:array</span><span class="p">,</span> <span class="ss">:array_selection</span><span class="p">,</span> <span class="ss">:comparison_selection</span><span class="p">,</span> <span class="ss">:question</span><span class="p">,</span> <span class="ss">:answer</span><span class="p">,</span> <span class="ss">:wrong_answer</span><span class="p">,</span> <span class="ss">:mc_answers</span><span class="p">,</span> <span class="ss">:dummy_array</span>
 
   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">method</span><span class="p">)</span>
     <span class="vi">@method</span> <span class="o">=</span> <span class="nb">method</span>
@@ -238,7 +242,7 @@
   <span class="k">end</span>
 
   <span class="k">def</span> <span class="nf">createArray</span>
-    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">random</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">random</span> <span class="p">}</span>
     <span class="vi">@array</span> <span class="o">=</span> <span class="p">[</span><span class="kp">true</span><span class="p">,</span><span class="kp">false</span><span class="p">].</span><span class="nf">sample</span> <span class="p">?</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">reverse</span> <span class="p">:</span> <span class="vi">@array</span>
     <span class="vi">@array_selection</span> <span class="o">=</span> <span class="vi">@array</span><span class="p">.</span><span class="nf">sample</span>
@@ -284,62 +288,57 @@
 <span class="c1">#   @array=[3, 4, 5, 6, 7, 8], @array_selection=3, @comparison_selection="&gt;",</span>
 <span class="c1">#   @question="[3, 4, 5, 6, 7, 8].reject { |x| x &gt; 3 }", @answer=[3],</span>
 <span class="c1">#   @mc_answers=[[3, 4, 5, 6, 7, 8], [], [3], [4, 5, 6, 7, 8]], @wrong_answer=[]&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>As you can see, <code class="highlighter-rouge">ComparisonQuestion</code> inherited everything in our <code class="highlighter-rouge">Question</code> class and does everything it does PLUS its own methods, so when we make that new question as a <code class="highlighter-rouge">ComparisonQuestion</code> class it works just like before! <code class="highlighter-rouge">Question</code> creates our array and handles the final order of question generating, but the <code class="highlighter-rouge">ComparisonQuestion</code> handles the actual question and answer creation along with checking for four answers. Let’s add the next 5 methods in a similar way.</p>
+<p>As you can see, <code class="language-plaintext highlighter-rouge">ComparisonQuestion</code> inherited everything in our <code class="language-plaintext highlighter-rouge">Question</code> class and does everything it does PLUS its own methods, so when we make that new question as a <code class="language-plaintext highlighter-rouge">ComparisonQuestion</code> class it works just like before! <code class="language-plaintext highlighter-rouge">Question</code> creates our array and handles the final order of question generating, but the <code class="language-plaintext highlighter-rouge">ComparisonQuestion</code> handles the actual question and answer creation along with checking for four answers. Let’s add the next 5 methods in a similar way.</p>
 
-<h1 id="pop-and-shift"><code class="highlighter-rouge">.pop</code> and <code class="highlighter-rouge">.shift</code></h1>
+<h1 id="pop-and-shift"><code class="language-plaintext highlighter-rouge">.pop</code> and <code class="language-plaintext highlighter-rouge">.shift</code></h1>
 <hr />
-<p>These two methods remove elements from an array, with <code class="highlighter-rouge">.pop</code> removing it from the end and <code class="highlighter-rouge">.shift</code> from the beginning. Also, using <code class="highlighter-rouge">.pop</code>/<code class="highlighter-rouge">.shift</code> will <em>return the removed element</em>, not the modified array. This means that for a single array we can give 4 answers like this:</p>
+<p>These two methods remove elements from an array, with <code class="language-plaintext highlighter-rouge">.pop</code> removing it from the end and <code class="language-plaintext highlighter-rouge">.shift</code> from the beginning. Also, using <code class="language-plaintext highlighter-rouge">.pop</code>/<code class="language-plaintext highlighter-rouge">.shift</code> will <em>return the removed element</em>, not the modified array. This means that for a single array we can give 4 answers like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 <span class="n">array</span><span class="p">.</span><span class="nf">pop</span> <span class="c1">#=&gt; 6 (returns the element popped off)</span>
 <span class="n">array</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5] (what the array looks like after)</span>
 
 <span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 <span class="n">array</span><span class="p">.</span><span class="nf">shift</span> <span class="c1">#=&gt; 1 (returns the element shifted off)</span>
 <span class="n">array</span> <span class="c1">#=&gt; [2, 3, 4, 5, 6] (what the array looks like after)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>It makes sense to generate a question that has all of these four answers with 1 right and 3 wrong. We need to first make our <code class="highlighter-rouge">createQuestion</code> method. We have two sets of items to randomly choose from:</p>
+<p>It makes sense to generate a question that has all of these four answers with 1 right and 3 wrong. We need to first make our <code class="language-plaintext highlighter-rouge">createQuestion</code> method. We have two sets of items to randomly choose from:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">pop_or_shift</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"pop"</span><span class="p">,</span> <span class="s2">"shift"</span><span class="p">].</span><span class="nf">sample</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pop_or_shift</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"pop"</span><span class="p">,</span> <span class="s2">"shift"</span><span class="p">].</span><span class="nf">sample</span>
 <span class="n">return_or_array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"return"</span><span class="p">,</span> <span class="s2">"array"</span><span class="p">].</span><span class="nf">sample</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Since we’re evaluating strings, and there’s no way to actually return a destructively changed array without physically recreating the array each time (which would be a pain), we’ll use a trick called <code class="highlighter-rouge">slice</code> to simply choose the first 5 elements in an array for <code class="highlighter-rouge">.pop</code> or the last 5 elements in an array for <code class="highlighter-rouge">.shift</code>. I can do this one of two ways:</p>
+<p>Since we’re evaluating strings, and there’s no way to actually return a destructively changed array without physically recreating the array each time (which would be a pain), we’ll use a trick called <code class="language-plaintext highlighter-rouge">slice</code> to simply choose the first 5 elements in an array for <code class="language-plaintext highlighter-rouge">.pop</code> or the last 5 elements in an array for <code class="language-plaintext highlighter-rouge">.shift</code>. I can do this one of two ways:</p>
 
 <p>slice(index, how_many_positions_out)
 or
 slice(range)</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 
 <span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]</span>
-<span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="nf">.</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 5]</span>
 
 <span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 6]</span>
-<span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="nf">.</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 6]</span>
-</code></pre>
-</div>
+<span class="n">array</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">5</span><span class="p">)</span> <span class="c1">#=&gt; [1, 2, 3, 4, 6]</span>
+</code></pre></div></div>
 
-<p>So let’s write out how we’d handle something like <code class="highlighter-rouge">[1, 2, 3, 4, 5, 6].pop #=&gt; ?</code>. Remember, here’s what methods we need to create and which attributes we need to create from them:</p>
+<p>So let’s write out how we’d handle something like <code class="language-plaintext highlighter-rouge">[1, 2, 3, 4, 5, 6].pop #=&gt; ?</code>. Remember, here’s what methods we need to create and which attributes we need to create from them:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">createQuestion</span> <span class="c1">#=&gt; @question</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">createQuestion</span> <span class="c1">#=&gt; @question</span>
 <span class="n">pop_or_shift</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"pop"</span><span class="p">,</span> <span class="s2">"shift"</span><span class="p">].</span><span class="nf">sample</span>
 
 <span class="k">def</span> <span class="nf">createQuestion</span>
   <span class="vi">@question</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="vi">@array</span><span class="si">}</span><span class="s2">.</span><span class="si">#{</span><span class="n">pop_or_shift</span><span class="si">}</span><span class="s2">"</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Seems simple enough at first glance, call <code class="highlighter-rouge">.shift</code> or <code class="highlighter-rouge">.pop</code> on it, however we also need to be able to ask about what the method returns half of the time and what the array looks like the other half. Before we had:</p>
+<p>Seems simple enough at first glance, call <code class="language-plaintext highlighter-rouge">.shift</code> or <code class="language-plaintext highlighter-rouge">.pop</code> on it, however we also need to be able to ask about what the method returns half of the time and what the array looks like the other half. Before we had:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">pop_or_shift</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"pop"</span><span class="p">,</span> <span class="s2">"shift"</span><span class="p">].</span><span class="nf">sample</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pop_or_shift</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"pop"</span><span class="p">,</span> <span class="s2">"shift"</span><span class="p">].</span><span class="nf">sample</span>
 <span class="n">return_or_array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"return"</span><span class="p">,</span> <span class="s2">"array"</span><span class="p">].</span><span class="nf">sample</span>
 
 <span class="k">if</span> <span class="n">return_or_array</span> <span class="o">==</span> <span class="s2">"return"</span>
@@ -350,12 +349,11 @@ slice(range)</p>
 
 <span class="c1"># shorten this with a ternary operator to:</span>
 <span class="vi">@question2</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">return_or_array</span> <span class="o">==</span> <span class="s1">'return'</span> <span class="p">?</span> <span class="s1">'returns'</span> <span class="p">:</span> <span class="s1">'array'</span><span class="si">}</span><span class="s2"> #=&gt; ?"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>We now have our second part of the question that can be called for clarification. Next up is creating our answers.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">createAnswers</span> <span class="c1">#=&gt; @answer, @mc_answers, @wrong_answer, @dummy_array</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">createAnswers</span> <span class="c1">#=&gt; @answer, @mc_answers, @wrong_answer, @dummy_array</span>
 <span class="c1"># (we have @dummy_array here instead of in our check, you'll see why)</span>
 
 <span class="k">def</span> <span class="nf">createAnswers</span>
@@ -367,15 +365,14 @@ slice(range)</p>
   <span class="vi">@mc_answers</span><span class="p">.</span><span class="nf">shuffle!</span>
 <span class="k">end</span>
 
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="wip-below">WIP below</h1>
 <hr />
 
 <p>pop_shift = [“pop”, “slice(0, 5)”, “shift”, “slice(1, 5)”]</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="k">class</span> <span class="nc">PopShift</span> <span class="o">&lt;</span> <span class="no">Question</span>
 
   <span class="k">def</span> <span class="nf">createQuestion</span>
@@ -409,8 +406,7 @@ slice(range)</p>
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Code on.</p>
 
@@ -426,26 +422,6 @@ slice(range)</p>
 
 </article>
 
-    </div>
-
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-          
-<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
-
-
-<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
-
-<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
-
-
-<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
-
-
-
-        </footer>
-      </div>
     </div>
 
     

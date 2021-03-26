@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>A Javascript Cheat Sheet – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+    <title>A JavaScript Cheat Sheet – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
 
         <meta charset="utf-8" />
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
@@ -9,19 +9,20 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
 
     
-    <meta name="description" content="This is an abbreviated cheat sheet for Javascript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that here, which I highly recommend.
+    <meta name="description" content="This is an abbreviated cheat sheet for JavaScript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that here, which I highly recommend.
 
 " />
-    <meta property="og:description" content="This is an abbreviated cheat sheet for Javascript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that here, which I highly recommend.
+    <meta property="og:description" content="This is an abbreviated cheat sheet for JavaScript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that here, which I highly recommend.
 
 " />
     
     <meta name="author" content="Learning Code with Mike Merin" />
 
     
-    <meta property="og:title" content="A Javascript Cheat Sheet" />
-    <meta property="twitter:title" content="A Javascript Cheat Sheet" />
+    <meta property="og:title" content="A JavaScript Cheat Sheet" />
+    <meta property="twitter:title" content="A JavaScript Cheat Sheet" />
     
+
 
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -40,26 +41,36 @@
           <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
 
           <div class="site-info">
-            <h1 class="site-name"><a href="/">Learning Code with Mike Merin</a></h1>
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
             <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
           </div>
 
-          <nav>
-            
-            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
-            <a href="/about">About</a>
-          </nav>
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
         </header>
       </div>
     </div>
 
     <div id="main" role="main" class="container">
       <article class="post">
-  <h1>A Javascript Cheat Sheet</h1>
+  <h1>A JavaScript Cheat Sheet</h1>
   <h3></h3>
 
   <div class="entry">
-    <p>This is an abbreviated cheat sheet for Javascript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that <a href="https://mikemerin.github.io/JS-through-Ruby/">here</a>, which I highly recommend.</p>
+    <p>This is an abbreviated cheat sheet for JavaScript. If you want an detailed explanation of how everything you see here works including explanations through the eyes of Ruby you can find that <a href="https://mikemerin.github.io/JS-through-Ruby/">here</a>, which I highly recommend.</p>
+
+<p>I also have a <a href="https://mikemerin.github.io/Python-Cheat-Sheet/">Python Cheat Sheet</a> in the same fashion as this one if you’re interested.</p>
 
 <table>
   <tbody>
@@ -97,84 +108,82 @@
 </table>
 
 <h3 id="type-conversions">Type Conversions</h3>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">5</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="nx">num</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="c1">//=&gt; "5"</span>
 
 <span class="c1">// to integer: string, then radix (use 10 to stop errors,</span>
 <span class="c1">// things like 16 hexadimal, 2 binary, etc. are depreciated)</span>
-<span class="nb">parseInt</span><span class="p">(</span><span class="s2">"10"</span><span class="p">)</span> <span class="c1">//=&gt; 10</span>
-<span class="nb">parseInt</span><span class="p">(</span><span class="s2">"10"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">//=&gt; 10</span>
+<span class="nb">parseInt</span><span class="p">(</span><span class="dl">"</span><span class="s2">10</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; 10</span>
+<span class="nb">parseInt</span><span class="p">(</span><span class="dl">"</span><span class="s2">10</span><span class="dl">"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">//=&gt; 10</span>
 
 <span class="c1">// to float (decimal)</span>
- <span class="nb">parseFloat</span><span class="p">(</span><span class="s2">"10.5"</span><span class="p">)</span> <span class="c1">//=&gt; 10.5</span>
-</code></pre>
-</div>
+<span class="nb">parseFloat</span><span class="p">(</span><span class="dl">"</span><span class="s2">10.5</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; 10.5</span>
+</code></pre></div></div>
 
 <h3 id="es6-notation-arrow-functions-and-implicit-returns">ES6 Notation, Arrow Functions, and Implicit Returns</h3>
 <p>Shorten/clean up your functions. These all do the same thing:</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span>
 <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span>
 <span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span>
 
-<span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">Element</span> <span class="nx">$</span><span class="p">{</span><span class="nx">x</span><span class="p">}</span> <span class="nx">Index</span> <span class="nx">$</span><span class="p">{</span><span class="nx">i</span><span class="p">}</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
-<span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">Element</span> <span class="nx">$</span><span class="p">{</span><span class="nx">x</span><span class="p">}</span> <span class="nx">Index</span> <span class="nx">$</span><span class="p">{</span><span class="nx">i</span><span class="p">}</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
-</code></pre>
-</div>
+<span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Element </span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2"> Index </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Element </span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2"> Index </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
 <p>These all do the same thing as well (implicit returns)</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span>
 <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span>
 <span class="nx">x</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">}</span>
 <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span>   <span class="c1">// without the {} this implicitly returns</span>
 <span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span>     <span class="c1">// same here</span>
 <span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">// same here</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="callbacks">Callbacks</h3>
 <p>Lets you call functions inside of functions</p>
 
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// Javascript</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Javascript</span>
 <span class="kd">var</span> <span class="nx">say_hello</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span> <span class="nx">callback</span> <span class="p">}</span>
 <span class="kd">var</span> <span class="nx">say_hello</span> <span class="o">=</span> <span class="nx">callback</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">callback</span> <span class="p">}</span> <span class="c1">// ES6 notation</span>
-<span class="nx">say_hello</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">))</span> <span class="c1">//=&gt; "Hello"</span>
+<span class="nx">say_hello</span><span class="p">(</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">))</span> <span class="c1">//=&gt; "Hello"</span>
 
-<span class="kd">function</span> <span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">greeting</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">greeting</span><span class="p">}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">!`</span><span class="p">)</span> <span class="p">}</span>
 <span class="kd">function</span> <span class="nx">say_hello_to_someone_callback_inputs</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">}</span>
-<span class="nx">say_hello_to_someone_callback_inputs</span><span class="p">(</span><span class="nx">log</span><span class="p">,</span> <span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"Mike"</span><span class="p">)</span> <span class="c1">//=&gt; "Hello Mike"</span>
+<span class="nx">say_hello_to_someone_callback_inputs</span><span class="p">(</span><span class="nx">log</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Mike</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; "Hello Mike"</span>
 
-<span class="kd">function</span> <span class="nx">greeting</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Hello"</span> <span class="p">}</span>
-<span class="kd">function</span> <span class="nx">name</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">"Mike"</span> <span class="p">}</span>
-<span class="kd">function</span> <span class="nx">log</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">hello</span><span class="p">()}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">()}</span><span class="o">!</span><span class="err">`</span><span class="p">)</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">greeting</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">name</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Mike</span><span class="dl">"</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">log</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">hello</span><span class="p">()}</span><span class="s2"> </span><span class="p">${</span><span class="nx">name</span><span class="p">()}</span><span class="s2">!`</span><span class="p">)</span> <span class="p">}</span>
 <span class="kd">var</span> <span class="nx">say_hello_to_someone_double_callback</span><span class="p">(</span><span class="nx">callback_2</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">callback</span> <span class="p">}</span>
 <span class="nx">say_hello_to_someone_double_callback</span><span class="p">(</span><span class="nx">log</span><span class="p">())</span> <span class="c1">//=&gt; "Hello"</span>
 
 <span class="kd">var</span> <span class="nx">lastly_say_hello_callback</span> <span class="o">=</span> <span class="nx">callback</span> <span class="o">=&gt;</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Loading greeting..."</span><span class="p">)</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Loading greeting...</span><span class="dl">"</span><span class="p">)</span>
   <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">callback</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="nx">lastly_say_hello_callback</span><span class="p">(()</span><span class="o">=&gt;</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">))</span>
+<span class="nx">lastly_say_hello_callback</span><span class="p">(()</span><span class="o">=&gt;</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">))</span>
 <span class="c1">//=&gt; "Loading greeting..."</span>
 <span class="c1">// sleep for 1 second</span>
 <span class="c1">//=&gt; "Hello"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h3 id="while">while</h3>
 <p>Perform a piece of code while a loop is active.</p>
 
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="nx">condition</span><span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span>
 
 <span class="nx">x</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="k">while</span> <span class="p">(</span> <span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">x</span><span class="p">}</span> <span class="nx">to</span> <span class="nx">go</span><span class="err">`</span><span class="p">;</span> <span class="nx">x</span><span class="o">--</span><span class="p">)</span>
+<span class="k">while</span> <span class="p">(</span> <span class="nx">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2"> to go`</span><span class="p">;</span> <span class="nx">x</span><span class="o">--</span><span class="p">)</span>
 
 <span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="nx">array</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">while</span> <span class="p">(</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="p">)</span> <span class="p">{</span> <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="nx">x</span><span class="o">++</span> <span class="p">}</span>
 <span class="nx">array</span> <span class="c1">//=&gt; [1,2,3,4,5]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="for--forin">for / for..in</h3>
 <p>Iterate over an array (or string) and perform code on each element</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span> <span class="nx">initialization</span><span class="p">;</span> <span class="nx">condition</span> <span class="p">(</span><span class="nx">optional</span><span class="p">);</span> <span class="nx">expression</span> <span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span> <span class="nx">initialization</span><span class="p">;</span> <span class="nx">condition</span> <span class="p">(</span><span class="nx">optional</span><span class="p">);</span> <span class="nx">expression</span> <span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span>
 <span class="k">for</span> <span class="p">(</span> <span class="nx">variable</span> <span class="k">in</span> <span class="nx">object</span><span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span>
 
 <span class="nx">array</span> <span class="o">=</span> <span class="p">[]</span>
@@ -187,33 +196,36 @@
 <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">array</span><span class="p">)</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">)</span> <span class="p">}</span>
 
 <span class="c1">// array2 in both becomes [1,2,3,4,5]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="foreach">.forEach</h3>
 <p>Iterate over an array (or string) and perform code on each element</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span> <span class="p">)</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span> <span class="p">)</span>
 
 <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
 <span class="nx">array2</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">}</span> <span class="p">)</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">array2</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">)</span>
-<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">The</span> <span class="nx">index</span> <span class="nx">is</span> <span class="nx">$</span><span class="p">{</span><span class="nx">i</span><span class="p">},</span> <span class="nx">the</span> <span class="nx">element</span> <span class="nx">is</span> <span class="nx">$</span><span class="p">{</span><span class="nx">x</span><span class="p">}</span><span class="err">`</span><span class="p">)</span> <span class="p">)</span>
-</code></pre>
-</div>
+<span class="nx">array</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`The index is </span><span class="p">${</span><span class="nx">i</span><span class="p">}</span><span class="s2">, the element is </span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2">`</span><span class="p">)</span> <span class="p">)</span>
+</code></pre></div></div>
+
 <h3 id="map">.map</h3>
 <p>iterates over each element, but also changes the output</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span> <span class="p">)</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span> <span class="nx">code</span> <span class="nx">block</span> <span class="p">}</span> <span class="p">)</span>
 
 <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">}</span> <span class="p">)</span> <span class="c1">//=&gt; [2,4,6,8,10]</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">//=&gt; [2,4,6,8,10]</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">)</span> <span class="c1">//=&gt; [0,1,2,3,4]</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">i</span><span class="p">)</span> <span class="c1">//=&gt; [0,2,6,12,20]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="reduce">.reduce</h3>
 <p>Reduce each element in the array to a single value</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">callback</span><span class="p">,</span> <span class="k">default</span> <span class="nx">value</span> <span class="p">(</span><span class="nx">optional</span><span class="p">)</span> <span class="p">)</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">callback</span><span class="p">,</span> <span class="k">default</span> <span class="nx">value</span> <span class="p">(</span><span class="nx">optional</span><span class="p">)</span> <span class="p">)</span>
 
 <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
 
@@ -223,51 +235,54 @@
 <span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">}</span> <span class="p">)</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span> <span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">sum</span> <span class="o">+</span> <span class="nx">x</span> <span class="p">},</span> <span class="mi">0</span> <span class="p">)</span>
 
-
-<span class="kr">const</span> <span class="nx">sum</span> <span class="o">=</span> <span class="p">(</span><span class="nx">sum</span><span class="p">,</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nx">sum</span><span class="o">+</span><span class="nx">x</span><span class="p">}</span>
-<span class="kr">const</span> <span class="nx">multi</span> <span class="o">=</span> <span class="p">(</span><span class="nx">multi</span><span class="p">,</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nx">multi</span><span class="o">*</span><span class="nx">x</span><span class="p">}</span>
+<span class="kd">const</span> <span class="nx">sum</span> <span class="o">=</span> <span class="p">(</span><span class="nx">sum</span><span class="p">,</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nx">sum</span><span class="o">+</span><span class="nx">x</span><span class="p">}</span>
+<span class="kd">const</span> <span class="nx">multi</span> <span class="o">=</span> <span class="p">(</span><span class="nx">multi</span><span class="p">,</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="k">return</span> <span class="nx">multi</span><span class="o">*</span><span class="nx">x</span><span class="p">}</span>
 
 <span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">sum</span><span class="p">)</span> <span class="c1">//=&gt; 15</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">sum</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">//=&gt; 25</span>
 
 <span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">multi</span><span class="p">)</span> <span class="c1">//=&gt; 120</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">multi</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">//=&gt; 240</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="spread-operator">Spread operator</h3>
 <p>Spreads out an array to call on all individual elements</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">a1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">a1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="nx">a2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span>
 
 <span class="p">[</span><span class="nx">a1</span><span class="p">,</span><span class="nx">a2</span><span class="p">]</span> <span class="c1">//=&gt; [ [1,2,3], [4,5,6] ]</span>
 <span class="p">[...</span><span class="nx">a1</span><span class="p">,</span><span class="nx">a2</span><span class="p">]</span> <span class="c1">//=&gt; [1,2,3, [4,5,6] ]</span>
 <span class="p">[...</span><span class="nx">a1</span><span class="p">,...</span><span class="nx">a2</span><span class="p">]</span> <span class="c1">//=&gt; [1,2,3,4,5,6]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="concat">.concat</h3>
 <p>Turn one (or more) multi-dimensional array(s) into a single-dimensional array</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="p">[].</span><span class="nx">concat</span><span class="p">(</span><span class="o">*</span><span class="nx">values_or_arrays</span><span class="p">)</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[].</span><span class="nx">concat</span><span class="p">(</span><span class="o">*</span><span class="nx">values_or_arrays</span><span class="p">)</span>
 
 <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
 
 <span class="p">[].</span><span class="nx">concat</span><span class="p">(...</span><span class="nx">array</span><span class="p">)</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 <span class="p">[].</span><span class="nx">concat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">...</span><span class="nx">array</span><span class="p">)</span> <span class="c1">//=&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
-<span class="p">[].</span><span class="nx">concat</span><span class="p">(...[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">...</span><span class="nx">array</span><span class="p">,</span> <span class="s2">"woo!"</span><span class="p">)</span> <span class="c1">//=&gt; [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "woo!"]</span>
-</code></pre>
-</div>
+<span class="p">[].</span><span class="nx">concat</span><span class="p">(...[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">...</span><span class="nx">array</span><span class="p">,</span> <span class="dl">"</span><span class="s2">woo!</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "woo!"]</span>
+</code></pre></div></div>
+
 <h3 id="filter">Filter</h3>
 <p>Filter the values you want to keep</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span>
 
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span><span class="p">)</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5]</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nb">Number</span><span class="p">)</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5]</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">//=&gt; [2, 4, null]</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">//=&gt; [1, 3, 5]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="sort">Sort</h3>
 <p>Sort an array, Object, or combination of them</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">array_string</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"hey"</span><span class="p">,</span> <span class="s2">"everyone"</span><span class="p">,</span> <span class="s2">"how's"</span><span class="p">,</span> <span class="s2">"it"</span><span class="p">,</span> <span class="s2">"going?"</span><span class="p">]</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">array_string</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">hey</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">everyone</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">how's</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">it</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">going?</span><span class="dl">"</span><span class="p">]</span>
 <span class="nx">array_string</span><span class="p">.</span><span class="nx">sort</span><span class="p">()</span> <span class="c1">//=&gt; [ "everyone", "going?", "hey", "how's", "it" ]</span>
 
 <span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
@@ -275,11 +290,11 @@
 <span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">-</span> <span class="nx">b</span> <span class="p">}</span> <span class="p">)</span> <span class="c1">//=&gt; [ 5, 14, 16, 22, 25 ]</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="nx">b</span> <span class="p">}</span> <span class="p">)</span> <span class="c1">//=&gt; [ 5, 14, 16, 22, 25 ]</span>
 
-<span class="kd">var</span> <span class="nx">array_objects</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Bronx'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">1385107</span><span class="p">},</span>
-                      <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Brooklyn'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">2504706</span><span class="p">},</span>
-                      <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Manhattan'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">1585874</span><span class="p">},</span>
-                      <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Queens'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">2230545</span><span class="p">},</span>
-                      <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="s1">'Staten_Island'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">486730</span><span class="p">}</span> <span class="p">]</span>
+<span class="kd">var</span> <span class="nx">array_objects</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Bronx</span><span class="dl">'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">1385107</span><span class="p">},</span>
+                      <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Brooklyn</span><span class="dl">'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">2504706</span><span class="p">},</span>
+                      <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Manhattan</span><span class="dl">'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">1585874</span><span class="p">},</span>
+                      <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Queens</span><span class="dl">'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">2230545</span><span class="p">},</span>
+                      <span class="p">{</span><span class="na">borough</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Staten_Island</span><span class="dl">'</span><span class="p">,</span> <span class="na">population</span><span class="p">:</span> <span class="mi">486730</span><span class="p">}</span> <span class="p">]</span>
 <span class="nx">array_hash</span><span class="p">.</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">borough</span> <span class="o">&gt;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">borough</span> <span class="p">)</span>
 <span class="c1">//=&gt; [ { burough: 'Bronx', population: 1385107 },</span>
     <span class="c1">// { burough: 'Brooklyn', population: 2504706 },</span>
@@ -296,49 +311,50 @@
 
 <span class="c1">// note this one isn't needed, and doesn't directly work</span>
 <span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{</span><span class="na">Manhattan</span><span class="p">:</span> <span class="mi">1585874</span><span class="p">,</span> <span class="na">Brooklyn</span><span class="p">:</span> <span class="mi">2504706</span><span class="p">,</span> <span class="na">Queens</span><span class="p">:</span> <span class="mi">2230545</span><span class="p">,</span> <span class="na">Bronx</span><span class="p">:</span> <span class="mi">1385107</span><span class="p">,</span> <span class="na">Staten_Island</span><span class="p">:</span> <span class="mi">486730</span><span class="p">}</span>
-<span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">object</span><span class="p">).</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">object</span><span class="p">[</span><span class="nx">a</span><span class="p">]</span> <span class="o">-</span> <span class="nx">object</span><span class="p">[</span><span class="nx">b</span><span class="p">]</span> <span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">x</span><span class="p">}</span><span class="err">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">hash</span><span class="p">[</span><span class="nx">x</span><span class="p">]}</span><span class="err">`</span><span class="p">)</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">object</span><span class="p">).</span><span class="nx">sort</span><span class="p">(</span> <span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">object</span><span class="p">[</span><span class="nx">a</span><span class="p">]</span> <span class="o">-</span> <span class="nx">object</span><span class="p">[</span><span class="nx">b</span><span class="p">]</span> <span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="o">=&gt;</span> <span class="s2">`</span><span class="p">${</span><span class="nx">x</span><span class="p">}</span><span class="s2">: </span><span class="p">${</span><span class="nx">hash</span><span class="p">[</span><span class="nx">x</span><span class="p">]}</span><span class="s2">`</span><span class="p">)</span>
 <span class="c1">//=&gt; [ 'Staten_Island: 486730',</span>
     <span class="c1">// 'Bronx:        1385107',</span>
     <span class="c1">// 'Manhattan:    1585874',</span>
     <span class="c1">// 'Queens:       2230545',</span>
     <span class="c1">// 'Brooklyn:     2504706' ]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="switch-case">Switch; case</h3>
-<p>Simplifying multiple <code class="highlighter-rouge">if/else if/else</code> statements</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">switch</span><span class="p">(</span><span class="nx">value_or_expression</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">case</span> <span class="nx">x</span><span class="err">:</span> <span class="nx">code_block</span>
-  <span class="k">case</span> <span class="nx">y</span><span class="err">:</span> <span class="nx">code_block</span>
-  <span class="nl">default</span><span class="p">:</span> <span class="nx">code_block</span>
+<p>Simplifying multiple <code class="language-plaintext highlighter-rouge">if/else if/else</code> statements</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">switch</span><span class="p">(</span><span class="nx">value_or_expression</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="nx">x</span><span class="p">:</span> <span class="nx">code_block</span>
+  <span class="k">case</span> <span class="nx">y</span><span class="p">:</span> <span class="nx">code_block</span>
+  <span class="k">default</span><span class="p">:</span> <span class="nx">code_block</span>
 <span class="p">}</span>
 
-<span class="nx">name</span> <span class="o">=</span> <span class="s2">"Josh"</span>
+<span class="nx">name</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Josh</span><span class="dl">"</span>
 
 <span class="k">switch</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">case</span> <span class="s2">"CJ"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Press Secretary"</span>
-  <span class="k">case</span> <span class="s2">"Donna"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Assistant to the DCoS"</span>
-  <span class="k">case</span> <span class="s2">"Jed"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"President"</span>
-  <span class="k">case</span> <span class="s2">"Josh"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Deputy Chief of Staff"</span>
-  <span class="k">case</span> <span class="s2">"Sam"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Deputy Communications Director"</span>
-  <span class="k">case</span> <span class="s2">"Toby"</span><span class="err">:</span> <span class="k">return</span> <span class="s2">"Communications Director"</span>
-  <span class="nl">default</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Name Not Found"</span>
+  <span class="k">case</span> <span class="dl">"</span><span class="s2">CJ</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Press Secretary</span><span class="dl">"</span>
+  <span class="k">case</span> <span class="dl">"</span><span class="s2">Donna</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Assistant to the DCoS</span><span class="dl">"</span>
+  <span class="k">case</span> <span class="dl">"</span><span class="s2">Jed</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">President</span><span class="dl">"</span>
+  <span class="k">case</span> <span class="dl">"</span><span class="s2">Josh</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Deputy Chief of Staff</span><span class="dl">"</span>
+  <span class="k">case</span> <span class="dl">"</span><span class="s2">Sam</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Deputy Communications Director</span><span class="dl">"</span>
+  <span class="k">case</span> <span class="dl">"</span><span class="s2">Toby</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Communications Director</span><span class="dl">"</span>
+  <span class="k">default</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Name Not Found</span><span class="dl">"</span>
 <span class="p">}</span>
 
 <span class="c1">//=&gt; "Deputy Chief of Staff"</span>
 
 <span class="c1">// iterating over a switch statement</span>
 
-<span class="nx">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Josh"</span><span class="p">,</span><span class="s2">"Jed"</span><span class="p">,</span><span class="s2">"Toby"</span><span class="p">,</span><span class="s2">"CJ"</span><span class="p">,</span><span class="s2">"Sam"</span><span class="p">]</span>
+<span class="nx">names</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Josh</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">Jed</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">Toby</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">CJ</span><span class="dl">"</span><span class="p">,</span><span class="dl">"</span><span class="s2">Sam</span><span class="dl">"</span><span class="p">]</span>
 
 <span class="nx">names</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">name</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="k">switch</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="s2">"CJ"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Press Secretary"</span>
-    <span class="k">case</span> <span class="s2">"Donna"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Assistant to the DCoS"</span>
-    <span class="k">case</span> <span class="s2">"Jed"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"President"</span>
-    <span class="k">case</span> <span class="s2">"Josh"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Deputy Chief of Staff"</span>
-    <span class="k">case</span> <span class="s2">"Sam"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Deputy Communications Director"</span>
-    <span class="k">case</span> <span class="s2">"Toby"</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Communications Director"</span>
-    <span class="na">default</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"Name Not Found"</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">CJ</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Press Secretary</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">Donna</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Assistant to the DCoS</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">Jed</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">President</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">Josh</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Deputy Chief of Staff</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">Sam</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Deputy Communications Director</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">Toby</span><span class="dl">"</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Communications Director</span><span class="dl">"</span>
+    <span class="na">default</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">Name Not Found</span><span class="dl">"</span>
   <span class="p">}</span>
 <span class="p">})</span> <span class="c1">//=&gt; [ 'Deputy Chief of Staff', 'President', 'Communications Director', 'Press Secretary', 'Deputy Communications Director' ]</span>
 
@@ -346,62 +362,66 @@
 
 <span class="nx">grades</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">grade</span> <span class="o">=&gt;</span> <span class="p">{</span>
   <span class="k">switch</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"A"</span>
-    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">80</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"B"</span>
-    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">70</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"C"</span>
-    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">65</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"D"</span>
-    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"F"</span>
-    <span class="na">default</span><span class="p">:</span> <span class="k">return</span> <span class="s2">"That grade is impossible!"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">A</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">80</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">B</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">70</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">C</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">65</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">D</span><span class="dl">"</span>
+    <span class="k">case</span> <span class="nx">grade</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">F</span><span class="dl">"</span>
+    <span class="na">default</span><span class="p">:</span> <span class="k">return</span> <span class="dl">"</span><span class="s2">That grade is impossible!</span><span class="dl">"</span>
   <span class="p">}</span>
 <span class="p">})</span> <span class="c1">//=&gt; ["A", "B", "D", "A", "C", "F"]</span>
-</code></pre>
-</div>
+
+</code></pre></div></div>
 <h3 id="splice">.splice</h3>
 <p>Add or remove elements from an array/string</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">how_many_positions_out_to_delete</span><span class="p">,</span> <span class="nx">add_element</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">)</span>
 
-<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">how_many_positions_out_to_delete</span><span class="p">,</span> <span class="nx">add_element</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">World</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">How</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Are</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">You?</span><span class="dl">"</span><span class="p">]</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1">//=&gt; removes from index 2 to the end</span>
 <span class="nx">array</span> <span class="c1">//=&gt; ["Hello", "World"]</span>
 
-<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">World</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">How</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Are</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">You?</span><span class="dl">"</span><span class="p">]</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">//=&gt; starts at index 0, then delete 2 elements out</span>
 <span class="nx">array</span> <span class="c1">//=&gt; ["How", "Are", "You?"]</span>
 
-<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
-<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"!"</span><span class="p">)</span> <span class="c1">//=&gt; start at index 2, delete nothing, then add "!" at index 2</span>
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">World</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">How</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Are</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">You?</span><span class="dl">"</span><span class="p">]</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="dl">"</span><span class="s2">!</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; start at index 2, delete nothing, then add "!" at index 2</span>
 <span class="nx">array</span> <span class="c1">//=&gt; ["Hello", "World", "!", "How", "Are", "You?"]</span>
 
-<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Everyone"</span><span class="p">,</span> <span class="s2">"In"</span><span class="p">,</span> <span class="s2">"The"</span><span class="p">)</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Everyone</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">In</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">The</span><span class="dl">"</span><span class="p">)</span>
 <span class="c1">//=&gt; ["Hello", "Everyone", "In", "The", "World", "!", "How", "Are", "You?"]</span>
 <span class="c1">// start at index 1, delete nothing, then add "Everyone", "In", and "The" at index 1</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="includes">.includes</h3>
 <p>Test if a something is included in an array</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
 
-<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"hello"</span><span class="p">,</span> <span class="s2">"world"</span><span class="p">]</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span>
+
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">world</span><span class="dl">"</span><span class="p">]</span>
 
 <span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
-<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">hello</span><span class="dl">"</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span> <span class="c1">//=&gt; false</span>
-<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s2">"world"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">world</span><span class="dl">"</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">//=&gt; true</span>
 <span class="nx">array</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">//=&gt; false</span>
-</code></pre>
-</div>
+</code></pre></div></div>
+
 <h3 id="objectkeys--objectvalues">Object.keys() / Object.values()</h3>
 <p>Get all keys or values in a hash</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">pets</span><span class="p">)</span> <span class="c1">//=&gt; ["dogs", "cats", "birds"]</span>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">pets</span><span class="p">)</span> <span class="c1">//=&gt; ["dogs", "cats", "birds"]</span>
 <span class="nb">Object</span><span class="p">.</span><span class="nx">values</span><span class="p">(</span><span class="nx">pets</span><span class="p">)</span> <span class="c1">//=&gt; [3, 2, 1]</span>
-</code></pre>
-</div>
+
+</code></pre></div></div>
 <h3 id="slice">.slice</h3>
 <p>Select element(s) from an array, from a start_index up until an end_index
 The start_index’s default is 0, the end_index’s default is the end of the array</p>
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">start_index</span><span class="p">,</span> <span class="nx">end_index</span><span class="p">)</span>
 
-<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"World"</span><span class="p">,</span> <span class="s2">"How"</span><span class="p">,</span> <span class="s2">"Are"</span><span class="p">,</span> <span class="s2">"You?"</span><span class="p">]</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">start_index</span><span class="p">,</span> <span class="nx">end_index</span><span class="p">)</span>
+
+<span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">World</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">How</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Are</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">You?</span><span class="dl">"</span><span class="p">]</span>
 
 <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">()</span> <span class="o">||</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
 <span class="c1">// all of them //=&gt; ["Hello", "World", "How", "Are", "You?"]</span>
@@ -413,8 +433,7 @@ The start_index’s default is 0, the end_index’s default is the end of the ar
 
 <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">||</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="o">||</span> <span class="nx">array</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 <span class="c1">// all of them //=&gt; ["How", "Are", "You?"]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
   </div>
 
@@ -426,26 +445,6 @@ The start_index’s default is 0, the end_index’s default is the end of the ar
 
 </article>
 
-    </div>
-
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-          
-<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
-
-
-<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
-
-<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
-
-
-<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
-
-
-
-        </footer>
-      </div>
     </div>
 
     

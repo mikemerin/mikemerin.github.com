@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Integers? Give Me a Sign – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="Integer types are nothing new; with SQL there’s tiny/small/int/big (1/2/4/8 bytes of memory each), and in many languages there’s integer, float, double, etc. However Rust is VERY strict with its types, and there are quite a few, but they’re governed by this simple idea:
+
+" />
+    <meta property="og:description" content="Integer types are nothing new; with SQL there’s tiny/small/int/big (1/2/4/8 bytes of memory each), and in many languages there’s integer, float, double, etc. However Rust is VERY strict with its types, and there are quite a few, but they’re governed by this simple idea:
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="Integers? Give Me a Sign" />
+    <meta property="twitter:title" content="Integers? Give Me a Sign" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Integers? Give Me a Sign</h1>
+  <h3>More Than Just a Name</h3>
+
+  <div class="entry">
+    <p>Integer types are nothing new; with SQL there’s tiny/small/int/big (1/2/4/8 bytes of memory each), and in many languages there’s integer, float, double, etc. However Rust is VERY strict with its types, and there are quite a few, but they’re governed by this simple idea:</p>
+
+<ul>
+  <li>Signed = positive OR negative values</li>
+  <li>Unsigned = positive values ONLY</li>
+</ul>
+
+<p>This appears in other languages as well (I remember SQL’s <code class="language-plaintext highlighter-rouge">Unsigned INTEGER in column imported as numeric</code> which now makes more sense), in Rust this looks like:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>isize - any signed integer</td>
+      <td>usize - any unsigned integer</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Why <strong>any</strong> integer? That’s because Rust goes even further with types and it’s easy! Make integers of 8/16/32/64 bits by combining the letter and number! Here’s a simple cheat sheet (works for floats as well):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>bits</th>
+      <th>signed</th>
+      <th>unsigned</th>
+      <th>float</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>any</strong></td>
+      <td>isize</td>
+      <td>usize</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><strong>8</strong></td>
+      <td>i8</td>
+      <td>u8</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><strong>16</strong></td>
+      <td>i16</td>
+      <td>u16</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><strong>32</strong></td>
+      <td>i32</td>
+      <td>u32</td>
+      <td>f32</td>
+    </tr>
+    <tr>
+      <td><strong>64</strong></td>
+      <td>i64</td>
+      <td>u64</td>
+      <td>f64</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Also another nuance: bits can contain 2^N numbers, so 8 bits contain 2^8 or 256 numbers. That means:</p>
+
+<p>u8: 0 through 255</p>
+
+<p>So i8 is -256 through 255 right? Nope! You’d use i16 for that. i8 is:</p>
+
+<p>i8: -128 through 127</p>
+
+<p>Why? when working with signed we make sure there are the same number of positive and negative integers. Simply put you take the total number and divide by 2. If you wanted 256 negative and 256 positive numbers you’d use i16 (-256 to +255).</p>
+
+<p>Code On.</p>
+
+<p>-Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on January  4, 2021
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

@@ -6,7 +6,7 @@ date:   2021-03-02 13:27:04 -0400
 categories: SQL, tutorial
 ---
 When working with column names in multiple SQL tables, if multiple tables have the same field name then you will have to reference that table name to avoid an error, specifically the error **ambiguous column name**.
-<!--more-->
+
 A working example here is: **table_name.column_name**
 
 Otherwise if the name is unique to that table, you don't need to do that and can just do **column_name**

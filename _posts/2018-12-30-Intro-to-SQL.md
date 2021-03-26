@@ -5,8 +5,8 @@ subtitle: "SQL 101"
 date:   2018-12-30 22:22:22 -0400
 categories: SQL, tutorial
 ---
-If you want to store information that's clean and structured then you need to use a database. If you want to access that information then you need to use SQL. There are plenty of SQL cheat sheets out there (my favorite reference is [this one](https://zeroturnaround.com/wp-content/uploads/2016/06/RebelLabs-SQL-cheat-sheet.png)), however I find when you're learning SQL it's better to see it in action and code along.
-<!--more-->
+If you want to store information that's clean and structured then you probably want to use a database. If you want to access that information then you need to use SQL. There are plenty of SQL cheat sheets out there, however I find when you're learning SQL it's better to see it in action and code along.
+
 As you go through this post, use my setup in this [coding playground](http://tpcg.io/zkrK2w) to code along!
 
 # Tables / Schema

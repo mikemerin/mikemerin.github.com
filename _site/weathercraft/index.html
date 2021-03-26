@@ -8,15 +8,16 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
 
-
+    
     <meta name="description" content="I'm a meteorologist-turned-programmer. You can find my projects and blog here.">
     <meta property="og:description" content="I'm a meteorologist-turned-programmer. You can find my projects and blog here." />
-
+    
     <meta name="author" content="Learning Code with Mike Merin" />
 
-
+    
     <meta property="og:title" content="WeatherCraft" />
     <meta property="twitter:title" content="WeatherCraft" />
+    
 
 
     <!--[if lt IE 9]>
@@ -36,14 +37,23 @@
           <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
 
           <div class="site-info">
-            <h1 class="site-name"><a href="/">Learning Code with Mike Merin</a></h1>
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
             <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
           </div>
 
-          <nav>
-            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
-            <a href="/about">About</a>
-          </nav>
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
         </header>
       </div>
     </div>
@@ -60,7 +70,7 @@
 
 <p><a href="https://mikemerin.github.io/WeatherCraft-blog-2/">WeatherCraft Blog part 2</a></p>
 
-<p><a href="https://mikemerin.github.io/WeatherCraft-blog-4/">WeatherCraft Blog part 4</a></p>
+<p><a href="https://mikemerin.github.io/WeatherCraft-blog-3/">WeatherCraft Blog part 3</a></p>
 
 <p>Github links:</p>
 
@@ -109,19 +119,19 @@
 
 <h1 id="weathercraftapi">WeatherCraftAPI</h1>
 
-<p>This Rails/ActiveRecord API is a collection of all hourly/daily/monthly data from every NWS-certified station in the USA. Main information has been pulled into the SQL database accessed by this API, if you would like to pull this information yourself and seed your own database please visit the <a href="https://www.ncdc.noaa.gov/orders/qclcd/">NCEI</a> site and view the <code class="highlighter-rouge">QCLCDdate.zip</code> links.</p>
+<p>This Rails/ActiveRecord API is a collection of all hourly/daily/monthly data from every NWS-certified station in the USA. Main information has been pulled into the SQL database accessed by this API, if you would like to pull this information yourself and seed your own database please visit the <a href="https://www.ncdc.noaa.gov/orders/qclcd/">NCEI</a> site and view the <code class="language-plaintext highlighter-rouge">QCLCDdate.zip</code> links.</p>
 
 <ul>
-  <li>Run <code class="highlighter-rouge">bundle</code> to install Ruby gems for the API</li>
+  <li>Run <code class="language-plaintext highlighter-rouge">bundle</code> to install Ruby gems for the API</li>
   <li>
-    <p>Run <code class="highlighter-rouge">npm install</code> to install Javascript files for the app</p>
+    <p>Run <code class="language-plaintext highlighter-rouge">npm install</code> to install Javascript files for the app</p>
   </li>
   <li>Database creation
     <ul>
-      <li><code class="highlighter-rouge">rake db:scrape_stations</code> pulls all station data</li>
-      <li><code class="highlighter-rouge">rake db:scrape_hourlies</code> pulls all hourly data</li>
-      <li><code class="highlighter-rouge">rake db:scrape_dailies</code> pulls all daily data</li>
-      <li><code class="highlighter-rouge">rake db:scrape_monthlies</code> pulls all monthly data</li>
+      <li><code class="language-plaintext highlighter-rouge">rake db:scrape_stations</code> pulls all station data</li>
+      <li><code class="language-plaintext highlighter-rouge">rake db:scrape_hourlies</code> pulls all hourly data</li>
+      <li><code class="language-plaintext highlighter-rouge">rake db:scrape_dailies</code> pulls all daily data</li>
+      <li><code class="language-plaintext highlighter-rouge">rake db:scrape_monthlies</code> pulls all monthly data</li>
     </ul>
   </li>
 </ul>
@@ -131,27 +141,7 @@
 
     </div>
 
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-
-<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
-
-
-<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
-
-<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
-
-
-<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
-
-
-
-        </footer>
-      </div>
-    </div>
-
-
+    
 
   </body>
 </html>

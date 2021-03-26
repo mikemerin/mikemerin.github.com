@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Creating a Rails API and fixing CORS issues – Learning Code with Mike Merin – I'm a meteorologist-turned-programmer. You can find my projects and blog here.</title>
+
+        <meta charset="utf-8" />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'>
+
+    
+    <meta name="description" content="I recently tried to recreate an API for one of my applications. I ran into the infamous CORS issue No 'Access-Control-Allow-Origin' header is present on the requested resource. It took a litle while to find the fix again so I figure I’d go through the simple steps of how to create a rails API from scratch and fix the issue as I go.
+
+" />
+    <meta property="og:description" content="I recently tried to recreate an API for one of my applications. I ran into the infamous CORS issue No 'Access-Control-Allow-Origin' header is present on the requested resource. It took a litle while to find the fix again so I figure I’d go through the simple steps of how to create a rails API from scratch and fix the issue as I go.
+
+" />
+    
+    <meta name="author" content="Learning Code with Mike Merin" />
+
+    
+    <meta property="og:title" content="Creating a Rails API and fixing CORS issues" />
+    <meta property="twitter:title" content="Creating a Rails API and fixing CORS issues" />
+    
+
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <link rel="alternate" type="application/rss+xml" title="Learning Code with Mike Merin - I'm a meteorologist-turned-programmer. You can find my projects and blog here." href="/feed.xml" />
+
+    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
+  </head>
+
+  <body>
+    <div class="wrapper-masthead">
+      <div class="container">
+        <header class="masthead clearfix">
+          <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
+
+          <div class="site-info">
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
+            <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
+          </div>
+
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="main" role="main" class="container">
+      <article class="post">
+  <h1>Creating a Rails API and fixing CORS issues</h1>
+  <h3>Easy databases, easy back end</h3>
+
+  <div class="entry">
+    <p>I recently tried to recreate an API for one of my applications. I ran into the infamous CORS issue <code class="language-plaintext highlighter-rouge">No 'Access-Control-Allow-Origin' header is present on the requested resource.</code> It took a litle while to find the fix again so I figure I’d go through the simple steps of how to create a rails API from scratch and fix the issue as I go.</p>
+
+<p>If you’re just interested in how to fix a CORS issue you can skip ahead to <a href="https://mikemerin.github.io/Rails-API-cors#cors">here</a>.</p>
+
+<h1 id="tools">Tools</h1>
+
+<p>Ruby: There are a few ways to get Ruby installed on your computer but many roads lead <a href="https://www.ruby-lang.org/en/documentation/installation/">here</a></p>
+
+<p>Rails: Connecting Ruby to the online world. You can find the guide to installing Rails <a href="http://installrails.com/">here</a></p>
+
+<p>Database: Since you’re creating an API you’ll need to have a database program on your computer. You can use the clean and useful <a href="http://sqlitebrowser.org/">DB Browser for SQLite</a>, or my preferred <a href="https://www.postgresql.org/">postgresql</a> which is much faster and advanced.</p>
+
+<p>IDE: a way to view your files. IDE stands for “integrated development environment” and it’s what developers use to create and edit their files, in fact I’m using one right now for this blog post! My favorite is <a href="https://atom.io/">Atom</a>, others like <a href="https://www.sublimetext.com/">Sublime</a>.</p>
+
+<h1 id="creating-the-application">Creating the application</h1>
+
+<p>Rails makes it incredibly easy to create a basic application from scratch. No needing to manually configure the little things like you need to with Sinatra, just type in the terminal commands and you’re good to go. We’re going to create a new API called <code class="language-plaintext highlighter-rouge">test_api</code>. The easiest way to do this is type in:</p>
+
+<p><code class="language-plaintext highlighter-rouge">rails new test_api --api</code></p>
+
+<p>or if like me you like Postgresql better you can instead type in:</p>
+
+<p><code class="language-plaintext highlighter-rouge">rails new test_api --api --database=postgresql -T</code></p>
+
+<p>Once the flurry of text finishes, you’ll notice a new folder called <code class="language-plaintext highlighter-rouge">test_api</code>. If you <code class="language-plaintext highlighter-rouge">cd test_api</code> to go into the folder you’ll see it contains files like a Gemfile, Rakefile, config, readme, etc. I won’t go into detail about what each of them do right now, but technically you just made an API! Grats, now to get it working correctly.</p>
+
+<h1 id="mvc">MVC</h1>
+
+<p>A quick note about the framework that Rails uses before we continue: MVC stands for “model, view, controller”:</p>
+
+<ul>
+  <li>Models: the data of your app, objects where you can store and retrieve information</li>
+  <li>Views: as the name says, this is what a user will see and interact with</li>
+  <li>Controllers: the logic that dictates how your app will behave</li>
+</ul>
+
+<p>Since this is an API we won’t be working with views. After all we’re just after data and don’t need to build a website for a user to interact with. That can either be later down the line, or more preferrably handled in a separate app on the front end.</p>
+
+<h1 id="model-generation">Model generation</h1>
+
+<p>We’re going to make a little music API that has artists and songs. Rails once again makes this part easy for us. We can type in the terminal the following to create our two models:</p>
+
+<p><code class="language-plaintext highlighter-rouge">rails generate resource Artist _________</code></p>
+
+<p>or the shorter</p>
+
+<p><code class="language-plaintext highlighter-rouge">rails g resource Artist _________</code></p>
+
+<p>We can generate many things this way: a migration, a model, a controller, etc., but we use <code class="language-plaintext highlighter-rouge">resource</code> in this case since it will create the model, controller, and the routes we need to connect to. We’ll want our Artist to contain certain information like the artist’s name, origin, and its genre. We’ll also want the songs to have a name, artist_id (since we have an artist model to link it to), album name, and length. Here’s how we’ll generate our models:</p>
+
+<p><code class="language-plaintext highlighter-rouge">rails g resource Artist name origin genre</code>
+<code class="language-plaintext highlighter-rouge">rails g resource Song name artist_id:integer album length</code></p>
+
+<p>If you noticed our <code class="language-plaintext highlighter-rouge">artist_id</code> has an integer attached to it. All of these attributes will default to a string, but if we wanted to we can make them into other data types like an integer like the <code class="language-plaintext highlighter-rouge">artist_id:integer</code> above, or a boolean <code class="language-plaintext highlighter-rouge">active:boolean</code>.</p>
+
+<p>Once you type these in you’ll get another bit of text, including invoking active_record, controller, and routes along with creating the necessary files which I’ll cover shortly. A quick note that <strong>ActiveRecord</strong> is very important in making your API work and you’ll see its name pop up quite a bit in your program, but getting into that will take a much longer time so I’ll leave that for another post.</p>
+
+<p>If you’d like to see where this model generation occurs, look at the <code class="language-plaintext highlighter-rouge">create    db/migrate/20171025192202_create_artists.rb</code> line. The <code class="language-plaintext highlighter-rouge">/db/migrate</code> folder contains files with a string of numbers (the date and time you did your <code class="language-plaintext highlighter-rouge">rails g</code> model generation), create, and then the model you made. Opening up the artists file:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CreateArtists</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">5.1</span><span class="p">]</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">create_table</span> <span class="ss">:artists</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:name</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:origin</span>
+      <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:genre</span>
+
+      <span class="n">t</span><span class="p">.</span><span class="nf">timestamps</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>you’ll see the class <code class="language-plaintext highlighter-rouge">CreateArtists</code> that inherits an Active Record migration. Inside this class is a change method, then the artists table creation which includes your name origin and genre strings as the columns to your table, along with some timestamps which give you info about the creation time and last modified time of any row you add to your table.</p>
+
+<p>You now have your models!</p>
+
+<h1 id="model-relationships">Model relationships</h1>
+
+<p>Onto the <code class="language-plaintext highlighter-rouge">create    app/models/artist.rb</code> line. Here is where we can add some logic to the models such as validations, keys, aliases, or what we’ll be focusing on: relationships. Relationships are ways that you can make different tables interact with one another in a variety of ways.</p>
+
+<p>Opening up the <code class="language-plaintext highlighter-rouge">app/models</code> folder there will be an <code class="language-plaintext highlighter-rouge">application_record.rb</code> which we don’t need to worry about, just to keep in mind that it connects to Active Record once again, this time to the base to handle how the tables behave. If you open up <code class="language-plaintext highlighter-rouge">artist.rb</code> and <code class="language-plaintext highlighter-rouge">song.rb</code> you’ll see:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/models/artist.rb</span>
+<span class="k">class</span> <span class="nc">Artist</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/song.rb</span>
+<span class="k">class</span> <span class="nc">Song</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Here’s where we’ll add in some relationships. Thinking about it logically, an artist can have many songs, which means that songs belong to an artist. This is known appropriately as a <strong>has-many belongs-to</strong> relationship, and it’s easy enough to put into our models:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># app/models/artist.rb</span>
+<span class="k">class</span> <span class="nc">Artist</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:songs</span>
+<span class="k">end</span>
+
+<span class="c1"># app/models/song.rb</span>
+<span class="k">class</span> <span class="nc">Song</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:artist</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Other relationships include many-to-many, one-to-one, etc., examples which you can find <a href="https://code.tutsplus.com/articles/sql-for-beginners-part-3-database-relationships--net-8561">here</a>. The thing to keep in mind is that if you have many of something then the table name will be plural, like <code class="language-plaintext highlighter-rouge">has_many :songs</code> above, and if there’s only one thing it will be singular like <code class="language-plaintext highlighter-rouge">belongs_to :artist</code> above or <code class="language-plaintext highlighter-rouge">has_one :artist</code>.</p>
+
+<p>I’ll cover how we can use these relationships later on, but bascially this allows us to say “give me an artist’s songs”, or “give me the artist this song belongs to”. I mentioned before when talking about <strong>artist_id</strong> that we had the artist model to link it to. We just made that link using relationships so an artist with an ID of 1 and a song with an artist_id of 1 will automatically be linked together!</p>
+
+<h1 id="migrating-your-models-into-tables">Migrating your models into tables</h1>
+
+<p>We have our models set up but no actual tables are made. We have to run a few commands to actually make your table but again it’s very simple to do. The <code class="language-plaintext highlighter-rouge">rake</code> commands will help us through the process and handle everything for us. Here are the strings of commands to type in:</p>
+
+<p><code class="language-plaintext highlighter-rouge">rake db:create</code> (creates the basic databases)</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Created database <span class="s1">'test_api_development'</span>
+Created database <span class="s1">'test_api_test'</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">rake db:migrate</code> (puts the models you generated into the database)</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">==</span> 20171025192202 CreateArtists: migrating <span class="o">====================================</span>
+<span class="nt">--</span> create_table<span class="o">(</span>:artists<span class="o">)</span>
+   -&gt; 0.0337s
+<span class="o">==</span> 20171025192202 CreateArtists: migrated <span class="o">(</span>0.0338s<span class="o">)</span> <span class="o">===========================</span>
+
+<span class="o">==</span> 20171025192209 CreateSongs: migrating <span class="o">======================================</span>
+<span class="nt">--</span> create_table<span class="o">(</span>:songs<span class="o">)</span>
+   -&gt; 0.0111s
+<span class="o">==</span> 20171025192209 CreateSongs: migrated <span class="o">(</span>0.0112s<span class="o">)</span> <span class="o">=============================</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">rake db:migrate RAILS_ENV=development</code> (same thing, but migrates into the dev database)</p>
+
+<p>Now you can load up your Rails console by typing in <code class="language-plaintext highlighter-rouge">rails c</code> and see your database and models! Type in <code class="language-plaintext highlighter-rouge">Artist</code> or <code class="language-plaintext highlighter-rouge">Song</code> to see your tables (you may have to do Artist.connection first to connect to the database)</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Artist</span>
+<span class="no">Artist</span><span class="p">(</span><span class="ss">id: </span><span class="n">integer</span><span class="p">,</span> <span class="ss">name: </span><span class="n">string</span><span class="p">,</span> <span class="ss">origin: </span><span class="n">string</span><span class="p">,</span> <span class="ss">genre: </span><span class="n">string</span><span class="p">,</span> <span class="ss">created_at: </span><span class="n">datetime</span><span class="p">,</span> <span class="ss">updated_at: </span><span class="n">datetime</span><span class="p">)</span>
+
+<span class="c1"># Song</span>
+<span class="no">Song</span><span class="p">(</span><span class="ss">id: </span><span class="n">integer</span><span class="p">,</span> <span class="ss">name: </span><span class="n">string</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="n">integer</span><span class="p">,</span> <span class="ss">album: </span><span class="n">string</span><span class="p">,</span> <span class="ss">length: </span><span class="n">string</span><span class="p">,</span> <span class="ss">created_at: </span><span class="n">datetime</span><span class="p">,</span> <span class="ss">updated_at: </span><span class="n">datetime</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>FYI it’s our friend Active Record that’s allowing us to simply type in Artist or Song to tap into the database.</p>
+
+<p>For the many rake commands above, it’s a hassle to always type them in especially if you have to change tables, seed new data, etc., so here’s a shortcut that allows you to type in one command. If you go into your <code class="language-plaintext highlighter-rouge">Rakefile</code> you can copy and paste this at the bottom:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">namespace</span> <span class="ss">:db</span> <span class="k">do</span>
+
+  <span class="n">desc</span> <span class="s2">"reload and prep for scraping"</span>
+  <span class="n">task</span> <span class="ss">:reload</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
+    <span class="nb">system</span><span class="p">(</span><span class="s2">"rake db:drop"</span><span class="p">)</span>
+    <span class="nb">system</span><span class="p">(</span><span class="s2">"rake db:create"</span><span class="p">)</span>
+    <span class="nb">system</span><span class="p">(</span><span class="s2">"rake db:migrate"</span><span class="p">)</span>
+    <span class="nb">system</span><span class="p">(</span><span class="s2">"rake db:migrate RAILS_ENV=development"</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s1">'Database Ready'</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Namespace lets us say “type <code class="language-plaintext highlighter-rouge">db</code> first” then the task of <code class="language-plaintext highlighter-rouge">:reload</code> is what it acts on. Put together in your terminal you can simply type in <code class="language-plaintext highlighter-rouge">rake db:reload</code> and it will first drop your database then do all the commands above for you!</p>
+
+<h1 id="restful-routes">RESTful routes</h1>
+
+<p>In our rails console we can manage our database by viewing rows, creating new rows, editing existing rows, or deleting rows. These are part of what’s known as the 7 RESTful routes which from the standpoint of our artists table are:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>route</th>
+      <th>explanation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>index</td>
+      <td>display a list of all artists</td>
+    </tr>
+    <tr>
+      <td>new</td>
+      <td>HTML form for creating a new artist</td>
+    </tr>
+    <tr>
+      <td>create</td>
+      <td>create a new artist</td>
+    </tr>
+    <tr>
+      <td>show</td>
+      <td>display a specific artist</td>
+    </tr>
+    <tr>
+      <td>edit</td>
+      <td>return an HTML form for editing a artist</td>
+    </tr>
+    <tr>
+      <td>update</td>
+      <td>update a specific artist</td>
+    </tr>
+    <tr>
+      <td>destroy</td>
+      <td>delete a specific artist</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You can visit <a href="http://restfulrouting.com/#introduction">this site</a> for an intro to RESTful routes, and I also made a <a href="https://docs.google.com/spreadsheets/d/1YWPb6BsZjMorn4XGMA5o7qGKvgYNLJTgtrbhoceZvkw/edit?usp=sharing">cheat sheet</a> with controller actions, usage, SQL, and more. In fact let’s add the SQL to the table above:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>route</th>
+      <th>explanation</th>
+      <th>SQL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>index</td>
+      <td>display a list of all artists</td>
+      <td>SELECT * FROM song</td>
+    </tr>
+    <tr>
+      <td>new</td>
+      <td>HTML form for creating a new artist</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>create</td>
+      <td>create a new artist</td>
+      <td>INSERT INTO song (column) VALUES (?)</td>
+    </tr>
+    <tr>
+      <td>show</td>
+      <td>display a specific artist</td>
+      <td>SELECT * FROM song WHERE id = ?</td>
+    </tr>
+    <tr>
+      <td>edit</td>
+      <td>return an HTML form for editing a artist</td>
+      <td>SELECT * FROM song WHERE id = ?</td>
+    </tr>
+    <tr>
+      <td>update</td>
+      <td>update a specific artist</td>
+      <td>UPDATE song SET column = ? WHERE id = ?</td>
+    </tr>
+    <tr>
+      <td>destroy</td>
+      <td>delete a specific artist</td>
+      <td>DELETE FROM song WHERE id = ?</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>So how do we actually use these RESTful routes? Once again we have our favorite recurring theme of this post: using Active Record to help us out. Open up your Rails console again, and just like before when we typed in Artist or Song to see the tables, we can type in <code class="language-plaintext highlighter-rouge">Artist.all</code> or <code class="language-plaintext highlighter-rouge">Song.all</code> to get a list of all songs (they’re empty for now but they’re there)</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Artist.all</span>
+<span class="no">Artist</span> <span class="no">Load</span> <span class="p">(</span><span class="mf">2.6</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span>  <span class="s2">"artists"</span><span class="p">.</span><span class="nf">*</span> <span class="no">FROM</span> <span class="s2">"artists"</span> <span class="no">LIMIT</span> <span class="vg">$1</span>  <span class="p">[[</span><span class="s2">"LIMIT"</span><span class="p">,</span> <span class="mi">11</span><span class="p">]]</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;ActiveRecord::Relation []&gt;</span>
+
+<span class="c1"># Song.all</span>
+<span class="no">Song</span> <span class="no">Load</span> <span class="p">(</span><span class="mf">2.7</span><span class="n">ms</span><span class="p">)</span>  <span class="no">SELECT</span>  <span class="s2">"songs"</span><span class="p">.</span><span class="nf">*</span> <span class="no">FROM</span> <span class="s2">"songs"</span> <span class="no">LIMIT</span> <span class="vg">$1</span>  <span class="p">[[</span><span class="s2">"LIMIT"</span><span class="p">,</span> <span class="mi">11</span><span class="p">]]</span>
+<span class="o">=&gt;</span> <span class="c1">#&lt;ActiveRecord::Relation []&gt;</span>
+</code></pre></div></div>
+
+<p>Notice something on the return? It’s giving us the SQL that <code class="language-plaintext highlighter-rouge">Artist.all</code> points to, specifically <code class="language-plaintext highlighter-rouge">SELECT * FROM artists</code>. With that knowledge, let’s add Active Record to the table above:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>route</th>
+      <th>AR</th>
+      <th>SQL</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>index</td>
+      <td>Artist.all</td>
+      <td>SELECT * FROM song</td>
+    </tr>
+    <tr>
+      <td>new</td>
+      <td>Artist.new(params)</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>create</td>
+      <td>@artist.save</td>
+      <td>INSERT INTO song (column) VALUES (?)</td>
+    </tr>
+    <tr>
+      <td>show</td>
+      <td>Artist.find(id)</td>
+      <td>SELECT * FROM song WHERE id = ?</td>
+    </tr>
+    <tr>
+      <td>edit</td>
+      <td>Artist.find(id)</td>
+      <td>SELECT * FROM song WHERE id = ?</td>
+    </tr>
+    <tr>
+      <td>update</td>
+      <td>@artist.save / update</td>
+      <td>UPDATE song SET column = ? WHERE id = ?</td>
+    </tr>
+    <tr>
+      <td>destroy</td>
+      <td>@artist.destroy / delete</td>
+      <td>DELETE FROM song WHERE id = ?</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">@artist</code> is an object that has an artist’s data. With your console still open let’s tackle the <strong>new</strong> RESTful route and make a new entry:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">new</span>
+<span class="vi">@artist</span> <span class="c1">#=&gt; &lt;Artist id: nil, name: nil, origin: nil, genre: nil, created_at: nil, updated_at: nil&gt;</span>
+</code></pre></div></div>
+
+<p>Note we did not put the artist into the database yet, just created an object with an Artist’s attributes hence why no SQL was fired off. Let’s add some info to the attributes:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@artist</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"Queen"</span>
+<span class="vi">@artist</span><span class="p">.</span><span class="nf">origin</span> <span class="o">=</span> <span class="s2">"London, England"</span>
+<span class="vi">@artist</span><span class="p">.</span><span class="nf">genre</span> <span class="o">=</span> <span class="s2">"Rock"</span>
+<span class="vi">@artist</span> <span class="c1">#=&gt; &lt;Artist id: nil, name: "Queen", origin: "London, England", genre: "Rock", created_at: nil, updated_at: nil&gt;</span>
+</code></pre></div></div>
+
+<p>We don’t touch the id, created_at, or updated_at since they’ll automatically be populated when we save the artist to our database, which is what we’ll do now with our <strong>create</strong> RESTful route:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">artist</span><span class="p">.</span><span class="n">save</span>
+   <span class="p">(</span><span class="mi">2</span><span class="p">.</span><span class="mi">1</span><span class="n">ms</span><span class="p">)</span>  <span class="k">BEGIN</span>
+  <span class="k">SQL</span> <span class="p">(</span><span class="mi">25</span><span class="p">.</span><span class="mi">9</span><span class="n">ms</span><span class="p">)</span>  <span class="k">INSERT</span> <span class="k">INTO</span> <span class="nv">"artists"</span> <span class="p">(</span><span class="nv">"name"</span><span class="p">,</span> <span class="nv">"origin"</span><span class="p">,</span> <span class="nv">"genre"</span><span class="p">,</span> <span class="nv">"created_at"</span><span class="p">,</span> <span class="nv">"updated_at"</span><span class="p">)</span>
+  <span class="k">VALUES</span> <span class="p">(</span><span class="err">$</span><span class="mi">1</span><span class="p">,</span> <span class="err">$</span><span class="mi">2</span><span class="p">,</span> <span class="err">$</span><span class="mi">3</span><span class="p">,</span> <span class="err">$</span><span class="mi">4</span><span class="p">,</span> <span class="err">$</span><span class="mi">5</span><span class="p">)</span> <span class="n">RETURNING</span> <span class="nv">"id"</span>  <span class="p">[[</span><span class="nv">"name"</span><span class="p">,</span> <span class="nv">"Queen"</span><span class="p">],</span> <span class="p">[</span><span class="nv">"origin"</span><span class="p">,</span> <span class="nv">"London, England"</span><span class="p">],</span>
+  <span class="p">[</span><span class="nv">"genre"</span><span class="p">,</span> <span class="nv">"Rock"</span><span class="p">],</span> <span class="p">[</span><span class="nv">"created_at"</span><span class="p">,</span> <span class="nv">"2017-10-25 22:04:29.052588"</span><span class="p">],</span> <span class="p">[</span><span class="nv">"updated_at"</span><span class="p">,</span> <span class="nv">"2017-10-25 22:04:29.052588"</span><span class="p">]]</span>
+   <span class="p">(</span><span class="mi">4</span><span class="p">.</span><span class="mi">4</span><span class="n">ms</span><span class="p">)</span>  <span class="k">COMMIT</span>
+<span class="o">=&gt;</span> <span class="k">true</span>
+</code></pre></div></div>
+
+<p>We can do the attribute population all at once:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Rush"</span><span class="p">,</span> <span class="ss">origin: </span><span class="s2">"Ontario, Canada"</span><span class="p">,</span> <span class="ss">genre: </span><span class="s2">"Rock"</span><span class="p">)</span>
+<span class="c1">#=&gt; &lt;Artist id: nil, name: "Rush", origin: "Ontario, Canada", genre: "Rock", created_at: nil, updated_at: nil&gt;</span>
+<span class="vi">@artist</span><span class="p">.</span><span class="nf">save</span>
+<span class="p">(</span><span class="mf">1.9</span><span class="n">ms</span><span class="p">)</span>  <span class="k">BEGIN</span>
+  <span class="no">SQL</span> <span class="p">(</span><span class="mf">15.8</span><span class="n">ms</span><span class="p">)</span>  <span class="no">INSERT</span> <span class="no">INTO</span> <span class="s2">"artists"</span> <span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"origin"</span><span class="p">,</span> <span class="s2">"genre"</span><span class="p">,</span> <span class="s2">"created_at"</span><span class="p">,</span> <span class="s2">"updated_at"</span><span class="p">)</span>
+  <span class="no">VALUES</span> <span class="p">(</span><span class="vg">$1</span><span class="p">,</span> <span class="vg">$2</span><span class="p">,</span> <span class="vg">$3</span><span class="p">,</span> <span class="vg">$4</span><span class="p">,</span> <span class="vg">$5</span><span class="p">)</span> <span class="no">RETURNING</span> <span class="s2">"id"</span>  <span class="p">[[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"Rush"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"origin"</span><span class="p">,</span> <span class="s2">"Ontario, Canada"</span><span class="p">],</span>
+  <span class="p">[</span><span class="s2">"genre"</span><span class="p">,</span> <span class="s2">"Rock"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"created_at"</span><span class="p">,</span> <span class="s2">"2017-10-25 22:06:01.996880"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"updated_at"</span><span class="p">,</span> <span class="s2">"2017-10-25 22:06:01.996880"</span><span class="p">]]</span>
+<span class="p">(</span><span class="mf">2.3</span><span class="n">ms</span><span class="p">)</span>  <span class="no">COMMIT</span>
+<span class="o">=&gt;</span> <span class="kp">true</span>
+</code></pre></div></div>
+
+<p>Since we’re doing it directly we can skip the <strong>new</strong> process altogether and go right to the <strong>create</strong>:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Artist</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Metallica"</span><span class="p">,</span> <span class="ss">origin: </span><span class="s2">"Los Angeles, California"</span><span class="p">,</span> <span class="ss">genre: </span><span class="s2">"Metal"</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.6</span><span class="n">ms</span><span class="p">)</span>  <span class="k">BEGIN</span>
+  <span class="no">SQL</span> <span class="p">(</span><span class="mf">12.5</span><span class="n">ms</span><span class="p">)</span>  <span class="no">INSERT</span> <span class="no">INTO</span> <span class="s2">"artists"</span> <span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"origin"</span><span class="p">,</span> <span class="s2">"genre"</span><span class="p">,</span> <span class="s2">"created_at"</span><span class="p">,</span> <span class="s2">"updated_at"</span><span class="p">)</span> <span class="no">VALUES</span> <span class="p">(</span><span class="vg">$1</span><span class="p">,</span> <span class="vg">$2</span><span class="p">,</span> <span class="vg">$3</span><span class="p">,</span> <span class="vg">$4</span><span class="p">,</span> <span class="vg">$5</span><span class="p">)</span> <span class="no">RETURNING</span> <span class="s2">"id"</span>  <span class="p">[[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"Metallica"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"origin"</span><span class="p">,</span> <span class="s2">"Los Angeles, California"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"genre"</span><span class="p">,</span> <span class="s2">"Metal"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"created_at"</span><span class="p">,</span> <span class="s2">"2017-10-25 22:11:51.499988"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"updated_at"</span><span class="p">,</span> <span class="s2">"2017-10-25 22:11:51.499988"</span><span class="p">]]</span>
+<span class="p">(</span><span class="mf">3.6</span><span class="n">ms</span><span class="p">)</span>  <span class="no">COMMIT</span>
+<span class="c1">#=&gt; &lt;Artist id: 3, name: "Metallica", origin: "Los Angeles, California", genre: "Metal", created_at: "2017-10-25 22:07:51", updated_at: "2017-10-25 22:07:51"&gt;</span>
+</code></pre></div></div>
+
+<p>Now that we some artists, let’s create some songs that belong to those artists. Our current artists are:</p>
+
+<p>ID 1 - Queen
+ID 2 - Rush
+ID 3 - Metallica</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Don't Stop Me Now"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Jazz"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"3:29"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Somebody To Love"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"A Day at the Races"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"4:57"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Princes of the Universe"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"A Kind of Magic"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"3:32"</span><span class="p">)</span>
+
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Subdivisions"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Signals"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"5:34"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Red Barchetta"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Moving Pictures"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"6:06"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Far Cry"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Snakes &amp; Arrows"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"5:21"</span><span class="p">)</span>
+
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"For Whom the Bell Tolls"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">3</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Ride the Lightning"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"5:09"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Battery"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">3</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Master of Puppets"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"5:12"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"One"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">3</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"...And Justice for All"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"7:24"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now we have 9 songs at our disposal and can type in our <strong>index</strong> RESTful route of <code class="language-plaintext highlighter-rouge">Artist.all</code> or <code class="language-plaintext highlighter-rouge">Song.all</code> to see them, and because of our models and their relationships we can see an artist’s songs or a song’s artist:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Artist</span><span class="p">.</span><span class="nf">first</span>
+<span class="c1"># Artist Load (0.6ms)  SELECT  "artists".* FROM "artists" ORDER BY "artists"."id" ASC LIMIT $1  [["LIMIT", 1]]</span>
+<span class="c1"># or</span>
+<span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="no">Artist</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Artist Load (0.6ms)  SELECT  "artists".* FROM "artists" WHERE "artists"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]</span>
+
+<span class="c1"># all return</span>
+<span class="c1">#=&gt; &lt;Artist id: 1, name: "Queen", origin: "London, England", genre: "Rock" ... &gt;</span>
+
+<span class="no">Artist</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">id: </span><span class="mi">1</span><span class="p">).</span><span class="nf">songs</span>
+<span class="c1"># Artist Load (0.6ms)  SELECT  "artists".* FROM "artists" WHERE "artists"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]</span>
+<span class="c1"># Song Load (0.6ms)  SELECT  "songs".* FROM "songs" WHERE "songs"."artist_id" = $1 LIMIT $2  [["artist_id", 1], ["LIMIT", 11]]</span>
+
+<span class="c1">#=&gt; &lt;ActiveRecord::Associations::CollectionProxy [</span>
+  <span class="c1">#&lt;Song id: 1, name: "Don't Stop Me Now", artist_id: 1, album: "Jazz", length: "3:29", ... &gt;,</span>
+  <span class="c1">#&lt;Song id: 2, name: "Somebody To Love", artist_id: 1, album: "A Day at the Races", length: "4:57", ... &gt;,</span>
+  <span class="c1">#&lt;Song id: 3, name: "Princes of the Universe", artist_id: 1, album: "A Kind of Magic", length: "3:32", ... ]&gt;</span>
+
+<span class="no">Song</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">id: </span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Song Load (0.7ms)  SELECT  "songs".* FROM "songs" WHERE "songs"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]</span>
+
+<span class="c1">#=&gt; #&lt;Song id: 1, name: "Don't Stop Me Now", artist_id: 1, album: "Jazz", length: "3:29", ... &gt;</span>
+
+<span class="no">Song</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">id: </span><span class="mi">1</span><span class="p">).</span><span class="nf">artist</span>
+<span class="c1"># Song Load (0.8ms)  SELECT  "songs".* FROM "songs" WHERE "songs"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]</span>
+<span class="c1"># Artist Load (0.4ms)  SELECT  "artists".* FROM "artists" WHERE "artists"."id" = $1 LIMIT $2  [["id", 1], ["LIMIT", 1]]</span>
+
+<span class="c1">#=&gt; #&lt;Artist id: 1, name: "Queen", origin: "London, England", genre: "Rock", ... &gt;</span>
+</code></pre></div></div>
+
+<p>Everything works as normal!</p>
+
+<h1 id="seeding-this-data">Seeding this data</h1>
+
+<p>This is great that we can use the Rails console for all this work but if we ever reset the database we’d have to do it all over again. This is where seeding our data comes into play. If you open up <code class="language-plaintext highlighter-rouge">db/migrate/seeds.rb</code> you can put EVERYTHING we just did in there:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Artist</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Queen"</span><span class="p">,</span> <span class="ss">origin: </span><span class="s2">"London, England"</span><span class="p">,</span> <span class="ss">genre: </span><span class="s2">"Rock"</span><span class="p">)</span>
+<span class="no">Artist</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Rush"</span><span class="p">,</span> <span class="ss">origin: </span><span class="s2">"Ontario, Canada"</span><span class="p">,</span> <span class="ss">genre: </span><span class="s2">"Rock"</span><span class="p">)</span>
+<span class="no">Artist</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Metallica"</span><span class="p">,</span> <span class="ss">origin: </span><span class="s2">"Los Angeles, California"</span><span class="p">,</span> <span class="ss">genre: </span><span class="s2">"Metal"</span><span class="p">)</span>
+
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Don't Stop Me Now"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Jazz"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"3:29"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Somebody To Love"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"A Day at the Races"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"4:57"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Princes of the Universe"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">1</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"A Kind of Magic"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"3:32"</span><span class="p">)</span>
+
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Subdivisions"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Signals"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"5:34"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Red Barchetta"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Moving Pictures"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"6:06"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Far Cry"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">2</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Snakes &amp; Arrows"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"5:21"</span><span class="p">)</span>
+
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"For Whom the Bell Tolls"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">3</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Ride the Lightning"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"5:09"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"Battery"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">3</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"Master of Puppets"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"5:12"</span><span class="p">)</span>
+<span class="no">Song</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="ss">name: </span><span class="s2">"One"</span><span class="p">,</span> <span class="ss">artist_id: </span><span class="mi">3</span><span class="p">,</span> <span class="ss">album: </span><span class="s2">"...And Justice for All"</span><span class="p">,</span> <span class="ss">length: </span><span class="s2">"7:24"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Reload the database by typing in that Rakefile command we added: <code class="language-plaintext highlighter-rouge">rake db:reload</code>. Open up the rails console and you’ll see nothing’s there if you type in <code class="language-plaintext highlighter-rouge">Artist.all</code> or <code class="language-plaintext highlighter-rouge">Song.all</code>. Exit back out to the main terminal and type in <code class="language-plaintext highlighter-rouge">rake db:seed</code>. After a short period of time the next line will appear as if nothing happened, buf if you go back into your rails console and look for the artists and songs everything’s there!</p>
+
+<h1 id="controller-setup-and-the-rails-server">Controller setup and the Rails server</h1>
+
+<p>So it’s great we can manipulate these RESTful routes in the console or seed the data but right now we can’t to do this via our app. Onto the <code class="language-plaintext highlighter-rouge">invoke  controller</code> and <code class="language-plaintext highlighter-rouge">create    app/controllers/artists_controller.rb</code> lines.</p>
+
+<p>As I mentioned before the controller is the logic to our API. Let’s look again at the Active Record commands:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>route</th>
+      <th>explanation</th>
+      <th>AR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>index</td>
+      <td>display a list of all artists</td>
+      <td>Artist.all</td>
+    </tr>
+    <tr>
+      <td>new</td>
+      <td>HTML form for creating a new artist</td>
+      <td>Artist.new(params)</td>
+    </tr>
+    <tr>
+      <td>create</td>
+      <td>create a new artist</td>
+      <td>@artist.save</td>
+    </tr>
+    <tr>
+      <td>show</td>
+      <td>display a specific artist</td>
+      <td>Artist.find(id)</td>
+    </tr>
+    <tr>
+      <td>edit</td>
+      <td>return an HTML form for editing a artist</td>
+      <td>Artist.find(id)</td>
+    </tr>
+    <tr>
+      <td>update</td>
+      <td>update a specific artist</td>
+      <td>@artist.save / update</td>
+    </tr>
+    <tr>
+      <td>destroy</td>
+      <td>delete a specific artist</td>
+      <td>@artist.destroy / delete</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In this specific app we’re only going to using the <strong>index</strong> and <strong>show</strong> routes. Open up <code class="language-plaintext highlighter-rouge">app/controllers/artists_controller.rb</code> and you’ll see:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>It’s here that we can add in commands similar to what we used in the rails console. Referencing the table above we know that <strong>index</strong> is <code class="language-plaintext highlighter-rouge">Artist.all</code> and <strong>show</strong> is <code class="language-plaintext highlighter-rouge">Artist.find(id)</code> or <code class="language-plaintext highlighter-rouge">Artist.find_by(id: id)</code>. Let’s tackle our index method first. The first step is defining our index method:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>We’ll then insert our command inside of it:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Save your work and let’s start up our rails server by typing into your terminal <code class="language-plaintext highlighter-rouge">rails s</code>. Once your server is running you’ll see a line <code class="language-plaintext highlighter-rouge">* Listening on tcp://0.0.0.0:3000</code> which means you can go to http://localhost:3000/ and see that your server is up and running with the default “Yay! You’re on Rails!” welcome screen.</p>
+
+<p>We can access our artist model by visiting http://localhost:3000/artists - but nothing happens when you do. Go back to your mac terminal and you’ll see the following message:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Started GET <span class="s2">"/artists"</span> <span class="k">for </span>127.0.0.1 at 2017-10-25 22:19:54 <span class="nt">-0400</span>
+Processing by ArtistsController#index as HTML
+Completed 204 No Content <span class="k">in </span>2ms <span class="o">(</span>ActiveRecord: 0.0ms<span class="o">)</span>
+</code></pre></div></div>
+
+<p>This is because we returned <code class="language-plaintext highlighter-rouge">Artist.all</code> but we’re not rendering any content. We can render out our result as HTML by doing:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">html: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>And get back the enumerator <code class="language-plaintext highlighter-rouge">#&lt;Artist::ActiveRecord_Relation:0x007fc9751ad100&gt;</code> but that isn’t helpful for looking at an API. Instead we can render as JSON:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>And voila we can see loads of data!</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="ss">id: </span><span class="mi">1</span><span class="p">,</span>
+    <span class="ss">name: </span><span class="s2">"Queen"</span><span class="p">,</span>
+    <span class="ss">origin: </span><span class="s2">"London, England"</span><span class="p">,</span>
+    <span class="ss">genre: </span><span class="s2">"Rock"</span><span class="p">,</span>
+    <span class="ss">created_at: </span><span class="s2">"2017-10-26T02:39:48.053Z"</span><span class="p">,</span>
+    <span class="ss">updated_at: </span><span class="s2">"2017-10-26T02:39:48.053Z"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="ss">id: </span><span class="mi">2</span><span class="p">,</span>
+    <span class="ss">name: </span><span class="s2">"Rush"</span><span class="p">,</span>
+    <span class="ss">origin: </span><span class="s2">"Ontario, Canada"</span><span class="p">,</span>
+    <span class="ss">genre: </span><span class="s2">"Rock"</span><span class="p">,</span>
+    <span class="ss">created_at: </span><span class="s2">"2017-10-26T02:39:48.064Z"</span><span class="p">,</span>
+    <span class="ss">updated_at: </span><span class="s2">"2017-10-26T02:39:48.064Z"</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="ss">id: </span><span class="mi">3</span><span class="p">,</span>
+    <span class="ss">name: </span><span class="s2">"Metallica"</span><span class="p">,</span>
+    <span class="ss">origin: </span><span class="s2">"Los Angeles, California"</span><span class="p">,</span>
+    <span class="ss">genre: </span><span class="s2">"Metal"</span><span class="p">,</span>
+    <span class="ss">created_at: </span><span class="s2">"2017-10-26T02:39:48.069Z"</span><span class="p">,</span>
+    <span class="ss">updated_at: </span><span class="s2">"2017-10-26T02:39:48.069Z"</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<p>And in our terminal we now see that the correct SQL fired off:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Started GET <span class="s2">"/artists"</span> <span class="k">for </span>127.0.0.1 at 2017-10-25 22:21:26 <span class="nt">-0400</span>
+Processing by ArtistsController#index as HTML
+  Artist Load <span class="o">(</span>0.6ms<span class="o">)</span>  SELECT <span class="s2">"artists"</span>.<span class="k">*</span> FROM <span class="s2">"artists"</span>
+Completed 200 OK <span class="k">in </span>7ms <span class="o">(</span>Views: 5.9ms | ActiveRecord: 0.6ms<span class="o">)</span>
+</code></pre></div></div>
+
+<p>Now let’s try adding the <strong>show</strong> route:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>And we can show a specific artist with the id of 1 by going to http://localhost:3000/artists/1 - but we get the following error:</p>
+
+<p><code class="language-plaintext highlighter-rouge">NameError in ArtistsController#show
+undefined local variable or method 'id' for #&lt;ArtistsController:0x007fc974cceb70&gt;</code></p>
+
+<p>Our <strong>show</strong> method doesn’t know what an ‘id’ is. Let’s quickly debug this and learn something very important in the process. Put <code class="language-plaintext highlighter-rouge">byebug</code> at the beginning of our show method:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">byebug</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Reload http://localhost:3000/artists/1 and go to your terminal to see that your program stops at the byebug and allows you to type commands in as if you were inside your application. Typing in <code class="language-plaintext highlighter-rouge">id</code> get you the NameError Exception, so where is our id located? Introducing <strong>parameters</strong>, how Active Record handles table attributes. If you type in <code class="language-plaintext highlighter-rouge">params</code> you’ll get back:</p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;ActionController::Parameters {"controller"=&gt;"artists", "action"=&gt;"show", "id"=&gt;"1"} permitted: false&gt;</code></p>
+
+<p>You’ll notice this is a hash that has the controller, action, and id, so we can type in <code class="language-plaintext highlighter-rouge">params[:id]</code> to access the id and get back “1”. All we need to do is substitute <code class="language-plaintext highlighter-rouge">id</code> for <code class="language-plaintext highlighter-rouge">params[:id]</code> in our method and it should work:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>In your terminal type in <code class="language-plaintext highlighter-rouge">exit</code> to exit the byebug instance, then reload http://localhost:3000/artists/1 and success!</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="ss">id: </span><span class="mi">1</span><span class="p">,</span>
+  <span class="ss">name: </span><span class="s2">"Queen"</span><span class="p">,</span>
+  <span class="ss">origin: </span><span class="s2">"London, England"</span><span class="p">,</span>
+  <span class="ss">genre: </span><span class="s2">"Rock"</span><span class="p">,</span>
+  <span class="ss">created_at: </span><span class="s2">"2017-10-26T02:39:48.053Z"</span><span class="p">,</span>
+  <span class="ss">updated_at: </span><span class="s2">"2017-10-26T02:39:48.053Z"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Try doing the same thing for the songs controller on your own. Once you’re done your two controllers should look like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+
+
+<span class="k">class</span> <span class="nc">SongsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Song</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Song</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h1 id="routes">Routes</h1>
+
+<p>There’s one very important thing that Rails did for you automatically when you generated your resource and that’s the resources themselves. This is the final piece of the generated pieces: <code class="language-plaintext highlighter-rouge">invoke  resource_route</code> and <code class="language-plaintext highlighter-rouge">route    resources :artists</code>. If you go into <code class="language-plaintext highlighter-rouge">config/routes.rb</code> you’ll notice the following:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:songs</span>
+  <span class="n">resources</span> <span class="ss">:artists</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>What this file does is allow us to use the 7 RESTful routes in our URL like we just did. Try deleting the <code class="language-plaintext highlighter-rouge">resources</code> lines and reloading http://localhost:3000/artists or http://localhost:3000/artists/1 and you’ll get an error:</p>
+
+<p>`Routing Error
+No route matches [GET] “/artists”</p>
+
+<p>Routing Error
+No route matches [GET] “/artists/1”`</p>
+
+<p>These <code class="language-plaintext highlighter-rouge">resources</code> lines automatically redirect the URL to the appropriate controller RESTful action. Examples of what it looks like to have the <strong>index</strong> or <strong>show</strong> routes are:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">get</span> <span class="s1">'/artists'</span><span class="p">,</span> <span class="n">to</span><span class="ss">:'artists#index'</span>
+<span class="n">get</span> <span class="s1">'/artists/:id'</span><span class="p">,</span> <span class="n">to</span><span class="ss">:'artists#show'</span>
+</code></pre></div></div>
+
+<p>and the <code class="language-plaintext highlighter-rouge">resources</code> handle all 7 routes. In the case of our application we only want to route to the <strong>index</strong>* or <strong>show</strong> routes, and we can easily do that by tweaking our code:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">resources</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="p">]</span>
+  <span class="n">resources</span> <span class="ss">:artists</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="p">]</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Now we limited our resources to only these two routes! We can use <code class="language-plaintext highlighter-rouge">exclude: [:new, :create, :etc]</code> as well if we wanted to.</p>
+
+<h1 id="cors">CORS</h1>
+
+<p>At this point we have a finished API! We can pat ourselves on the backs but there’s one major issue: external apps can’t access the application at all. If we try we’ll get an error:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Failed to load http://localhost:3000/artist: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'null' is therefore not allowed access.</code></p>
+
+<p>This appears because Rails has a security feature to prevent external applications from accessing the database, which is very useful if someone say wants to access your <strong>destroy</strong> route and remove all entries in your database. Thankfully there’s something called CORS that comes to the rescue and allows us to either bypass this security feature or set restrictions on it.</p>
+
+<p>Go into your <code class="language-plaintext highlighter-rouge">Gemfile</code> and on lines 25-26 you’ll see the <code class="language-plaintext highlighter-rouge">Rack CORS</code> gem. As line 25 says:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible</code></p>
+
+<p>First uncomment line 26’s <code class="language-plaintext highlighter-rouge">gem 'rack-cors'</code>, save the file, then run <code class="language-plaintext highlighter-rouge">bundle install</code> in your terminal.</p>
+
+<p>After that open up <code class="language-plaintext highlighter-rouge">config/application.rb</code> to where your <code class="language-plaintext highlighter-rouge">module TestApi</code> is located. Copy and paste this over that module:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">TestApi</span>
+  <span class="k">class</span> <span class="nc">Application</span> <span class="o">&lt;</span> <span class="no">Rails</span><span class="o">::</span><span class="no">Application</span>
+    <span class="n">config</span><span class="p">.</span><span class="nf">load_defaults</span> <span class="mf">5.1</span>
+
+    <span class="n">config</span><span class="p">.</span><span class="nf">api_only</span> <span class="o">=</span> <span class="kp">true</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">config</span><span class="p">.</span><span class="nf">middleware</span><span class="p">.</span><span class="nf">insert_before</span> <span class="mi">0</span><span class="p">,</span> <span class="no">Rack</span><span class="o">::</span><span class="no">Cors</span> <span class="k">do</span>
+      <span class="n">allow</span> <span class="k">do</span>
+        <span class="n">origins</span> <span class="s1">'*'</span>
+        <span class="n">resource</span> <span class="s1">'*'</span><span class="p">,</span>
+          <span class="ss">headers: </span><span class="s1">'*'</span><span class="p">,</span>
+          <span class="ss">methods: </span><span class="p">[</span><span class="ss">:get</span><span class="p">,</span> <span class="ss">:post</span><span class="p">,</span> <span class="ss">:put</span><span class="p">,</span> <span class="ss">:patch</span><span class="p">,</span> <span class="ss">:delete</span><span class="p">,</span> <span class="ss">:options</span><span class="p">,</span> <span class="ss">:head</span><span class="p">]</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>These two steps of putting <code class="language-plaintext highlighter-rouge">gem 'rack-cors'</code> in your <code class="language-plaintext highlighter-rouge">Gemfile</code> and adding the <code class="language-plaintext highlighter-rouge">Rack::Cors</code> config in your <code class="language-plaintext highlighter-rouge">config/application.rb</code> are the fix!</p>
+
+<p>A quick and <strong>very important</strong> note though: doing <code class="language-plaintext highlighter-rouge">origins '*'</code> is extremely risky as the <code class="language-plaintext highlighter-rouge">*</code> is a wildcard character meaning ANYONE can access your API now. For purposes of our test application that doesn’t matter since we only have <strong>index</strong> and <strong>show</strong> as our routes, but if you have <strong>edit</strong> <strong>update</strong> or <strong>destroy</strong> routes then others can take advantage of it and easily mess with your API and database. In that case you can change the line to <code class="language-plaintext highlighter-rouge">origins 'http://www.your-site-here.com'</code> to only allow your specific external site to access the API. You can also (or alternatively) consense the <code class="language-plaintext highlighter-rouge">methods</code> line to <code class="language-plaintext highlighter-rouge">:methods =&gt; [:get]</code> to limit routes to only receive data.</p>
+
+<h1 id="better-practices">Better practices</h1>
+
+<h3 id="api-versions">API versions</h3>
+
+<p>Because APIs can sometimes change over time, it’s important to have versions of your API. You can do the following to add this to your API in a simple three-step process:</p>
+
+<p>1) move your controllers into <code class="language-plaintext highlighter-rouge">app/controllers/api/V1/</code></p>
+
+<p>2) change your controller classes to</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Api::V1::ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+
+
+<span class="k">class</span> <span class="nc">Api::V1::SongsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Song</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Song</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>3) change your <code class="language-plaintext highlighter-rouge">config/routes.rb</code> to</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+  <span class="n">namespace</span> <span class="ss">:api</span> <span class="k">do</span>
+    <span class="n">namespace</span> <span class="ss">:v1</span> <span class="k">do</span>
+
+      <span class="n">resources</span> <span class="ss">:songs</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="p">]</span>
+      <span class="n">resources</span> <span class="ss">:artists</span><span class="p">,</span> <span class="ss">only: </span><span class="p">[</span><span class="ss">:index</span><span class="p">,</span> <span class="ss">:show</span><span class="p">]</span>
+
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="using--in-the-controllers">Using @ in the controllers</h3>
+
+<p>You’ll notice in the tables:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>route</th>
+      <th>explanation</th>
+      <th>AR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>index</td>
+      <td>display a list of all artists</td>
+      <td>Artist.all</td>
+    </tr>
+    <tr>
+      <td>new</td>
+      <td>HTML form for creating a new artist</td>
+      <td>Artist.new(params)</td>
+    </tr>
+    <tr>
+      <td>create</td>
+      <td>create a new artist</td>
+      <td>@artist.save</td>
+    </tr>
+    <tr>
+      <td>show</td>
+      <td>display a specific artist</td>
+      <td>Artist.find(id)</td>
+    </tr>
+    <tr>
+      <td>edit</td>
+      <td>return an HTML form for editing a artist</td>
+      <td>Artist.find(id)</td>
+    </tr>
+    <tr>
+      <td>update</td>
+      <td>update a specific artist</td>
+      <td>@artist.save / update</td>
+    </tr>
+    <tr>
+      <td>destroy</td>
+      <td>delete a specific artist</td>
+      <td>@artist.destroy / delete</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>there’s <code class="language-plaintext highlighter-rouge">@artist</code>. This is a class object and it’s more proper to create these in each of your RESTful routes, especially since you’ll create the object once (useful for if you have to fire off SQL to do so) and then can work on it. If you’re conditionally rendering HTML or JSON based on use for a website vs. just viewing the tables directly it will help even more. Here’s an example of the 7 restful routes:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@artists</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artists</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">new</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:name</span><span class="p">],</span> <span class="ss">origin: </span><span class="n">params</span><span class="p">[</span><span class="ss">:origin</span><span class="p">],</span> <span class="ss">genre: </span><span class="n">params</span><span class="p">[</span><span class="ss">:genre</span><span class="p">])</span>
+    <span class="c1"># make sure it correctly saves, otherwise it will error</span>
+    <span class="k">if</span> <span class="vi">@artist</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">edit</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">update</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="c1"># make sure it correctly updates, otherwise it will error</span>
+    <span class="k">if</span> <span class="vi">@artist</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="ss">name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:name</span><span class="p">],</span> <span class="ss">origin: </span><span class="n">params</span><span class="p">[</span><span class="ss">:origin</span><span class="p">],</span> <span class="ss">genre: </span><span class="n">params</span><span class="p">[</span><span class="ss">:genre</span><span class="p">])</span>
+      <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="vi">@artist</span><span class="p">.</span><span class="nf">destroy</span>
+    <span class="c1"># redirect back to index once done</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="strong-params">Strong params</h3>
+
+<p>If your API has writing capabilities (POST methods) like <strong>create</strong> or <strong>update</strong> you’ll want to make sure the information being added to your database is correct. Strong params will prevent your database from updating unless the info is valid. Taking a look at the <strong>create</strong> route above:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="ss">name: </span><span class="n">params</span><span class="p">[</span><span class="ss">:name</span><span class="p">],</span> <span class="ss">origin: </span><span class="n">params</span><span class="p">[</span><span class="ss">:origin</span><span class="p">],</span> <span class="ss">genre: </span><span class="n">params</span><span class="p">[</span><span class="ss">:genre</span><span class="p">])</span>
+  <span class="c1"># make sure it correctly saves, otherwise it will error</span>
+  <span class="k">if</span> <span class="vi">@artist</span><span class="p">.</span><span class="nf">save</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>the params are <code class="language-plaintext highlighter-rouge">:name, :origin, :genre</code> which we can simplify to <code class="language-plaintext highlighter-rouge">artist_params</code> which will be a method we’ll create shortly:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create</span>
+  <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">artist_params</span><span class="p">)</span>
+  <span class="c1"># make sure it correctly saves, otherwise it will error</span>
+  <span class="k">if</span> <span class="vi">@artist</span><span class="p">.</span><span class="nf">save</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>That method will be added to the controller. We’ll get all parameters using <code class="language-plaintext highlighter-rouge">params</code>, then require it to be from the <code class="language-plaintext highlighter-rouge">:artist</code> model, and permit the <code class="language-plaintext highlighter-rouge">:name, :origin, :genre</code> to be accepted and validated. Putting it all together we get:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">artist_params</span>
+  <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:artist</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:origin</span><span class="p">,</span> <span class="ss">:genre</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>And finally since we don’t want anyone other than the application itself to mess with this data we can make the method private by simply putting in the line <code class="language-plaintext highlighter-rouge">private</code> in our controller and inserting the <code class="language-plaintext highlighter-rouge">artist_params</code> below it:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ArtistsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@artists</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artists</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">new</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">artist_params</span><span class="p">)</span>
+    <span class="c1"># make sure it correctly saves, otherwise it will error</span>
+    <span class="k">if</span> <span class="vi">@artist</span><span class="p">.</span><span class="nf">save</span>
+      <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">show</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">edit</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">update</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="c1"># make sure it correctly updates, otherwise it will error</span>
+    <span class="k">if</span> <span class="vi">@artist</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">artist_params</span><span class="p">)</span>
+      <span class="n">render</span> <span class="ss">json: </span><span class="vi">@artist</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">destroy</span>
+    <span class="vi">@artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
+    <span class="vi">@artist</span><span class="p">.</span><span class="nf">destroy</span>
+    <span class="c1"># redirect back to index once done</span>
+    <span class="n">render</span> <span class="ss">json: </span><span class="no">Artist</span><span class="p">.</span><span class="nf">all</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">artist_params</span>
+    <span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:artist</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:origin</span><span class="p">,</span> <span class="ss">:genre</span><span class="p">)</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>There you have it, a working API! You can either add to this API by adding views and making it an application, or do what I do and make a separate application with JavaScript / React / etc. that can tap into this API. Try out the other relationship types between methods, or adding the other RESTful routes to your program. There’s so much you can do so get to it!</p>
+
+<p>Code on.</p>
+
+<p>Mike Merin</p>
+
+  </div>
+
+  <div class="date">
+    Written on October 25, 2017
+  </div>
+
+  
+
+</article>
+
+    </div>
+
+    
+
+  </body>
+</html>

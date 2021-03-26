@@ -23,6 +23,7 @@
     <meta property="twitter:title" content="Custom Routes, Endpoints and SQL Queries" />
     
 
+
     <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -40,15 +41,23 @@
           <a href="/" class="site-avatar"><img src="https://avatars1.githubusercontent.com/u/25751785?v=3&u=911668ca8f138c635755deeab510034ca325d624&s=400" /></a>
 
           <div class="site-info">
-            <h1 class="site-name"><a href="/">Learning Code with Mike Merin</a></h1>
+            <h1 class="site-name"><a class="showLink" href="/">Learning Code with Mike Merin</a></h1>
             <p class="site-description">I'm a meteorologist-turned-programmer. You can find my projects and blog here.</p>
           </div>
 
-          <nav>
-            
-            <a href="https://github.com/mikemerin" target="_blank">Projects</a>
-            <a href="/about">About</a>
-          </nav>
+          <nav><div class="icons">
+<a href="mailto:Mike.D.Merin@gmail.com"><i class="svg-icon email"></i></a>
+
+
+<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
+
+<a href="https://www.linkedin.com/in/mike-merin"><i class="svg-icon linkedin"></i></a>
+
+
+<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
+
+
+</div></nav>
         </header>
       </div>
     </div>
@@ -74,7 +83,7 @@
 
 <p>Just to quickly go over what I’m working with, here’s what my schema/table looks like for my Rails API:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CreateDailies</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mi">5</span><span class="o">.</span><span class="mi">1</span><span class="p">]</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CreateDailies</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span><span class="p">[</span><span class="mf">5.1</span><span class="p">]</span>
   <span class="k">def</span> <span class="nf">change</span>
     <span class="n">create_table</span> <span class="ss">:dailies</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span>
       <span class="n">t</span><span class="p">.</span><span class="nf">string</span> <span class="ss">:wban</span>
@@ -101,11 +110,10 @@
   <span class="k">end</span>
 <span class="k">end</span>
 
-</code></pre>
-</div>
-<p>Here are my models. I link everything by a station’s <code class="highlighter-rouge">wban</code> which is its unique ID. This is important and I’ll come back to this in the next section. By setting up my table relationships and linking the primary/foreign keys by <code class="highlighter-rouge">wban</code> we get:</p>
+</code></pre></div></div>
+<p>Here are my models. I link everything by a station’s <code class="language-plaintext highlighter-rouge">wban</code> which is its unique ID. This is important and I’ll come back to this in the next section. By setting up my table relationships and linking the primary/foreign keys by <code class="language-plaintext highlighter-rouge">wban</code> we get:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Station</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Station</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
   <span class="n">has_many</span> <span class="ss">:hourlies</span><span class="p">,</span> <span class="ss">primary_key: </span><span class="s2">"wban"</span><span class="p">,</span> <span class="ss">foreign_key: </span><span class="s2">"wban"</span>
   <span class="n">has_many</span> <span class="ss">:dailies</span><span class="p">,</span> <span class="ss">primary_key: </span><span class="s2">"wban"</span><span class="p">,</span> <span class="ss">foreign_key: </span><span class="s2">"wban"</span>
   <span class="n">has_many</span> <span class="ss">:monthlies</span><span class="p">,</span> <span class="ss">primary_key: </span><span class="s2">"wban"</span><span class="p">,</span> <span class="ss">foreign_key: </span><span class="s2">"wban"</span>
@@ -118,12 +126,11 @@
 <span class="k">class</span> <span class="nc">Daily</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
   <span class="n">belongs_to</span> <span class="ss">:station</span><span class="p">,</span> <span class="ss">primary_key: </span><span class="s2">"wban"</span><span class="p">,</span> <span class="ss">foreign_key: </span><span class="s2">"wban"</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>And finally my controllers. I’ll just go over my <code class="highlighter-rouge">dailies</code> controller as the others are very similar in their basic forms. I’m only using the <code class="highlighter-rouge">index</code> and <code class="highlighter-rouge">show</code> routes here, though I have strong params in case I want to expand to use <code class="highlighter-rouge">create</code> or <code class="highlighter-rouge">update</code> in the future. For my routes I render out the json needed for it:</p>
+<p>And finally my controllers. I’ll just go over my <code class="language-plaintext highlighter-rouge">dailies</code> controller as the others are very similar in their basic forms. I’m only using the <code class="language-plaintext highlighter-rouge">index</code> and <code class="language-plaintext highlighter-rouge">show</code> routes here, though I have strong params in case I want to expand to use <code class="language-plaintext highlighter-rouge">create</code> or <code class="language-plaintext highlighter-rouge">update</code> in the future. For my routes I render out the json needed for it:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Api</span><span class="o">::</span><span class="no">V1</span><span class="o">::</span><span class="no">DailiesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Api::V1::DailiesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
   <span class="k">def</span> <span class="nf">index</span>
     <span class="vi">@dailies</span> <span class="o">=</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">all</span>
@@ -149,17 +156,16 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>And notice that I have my controller as <code class="highlighter-rouge">Api::V1::DailiesController</code> because this file is in <code class="highlighter-rouge">controllers/api/v1</code> just in case I change the way the API works in the future.</p>
+<p>And notice that I have my controller as <code class="language-plaintext highlighter-rouge">Api::V1::DailiesController</code> because this file is in <code class="language-plaintext highlighter-rouge">controllers/api/v1</code> just in case I change the way the API works in the future.</p>
 
 <h1 id="basic-routes">Basic Routes</h1>
 <hr />
 
-<p>Normally you can do something simple with routes using <code class="highlighter-rouge">resources</code>. For example if I want to restrict only showing the <code class="highlighter-rouge">index</code> and <code class="highlighter-rouge">show</code> routes I’d do:</p>
+<p>Normally you can do something simple with routes using <code class="language-plaintext highlighter-rouge">resources</code>. For example if I want to restrict only showing the <code class="language-plaintext highlighter-rouge">index</code> and <code class="language-plaintext highlighter-rouge">show</code> routes I’d do:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
 
   <span class="n">namespace</span> <span class="ss">:api</span> <span class="k">do</span>
     <span class="n">namespace</span> <span class="ss">:v1</span> <span class="k">do</span>
@@ -172,14 +178,13 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Side-note: the <code class="highlighter-rouge">namespace</code> is important here because my controller is in <code class="highlighter-rouge">controller/api/v1</code> as I mentioned before.</p>
+<p>Side-note: the <code class="language-plaintext highlighter-rouge">namespace</code> is important here because my controller is in <code class="language-plaintext highlighter-rouge">controller/api/v1</code> as I mentioned before.</p>
 
-<p>As I said before though I’m not showing these by their normal <code class="highlighter-rouge">INTEGER PRIMARY KEY</code> but rather their <code class="highlighter-rouge">wban</code> ID. This is easy enough to do in our models by using a <code class="highlighter-rouge">get</code> script. In this case we’ll designate the URL route as a <code class="highlighter-rouge">wban</code> and redirect it to our controller’s <code class="highlighter-rouge">show</code> method.</p>
+<p>As I said before though I’m not showing these by their normal <code class="language-plaintext highlighter-rouge">INTEGER PRIMARY KEY</code> but rather their <code class="language-plaintext highlighter-rouge">wban</code> ID. This is easy enough to do in our models by using a <code class="language-plaintext highlighter-rouge">get</code> script. In this case we’ll designate the URL route as a <code class="language-plaintext highlighter-rouge">wban</code> and redirect it to our controller’s <code class="language-plaintext highlighter-rouge">show</code> method.</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Rails</span><span class="p">.</span><span class="nf">application</span><span class="p">.</span><span class="nf">routes</span><span class="p">.</span><span class="nf">draw</span> <span class="k">do</span>
 
   <span class="n">namespace</span> <span class="ss">:api</span> <span class="k">do</span>
     <span class="n">namespace</span> <span class="ss">:v1</span> <span class="k">do</span>
@@ -196,21 +201,20 @@
   <span class="k">end</span>
 
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Great now we can load up our API by typing in <code class="highlighter-rouge">rails s</code> and going to <code class="highlighter-rouge">http://localhost:3000/api/v1/monthlies</code> to see all station data, or <code class="highlighter-rouge">http://localhost:3000/api/v1/stations/94728</code> for example to see the station with the <code class="highlighter-rouge">wban</code> of 94728 which is Central Park. For the stations I also use a gem called “friendly_id” so I can use the callsign in my URL, in the case above <code class="highlighter-rouge">http://localhost:3000/api/v1/stations/NYC</code> for Central Park. This is how it looks when I type it into my URL:</p>
+<p>Great now we can load up our API by typing in <code class="language-plaintext highlighter-rouge">rails s</code> and going to <code class="language-plaintext highlighter-rouge">http://localhost:3000/api/v1/monthlies</code> to see all station data, or <code class="language-plaintext highlighter-rouge">http://localhost:3000/api/v1/stations/94728</code> for example to see the station with the <code class="language-plaintext highlighter-rouge">wban</code> of 94728 which is Central Park. For the stations I also use a gem called “friendly_id” so I can use the callsign in my URL, in the case above <code class="language-plaintext highlighter-rouge">http://localhost:3000/api/v1/stations/NYC</code> for Central Park. This is how it looks when I type it into my URL:</p>
 
 <p><img src="http://imgur.com/RW9IPSb.png" alt="Central Park Station" /></p>
 
-<p>I can also do <code class="highlighter-rouge">http://localhost:3000/api/v1/dailies/94728</code> however this would get us ALL daily data from Central Park which in my case is 3,714 different days. How can we get a specific date?</p>
+<p>I can also do <code class="language-plaintext highlighter-rouge">http://localhost:3000/api/v1/dailies/94728</code> however this would get us ALL daily data from Central Park which in my case is 3,714 different days. How can we get a specific date?</p>
 
 <h1 id="nested-route">Nested Route</h1>
 <hr />
 
 <p>Right now we have the following URL route and function:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># URL</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># URL</span>
 <span class="s1">'http://localhost:3000/api/v1/dailies/94728'</span>
 
 <span class="c1"># which uses the route</span>
@@ -221,12 +225,11 @@
   <span class="vi">@dailies</span> <span class="o">=</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:id</span><span class="p">])</span>
   <span class="n">render</span> <span class="ss">json: </span><span class="vi">@dailies</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>We’re passing the URL’s <code class="highlighter-rouge">94728</code> as the <code class="highlighter-rouge">:wban</code> and finding the right entries in our database that match it. We can go one step further and use the table’s <code class="highlighter-rouge">year_month_day</code> column as another nested route, then write a script in our controller that will find that station’s specific daily entry. In our <code class="highlighter-rouge">Dailies</code> table our <code class="highlighter-rouge">year_month_day</code> column is formatted <code class="highlighter-rouge">YYYYMMDD</code> so let’s use that as our URL and then pass it in as our params:</p>
+<p>We’re passing the URL’s <code class="language-plaintext highlighter-rouge">94728</code> as the <code class="language-plaintext highlighter-rouge">:wban</code> and finding the right entries in our database that match it. We can go one step further and use the table’s <code class="language-plaintext highlighter-rouge">year_month_day</code> column as another nested route, then write a script in our controller that will find that station’s specific daily entry. In our <code class="language-plaintext highlighter-rouge">Dailies</code> table our <code class="language-plaintext highlighter-rouge">year_month_day</code> column is formatted <code class="language-plaintext highlighter-rouge">YYYYMMDD</code> so let’s use that as our URL and then pass it in as our params:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># URL</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># URL</span>
 <span class="s1">'http://localhost:3000/api/v1/dailies/94728/20160123'</span>
 
 <span class="c1"># which uses the route</span>
@@ -237,20 +240,17 @@
   <span class="vi">@daily</span> <span class="o">=</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">])</span>
   <span class="n">render</span> <span class="ss">json: </span><span class="p">[</span><span class="vi">@daily</span><span class="p">]</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>Notice how <code class="highlighter-rouge">@daily</code> is in square <code class="highlighter-rouge">[]</code> brackets. This is because we were previously using <code class="highlighter-rouge">Daily.where</code> which returns an array of results even if only one is found, unlike <code class="highlighter-rouge">Daily.find_by</code> which only returns the object. We manually add the brackets so our front end can parse the results no matter what. This <code class="highlighter-rouge">Daily.find_by</code> effectively fires off the SQL:</p>
+<p>Notice how <code class="language-plaintext highlighter-rouge">@daily</code> is in square <code class="language-plaintext highlighter-rouge">[]</code> brackets. This is because we were previously using <code class="language-plaintext highlighter-rouge">Daily.where</code> which returns an array of results even if only one is found, unlike <code class="language-plaintext highlighter-rouge">Daily.find_by</code> which only returns the object. We manually add the brackets so our front end can parse the results no matter what. This <code class="language-plaintext highlighter-rouge">Daily.find_by</code> effectively fires off the SQL:</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">dailies</span> <span class="k">WHERE</span> <span class="n">wban</span> <span class="o">=</span> <span class="s1">'94728'</span> <span class="k">AND</span> <span class="n">year_month_day</span> <span class="o">=</span> <span class="s1">'20160123'</span> <span class="k">LIMIT</span> <span class="mi">1</span>
-</code></pre>
-</div>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">dailies</span> <span class="k">WHERE</span> <span class="n">wban</span> <span class="o">=</span> <span class="s1">'94728'</span> <span class="k">AND</span> <span class="n">year_month_day</span> <span class="o">=</span> <span class="s1">'20160123'</span> <span class="k">LIMIT</span> <span class="mi">1</span>
+</code></pre></div></div>
 
 <p>Which in Rails and ActiveRecord can be written as:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM dailies WHERE wban = '94728' AND year_month_day = '20160123' LIMIT 1"</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM dailies WHERE wban = '94728' AND year_month_day = '20160123' LIMIT 1"</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>Keep this ActiveRecord trick in mind for later, we’ll need it. Anyways using this URL/route/controller function we’ll now see the following JSON:</p>
 
@@ -267,17 +267,15 @@
 
 <p>Starting off with the URL we want to use, let’s just tack on “adjacent” to the end:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># URL</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># URL</span>
 <span class="s1">'http://localhost:3000/api/v1/dailies/94728/20160123/adjacent'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And let’s just call our new controller method “entry_adjacent”, then define that as our new route:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># which uses the route</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># which uses the route</span>
 <span class="n">get</span> <span class="s1">'/dailies/:wban/:year_month_day/adjacent'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'dailies#entry_adjacent'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>As for writing our new script to get the entries from our database, as I mentioned in <a href="https://mikemerin.github.io/WeatherCraft-blog-1/">part 1</a> of this series of posts we want to limit the amount of times we communicate with our database, as the more queries we send to it the longer it will take especially when the size of our database grows. Let’s do the worst case and then turn it around with a nice trick.</p>
 
@@ -352,56 +350,51 @@
 
 <p>Now we can simply write a script that finds the five dates ahead or behind the date that matches the station’s wban number, but that would cause two issues. See if you can spot them:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_adjacent</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_adjacent</span>
   <span class="vi">@dailies</span> <span class="o">=</span> <span class="p">[]</span>
-  <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="nf">.</span><span class="mi">5</span><span class="p">).</span><span class="nf">to_a</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vi">@dailies</span> <span class="o">&lt;&lt;</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">])</span> <span class="o">+</span> <span class="n">x</span> <span class="p">)</span> <span class="p">)</span> <span class="p">}</span>
+  <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="o">..</span><span class="mi">5</span><span class="p">).</span><span class="nf">to_a</span><span class="p">.</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vi">@dailies</span> <span class="o">&lt;&lt;</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">])</span> <span class="o">+</span> <span class="n">x</span> <span class="p">)</span> <span class="p">)</span> <span class="p">}</span>
   <span class="n">render</span> <span class="ss">json: </span><span class="vi">@dailies</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>While this script happens to work for the example station/date we’ve been working with, the first problem is that this script would need validations of it being a valid date which gets messy (30 days for June vs 31 for July, switching the year if after 1231). The second is that we’d have to send a query for every single date which again, is frowned upon.</p>
 
 <p>A fix for the first problem lies in how our data is laid out. Our dailies table when seeded went in order by station and day. This means that as long as the wban matches, if we go down a row we’ll get data for the next day and up a row for the previous day. We can find the id of the row for the chosen station/date first:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">day</span> <span class="o">=</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">])[</span><span class="ss">:id</span><span class="p">]</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">day</span> <span class="o">=</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">])[</span><span class="ss">:id</span><span class="p">]</span>
+</code></pre></div></div>
 
 <p>And then execute some manual ActiveRecord SQL to go down a row (add one to the id number) or up a row (subtract one) to get the correct data while also making sure the wban matches:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_adjacent</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_adjacent</span>
   <span class="n">day</span> <span class="o">=</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">])[</span><span class="ss">:id</span><span class="p">]</span>
   <span class="vi">@dailies</span> <span class="o">=</span> <span class="p">[]</span>
-  <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="nf">.</span><span class="mi">5</span><span class="p">).</span><span class="nf">to_a</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
+  <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="o">..</span><span class="mi">5</span><span class="p">).</span><span class="nf">to_a</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span>
     <span class="vi">@dailies</span> <span class="o">&lt;&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM dailies where id = </span><span class="si">#{</span><span class="n">day</span> <span class="o">+</span> <span class="n">x</span><span class="si">}</span><span class="s2"> and wban = '</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">]</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
   <span class="k">end</span>
   <span class="n">render</span> <span class="ss">json: </span><span class="vi">@dailies</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>This works great but we still have the problem of making a separate query for each item. We can make this three queries instead: one for the id, one for 5 rows above, and one for 5 rows below. We can use <code class="highlighter-rouge">ORDER BY id</code> we’ll be able to group the data for our purposes, and use the <code class="highlighter-rouge">&lt;</code> and <code class="highlighter-rouge">&gt;=</code> operators to go above and below the row of the id while using <code class="highlighter-rouge">LIMIT</code> accordingly. Hard coding this into SQL we’d get:</p>
+<p>This works great but we still have the problem of making a separate query for each item. We can make this three queries instead: one for the id, one for 5 rows above, and one for 5 rows below. We can use <code class="language-plaintext highlighter-rouge">ORDER BY id</code> we’ll be able to group the data for our purposes, and use the <code class="language-plaintext highlighter-rouge">&lt;</code> and <code class="language-plaintext highlighter-rouge">&gt;=</code> operators to go above and below the row of the id while using <code class="language-plaintext highlighter-rouge">LIMIT</code> accordingly. Hard coding this into SQL we’d get:</p>
 
-<div class="language-sql highlighter-rouge"><pre class="highlight"><code><span class="c1">-- get the 5 before, use DESC to order them from oldest entry to newest (5 days before to 1 day before)</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- get the 5 before, use DESC to order them from oldest entry to newest (5 days before to 1 day before)</span>
 <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">dailies</span> <span class="k">WHERE</span> <span class="n">id</span> <span class="o">&lt;</span> <span class="mi">3764704</span> <span class="k">AND</span> <span class="n">wban</span> <span class="o">=</span> <span class="mi">94728</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">id</span> <span class="k">DESC</span> <span class="k">LIMIT</span> <span class="mi">5</span>
 
 <span class="c1">-- get the day itself and the 5 after</span>
 <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">dailies</span> <span class="k">WHERE</span> <span class="n">id</span> <span class="o">&gt;=</span> <span class="mi">3764704</span> <span class="k">AND</span> <span class="n">wban</span> <span class="o">=</span> <span class="mi">94728</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">id</span> <span class="k">LIMIT</span> <span class="mi">6</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>We have everything selected, all that’s left to do is add each one to our <code class="highlighter-rouge">@dailies</code> array and render it out!</p>
+<p>We have everything selected, all that’s left to do is add each one to our <code class="language-plaintext highlighter-rouge">@dailies</code> array and render it out!</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_adjacent</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_adjacent</span>
   <span class="n">day</span> <span class="o">=</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">])[</span><span class="ss">:id</span><span class="p">]</span>
   <span class="vi">@dailies</span> <span class="o">=</span> <span class="p">[]</span>
   <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM dailies where id &lt; </span><span class="si">#{</span><span class="n">day</span><span class="si">}</span><span class="s2"> and wban = '</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">]</span><span class="si">}</span><span class="s2">' ORDER BY id DESC LIMIT 5"</span><span class="p">).</span><span class="nf">reverse_each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vi">@dailies</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="p">}</span>
   <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM dailies where id &gt;= </span><span class="si">#{</span><span class="n">day</span><span class="si">}</span><span class="s2"> and wban = '</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">]</span><span class="si">}</span><span class="s2">' ORDER BY id LIMIT 6"</span><span class="p">).</span><span class="nf">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vi">@dailies</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="p">}</span>
   <span class="n">render</span> <span class="ss">json: </span><span class="vi">@dailies</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h1 id="nesting-another-route---historical">Nesting Another Route - Historical</h1>
 <hr />
@@ -412,75 +405,67 @@
 
 <p>This is actually easier to do than the prior “adjacent” route, however you’ll soon see there’s unfortunately no way to actually lower the number of queries to make it work. As usually we’ll start off with the URL we want to use, this time we’ll tack on “historical” to the end:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># URL</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># URL</span>
 <span class="s1">'http://localhost:3000/api/v1/dailies/94728/20160123/historical'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And we’ll call our new controller method “entry_historical”, then define that as our new route:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># which uses the route</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># which uses the route</span>
 <span class="n">get</span> <span class="s1">'/dailies/:wban/:year_month_day/historical'</span><span class="p">,</span> <span class="ss">to: </span><span class="s1">'dailies#entry_historical'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>We’ll be using a trick to pull the date out of the our <code class="highlighter-rouge">year_month_day</code> which usually looks like “20160123”. By using the <code class="highlighter-rouge">.slice</code> method we’ll just grab the last 4 digits:</p>
+<p>We’ll be using a trick to pull the date out of the our <code class="language-plaintext highlighter-rouge">year_month_day</code> which usually looks like “20160123”. By using the <code class="language-plaintext highlighter-rouge">.slice</code> method we’ll just grab the last 4 digits:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">date</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">].</span><span class="nf">slice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">date</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">].</span><span class="nf">slice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>Now we have a date of “0123” with the years ready to be added to the start of it. Our program uses data from May 2007 to June 2017, so we can create an array of each year and then add the date onto the end</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># create an array ["2007", "2008", "2009", ... "2017"]</span>
-<span class="n">years</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"2007"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"2017"</span><span class="p">).</span><span class="nf">to_a</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># create an array ["2007", "2008", "2009", ... "2017"]</span>
+<span class="n">years</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"2007"</span><span class="o">..</span><span class="s2">"2017"</span><span class="p">).</span><span class="nf">to_a</span>
 <span class="c1"># attach the date onto each one</span>
 <span class="n">years</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">year</span><span class="o">|</span> <span class="n">year</span> <span class="o">+</span> <span class="n">date</span> <span class="p">}</span>
 <span class="c1">#=&gt; ["20070123", "20080123", "20090123", "20100123", "20110123", "20120123", "20130123", "20140123", "20150123", "20160123", "20170123"]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Now that we have our years array with the appropriate date, we just need to remove any dates that are before May 2007 or after June 2017:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">years</span><span class="p">.</span><span class="nf">delete_if</span> <span class="p">{</span> <span class="o">|</span><span class="n">year</span><span class="o">|</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="s2">"20070501"</span> <span class="o">||</span> <span class="n">year</span> <span class="o">&gt;</span> <span class="s2">"20170630"</span> <span class="p">}</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">years</span><span class="p">.</span><span class="nf">delete_if</span> <span class="p">{</span> <span class="o">|</span><span class="n">year</span><span class="o">|</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="s2">"20070501"</span> <span class="o">||</span> <span class="n">year</span> <span class="o">&gt;</span> <span class="s2">"20170630"</span> <span class="p">}</span>
 <span class="c1">#=&gt; ["20080123", "20090123", "20100123", "20110123", "20120123", "20130123", "20140123", "20150123", "20160123", "20170123"]</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>In our example we removed “20070123” from our array. Now that we have the years in the form of <code class="highlighter-rouge">year_month_day</code> that we want to use, we’ll just simply <code class="highlighter-rouge">.map!</code> them as their entries:</p>
+<p>In our example we removed “20070123” from our array. Now that we have the years in the form of <code class="language-plaintext highlighter-rouge">year_month_day</code> that we want to use, we’ll just simply <code class="language-plaintext highlighter-rouge">.map!</code> them as their entries:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">years</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">entry</span><span class="o">|</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="n">entry</span><span class="p">)</span> <span class="p">}</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">years</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">entry</span><span class="o">|</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="n">entry</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
 
-<p>Now our <code class="highlighter-rouge">years</code> array contains our database rows. Putting it all together and then returning it we get:</p>
+<p>Now our <code class="language-plaintext highlighter-rouge">years</code> array contains our database rows. Putting it all together and then returning it we get:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_historical</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_historical</span>
   <span class="n">date</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">].</span><span class="nf">slice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-  <span class="n">years</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"2007"</span><span class="p">.</span><span class="nf">.</span><span class="s2">"2017"</span><span class="p">).</span><span class="nf">to_a</span>
+  <span class="n">years</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"2007"</span><span class="o">..</span><span class="s2">"2017"</span><span class="p">).</span><span class="nf">to_a</span>
   <span class="n">years</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">year</span><span class="o">|</span> <span class="n">year</span> <span class="o">+</span> <span class="n">date</span> <span class="p">}</span>
   <span class="n">years</span><span class="p">.</span><span class="nf">delete_if</span> <span class="p">{</span> <span class="o">|</span><span class="n">year</span><span class="o">|</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="s2">"20070501"</span> <span class="o">||</span> <span class="n">year</span> <span class="o">&gt;</span> <span class="s2">"20170630"</span> <span class="p">}</span>
   <span class="n">years</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">entry</span><span class="o">|</span> <span class="no">Daily</span><span class="p">.</span><span class="nf">find_by</span><span class="p">(</span><span class="ss">wban: </span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">],</span> <span class="ss">year_month_day: </span><span class="n">entry</span><span class="p">)</span> <span class="p">}</span>
   <span class="n">render</span> <span class="ss">json: </span><span class="n">years</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>As I stated before: there’s unfortunately no way to actually lower the number of queries to make it work. We can use regular expressions to simply find any entry that ends in “0123” by using <code class="highlighter-rouge">LIKE</code> in a manual SQL query:</p>
+<p>As I stated before: there’s unfortunately no way to actually lower the number of queries to make it work. We can use regular expressions to simply find any entry that ends in “0123” by using <code class="language-plaintext highlighter-rouge">LIKE</code> in a manual SQL query:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_historical</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">entry_historical</span>
   <span class="n">date</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="ss">:year_month_day</span><span class="p">].</span><span class="nf">slice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
   <span class="vi">@dailies</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM dailies where wban = '</span><span class="si">#{</span><span class="n">params</span><span class="p">[</span><span class="ss">:wban</span><span class="p">]</span><span class="si">}</span><span class="s2">' AND year_month_day LIKE '%</span><span class="si">#{</span><span class="n">date</span><span class="si">}</span><span class="s2">' ORDER BY year_month_day"</span><span class="p">)</span>
   <span class="n">render</span> <span class="ss">json: </span><span class="vi">@dailies</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
-<p>But even though this is a single query instead of 10-11 separate ones, this actually takes longer to do. Why? There’s no limit, and since we’re using <code class="highlighter-rouge">WHERE</code> that means we have to search through our <strong>ENTIRE</strong> database which means our efficiency is worse. <code class="highlighter-rouge">.find_by</code> stops as soon as it finds the right thing, so best case will, with the exception of if we ask for the absolute last entry in our database, will always be faster.</p>
+<p>But even though this is a single query instead of 10-11 separate ones, this actually takes longer to do. Why? There’s no limit, and since we’re using <code class="language-plaintext highlighter-rouge">WHERE</code> that means we have to search through our <strong>ENTIRE</strong> database which means our efficiency is worse. <code class="language-plaintext highlighter-rouge">.find_by</code> stops as soon as it finds the right thing, so best case will, with the exception of if we ask for the absolute last entry in our database, will always be faster.</p>
 
 <hr />
 
-<p>So we covered our Rakefile/database in part 1, our API/routes in this part 2, part 3 will involve JavaScript/React and our front end.</p>
+<p>So we covered our Rakefile/database in part 1, our API/routes in this part 2, part 3 will involve showing off this data.</p>
 
 <p>Code on.</p>
 
@@ -496,26 +481,6 @@
 
 </article>
 
-    </div>
-
-    <div class="wrapper-footer">
-      <div class="container">
-        <footer class="footer">
-          
-<a href="mailto:MikeMerinWeather@gmail.com"><i class="svg-icon email"></i></a>
-
-
-<a href="https://github.com/mikemerin"><i class="svg-icon github"></i></a>
-
-<a href="https://www.linkedin.com/in/mike-merin-00860a64"><i class="svg-icon linkedin"></i></a>
-
-
-<a href="https://www.twitter.com/mikemerin"><i class="svg-icon twitter"></i></a>
-
-
-
-        </footer>
-      </div>
     </div>
 
     
