@@ -12,8 +12,8 @@ permalink: /education/
 
 ### Git/Bash
 
-* [Delete all mon-"master" Git branches](https://mikemerin.github.io/Git-Tip-of-the-Day)
-* [Delete all files matching *this name*](https://mikemerin.github.io/CMD-Mass-Delete)
+* [Delete all non-"master" Git branches](https://mikemerin.github.io/Git-Tip-of-the-Day)
+* [Delete all files matching \*this_name\*](https://mikemerin.github.io/CMD-Mass-Delete)
 
 ### Javascript / NPM
 
