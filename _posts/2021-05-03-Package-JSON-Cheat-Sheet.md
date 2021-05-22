@@ -2,7 +2,7 @@
 layout: post
 title:  "Package.json Dependency Cheat Sheet"
 subtitle: "find the version"
-date:   2021-05-*03 18:25:12 -0400
+date:   2021-05-03 18:25:12 -0400
 categories: git, bash, tutorial
 ---
 The `package.json` file handles which Node packages you app will install. The convention is typically `Major.Minor.Patch` with an optional `symbol` in front (more on that below) and usually means the following:
