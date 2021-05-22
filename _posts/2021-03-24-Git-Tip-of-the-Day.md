@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Git Tip of the Day"
+title:  "Git Tip of the Day - Branch Deletion"
 subtitle: "a quick little prune"
 date:   2021-03-24 08:43:29 -0400
 categories: git, bash, tutorial

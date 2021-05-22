@@ -7,19 +7,25 @@ permalink: /education/
 
 ### General
 
-* [Object Oriented Programming in 4 Languages](https://mikemerin.github.io/Objected-Oriented-Languages/)
-* [Signed vs. Unsigned Integers](https://mikemerin.github.io/Signed-Unsigned/)
+* [Object oriented programming in 4 languages](https://mikemerin.github.io/Objected-Oriented-Languages/)
+* [Signed vs. unsigned integers](https://mikemerin.github.io/Signed-Unsigned/)
 
-### Javascript
+### Git/Bash
+
+* [Delete all mon-"master" Git branches](https://mikemerin.github.io/Git-Tip-of-the-Day)
+* [Delete all files matching *this name*](https://mikemerin.github.io/CMD-Mass-Delete)
+
+### Javascript / NPM
 
 * [JavaScript through Ruby](https://mikemerin.github.io/JS-through-Ruby/)
-* [JavaScript Cheat Sheet](https://mikemerin.github.io/Javascript-Cheat-Sheet/)
+* [JavaScript cheat sheet](https://mikemerin.github.io/Javascript-Cheat-Sheet/)
 * [JavaScript's thisArg](https://mikemerin.github.io/JS-thisArg/)
+* [Package.JSON cheat sheet](https://mikemerin.github.io/JS-thisArg/)
 
 ### Python
 
 * [Python through Ruby](https://mikemerin.github.io/Python-through-Ruby/)
-* [Python Cheat Sheet](https://mikemerin.github.io/Python-Cheat-Sheet/)
+* [Python cheat sheet](https://mikemerin.github.io/Python-Cheat-Sheet/)
 
 ### Regex
 
@@ -33,7 +39,7 @@ permalink: /education/
 ### SQL
 
 * [Intro to SQL](https://mikemerin.github.io/Intro-to-SQL/)
-* [Ambiguous SQL Column Names](https://mikemerin.github.io/Ambiguous-SQL-Column-Names/)
+* [Ambiguous SQL column names](https://mikemerin.github.io/Ambiguous-SQL-Column-Names/)
 
 Note that there are more blogs on my [main page](https://mikemerin.github.io) that you can learn from.
 
